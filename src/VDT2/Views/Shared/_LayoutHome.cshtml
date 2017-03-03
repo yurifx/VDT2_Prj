@@ -1,0 +1,127 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model VDT2.ViewModels.LoginViewModel
+
+<!DOCTYPE html>
+
+<html>
+<head>
+    <meta charset="utf-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Bureau Veritas - VDT</title>
+
+    <environment names="Development">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.css" />
+        <link rel="stylesheet" href="~/css/site.css" />
+    </environment>
+    <environment names="Staging,Production">
+        <link rel="stylesheet" href="~/lib/bootstrap/dist/css/bootstrap.min.css" asp-append-version="true" />
+        <link rel="stylesheet" href="~/css/site.min.css" asp-append-version="true" />
+    </environment>
+
+    <environment names="Development">
+        <script src="~/lib/jquery/dist/jquery.js"></script>
+        <script src="~/lib/jquery.unobtrusive-ajax.js"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.js"></script>
+        <script src="~/js/site.js" asp-append-version="true"></script>
+    </environment>
+    <environment names="Staging,Production">
+        <script src="~/lib/jquery/dist/jquery.min.js" asp-append-version="true"></script>
+        <script src="~/lib/jquery.unobtrusive-ajax.min.js" asp-append-version="true"></script>
+        <script src="~/lib/bootstrap/dist/js/bootstrap.min.js" asp-append-version="true"></script>
+        <script src="~/js/site.min.js" asp-append-version="true"></script>
+    </environment>
+
+    <environment names="Development,Staging,Production">
+        <script src="~/js/home.js" asp-append-version="true"></script>
+    </environment>
+
+    @RenderSection("scripts", required: false)
+
+</head>
+<body>
+    <div class="page">
+        <div id="header">
+            <div id="topBar">
+                <div class="left">
+                    <span class="headerTitle">
+                        <a href="">Bureau Veritas Brasil</a>
+                    </span>
+                </div>
+                <div class="right">
+                    @if (Model != null && Model.Autenticado) {
+                        <span class="headerUsuario">
+                            @ViewData["UsuarioNome"] [@ViewData["UsuarioIdentificacao"]]
+                        </span>
+                    }
+                    else {
+                        <a href="#" class="headerLoginVSC" onclick="ExibePainelLogin();">Login</a>
+                    }
+                </div>
+            </div>
+            <div class="banner">
+                <img src="~/images/BannerTopo.jpg" style="width:850px" alt="Banner Bureau Veritas">
+                <div id="logo">
+                    <a href="/">
+                        <img alt="BV Logo" style="position:absolute; top:86px;" src="~/images/logo_bv_header.gif">
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+
+    <div class="page">
+
+        <div class="container-fluid body-content bv-content">
+            @RenderBody()
+        </div>
+    </div>
+
+    <div id="modalLogin" class="modal fade" tabindex="-1" role="dialog" aria-labelledby="modalLoginTitulo">
+        <div class="modal-dialog modal-sm" role="document">
+            <div class="modal-content">
+
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-label="Close"><span aria-hidden="true">&times;</span></button>
+                    <h4 class="modal-title" id="modalLoginTitulo">Login</h4>
+                </div>
+
+                <form asp-controller="Home" asp-action="Login" data-ajax="true" data-ajax-method="POST" data-ajax-success="VerificaLogin" data-ajax-failure="ErroLogin" data-ajax-begin="PreLogin" enctype="multipart/form-data">
+                    <div class="modal-body">
+
+                        <div id="divLoginErro" class="alert alert-danger" role="alert" style="display:none">Por favor, verifique suas credenciais</div>
+
+                        <div class="input-group" style="width:100%">
+                            <span class="input-group-addon">
+                                <img src="~/images/glyphicons_003_user.png" style="width:14px; height:16px" />
+                            </span>
+                            <input data-val="true" class="form-control" asp-for="Identificacao" placeholder="login" type="text" />
+                        </div>
+
+                        <div class="input-group" style="width:100%; margin-top:1em;">
+                            <span class="input-group-addon">
+                                <img src="~/images/glyphicons_044_keys.png" style="width:14px; height:16px" />
+                            </span>
+                            <input data-val="true" class="form-control" asp-for="Senha" placeholder="senha" type="password" />
+                        </div>
+
+                        <div id="divLoginProcessando" style="width:100%; margin-top:1em;">
+                            <span>Verificando suas credenciais</span>
+                            <div id="divLoginGauge" class="progress">
+                                <div id="loginGauge" class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="10" aria-valuemin="0" aria-valuemax="100" style="width: 10%">
+                                </div>
+                            </div>
+                        </div>
+
+                    </div>
+                    <div class="modal-footer">
+                        <button id="btnEfetuarLogin" type="submit" class="btn btn-sm btn-primary btn-block" style="max-width:320px;">Entrar</button>
+                        <a style="display:block; margin-top:0.8em; text-align:center; font-size: 0.8em; width:100%; max-width:320px;" id="lnkEsqueciMinhaSenha" data-toggle="modal" href="#modalEsqueciMinhaSenha" onclick="$('#enviar-recuperar').show();">esqueci minha senha</a>
+                    </div>
+                </form>
+            </div>
+        </div>
+    </div>
+
+</body>
+</html>

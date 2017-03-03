@@ -1,0 +1,32 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model VDT2.ViewModels.LoginViewModel
+
+
+
+@{
+    Layout = "~/Views/Shared/_LayoutHome.cshtml";
+}
+
+<button class="btn btn-info btn-sm" value="Nova Inspeção" onclick="location.href='@Url.Action("Index", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span> Nova inspeção</button>
+
+
+
+<h1>    VDT - Vehicle Damage Tracking</h1>
+
+    @if (Model == null || !Model.Autenticado)
+        {
+        <div id="divConteudoInstitucional">
+            <iframe name="frameConteudoInstitucional" style="border: none; width: 98%; height:600px" src="~/ConteudoInstitucional.html"></iframe>
+        </div>
+        }
+
+    @if (Model != null && Model.Autenticado)
+        {
+
+        <div id="divMenu">
+
+            <p>AQUI: Menu</p>
+
+        </div>
+        }

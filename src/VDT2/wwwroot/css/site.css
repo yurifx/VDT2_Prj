@@ -1,0 +1,341 @@
+﻿/*
+body {
+    padding-top: 50px;
+    padding-bottom: 20px;
+}
+*/
+
+/* Definições de body e de html de http://www.bureauveritas.com.br/home/our-services/asset-management/ */
+
+body, html {
+/*    text-align: center;*/
+    font-family: Arial, Helvetica, sans-serif;
+    font-size: 0.9em;
+    color: #43423c;
+}
+
+/* Estilo do Bureau Veritas - txt.css */
+/*header - Header principal de la page*/
+.page{text-align:left;}
+
+.page #header #topBar a.headerTitle {font-size:0.9em;font-weight:bold;text-decoration:none;color:#fff;line-height:35px;text-transform:uppercase;}
+.page #header #topBar span.headerTitle {font-size:0.9em;font-weight:bold;}
+.page #header #topBar span.headerTitle a{text-decoration:none;color:#fff;line-height:35px;text-transform:uppercase;}
+
+.page #header #mainNav ul li a{font-size:0.9em;font-weight:bold;color:#43423c;line-height:46px;text-transform:uppercase;}
+.page #header #mainNav ul li a:hover,
+.page #header #mainNav ul li.on a,
+.page #header #mainNav ul li.actif a{color:#9c192e;text-decoration:none;}
+.page #header #mainNav ul li.on ul li a,
+.page #header #mainNav ul li ul li a{color:#43423c;font-size:0.8em;font-weight:normal;line-height:25px;text-transform:none;}
+.page #header #mainNav ul li ul li.actif a,
+.page #header #mainNav ul li ul li a:hover{color:#9c192e;text-decoration:none;}
+
+/* Estilo do Bureau Veritas - bloc.css */
+body{background: #fff url(../images/site_bg.gif) center top repeat-y;}
+
+.page{position:relative;width:970px;padding:0px;margin:0px auto 0px auto;}
+
+.left{display:inline;float:left;}
+.right{display:inline;float:right;}
+
+/*header - Header de la page*/
+.page #header{width:100%;z-index: 10;}
+.page #header #topBar{position:relative;width:100%;height:35px;background:#68655C url(../images/header_bg.gif) left bottom repeat-x;z-index:200;}
+.page #header #topBar .headerTitle{display:inline;float:left;margin-left:18px;}
+/*
+.page #header #topBar a.locationFinderBtn{display:block;float:left;width:139px;height:22px;margin:5px 0px 0px 15px;padding:3px 0px 0px 7px;background:url(/images/images_v2/header_select_worldwide_bg.gif) no-repeat;}
+.page #header #topBar a.locationFinderBtn:hover{background:url(/images/images_v2/header_select_worldwide_bg.gif) no-repeat;}
+*/
+.page #header #topBar .left{width:550px;}
+/*
+.page #header #topBar #solutionFinder{display:inline;float:right;width:172px;height:25px;padding:4px 0px 0px 32px;margin:5px 5px 0px 0px;background:url('/images/images_v2/header_btn_solution_finder.gif') no-repeat;vertical-align:bottom;}
+.page #header #topBar #solutionFinder .solutionCount{float:right;width:27px;margin-right:6px;text-align:center;}
+
+.page #header #topBar .searchBar{float:right;width:169px;height:35px;margin:0px;background:#fff;}
+.page #header #topBar .searchBar img{margin-right:20px;}
+.page #header #topBar .searchBar p{display:inline;height:35px;margin:0px;}
+.page #header #topBar .searchBar input{margin:5px 0px 0px 0px;border:none;vertical-align:top;}
+.page #header #topBar .searchBar input.inputText{width:99px;height:24px;padding:0px 0px 0px 7px;background:url('/images/images_v2/header_input_search.gif') left center no-repeat;}
+.page #header #topBar .searchBar input.inputSubmit{width:27px;height:24px;padding:0px;background:url('/images/images_v2/header_submit_search.gif') right center no-repeat;cursor:pointer;}
+*/
+.page #header .banner{}
+.page #header .banner #logo{display:inline;vertical-align:bottom;}
+.page #header .banner #logo img{display:inline;margin:0px 0px 0px 28px;}
+/* .page #header .banner #logo img{display:inline;margin:0px 0px 10px 28px;} */
+
+.page #content h1{margin-top:15px;padding:0px 0px 5px 5px;background:#ffffff url('/images/images_v2/title_border_bottom.gif') left bottom no-repeat;}
+
+/* Estilos VSC */
+.page #header #topBar .headerTitle2{display:inline;float:left;margin-left:0;}
+
+.page #header #topBar span.headerVSC {font-size:0.9em;font-weight:bold;text-decoration:none;color:#fff;line-height:35px;display:inline;float:right;margin-right:18px;}
+.page #header #topBar a.headerLoginVSC {cursor:pointer;font-size:0.9em;font-weight:normal;color:#fff;line-height:35px;display:inline;float:right;margin-right:18px;}
+.page #header #topBar span.headerUsuario {font-size:0.7em;font-weight:normal;text-decoration:none;color:#fff;line-height:35px;display:inline;float:right;margin-right:18px;}
+
+/* Wrapping element */
+/* Set some basic padding to keep content from hitting the edges */
+.body-content {
+    padding-left: 15px;
+    padding-right: 15px;
+}
+
+/* Set widths on the form inputs since otherwise they're 100% wide */
+input,
+select,
+textarea {
+    max-width: 280px;
+}
+
+/*
+/ * Carousel * /
+.carousel-caption p {
+    font-size: 20px;
+    line-height: 1.4;
+}
+
+/ * Make .svg files in the carousel display properly in older browsers * /
+.carousel-inner .item img[src$=".svg"] {
+    width: 100%;
+}
+
+/ * Hide/rearrange for smaller screens * /
+@media screen and (max-width: 767px) {
+    / * Hide captions * /
+    .carousel-caption {
+        display: none;
+    }
+}
+*/
+
+.page #bv-content h1{font-size:1.5em !important;color:#43423C;}
+
+.menuBlocoItem {
+    height: 100%;
+    color: #43423C;
+
+    border-top-color:#e7e7e7;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    
+    border-right-color:#e7e7e7;
+    border-right-style: solid;
+    border-right-width: 1px;
+
+    border-bottom-color:#e7e7e7;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    border-left-color:#e7e7e7;
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+.menuBlocoItem a {
+    color: black;
+}
+
+.menuBlocoItem a:hover {
+    color: #68655C;
+}
+
+.menuBlocoItem img {
+    position:absolute;
+    right:0px;
+}
+
+.menuBlocoItemTitulo {
+    font-weight: normal;
+    text-align: center;
+    color: white;
+
+    background-color:#68655C;
+
+    border-top-color:#68655C;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-top-style: solid;
+    border-top-width: 1px;
+
+    border-right-color:#68655C;
+    border-right-style: solid;
+    border-right-width: 1px;
+
+    border-left-color:#68655C;
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+/* http://howtocenterincss.com/#contentType=text&container.height=220px&horizontal=left&vertical=middle&browser.IE=11 */
+.menuBlocoItemTexto {
+    display: flex; 
+    line-height: normal; 
+    height: 120px; 
+    align-items: center;
+}
+
+/* Controle e acompanhamento - Upload do arquivo de estoque de veículos */
+.blocoSelecaoCampo {
+    height: 100%;
+    color: #43423C;
+
+    border-top-color:#e7e7e7;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    
+    border-right-color:#e7e7e7;
+    border-right-style: solid;
+    border-right-width: 1px;
+
+    border-bottom-color:#e7e7e7;
+    border-bottom-left-radius: 16px;
+    border-bottom-right-radius: 16px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    border-left-color:#e7e7e7;
+    border-left-style: solid;
+    border-left-width: 1px;
+
+    /* padding: 8px; */
+}
+
+.blocoSelecaoCampoTitulo {
+    font-weight: normal;
+    text-align: center;
+    color: white;
+
+    background-color:#68655C;
+
+    border-top-color:#68655C;
+    border-top-left-radius: 16px;
+    border-top-right-radius: 16px;
+    border-top-style: solid;
+    border-top-width: 1px;
+
+    border-right-color:#68655C;
+    border-right-style: solid;
+    border-right-width: 1px;
+
+    border-left-color:#68655C;
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+.blocoSelecaoCampoAlerta {
+    font-size:12px;
+    color: orangered;
+}
+
+
+input {
+    border-top-color:#e7e7e7;
+    border-top-left-radius: 6px;
+    border-top-right-radius: 6px;
+    border-top-style: solid;
+    border-top-width: 1px;
+    
+    border-right-color:#e7e7e7;
+    border-right-style: solid;
+    border-right-width: 1px;
+
+    border-bottom-color:#e7e7e7;
+    border-bottom-left-radius: 6px;
+    border-bottom-right-radius: 6px;
+    border-bottom-style: solid;
+    border-bottom-width: 1px;
+
+    border-left-color:#e7e7e7;
+    border-left-style: solid;
+    border-left-width: 1px;
+}
+
+/*Começo estilos do Yuri*/
+/*Inspecao_Page*/
+
+/*#formulario-inspecao-dados-gerais{
+padding-left: 10%;    
+}
+
+#formulario-veiculo{
+    padding-left: 10%;
+}
+
+#lblUsuario{
+    padding-left: -30px;
+    float:left;
+}*/
+#areaNumericoInput, #condicaoNumericoInput, #danoNumericoInput, #gravidadeNumericoInput, #quadranteNumericoInput, #severidadeNumericoInput
+{
+max-width: 30px;
+}
+
+#areaNumericoInputLabel, #avCondicaoListaLabel, #avDanoRepositorioListaLabel, #avGravidadeLabel, #avQuadranteListaLabel, #avSeveridadeListaLabel
+{
+min-width: 80px;
+}
+
+#btnGravarAvarias, #btnListarAvarias
+{
+min-width: 70px;
+max-width: 70px;
+width: 70px;
+}
+
+
+
+@media only screen and (max-device-width:480px) 
+{
+
+    .ladoesquerdo {
+        max-width: 35%;
+        min-width: 35%;
+        width: 35%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    label{
+        font-weight: bold;
+    }
+
+
+    .ladodireito {
+        max-width: 180px;
+        min-width: 0px;
+        padding-left: 2px;
+        padding-right: 0px;
+    }
+}
+
+
+@media only screen and (max-device-width:350px) {
+        .ladoesquerdo {
+        max-width: 40%;
+        min-width: 40%;
+        width: 40%;
+        padding-left: 0px;
+        padding-right: 0px;
+    }
+
+    label{
+        font-weight: normal;
+    }
+
+
+    .ladodireito {
+        max-width: 180px;
+        min-width: 0px;
+        padding-left: 2px;
+        padding-right: 0px;
+    }
+
+
+
+}

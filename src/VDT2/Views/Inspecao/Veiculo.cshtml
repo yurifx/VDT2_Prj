@@ -1,0 +1,130 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model VDT2.ViewModels.InspecaoVeiculoViewModel
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<!--Registro de Veículos-->
+<script src="~/js/InspecaoDadosGerais.js"></script>
+
+<div class="container">
+    <div class="row">
+        <form asp-controller="Inspecao" asp-action="InserirVeiculo" method="post" onsubmit="return ValidarFormularioInserirVeiculo()">
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label asp-for="Inspecao.Inspecao_ID">Inspecao: @Model.Inspecao.Inspecao_ID</label>
+                            <input asp-for="Inspecao.Inspecao_ID" value="@Model.Inspecao.Inspecao_ID" name="Inspecao_ID" hidden /><br/>
+                            <button class="btn btn-info btn-sm" value="Nova Inspeção" onclick="location.href='@Url.Action("Index", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span> Nova inspeção</button>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label asp-for="UltimoVeiculo_InspVeiculo_ID">Ultimo Veículo ID: @Model.UltimoVeiculo_InspVeiculo_ID</label>
+                            <input asp-for="UltimoVeiculo_InspVeiculo_ID" value="@Model.UltimoVeiculo_InspVeiculo_ID" name="UltimoVeiculo_InspVeiculo_ID" hidden/>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            @*Local Inspecao*@
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label asp-for="Inspecao.LocalInspecao_ID">Local Inspecao: @Model.Inspecao.LocalInspecao_ID</label>
+                            <input asp-for="Inspecao.LocalInspecao_ID" value="@Model.Inspecao.LocalInspecao_ID" name="LocalInspecao_ID" hidden />
+                        </div>
+
+                    </div>
+                </div>
+            </div>
+
+            @*Chassi*@
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                            <label asp-for="VIN_6">Chassi</label>
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                            <input asp-for="VIN_6" maxlength="6" required pattern=".{6,6}" />
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Marca*@
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                            <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                            <select id="ListaMarca" class="form-control" required
+                                    asp-for="Marca_ID" asp-items="@Model.Marca">
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            @*Modelo*@
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                            <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                            <select id="ListaModelo" name="Modelo_ID" class="form-control" required"
+                                    asp-for="Modelo_ID" asp-items="@Model.Modelo" value="@Model.Modelo_ID">
+                                @*<option> Selecione um Modelo</option>*@
+                            </select>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                            <label asp-for="Observacoes">Observações:</label>
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                            <textarea asp-for="Observacoes" class="form-control" required rows="5" id="ObservacoesTxtArea" maxlength="1000"></textarea>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="form-group">
+                <div class="container">
+                    <div class="row">
+                        <div class="col col-lg-1 col-md-1 col-sm-3 col-xs-3">
+                            <button type="submit" name="tipoBotao" value="1" class="btn btn-success">Gravar</button> @*Action -> InspecaoController/InserirVeiculo - tipo 1*@
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-9">
+                            <button type="submit" name="tipoBotao" value="2" class="btn btn-danger">Registrar Avarias</button> @*Action -> InspecaoController/InserirVeiculo - tipo 2*@
+                        </div>
+
+
+                    </div>
+                </div>
+            </div>
+
+        </form><!--/Form-->
+    </div> <!--/Row-->
+</div> <!--/Container-->
