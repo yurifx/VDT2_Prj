@@ -143,9 +143,7 @@ namespace VDT2.Controllers
 
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
-
-            //Testes Github
-
+            
             bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
