@@ -144,8 +144,6 @@ namespace VDT2.Controllers
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
 
-            //ALTERAÇÕES TESTE GIT
-
             bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
@@ -169,7 +167,7 @@ namespace VDT2.Controllers
 
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
 
-            
+
             //Mudar para pegar via BLL
             listarConferenciaAvariaVM.listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
