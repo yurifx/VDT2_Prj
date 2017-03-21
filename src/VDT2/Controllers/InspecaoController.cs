@@ -9,12 +9,18 @@ using Microsoft.AspNetCore.Http;
 using VDT2.Models;
 using Microsoft.Extensions.Options;
 using Microsoft.AspNetCore.Mvc.Rendering;
+using VDT2.BLL;
+using Microsoft.AspNetCore.Hosting;
+using System.IO;
 
+
+/// <summary>
+/// Classe de inspeção de avarias 16032017 - 17:09
+/// </summary>
 namespace VDT2.Controllers
-    {
+{
     public class InspecaoController : Controller
-        {
-
+    {
         private VDT2.Models.Configuracao configuracao { get; set; }
 
         /// <summary>
@@ -22,333 +28,1326 @@ namespace VDT2.Controllers
         /// <para>Recebe a configuração do aplicativo, usando Dependency Injection</para>
         /// </summary>
         /// <param name="settings">Configuração geral do aplicativo, carregada de appsettings.json</param>
-        public InspecaoController(IOptions<VDT2.Models.Configuracao> settings)
-            {
-
+        public InspecaoController(IOptions<VDT2.Models.Configuracao> settings, IHostingEnvironment environment)
+        {
             this.configuracao = settings.Value;
+        }
+
+        /// <summary>
+        /// Index()
+        /// <para>Inicialização da inspeção - Nova Inspeção</para>
+        /// </summary>
+        /// <returns></returns>
+        public IActionResult NovaInspecao()
+        {
+            InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM = new InspecaoDadosGeraisViewModel();
+            ViewModels.LoginViewModel dadosUsuario = null;
+
+            //Verifica dados do usuário
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
             }
 
-        public IActionResult Index()
+            else
             {
-
-            ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-            if (dadosUsuario == null)
-                {
-                return RedirectToAction("Index", "Home");
-                }
-
-            InspecaoDadosGeraisViewModel _inspecaoDadosGeraisVM = new InspecaoDadosGeraisViewModel();
-
-            //recebe todos os dados do banco de dados para preencher posteriormente os referidos dropdownlist
-            _inspecaoDadosGeraisVM.ListaCliente = ClienteRepositorio.Listar(dadosUsuario.UsuarioId, configuracao);
-            _inspecaoDadosGeraisVM.ListaLocalInspecao = LocalInspecaoRepositorio.Listar(dadosUsuario.UsuarioId, configuracao);
-            _inspecaoDadosGeraisVM.ListaLocalCheckPoint = LocalCheckPointRepositorio.Listar(dadosUsuario.UsuarioId, configuracao);
-            _inspecaoDadosGeraisVM.ListaTransportador = TransportadorRepositorio.Listar(dadosUsuario.UsuarioId, configuracao);
-
-            if (dadosUsuario != null)
-                {
                 ViewData["UsuarioNome"] = dadosUsuario.Nome;
-                }
+            }
 
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
 
-            return View(_inspecaoDadosGeraisVM);
+            inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+
+            //TODO- EM ERRO
+            return View("NovaInspecao", inspecaoDadosGeraisVM);
+        }
+
+        /// <summary>
+        /// Insere ou atualiza dados de uma nova inspeção ou atualiza inspeção que já está no banco;
+        /// </summary>
+        /// <param name="inspecaoDadosGeraisVM">Dados do formulário de cadastro de inspeção</param>
+        /// <param name="botaoEnviar">Botao acionado pelo usuário - View - NovaInspecao </param>
+        /// <returns>Retorna a View (Veiculo)</returns>
+        [HttpPost]
+        public IActionResult InserirDadosCabecalhoInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, string botaoEnviar)
+        {
+
+            InspecaoVeiculoViewModel InspecaoVeiculoVM = new InspecaoVeiculoViewModel();
+            InspecaoVeiculoVM.InspVeiculo = new Models.InspVeiculo();
+
+            //Verifica dados do usuário
+            #region recebedadosusuario
+            ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            #region gravalog
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Parametros: Nome:  {dadosUsuario.Nome} |  Autenticado: {dadosUsuario.Autenticado}"
+                    });
+            }
+            catch { }
+            #endregion
+
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
             }
 
+            #endregion
 
-        [HttpPost]
-        public IActionResult InserirDadosCabecalhoInspecao(InspecaoDadosGeraisViewModel idgVM, string botaoEnviar)
+            InspecaoVeiculoVM.Inspecao = BLL.Inspecao.MontaDadosInspecao(inspecaoDadosGeraisVM, configuracao);
+
+            //atualiza
+            if (inspecaoDadosGeraisVM.Edicao == 1)
             {
-
-            //Verifica se é um reload do formulário anterior
-            string formsubmit = idgVM.Cliente_ID + idgVM.FrotaViagem + idgVM.IdTipo + idgVM.LocalCheckPoint_ID + idgVM.LocalInspecao_ID + idgVM.NomeNavio;
-            var ultimosubmit = this.HttpContext.Session.GetString("formsubmit");
-            if (formsubmit != ultimosubmit)
+                InspecaoVeiculoVM.Inspecao.Inspecao_ID = inspecaoDadosGeraisVM.Inspecao_ID;
+                if (InspecaoVeiculoVM.Inspecao != null)
                 {
-                this.HttpContext.Session.SetString("formsubmit", formsubmit);
-                }
-            else
-                {
-                return RedirectToAction("Index");
-                }
+                    if (InspecaoVeiculoVM.Inspecao.Inspecao_ID != 0)
+                    {
+                        InspecaoVeiculoVM.Inspecao = BLL.Inspecao.Update(InspecaoVeiculoVM.Inspecao, configuracao);
 
 
-            List<Inspecao> _listaInspecao = new List<Inspecao>();
-            Inspecao inspecao = new Inspecao();
-
-            //Recebe as informações do usuário logado
-            ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-
-            //Recebe dados do formulário 
-            inspecao.Cliente_ID = idgVM.Cliente_ID;
-            inspecao.LocalInspecao_ID = idgVM.LocalInspecao_ID;
-            inspecao.LocalCheckPoint_ID = idgVM.LocalCheckPoint_ID;
-            //transportador
-            int _transportadorId = Convert.ToInt32(idgVM.IdTipo.Split('_')[0]);
-            char _tipoTransportador = Convert.ToChar(idgVM.IdTipo.Split('_')[1]);
-            inspecao.Transportador_ID = _transportadorId;
-
-
-            //Mapeando Frota/Viagem - Neste caso, para buscar frota/viagem, temos que passar o tipo de transportador e o Id do transportador
-            //recebe todos dados do transportador informado
-            var transportador = TransportadorRepositorio.Listar(0, configuracao).Where(p => p.Transportador_ID == _transportadorId).FirstOrDefault();
-
-            //lista todas Frotas/Viagens  onde sejam do tipo do transportador informado e do ID do transportador informado
-            var listaFrotaViagem = FrotaViagemRepositorio.Listar(transportador.Tipo, transportador.Transportador_ID, configuracao);
-
-            //a partir da lista anterior [listaFrotaViagem], gostariamos de pegar apenas o que está com o nome igual o nome do transportador informado
-            var frotaViagemInformada = listaFrotaViagem.Where(p => p.Nome == idgVM.FrotaViagem).FirstOrDefault();
-
-
-            if (frotaViagemInformada == null)
-                {   //caso não exista nenhum registro desta frota, inserir no banco
-                inspecao.FrotaViagem_ID = FrotaViagemRepositorio.Inserir(transportador.Transportador_ID, idgVM.FrotaViagem, configuracao);
-                }
-
-            //caso já exista este transportador, apenas pegar seu frotaviagem_id
-            else
-                {
-                inspecao.FrotaViagem_ID = frotaViagemInformada.FrotaViagem_ID;
-                }
-            //_inspecao.FrotaViagem_ID = listaFrotaViagem.Where(p=>p.Nome== transportador.Nome).FirstOrDefault().FrotaViagem_ID;
-
-
-            //Só entra caso seja maritimo
-            if (!string.IsNullOrEmpty(idgVM.NomeNavio))
-                {
-                //Primeiro, verifica se existe este navio no bdd
-                inspecao.Navio_ID = NavioRepositorio.ConsultaIdNavio(idgVM.NomeNavio, configuracao);
-                }
-
-            inspecao.Usuario_ID = dadosUsuario.UsuarioId;
-
-            //Insere os dados  da inspecao
-            int _inspecaoId = InspecaoRepositorio.Inserir(inspecao, configuracao);
-
-            //Se tudo der certo, retorna o registro inserido
-            inspecao.Inspecao_ID = _inspecaoId;
-
-            //Preenche viewmodel da próxima view - Veiculo1
-            InspecaoVeiculoViewModel InspecaoVeiculoVM = new InspecaoVeiculoViewModel();
-            InspecaoVeiculoVM.Inspecao = inspecao;
-
-            //AQUI VALORES MARCA e MODELO SETADOS E ESTAO INDO P/ VIEW CORRETAMENTE 
-            InspecaoVeiculoVM.Marca_ID = 0;
-            InspecaoVeiculoVM.Modelo_ID = 0;
-
-            var marcaList = MarcaRepositorio.Listar(1, configuracao);
-            //Inicializa a lista de  Modelos, já inserindo o primeiro registro default
-            InspecaoVeiculoVM.Marca = new List<SelectListItem>(marcaList.Count + 1);
-            InspecaoVeiculoVM.Marca.Add(new SelectListItem
-                {
-                Text = "Selecione a Marca",
-                Value = 0.ToString()
-                });
-
-            foreach (var item in marcaList)
-                {
-                InspecaoVeiculoVM.Marca.Add(
-                    new SelectListItem
+                        if (InspecaoVeiculoVM.Inspecao.Erro == true)
                         {
-                        Text = item.Nome,
-                        Value = item.Marca_ID.ToString()
-                        });
-                }
-
-
-            var modeloList = ModeloRepositorio.Listar(dadosUsuario.UsuarioId, configuracao);
-            //Inicializa a lista de  Modelos, já inserindo o primeiro registro default
-            InspecaoVeiculoVM.Modelo = new List<SelectListItem>(modeloList.Count + 1);
-            InspecaoVeiculoVM.Modelo.Add(new SelectListItem
-                {
-                Text = "Selecione o Modelo",
-                Value = 0.ToString()
-                });
-
-            foreach (var item in modeloList)
-                {
-                InspecaoVeiculoVM.Modelo.Add(
-                    new SelectListItem
+                            ViewData["MensagemErro"] = InspecaoVeiculoVM.Inspecao.MensagemErro;
+                        }
+                        else
                         {
-                        Text = item.Nome,
-                        Value = item.Modelo_ID.ToString()
-                        });
+                            ViewData["MensagemSucesso"] = "Inspecao Atualizada com sucesso";
+                        }
+                    }
                 }
+            }
+
+            //insere
+            else if (inspecaoDadosGeraisVM.Edicao == 0)
+            {
+                #region verificarReload
+                //Verifica se é um reload do formulário anterior
+                string formsubmit = inspecaoDadosGeraisVM.Cliente_ID + inspecaoDadosGeraisVM.LocalInspecao_ID + inspecaoDadosGeraisVM.LocalCheckPoint_ID + inspecaoDadosGeraisVM.Transportador_ID + inspecaoDadosGeraisVM.FrotaViagemNome + inspecaoDadosGeraisVM.IdTipo;
+                var ultimosubmit = this.HttpContext.Session.GetString("formsubmit");
+                if (formsubmit != ultimosubmit)
+                {
+                    this.HttpContext.Session.SetString("formsubmit", formsubmit);
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não é possível atualizar dados identicos aos informados anteriormente!";
+                    return RedirectToAction("NovaInspecao");
+                }
+                #endregion
+                InspecaoVeiculoVM.Inspecao = BLL.Inspecao.Inserir(InspecaoVeiculoVM.Inspecao, configuracao);
+                if (InspecaoVeiculoVM.Inspecao != null)
+                {
+                    if (InspecaoVeiculoVM.Inspecao.Erro == true)
+                    {
+                        #region EM_ERRO
+                        ViewData["MensagemErro"] = InspecaoVeiculoVM.Inspecao.MensagemErro;
+                        inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+                        inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+                        inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+                        inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+                        return View("NovaInspecao", inspecaoDadosGeraisVM);
+                        #endregion
+                    }
+                    else
+                    {
+                        ViewData["MensagemSucesso"] = $"Dados gravados com sucesso! Inspeção: {InspecaoVeiculoVM.Inspecao.Inspecao_ID}";
+                    }
+                }
+            }
+
+            //Preenche Dados para próxima View
+            InspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoDadosGeraisVM.Cliente_ID, configuracao);
+            InspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoDadosGeraisVM.Cliente_ID, configuracao);
+
+            #region EM_ERRO
+            if (InspecaoVeiculoVM.Modelo.FirstOrDefault().Text == "ERRO")
+            {
+                ViewData["MensagemErro"] += "Erro ao listar Modelos, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+            if (InspecaoVeiculoVM.Marca.FirstOrDefault().Text == "ERRO")
+            {
+                ViewData["MensagemErro"] += "Erro ao listar Marcas, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+            InspecaoVeiculoVM.InspVeiculo_ID = 0;
+            #endregion  
 
             return View("Veiculo", InspecaoVeiculoVM);
+        }
 
-            }
 
-
+        /// <summary>
+        /// Inserir Veiculo - IActionResult - Controller.cs
+        /// </summary>
+        /// <param name="VeiculoViewModel">Veiculo Informado</param>
+        /// <param name="tipoBotao">Tipo de requisição</param>
+        /// <returns>RedirectToAction NovaInspecao, Controller "Home"</returns>
         [HttpPost]
-        public IActionResult InserirVeiculo(ViewModels.InspecaoVeiculoViewModel ivVM, int tipoBotao)
-            {
-            //caso não esteja logado, redirecionar para index.
+        public IActionResult InserirVeiculo(ViewModels.InspecaoVeiculoViewModel VeiculoViewModel, int tipoBotao)
+        {
+            //Verifica dados do usuário
+            #region dadosusuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
+            {
+                #region gravalog
+                try
                 {
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"Parametros: Nome:  {dadosUsuario.Nome} |  Autenticado: {dadosUsuario.Autenticado}"
+                        });
+                }
+                catch { }
+                #endregion
                 return RedirectToAction("Index", "Home");
-                }
-
-            InspVeiculo inspVeiculo = new InspVeiculo
-                {
-                Inspecao_ID = ivVM.Inspecao_ID,
-                Marca_ID = ivVM.Marca_ID,
-                Modelo_ID = ivVM.Modelo_ID,
-                VIN_6 = ivVM.VIN_6,
-                VIN = null, //necessário pegar info correta no bdd
-                InspVeiculo_ID = 1, //recebe no postback
-                Observacoes = ivVM.Observacoes
-                };
-
-            //Verifica se existe o veículo no banco de dados - neste caso é passado a inspecao. Poderá haver o mesmo veículo em inspecoes diferentes
-            inspVeiculo.InspVeiculo_ID = InspVeiculoRepositorio.Existe(inspVeiculo.Inspecao_ID, inspVeiculo.VIN_6, configuracao);
-
-            if (inspVeiculo.InspVeiculo_ID == 0)
-                {
-                //Insert de veículo no BDD
-                inspVeiculo.InspVeiculo_ID = InspVeiculoRepositorio.Inserir(inspVeiculo, configuracao);
-                }
-
-            //preenche valores -> irá enviar para a próxima view
-            InspecaoVeiculoRegistrarAvariasVM ivraVM = new InspecaoVeiculoRegistrarAvariasVM();
-            ivraVM.insVeiculo = inspVeiculo;
-            ivraVM.dadosUsuario = dadosUsuario;
-
-
-            //Verifica se o usuário clicou em "Registrar ou Registrar Avarias" / Neste ponto já registrou veículo no bdd
-            if (tipoBotao == 1) //apenas registrar veiculo
-                {
-                InspecaoVeiculoViewModel InspecaoVeiculoVM = new InspecaoVeiculoViewModel();
-
-
-                InspecaoVeiculoVM.Inspecao_ID = ivVM.Inspecao_ID;
-                InspecaoVeiculoVM.UltimoVeiculo_InspVeiculo_ID = inspVeiculo.InspVeiculo_ID;
-
-                InspecaoVeiculoVM.Inspecao = InspecaoRepositorio.ListarPorId(ivVM.Inspecao_ID);
-
-
-                //Ver como inserir 0 e voltar para o 0
-                InspecaoVeiculoVM.Marca_ID = 0;
-                InspecaoVeiculoVM.Modelo_ID = 0;
-
-                var marcaList = MarcaRepositorio.Listar(1, configuracao);
-                InspecaoVeiculoVM.Marca = new List<SelectListItem>(marcaList.Count + 1);
-                InspecaoVeiculoVM.Marca.Add(new SelectListItem
-                    {
-                    Text = "Selecione a  Marca",
-                    Value = 0.ToString()
-                    });
-                foreach (var item in marcaList)
-                    {
-                    InspecaoVeiculoVM.Marca.Add(
-                        new SelectListItem
-                            {
-                            Text = item.Nome,
-                            Value = item.Marca_ID.ToString()
-                            });
-                    }
-
-
-                var modeloList = ModeloRepositorio.Listar(dadosUsuario.UsuarioId, configuracao);
-                InspecaoVeiculoVM.Modelo = new List<SelectListItem>(modeloList.Count + 1);
-                InspecaoVeiculoVM.Modelo.Add(new SelectListItem
-                    {
-                    Text = "Selecione o Modelo",
-                    Value = 0.ToString()
-                    });
-
-                foreach (var item in modeloList)
-                    {
-                    InspecaoVeiculoVM.Modelo.Add(
-                        new SelectListItem
-                            {
-                            Text = item.Nome,
-                            Value = item.Modelo_ID.ToString()
-                            });
-                    }
-
-
-
-                return View("Veiculo", InspecaoVeiculoVM);
-                }
-
-            else if (tipoBotao == 2) //registrar avarias
-                {
-                ivraVM.avAreaLista = AvAreaRepositorio.Listar(1, configuracao);
-                ivraVM.avCondicaoLista = AvCondicaoRepositorio.Listar(1, configuracao);
-                ivraVM.avDanoRepositorioLista = AvDanoRepositorio.Listar(1, configuracao);
-                ivraVM.avGravidadeLista = AvGravidadeRepositorio.Listar(1, configuracao);
-                ivraVM.avQuadranteLista = AvQuadranteRepositorio.Listar(1, configuracao);
-                ivraVM.avSeveridadeLista = AvSeveridadeRepositorio.Listar(1, configuracao);
-
-                ivraVM.listaAvarias = InspAvariaRepositorio.Listar(1, ivVM.VIN_6, configuracao);
-                return View("RegistrarAvarias", ivraVM);
-                };
-            return RedirectToAction("Index", "Home");
             }
+            #endregion
+
+            //Recebe os dados da View
+
+            VeiculoViewModel.InspVeiculo = new Models.InspVeiculo
+            {
+                Inspecao_ID = VeiculoViewModel.Inspecao_ID,
+                Marca_ID = VeiculoViewModel.Marca_ID,
+                Modelo_ID = VeiculoViewModel.Modelo_ID,
+                VIN_6 = VeiculoViewModel.VIN_6.RemoveEspacosUpperKey(),
+                VIN = null,
+                InspVeiculo_ID = VeiculoViewModel.InspVeiculo_ID, //recebe no postback
+                Observacoes = VeiculoViewModel.Observacoes.RemoveEspacosUpperKey(),
+                Erro = false,
+                MensagemErro = ""
+            };
+
+            VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.Inspecao_ID, configuracao);
+            #region EM_ERRO
+            if (VeiculoViewModel.Inspecao.Erro == true)
+            {
+                ViewData["MensagemErro"] = VeiculoViewModel.Inspecao.MensagemErro;
+            }
+            #endregion
+
+            //Verifica se está em edição 
+            if (VeiculoViewModel.Edicao == 1)
+            {
+                VeiculoViewModel.InspVeiculo = BLL.InspecaoVeiculo.Update(VeiculoViewModel.InspVeiculo, configuracao);
+                if (VeiculoViewModel.InspVeiculo.Erro == true)
+                #region EM_ERRO
+                {
+                    VeiculoViewModel.InspVeiculo.MensagemErro = VeiculoViewModel.InspVeiculo.MensagemErro;
+                    ViewData["MensagemErro"] = VeiculoViewModel.InspVeiculo.MensagemErro;
+
+                    //preenche dados para retornar para view;
+                    ViewModels.InspecaoVeiculoViewModel InspecaoVeiculoVM = new ViewModels.InspecaoVeiculoViewModel();
+                    InspecaoVeiculoVM.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.InspVeiculo.Inspecao_ID, configuracao);
+                    InspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(InspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+                    InspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(InspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+
+                    if (InspecaoVeiculoVM.Inspecao.Erro == true)
+                    {
+                        ViewData["MensagemErro"] += "  - Erro ao listar informações da inspeção";
+                    }
+
+                    if (InspecaoVeiculoVM.Marca.FirstOrDefault().Text == "ERRO")
+                    {
+                        ViewData["MensagemErro"] += "  - Erro ao listar Marcas";
+                    }
+
+                    if (InspecaoVeiculoVM.Modelo.FirstOrDefault().Text == "ERRO")
+                    {
+                        ViewData["MensagemErro"] += "   - Erro ao listar Modelos";
+                    }
+
+                    InspecaoVeiculoVM.Edicao = 1;
+                    InspecaoVeiculoVM.InspVeiculo_ID = VeiculoViewModel.InspVeiculo.InspVeiculo_ID;
+                    InspecaoVeiculoVM.VIN_6 = VeiculoViewModel.InspVeiculo.VIN_6;
+                    InspecaoVeiculoVM.Marca_ID = VeiculoViewModel.InspVeiculo.Marca_ID;
+                    InspecaoVeiculoVM.Modelo_ID = VeiculoViewModel.InspVeiculo.Modelo_ID;
+                    InspecaoVeiculoVM.Observacoes = VeiculoViewModel.InspVeiculo.Observacoes;
+                    return View("Veiculo", InspecaoVeiculoVM);
+                }
+                #endregion
+
+                else if (VeiculoViewModel.InspVeiculo.Erro == false)
+                {
+                    ViewData["MensagemSucesso"] += "Dados do veículo atualizados com sucesso: " + VeiculoViewModel.InspVeiculo.VIN_6;
+                    VeiculoViewModel.Edicao = 0;
+                }
+            }
+
+            else //Insere
+            {
+                VeiculoViewModel.InspVeiculo.InspVeiculo_ID = BLL.InspecaoVeiculo.Existe(VeiculoViewModel.InspVeiculo.Inspecao_ID, VeiculoViewModel.InspVeiculo.VIN_6, configuracao);
+                if (VeiculoViewModel.InspVeiculo.InspVeiculo_ID > 0)
+                {
+                    ViewData["MensagemErro"] = $"Não é possível inserir o veículo informado, veículo já encontra-se registrado nesta inspeção, veículo id: {VeiculoViewModel.InspVeiculo.InspVeiculo_ID}";
+                    VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.InspVeiculo.Inspecao_ID, configuracao);
+                    VeiculoViewModel.InspVeiculo = VeiculoViewModel.InspVeiculo;
+                    VeiculoViewModel.InspVeiculo.Erro = true;
+                    VeiculoViewModel.Marca = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                    VeiculoViewModel.Modelo = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                    return View("Veiculo", VeiculoViewModel);
+                }
+
+                else if (VeiculoViewModel.InspVeiculo.InspVeiculo_ID == 0)
+                {
+                    VeiculoViewModel.InspVeiculo = BLL.InspecaoVeiculo.Inserir(VeiculoViewModel.InspVeiculo, configuracao);
+                    if (VeiculoViewModel.InspVeiculo.Erro == true)
+                    #region EM_ERRO
+                    {
+                        ViewData["MensagemErro"] += " Erro ao inserir dados do veículo, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                        VeiculoViewModel.InspVeiculo.Erro = true;
+                        VeiculoViewModel.Marca = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                        VeiculoViewModel.Modelo = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                        return View("Veiculo", VeiculoViewModel);
+                    }
+                    #endregion
+                    else
+                    {
+                        ViewData["MensagemSucesso"] = "Veículo gravado com sucesso: " + VeiculoViewModel.InspVeiculo.VIN_6;
+                    }
+                }
+
+                else if (VeiculoViewModel.InspVeiculo.InspVeiculo_ID == -1) //-1 (erro ao executar Existe)  | 0  - não existe  | >0 - já existe
+                {
+                    #region EM_ERRO
+                    ViewData["MensagemErro"] += " Erro ao verificar se existe o chassi informado, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.InspVeiculo.Inspecao_ID, configuracao);
+                    VeiculoViewModel.InspVeiculo = VeiculoViewModel.InspVeiculo;
+                    VeiculoViewModel.InspVeiculo.Erro = true;
+                    VeiculoViewModel.Marca = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                    VeiculoViewModel.Modelo = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                    return View("Veiculo", VeiculoViewModel);
+                    #endregion
+                }
+            }
+
+            // 1 - Apenas Registrar e continuar na mesma tela
+            if (tipoBotao == 1)
+            {
+                VeiculoViewModel.Marca = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                VeiculoViewModel.Modelo = BLL.InspecaoVeiculo.ListaModelo(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+
+                #region EM_ERRO
+                if (VeiculoViewModel.Marca.FirstOrDefault().Text == "ERRO")
+                {
+                    ViewData["MensagemErro"] += "Erro ao listar Marcas, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                }
+
+                if (VeiculoViewModel.Modelo.FirstOrDefault().Text == "ERRO")
+                {
+                    ViewData["MensagemErro"] += "Erro ao listar Modelos, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                }
+                #endregion
+
+                VeiculoViewModel.InspVeiculo_ID = 0;
+                VeiculoViewModel.VIN_6 = "";
+                VeiculoViewModel.Observacoes = "";
+                VeiculoViewModel.Marca_ID = 0;
+                VeiculoViewModel.Modelo_ID = 0;
+                return View("Veiculo", VeiculoViewModel);
+            }
+
+            // 2- Registrar Avarias
+            else if (tipoBotao == 2)
+            {
+                //preenche valores próxima view [RegistrarAvarias]
+                InspecaoVeiculoRegistrarAvariasVM RegistrarAvariasViewModel = new InspecaoVeiculoRegistrarAvariasVM();
+                RegistrarAvariasViewModel.dadosUsuario = dadosUsuario;
+                RegistrarAvariasViewModel.Inspecao = VeiculoViewModel.Inspecao;
+                RegistrarAvariasViewModel.InspVeiculo = VeiculoViewModel.InspVeiculo;
+
+                //recebe listas
+                RegistrarAvariasViewModel.avAreaLista = BLL.RegistrarAvarias.ListarAreas(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                #region EM_ERRO
+                if (RegistrarAvariasViewModel.avAreaLista.Count() > 0)
+                {
+                    if (RegistrarAvariasViewModel.avAreaLista.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = RegistrarAvariasViewModel.avAreaLista.FirstOrDefault().MensagemErro;
+                    }
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não há áreas para este cliente, por favor entre em contato com o suporte técnico";
+                }
+
+
+                if (RegistrarAvariasViewModel.avCondicaoLista.Count() > 0)
+                {
+                    if (RegistrarAvariasViewModel.avCondicaoLista.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = RegistrarAvariasViewModel.avCondicaoLista.FirstOrDefault().MensagemErro;
+                    }
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não há condicoes para este cliente, por favor entre em contato com o suporte técnico";
+                }
+
+                if (RegistrarAvariasViewModel.avDanoRepositorioLista.Count() > 0)
+                {
+                    if (RegistrarAvariasViewModel.avDanoRepositorioLista.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao listar Danos, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    }
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não há Danos para este cliente, por favor entre em contato com o suporte técnico";
+                }
+
+
+                if (RegistrarAvariasViewModel.avGravidadeLista.Count() > 0)
+                {
+                    if (RegistrarAvariasViewModel.avGravidadeLista.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao listar Gravidades, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    }
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não há Gravidades para este cliente, por favor entre em contato com o suporte técnico";
+                }
+
+                if (RegistrarAvariasViewModel.avQuadranteLista.Count() > 0)
+                {
+                    if (RegistrarAvariasViewModel.avQuadranteLista.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao listar Quadrantes, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    }
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não há Quadrantes para este cliente, por favor entre em contato com o suporte técnico";
+                }
+
+                if (RegistrarAvariasViewModel.avSeveridadeLista.Count() > 0)
+                {
+                    if (RegistrarAvariasViewModel.avSeveridadeLista.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao listar Severidades, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    }
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = "Não há Severidades para este cliente, por favor entre em contato com o suporte técnico";
+                }
+                #endregion  
+
+                RegistrarAvariasViewModel.listaAvarias = BLL.Avarias.Listar(RegistrarAvariasViewModel.Inspecao.Cliente_ID, VeiculoViewModel.VIN_6, configuracao);
+                #region EM_ERRO
+                if (RegistrarAvariasViewModel.listaAvarias.Count > 0)
+                {
+                    if (RegistrarAvariasViewModel.listaAvarias.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao receber lista de avarias deste veículo, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    }
+                }
+                #endregion
+
+                return View("RegistrarAvarias", RegistrarAvariasViewModel);
+            };
+
+
+            return RedirectToAction("Index", "Home");
+        }
 
         [HttpPost]
-        public IActionResult InserirAvaria(InspecaoVeiculoRegistrarAvariasVM ivVM, int tipoBotao) //melhorar para pegar do viewmodel
-            {
+        public IActionResult InserirAvaria(InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel, int tipoBotao, ICollection<IFormFile> files)
+        {
+            //verifica dados usuário
+            #region dadosusuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-            InspAvaria insAvaria = new InspAvaria();
-            insAvaria.InspVeiculo_ID = ivVM.InspVeiculo_ID;
-            insAvaria.AvArea_ID = ivVM.Area_ID;
-            insAvaria.AvCondicao_ID = ivVM.Condicao_ID;
-            insAvaria.AvDano_ID = ivVM.Dano_ID;
-            insAvaria.AvGravidade_ID = ivVM.Gravidade_ID;
-            insAvaria.AvQuadrante_ID = ivVM.Quadrante_ID;
-            insAvaria.AvSeveridade_ID = ivVM.Severidade_ID;
-            insAvaria.FabricaTransporte = ivVM.fabricatransporte;
-
-            InspAvariaRepositorio.Inserir(insAvaria, configuracao);
-
-            InspecaoVeiculoRegistrarAvariasVM ivraVM = new InspecaoVeiculoRegistrarAvariasVM();
-
-            InspVeiculo insVeiculo = new InspVeiculo
+            if (dadosUsuario == null)
+            {
+                #region gravalog
+                try
                 {
-                Inspecao_ID = ivVM.Inspecao_ID,
-                InspVeiculo_ID = ivVM.InspVeiculo_ID
-                };
-
-            ivraVM.insVeiculo = insVeiculo;
-            ivraVM.dadosUsuario = dadosUsuario;
-            ivraVM.avAreaLista = AvAreaRepositorio.Listar(1, configuracao);
-            ivraVM.avCondicaoLista = AvCondicaoRepositorio.Listar(1, configuracao);
-            ivraVM.avDanoRepositorioLista = AvDanoRepositorio.Listar(1, configuracao);
-            ivraVM.avGravidadeLista = AvGravidadeRepositorio.Listar(1, configuracao);
-            ivraVM.avQuadranteLista = AvQuadranteRepositorio.Listar(1, configuracao);
-            ivraVM.avSeveridadeLista = AvSeveridadeRepositorio.Listar(1, configuracao);
-
-
-            //RECEBER UM VIN_6, dependendo da minha inspecao e meu InspecaoVeiculo_ID
-            var VIN_6 = InspVeiculoRepositorio.Listar(insVeiculo.Inspecao_ID, configuracao)
-                .Where(p => p.InspVeiculo_ID == insVeiculo.InspVeiculo_ID).
-                FirstOrDefault()
-                .VIN_6;
-
-            ivraVM.VIN_6 = VIN_6;
-            //string VIN_6 = InspVeiculoRepositorio.Listar(insVeiculo.Inspecao_ID,configuracao).VIN_6;
-            ivraVM.listaAvarias = InspAvariaRepositorio.Listar(1, VIN_6, configuracao);
-
-            return View("RegistrarAvarias", ivraVM);
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"Parametros: Nome:  {dadosUsuario.Nome} |  Autenticado: {dadosUsuario.Autenticado}"
+                        });
+                }
+                catch { }
+                #endregion
+                return RedirectToAction("Index", "Home");
             }
+            #endregion
+
+            //recebe dados da View
+            registrarAvariasViewModel.InspAvaria = new Models.InspAvaria
+            {
+                Inspecao_ID = registrarAvariasViewModel.Inspecao_ID,
+                InspVeiculo_ID = registrarAvariasViewModel.InspVeiculo_ID,
+                AvArea_ID = registrarAvariasViewModel.Area_ID,
+                AvCondicao_ID = registrarAvariasViewModel.Condicao_ID,
+                AvDano_ID = registrarAvariasViewModel.Dano_ID,
+                AvGravidade_ID = registrarAvariasViewModel.Gravidade_ID,
+                AvQuadrante_ID = registrarAvariasViewModel.Quadrante_ID,
+                AvSeveridade_ID = registrarAvariasViewModel.Severidade_ID,
+                FabricaTransporte = registrarAvariasViewModel.fabricatransporte,
+            };
+
+            registrarAvariasViewModel.Inspecao = BLL.Inspecao.ListarPorId(registrarAvariasViewModel.InspAvaria.Inspecao_ID, configuracao);
+
+            if (registrarAvariasViewModel.Inspecao.Erro == true)
+            #region EM_ERRO
+            {
+                ViewData["MensagemErro"] += "Erro receber dados da inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                //interromper continuação. Não vai conseguir inserir avaria ??? TODO
+            }
+            #endregion
+
+
+            //Insere Avaria
+            registrarAvariasViewModel.InspAvaria = BLL.Avarias.Inserir(registrarAvariasViewModel.InspAvaria, configuracao);
+
+            if (registrarAvariasViewModel.InspAvaria.Erro == true)
+            {
+                ViewData["MensagemErro"] += "Erro ao registrar avaria, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+            else
+            {
+                ViewData["MensagemSucesso"] = "Avaria registrada com sucesso";
+
+                //Faz Upload das imagens que o usuário inseriu
+                bool realizouUpload = BLL.UploadImagens.UploadImagensAvaria(registrarAvariasViewModel.InspAvaria.InspAvaria_ID, files, configuracao);
+                if (realizouUpload == false)
+                {
+                    ViewData["MensagemErro"] += "Erro ao inserir fotos no sistema, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                }
+            }
+
+
+            registrarAvariasViewModel.dadosUsuario = dadosUsuario;
+            registrarAvariasViewModel.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(registrarAvariasViewModel.InspVeiculo_ID, configuracao);
+
+            #region preencheListas
+            registrarAvariasViewModel.avAreaLista = BLL.RegistrarAvarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            #region EM_ERRO
+            if (registrarAvariasViewModel.avAreaLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Areas, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+            if (registrarAvariasViewModel.avCondicaoLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Condicoes, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+            if (registrarAvariasViewModel.avDanoRepositorioLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Danos, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+            if (registrarAvariasViewModel.avGravidadeLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Gravidades, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+
+            if (registrarAvariasViewModel.avQuadranteLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Quadrantes, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+
+            if (registrarAvariasViewModel.avSeveridadeLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Severidades, tente novamente mais tarde ou entre em contato com o suporte técnico";
+            }
+            #endregion
+            #endregion
+
+            registrarAvariasViewModel.VIN_6 = registrarAvariasViewModel.InspVeiculo.VIN_6;
+            registrarAvariasViewModel.listaAvarias = BLL.Avarias.Listar(registrarAvariasViewModel.Inspecao.Cliente_ID, registrarAvariasViewModel.VIN_6, configuracao);
+            if (registrarAvariasViewModel.listaAvarias.Count > 0)
+            {
+                if (registrarAvariasViewModel.listaAvarias.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar avarias do veículo, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                }
+            }
+            return View("RegistrarAvarias", registrarAvariasViewModel);
+        }
+
 
         [HttpPost]
         public IActionResult VisualizarAvarias(VisualizarAvariasViewModel VisualizarAvariasVM, int tipoBotao) //melhorar para pegar do viewmodel
+        {
+            #region dadosusuario
+            ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                #region gravalog
+                try
+                {
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"Parametros: Nome:  {dadosUsuario.Nome} |  Autenticado: {dadosUsuario.Autenticado}"
+                        });
+                }
+                catch { }
+                #endregion
+                return RedirectToAction("Index", "Home");
+            }
+            #endregion
+
+            Models.Inspecao inspecao = new Models.Inspecao();
+            Models.InspVeiculo inspVeiculo = new Models.InspVeiculo();
+            inspecao = BLL.Inspecao.ListarPorId(VisualizarAvariasVM.Inspecao_ID, configuracao);
+            inspVeiculo = BLL.InspecaoVeiculo.ListarPorId(VisualizarAvariasVM.InspVeiculo_ID, configuracao);
+
+
+            VisualizarAvariasVM.Avarias = BLL.Avarias.Listar(inspecao.Cliente_ID, inspVeiculo.VIN_6, configuracao);
+            return View("Avarias", VisualizarAvariasVM);
+        }
+
+        [HttpPost]
+        public IActionResult EditarAvarias(int inspAvaria_ID_form_editar)
+        {
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"EditarAvarias | Parametros: inspAvaria_ID: {inspAvaria_ID_form_editar}"
+                    });
+            }
+            catch { }
+
+
+            InspecaoEditarAvariasViewModel EditarAvariasVM = new InspecaoEditarAvariasViewModel();
+
+            EditarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID_form_editar, configuracao);
+            EditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(EditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
+            EditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(EditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
+
+            #region EM_ERRO
+            if (EditarAvariasVM.InspAvaria != null)
             {
 
-            //Não preciso pegar novamento o VIN_6 pois está vindo da viewmodel [Inserir_Veículo]
-            var VIN_6 = InspVeiculoRepositorio.Listar(VisualizarAvariasVM.Inspecao_ID, configuracao)
-                .Where(p => p.InspVeiculo_ID == VisualizarAvariasVM.InspVeiculo_ID)
-                .FirstOrDefault()
-                .VIN_6;
+                if (EditarAvariasVM.InspAvaria.Erro == true)
+                {
+                    ViewData["MensagemErro"] = ViewData["MensagemErro"] = EditarAvariasVM.InspAvaria.MensagemErro;
+                }
+            }
 
-            VisualizarAvariasVM.Avarias = InspAvariaRepositorio.Listar(1, VIN_6, configuracao);
-            return View("Avarias", VisualizarAvariasVM);
+            if (EditarAvariasVM.Inspecao != null)
+            {
+                if (EditarAvariasVM.Inspecao.Erro == true)
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar dados da Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                }
+            }
+            #endregion
+
+            EditarAvariasVM.avAreaLista = BLL.RegistrarAvarias.ListarAreas(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            #region EM_ERRO
+            if (EditarAvariasVM.avAreaLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] += EditarAvariasVM.avAreaLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (EditarAvariasVM.avCondicaoLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] += EditarAvariasVM.avCondicaoLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (EditarAvariasVM.avDanoRepositorioLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] += EditarAvariasVM.avDanoRepositorioLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (EditarAvariasVM.avGravidadeLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] += EditarAvariasVM.avGravidadeLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (EditarAvariasVM.avQuadranteLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] += EditarAvariasVM.avQuadranteLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (EditarAvariasVM.avSeveridadeLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] += EditarAvariasVM.avSeveridadeLista.FirstOrDefault().MensagemErro;
+            }
+            #endregion
+
+
+            EditarAvariasVM.ImagemAvarias = BLL.UploadImagens.Listar(EditarAvariasVM.InspAvaria.InspAvaria_ID, configuracao);
+            if (EditarAvariasVM.ImagemAvarias.Count() > 0)
+            {
+                if (EditarAvariasVM.ImagemAvarias.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = EditarAvariasVM.ImagemAvarias.FirstOrDefault().MensagemErro;
+                }
+            }
+            return View(EditarAvariasVM);
+        }
+
+
+
+
+
+        [HttpPost]
+        public IActionResult SalvarAvaria(InspecaoEditarAvariasViewModel EditarAvariasVM, ICollection<IFormFile> files)
+        {
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"SalvarAvaria | Parametros: InspAvaria_ID: {EditarAvariasVM.InspAvaria_ID} | AvArea_ID {EditarAvariasVM.Area_ID} | AvCondicao_ID: {EditarAvariasVM.Condicao_ID} | AvCondicao_ID: {EditarAvariasVM.Condicao_ID} | AvGravidade_ID: {EditarAvariasVM.Gravidade_ID} | AvQuadrante_ID: {EditarAvariasVM.Quadrante_ID} | AvSeveridade_ID = {EditarAvariasVM.Severidade_ID} |  FabricaTransporte: {EditarAvariasVM.fabricatransporte}"
+                    });
+            }
+            catch { }
+
+            #region recebeDadosUsuario
+            ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            #endregion
+
+            //recebe dados            
+            EditarAvariasVM.InspAvaria = new Models.InspAvaria
+            {
+                InspAvaria_ID = EditarAvariasVM.InspAvaria_ID,
+                AvArea_ID = EditarAvariasVM.Area_ID,
+                AvCondicao_ID = EditarAvariasVM.Condicao_ID,
+                AvDano_ID = EditarAvariasVM.Dano_ID,
+                AvGravidade_ID = EditarAvariasVM.Gravidade_ID,
+                AvQuadrante_ID = EditarAvariasVM.Quadrante_ID,
+                AvSeveridade_ID = EditarAvariasVM.Severidade_ID,
+                FabricaTransporte = EditarAvariasVM.fabricatransporte
+            };
+
+            //Faz update dos dados da avaria
+            EditarAvariasVM.InspAvaria = BLL.Avarias.Update(EditarAvariasVM.InspAvaria, configuracao);
+            if (EditarAvariasVM.InspAvaria.Erro == true)
+            {
+                ViewData["MensagemErro"] = EditarAvariasVM.InspAvaria.MensagemErro;
+            }
+            else
+            {
+                ViewData["MensagemSucesso"] = "Avaria atualizada com sucesso.";
+            }
+
+            //Insere a nova referente a avaria
+            bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(EditarAvariasVM.InspAvaria_ID, files, configuracao);
+            if (uploadImagem == false)
+            {
+                ViewData["MensagemErro"] = "Erro ao relaizar upload de imagens da avaria";
+            }
+            InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel = new InspecaoVeiculoRegistrarAvariasVM();
+
+            //Carrega os dados da view.
+            registrarAvariasViewModel.dadosUsuario = dadosUsuario;
+
+            //carrega dados Avaria
+            registrarAvariasViewModel.InspAvaria = BLL.InspecaoAvaria.ListarPorId(EditarAvariasVM.InspAvaria_ID, configuracao);
+
+            //carrega dados do Veículo
+            registrarAvariasViewModel.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(registrarAvariasViewModel.InspAvaria.InspVeiculo_ID, configuracao);
+
+            //carrega dados da Inspeção
+            registrarAvariasViewModel.Inspecao = BLL.Inspecao.ListarPorId(registrarAvariasViewModel.InspAvaria.Inspecao_ID, configuracao);
+
+            //Carrega dados Próxima View
+            registrarAvariasViewModel.avAreaLista = BLL.RegistrarAvarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+
+            #region EM_ERRO
+            if (registrarAvariasViewModel.InspAvaria.Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.InspAvaria.MensagemErro;
+            }
+
+            if (registrarAvariasViewModel.Inspecao.Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.Inspecao.MensagemErro;
+            }
+
+            if (registrarAvariasViewModel.InspVeiculo.Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.InspVeiculo.MensagemErro;
+            }
+
+            if (registrarAvariasViewModel.avAreaLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.avAreaLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (registrarAvariasViewModel.avCondicaoLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.avCondicaoLista.FirstOrDefault().MensagemErro;
+            }
+
+            if (registrarAvariasViewModel.avDanoRepositorioLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.avDanoRepositorioLista.FirstOrDefault().MensagemErro;
+            }
+            if (registrarAvariasViewModel.avGravidadeLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.avGravidadeLista.FirstOrDefault().MensagemErro;
+            }
+            if (registrarAvariasViewModel.avQuadranteLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.avQuadranteLista.FirstOrDefault().MensagemErro;
+            }
+            if (registrarAvariasViewModel.avSeveridadeLista.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.avSeveridadeLista.FirstOrDefault().MensagemErro;
+            }
+            #endregion
+
+            //RECEBER UM VIN_6, dependendo da minha inspecao e meu InspecaoVeiculo_ID
+            registrarAvariasViewModel.VIN_6 = registrarAvariasViewModel.InspVeiculo.VIN_6;
+
+            registrarAvariasViewModel.UltimoVeiculo_InspVeiculo_ID = registrarAvariasViewModel.InspVeiculo.InspVeiculo_ID;
+            registrarAvariasViewModel.listaAvarias = BLL.Avarias.Listar(registrarAvariasViewModel.Inspecao.Cliente_ID, registrarAvariasViewModel.VIN_6, configuracao);
+            if (registrarAvariasViewModel.listaAvarias.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = registrarAvariasViewModel.listaAvarias.FirstOrDefault().MensagemErro;
+            }
+            return View("RegistrarAvarias", registrarAvariasViewModel);
+        }
+
+        [HttpPost]
+        public IActionResult EditarVeiculo(InspecaoVeiculoViewModel inspecaoVeiculoVM, int tipobotao)
+        {
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"EditarVeiculo | Parametros: Edição: {inspecaoVeiculoVM.Edicao} | Veículo_ID {inspecaoVeiculoVM.Inspecao_ID}"
+                    });
+            }
+            catch { }
+
+            ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = "Por favor, faça login novamente, sua sessão expirou";
+                return RedirectToAction("Index", "Home");
+            }
+
+
+            inspecaoVeiculoVM.Edicao = 1;
+
+            inspecaoVeiculoVM.Inspecao = BLL.Inspecao.ListarPorId(inspecaoVeiculoVM.Inspecao_ID, configuracao);
+            {
+                if (inspecaoVeiculoVM.Inspecao.Erro == true)
+                {
+                    ViewData["MensagemErro"] = "Não foi possível encontrar inspeção informada, tente novamente mais tarde";
+                    inspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+                    inspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+                    return View("Veiculo", inspecaoVeiculoVM);
+                }
+            }
+
+            if (inspecaoVeiculoVM.InspVeiculo_ID == 0)
+            {
+                ViewData["MensagemErro"] = "Nenhum veículo disponível para edição, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                inspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+                inspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+                return View("Veiculo", inspecaoVeiculoVM);
+            }
+
+            inspecaoVeiculoVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(inspecaoVeiculoVM.InspVeiculo_ID, configuracao);
+            if (inspecaoVeiculoVM.InspVeiculo.Erro == true)
+            {
+                ViewData["MensagemErro"] = inspecaoVeiculoVM.InspVeiculo.MensagemErro;
+                inspecaoVeiculoVM.VIN_6 = "Erro";
+                inspecaoVeiculoVM.Observacoes = "";
+                inspecaoVeiculoVM.Marca_ID = 0;
+                inspecaoVeiculoVM.Modelo_ID = 0;
+
+            }
+            else
+            {
+                inspecaoVeiculoVM.VIN_6 = inspecaoVeiculoVM.InspVeiculo.VIN_6;
+                inspecaoVeiculoVM.Observacoes = inspecaoVeiculoVM.InspVeiculo.Observacoes;
+                inspecaoVeiculoVM.Marca_ID = inspecaoVeiculoVM.InspVeiculo.Marca_ID;
+                inspecaoVeiculoVM.Modelo_ID = inspecaoVeiculoVM.InspVeiculo.Modelo_ID;
+            }
+
+            inspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+            inspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+
+            return View("Veiculo", inspecaoVeiculoVM);
+        }
+
+
+        /// <summary>
+        /// Editar Inspeção
+        /// </summary>
+        /// <param name="inspecaoDadosGeraisVM"></param>
+        /// <param name="tipobotao"></param>
+        /// <returns>View ("NovaInspecao")</returns>
+
+        [HttpPost]
+        public IActionResult EditarInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, int tipobotao)
+        {
+            ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
+
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"EditarInspecao| Parametros:  Edição: {inspecaoDadosGeraisVM.Edicao}, Inspecao_ID: {inspecaoDadosGeraisVM.Inspecao_ID}"
+                    });
+            }
+            catch { }
+
+            #region recebeDadosUsuario
+            try
+            {
+                dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+                if (dadosUsuario == null)
+                {
+                    ViewData["MensagemErro"] = "Sua sessão expirou, faça login novamente";
+                    return RedirectToAction("Index", "Home");
+                }
+                else
+                {
+                    ViewData["UsuarioNome"] = dadosUsuario.Nome;
+                }
+
+                ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            }
+
+            catch (Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+               new Diag.LogItem()
+               {
+                   Nivel = Diag.Nivel.Erro,
+                   Mensagem = $"Erro ao executar EditarInspecao.ReceberDadosUsuario"
+               });
+                throw (ex);
+                #endregion
+            }
+            #endregion
+
+            inspecaoDadosGeraisVM.Edicao = 1;
+
+            if (inspecaoDadosGeraisVM.Inspecao_ID == 0)
+            #region EM_ERRO
+            {
+                ViewData["MensagemErro"] = "Erro ao processar informação, tente novamente mais tarde ou entre em contato com o suporte";
+                InspecaoDadosGeraisViewModel erroVM = new ViewModels.InspecaoDadosGeraisViewModel();
+                erroVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+                erroVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+                erroVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+                erroVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+                return View("NovaInspecao", erroVM);
+            }
+            #endregion  
+
+
+            inspecaoDadosGeraisVM.Inspecao = BLL.Inspecao.ListarPorId(inspecaoDadosGeraisVM.Inspecao_ID, configuracao);
+            if (inspecaoDadosGeraisVM.Inspecao.Erro == true)
+            #region EM_ERRO
+            {
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.Inspecao.MensagemErro;
+                InspecaoDadosGeraisViewModel erroVM = new ViewModels.InspecaoDadosGeraisViewModel();
+
+                erroVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+                erroVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+                erroVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+                erroVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+
+                return View("NovaInspecao", erroVM);
+            }
+            #endregion
+
+            inspecaoDadosGeraisVM.Inspecao_ID = inspecaoDadosGeraisVM.Inspecao.Inspecao_ID;
+            inspecaoDadosGeraisVM.Cliente_ID = inspecaoDadosGeraisVM.Inspecao.Cliente_ID;
+            inspecaoDadosGeraisVM.LocalInspecao_ID = inspecaoDadosGeraisVM.Inspecao.LocalInspecao_ID;
+            inspecaoDadosGeraisVM.LocalCheckPoint_ID = inspecaoDadosGeraisVM.Inspecao.LocalCheckPoint_ID;
+            inspecaoDadosGeraisVM.Transportador_ID = inspecaoDadosGeraisVM.Inspecao.Transportador_ID;
+
+            inspecaoDadosGeraisVM.Transportador = BLL.Inspecao.ListarTransportadorPorId(inspecaoDadosGeraisVM.Inspecao.Transportador_ID, configuracao);
+            if (inspecaoDadosGeraisVM.Transportador.Erro == true)
+            #region EM_ERRO
+            {
+                ViewBag["MensagemErro"] = inspecaoDadosGeraisVM.Transportador.MensagemErro;
+            }
+            #endregion
+
+            inspecaoDadosGeraisVM.TipoTransportador = inspecaoDadosGeraisVM.Transportador.Tipo;
+
+            //Recebe Nome da Frota
+            inspecaoDadosGeraisVM.IdTipo = inspecaoDadosGeraisVM.Transportador_ID + "_" + inspecaoDadosGeraisVM.TipoTransportador;
+            inspecaoDadosGeraisVM.FrotaViagem = BLL.Inspecao.ConsultaFrotaViagemPorId(inspecaoDadosGeraisVM.Inspecao.FrotaViagem_ID, configuracao);
+
+            if (inspecaoDadosGeraisVM.FrotaViagem.Erro == true)
+            #region EM_ERRO
+            {
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.FrotaViagem.MensagemErro;
+            }
+            #endregion  
+
+            inspecaoDadosGeraisVM.FrotaViagemNome = inspecaoDadosGeraisVM.FrotaViagem.Nome;
+
+            //Navio
+            if (inspecaoDadosGeraisVM.Inspecao.Navio_ID != null)
+            {
+                var navio = BLL.Inspecao.ConsultaNavioPorId(inspecaoDadosGeraisVM.Inspecao.Navio_ID, configuracao);
+                if (navio.Erro == true)
+                #region EM_ERRO
+                {
+                    ViewData["MensagemErro"] = navio.MensagemErro;
+                }
+                #endregion
+
+                inspecaoDadosGeraisVM.NomeNavio = navio.Nome;
+            }
+
+            //Lista a ser preenchida
+            inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+            #region EM_ERRO
+            if (inspecaoDadosGeraisVM.ListaCliente.Count() > 0)
+            {
+                if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
+                }
+            }
+
+            if (inspecaoDadosGeraisVM.ListaLocalInspecao.Count() > 0)
+            {
+                if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+                }
+            }
+
+            if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.Count() > 0)
+            {
+                if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                }
+            }
+
+
+            if (inspecaoDadosGeraisVM.ListaTransportador.Count() > 0)
+            {
+                if (inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
+                }
+            }
+            #endregion  
+
+            return View("NovaInspecao", inspecaoDadosGeraisVM);
+        }
+
+
+        [HttpPost]
+        public IActionResult NovoVeiculo(InspecaoVeiculoViewModel NovoVeiculo, int tipobotao)
+        {
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Controller: NovoVeiculo | Parametros: /InspecaoViewModel/ Edição: {NovoVeiculo.Edicao}, InspVeiculo_ID: {NovoVeiculo.InspVeiculo_ID}"
+                    });
+            }
+            catch { }
+
+            NovoVeiculo.Edicao = 0;
+
+            if (NovoVeiculo.InspVeiculo_ID == 0)
+            {
+                ViewBag["MensagemErro"] = "Erro ao realizar solicitação, Veículo = 0, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
+                return RedirectToAction("Index", "Home");
+            }
+
+            NovoVeiculo.Inspecao = BLL.Inspecao.ListarPorId(NovoVeiculo.Inspecao_ID, configuracao);
+            if (NovoVeiculo.Inspecao.Erro == true)
+            {
+                ViewData["MensagemErro"] = NovoVeiculo.Inspecao.MensagemErro;
+            }
+
+            NovoVeiculo.Marca = BLL.InspecaoVeiculo.ListaMarca(NovoVeiculo.Inspecao.Cliente_ID, configuracao);
+            NovoVeiculo.Modelo = BLL.InspecaoVeiculo.ListaModelo(NovoVeiculo.Inspecao.Cliente_ID, configuracao);
+
+            if (NovoVeiculo.Marca.Count() > 0)
+            {
+                if (NovoVeiculo.Marca.FirstOrDefault().Text == "Erro")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Marcas";
+
+                }
+            }
+
+
+            if (NovoVeiculo.Modelo.Count() > 0)
+            {
+                if (NovoVeiculo.Modelo.FirstOrDefault().Text == "Erro")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Modelos";
+                }
+            }
+
+            NovoVeiculo.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(NovoVeiculo.InspVeiculo_ID, configuracao);
+
+            if (NovoVeiculo.InspVeiculo.Erro == true)
+            {
+                ViewData["MensagemErro"] = NovoVeiculo.InspVeiculo.MensagemErro;
+            }
+
+            NovoVeiculo.VIN_6 = "";
+            NovoVeiculo.Observacoes = "";
+            NovoVeiculo.Marca_ID = 0;
+            NovoVeiculo.Modelo_ID = 0;
+            return View("Veiculo", NovoVeiculo);
+        }
+
+        /// <summary>
+        /// Insere um novo modelo no banco de dados via ajax
+        /// </summary>
+        /// <param name="cliente_ID">ID do cliente</param>
+        /// <param name="novoModeloNome">nome do novo modelo a ser inserido no banco de dados</param>
+        /// <returns></returns>
+        [HttpPost]
+        public int InserirNovoModelo(string cliente_ID, string novoModeloNome)
+        {
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Controller: InserirNovoModelo | Cliente_ID: {cliente_ID}, NovoModelo_Nome: {novoModeloNome}"
+                    });
+            }
+            catch { }
+
+            int id = 0;
+
+            try
+            {
+                id = BLL.Inspecao.InserirNovoModelo(Convert.ToInt32(cliente_ID), novoModeloNome, configuracao);
+                return id;
+            }
+            catch
+            {
+                return -1;
+                #region gravalogErro
+                Diag.Log.Grava(
+               new Diag.LogItem()
+               {
+                   Nivel = Diag.Nivel.Erro,
+                   Mensagem = $"Erro ao executar InspecaoController.InserirNovoModelo() | Cliente_ID {cliente_ID}, modelo_nome {novoModeloNome}"
+               });
+                #endregion
+            }
+        }
+
+        /// <summary>
+        /// Recurso usado via AJAX para inserção de marcas no banco de dados
+        /// </summary>
+        /// <param name="cliente_ID">Id do cliente</param>
+        /// <param name="novaMarcaNome">Nome da marca a ser inserida no banco de dados</param>
+        /// <returns></returns>
+        [HttpPost]
+        public int InserirNovaMarca(string cliente_ID, string novaMarcaNome)
+        {
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Nova Marca Acionada: {cliente_ID}, inspAvaria_ID: {novaMarcaNome}"
+            });
+
+            int id = 0;
+            try
+            {
+                id = BLL.Inspecao.InserirNovaMarca(Convert.ToInt32(cliente_ID), novaMarcaNome, configuracao);
+                return id;
+            }
+            catch
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+               new Diag.LogItem()
+               {
+                   Nivel = Diag.Nivel.Erro,
+                   Mensagem = $"Erro ao executar InspecaoController.InserirNovaMarca() | Cliente_ID {cliente_ID}, marca_nome {novaMarcaNome}"
+               });
+                #endregion
+                return -1;
             }
 
         }
-    }
 
+        /// <summary>
+        /// Foto solicitada - retorna um FileContentResult
+        /// </summary>
+        /// <param name="imagem"></param>
+        /// <param name="inspAvaria_ID"></param>
+        /// <returns>FileContentResult</returns>
+        public FileResult Foto(string imagem, int inspAvaria_ID)
+        {
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Recebe dados binarios: Foto | Imagem: {imagem}, inspAvaria_ID: {inspAvaria_ID}"
+            });
+
+            FileContentResult retorno = null;
+            try
+            {
+                string serverpath = configuracao.PastaFotos;
+
+                Models.InspAvaria inspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
+                //Models.InspVeiculo inspVeiculo = BLL.InspecaoVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao);
+                Models.Inspecao inspecao = BLL.Inspecao.ListarPorId(inspAvaria.Inspecao_ID, configuracao);
+                
+                string _cliente_id = Convert.ToString(inspecao.Cliente_ID);
+                string _inspecao_id = Convert.ToString(inspecao.Inspecao_ID);
+                string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao).Inspecao_ID);
+                string _inspVeiculo = Convert.ToString(inspAvaria.InspVeiculo_ID);
+                string _inspAvaria = Convert.ToString(inspAvaria.InspAvaria_ID);
+                string _ano = inspecao.Data.ToString("yyyy");
+                string _mesdia = inspecao.Data.ToString("MMdd");
+
+                var path = Path.Combine(configuracao.PastaFotos, "Imagens", "Avarias", _cliente_id, _ano, _mesdia, _inspecao, _inspVeiculo, _inspAvaria, imagem);
+
+                using (var j = new FileStream(path, FileMode.Open))
+                {
+                    //Conversão para Byte
+                    byte[] imgbyte = new byte[j.Length];
+                    j.Read(imgbyte, 0, imgbyte.Length);
+                    retorno = new FileContentResult(imgbyte, "image/jpeg");
+                }
+            }
+            catch (Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiui receber dados da foto informada: Exception: {ex}"
+
+                    });
+                throw;
+                #endregion
+            }
+            return retorno;
+        }
+
+        [HttpPost]
+        public int DeletarFoto(string inspAvaria_ID, string imagem)
+        {
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Executou DeletarFoto via Ajax - Assíncrono",
+            });
+            #endregion
+            int int_inspAvaria_ID;
+            int.TryParse(inspAvaria_ID, out int_inspAvaria_ID);
+            BLL.UploadImagens.DeletarImagem(int_inspAvaria_ID, imagem, configuracao);
+            return 0;
+        }
+
+        /// <summary>
+        /// Recebe locais checkpoint, perante ao LOCAL selecionado
+        /// </summary>
+        /// <param name="localInspecao_ID">Local de inspeção ID</param>
+        /// <returns>Retorna um JSON contendo a lista de checkpoints do referido local</returns>
+        public JsonResult RecebeDadosLocalCheckPoint(int localInspecao_ID)
+        {
+            var listaLocalCheckpoint = new List<Models.LocalCheckPoint>();
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Executou RecebeDadosLocalCheckPoint via Ajax - Assíncrono",
+            });
+            #endregion
+            try
+            {
+                ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+                listaLocalCheckpoint = DAL.LocalCheckPoint.Listar(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalInspecao_ID == localInspecao_ID).ToList();
+            }
+            catch (Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Erro ao receber dados do LocalInspecaoCheckPoint informada - {ex}"
+                    });
+                throw;
+                #endregion
+            }
+
+            return Json(listaLocalCheckpoint);
+        }
+    }
+}

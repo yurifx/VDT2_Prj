@@ -6,125 +6,213 @@
 }
 
 <!--Registro de Veículos-->
-<script src="~/js/InspecaoDadosGerais.js"></script>
+
+<script src="~/js/Inspecao/InspecaoVeiculo.js" asp-append-version="true"></script>
 
 <div class="container">
-    <div class="row">
-        <form asp-controller="Inspecao" asp-action="InserirVeiculo" method="post" onsubmit="return ValidarFormularioInserirVeiculo()">
-
-            <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <label asp-for="Inspecao.Inspecao_ID">Inspecao: @Model.Inspecao.Inspecao_ID</label>
-                            <input asp-for="Inspecao.Inspecao_ID" value="@Model.Inspecao.Inspecao_ID" name="Inspecao_ID" hidden /><br/>
-                            <button class="btn btn-info btn-sm" value="Nova Inspeção" onclick="location.href='@Url.Action("Index", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span> Nova inspeção</button>
-                        </div>
-                    </div>
-                </div>
+    <div class="container" id="EM_ERRO">
+        @if (ViewData["MensagemErro"] != null)
+            {
+            <div class="alert alert-danger">
+                <p>@ViewData["MensagemErro"]</p>
             </div>
-
-            <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <label asp-for="UltimoVeiculo_InspVeiculo_ID">Ultimo Veículo ID: @Model.UltimoVeiculo_InspVeiculo_ID</label>
-                            <input asp-for="UltimoVeiculo_InspVeiculo_ID" value="@Model.UltimoVeiculo_InspVeiculo_ID" name="UltimoVeiculo_InspVeiculo_ID" hidden/>
-                        </div>
-                    </div>
-                </div>
+            }
+    </div>
+    <div class="container" id="EM_SUCESSO">
+        @if (ViewData["MensagemSucesso"] != null)
+            {
+            <div class="alert alert-success">
+                <p>@ViewData["MensagemSucesso"]</p>
             </div>
+            }
+    </div>
+    <h4>Dados do Veículo</h4><br />
+    <form asp-controller="Inspecao" asp-action="InserirVeiculo" method="post" onsubmit="return ValidarFormularioInserirVeiculo()">
 
-
+        <div hidden>
+            @*Edição?*@
+            Em Edicao <input type="text" name="Edicao" id="edicaoId" value="@Model.Edicao" />
+            @*Inspecao*@
+            Inspecao: <input asp-for="Inspecao.Inspecao_ID" value="@Model.Inspecao.Inspecao_ID" name="Inspecao_ID" /><br />
+            @*Veículo*@
+            InspVeículo: <input type="text" id="id_inspVeiculo" name="InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" />
             @*Local Inspecao*@
-            <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <label asp-for="Inspecao.LocalInspecao_ID">Local Inspecao: @Model.Inspecao.LocalInspecao_ID</label>
-                            <input asp-for="Inspecao.LocalInspecao_ID" value="@Model.Inspecao.LocalInspecao_ID" name="LocalInspecao_ID" hidden />
-                        </div>
+            Local: <input asp-for="Inspecao.LocalInspecao_ID" value="@Model.Inspecao.LocalInspecao_ID" name="LocalInspecao_ID" hidden />
+        </div>
 
+        @*Chassi*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <label asp-for="VIN_6">Chassi</label>
+                </div>
+
+                <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                    <div class="input-group">
+                        <span class="input-group-addon"><span class="glyphicon glyphicon-tags"></span></span>
+                        <input asp-for="VIN_6" value="@Model.VIN_6" maxlength="6" required pattern=".{6,6}" class="form-control has-success"/>
                     </div>
                 </div>
             </div>
+        </div>
 
-            @*Chassi*@
-            <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                            <label asp-for="VIN_6">Chassi</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                            <input asp-for="VIN_6" maxlength="6" required pattern=".{6,6}" />
-                        </div>
+        @*Marca*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
+                </div>
+                <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
+                    <select id="ListaMarca" name="Marca_ID" class="form-control" required value="@Model.Marca_ID"
+                            asp-items="@Model.Marca"></select>
+                </div>
+                <input type="text" id="MarcaLabelHidden" value="@Model.Marca_ID" hidden />
+                <div class="col col-lg-3 col-md-1 col-sm-1 col-xs-3">
+                    <button type="button" class="btn btn-info btn-sm" value="Nova Marca" data-toggle="modal" data-target="#novaMarcaModal"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+        </div>
+
+        @*Modelo*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
+                </div>
+                <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
+                    <select id="ListaModelo" name="Modelo_ID" class="form-control" required
+                            asp-items="@Model.Modelo" value="@Model.Modelo_ID">
+                        @*<option> Selecione um Modelo</option>*@
+                    </select>
+                    <input type="text" id="ModeloLabelHidden" value="@Model.Modelo_ID" hidden />
+                </div>
+                <div class="col col-lg-3 col-md-3 col-sm-1 col-xs-3">
+                    <button type="button" class="btn btn-info btn-sm" value="Novo Modelo" data-toggle="modal" data-target="#novoModeloModal"><span class="glyphicon glyphicon-plus"></span></button>
+                </div>
+            </div>
+        </div>
+
+        @*Observacoes*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <label asp-for="Observacoes">Observações:</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                    <textarea class="form-control" name="Observacoes" id="ObservacoesTxtArea" text="@Model.Observacoes" maxlength="1000" required>@Model.Observacoes</textarea>
+                </div>
+            </div>
+        </div>
+
+        @*botoes Gravar e Registrar Avarias*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-2 col-sm-4 col-xs-6">
+                    <button type="submit" name="tipoBotao" value="1" class="botoesTelaVeiculo btn btn-success btn-sm" id="botoesClasseVeiculoGravar"><span class="glyphicon glyphicon-ok"></span>Gravar</button> @*Action -> InspecaoController/InserirVeiculo - tipo 1*@
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-8 col-xs-6">
+                    <button type="submit" name="tipoBotao" value="2" class="botoesTelaVeiculo btn btn-danger btn-sm"><span class="glyphicon glyphicon-paperclip"></span> Registrar Avarias</button> @*Action -> InspecaoController/InserirVeiculo - tipo 2*@
+                </div>
+            </div>
+        </div>
+
+        @*Botões Editar Veículo e Nova inspeção*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-1 col-sm-4 col-xs-6">
+                    <button type="button" id="btnEditarVeiculo" name="tipoBotao" value="3" class="botoesTelaVeiculo btn btn-warning btn-sm botoesClasseVeiculo" onclick='EditarVeiculo_BtnCLick()'><span class="glyphicon glyphicon-pencil"></span> Editar Veículo</button>
+                </div>
+                <div class="col col-lg-10 col-md-11 col-sm-8 col-xs-6">
+                    <button type="button" value="Nova Inspeção" class="botoesTelaVeiculo btn btn-info btn-sm" onclick="location.href='@Url.Action("NovaInspecao", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span> Nova inspeção</button>
+                </div>
+            </div>
+        </div>
+
+        @*Alterar Inspecao*@
+        <div class="form-group">
+            <div class="row">
+                <div class="col col-lg-2 col-md-1 col-sm-4 col-xs-6">
+                    <button type="button" id="btnEditarInspecao" name="tipoBotao" value="5" class="botoesTelaVeiculo btn btn-warning btn-sm botoesClasseVeiculo" onclick='EditarInspecao_BtnCLick()'><span class="glyphicon glyphicon-pencil"></span> Editar Inspecao</button>
+                </div>
+            </div>
+        </div>
+
+
+    </form><!--/Form-->
+    @*Modal Nova Marca*@
+    <form asp-controller="Inspecao" asp-action="NovaMarca" method="post" onsubmit="return ValidarFormularioNovaMarca()">
+        <div class="modal fade" id="novaMarcaModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Nova Marca</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label class="lblModalTelaVeiculo">Cliente</label>
+                        <input type="text" name="novaMarcaCliente" id="novaMarcaCliente" value="@Model.Inspecao.Cliente_ID" disabled /><br />
+                        <label class="lblModalTelaVeiculo">Marca</label>
+                        <input type="text" name="novaMarcaNome" id="novaMarcaNome" value="" />
+                    </div>
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" id="novaMarcaBotaoEnviarModal" onclick="ValidarFormularioNovaMarca()">Gravar</button>
+                        <button type="button" class="btn btn-default" data-dismiss="modal" id="fecharModalNovaMarca">Fechar</button>
                     </div>
                 </div>
             </div>
+        </div>
+    </form>
 
-            @*Marca*@
-            <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                            <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                            <select id="ListaMarca" class="form-control" required
-                                    asp-for="Marca_ID" asp-items="@Model.Marca">
-                            </select>
-                        </div>
+    @*Modal Novo Modelo*@
+    <form asp-controller="Inspecao" asp-action="NovoModelo" method="post" onsubmit="return ValidarFormularioNovoModelo()">
+
+        <div class="modal fade" id="novoModeloModal" role="dialog">
+            <div class="modal-dialog modal-sm">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                        <h4 class="modal-title">Novo Modelo</h4>
+                    </div>
+                    <div class="modal-body">
+                        <label class="lblModalTelaVeiculo">Cliente</label>
+                        <input type="text" name="novoModeloClienteInput" id="novoModeloClienteID" value="@Model.Inspecao.Cliente_ID" disabled /><br />
+                        <label class="lblModalTelaVeiculo">Modelo</label>
+                        <input type="text" name="novoModeloNome" id="novoModeloNome" value="" />
+                    </div>
+
+                    <div class="modal-footer">
+                        <button type="button" class="btn btn-success" onclick="ValidarFormularioNovoModelo()">Gravar</button>
+                        <button type="button" class="btn btn-default" id="fecharModalNovoModelo" data-dismiss="modal">Fechar</button>
                     </div>
                 </div>
             </div>
+        </div>
+    </form>
 
-            @*Modelo*@
+    @*FORM EDITAR VEICULO*@
+    <div class="row" hidden>
+        <div class="col col-md-offset-0 col-lg-offset-0 col-sm-offset-0 col-xs-offset-0">
             <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                            <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                            <select id="ListaModelo" name="Modelo_ID" class="form-control" required"
-                                    asp-for="Modelo_ID" asp-items="@Model.Modelo" value="@Model.Modelo_ID">
-                                @*<option> Selecione um Modelo</option>*@
-                            </select>
-                        </div>
-                    </div>
-                </div>
+                <form asp-controller="Inspecao" asp-action="EditarVeiculo" method="post" id="editarVeiculoForm">
+                    <input name="Inspecao_ID" value="@Model.Inspecao.Inspecao_ID" hidden />
+                    <input type="text" id="id_inspVeiculo" name="InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" />
+                    <input type="text" name="Edicao" id="edicaoId" value="@Model.Edicao" hidden />
+                </form>
             </div>
+        </div>
+    </div>
 
-
+    @*FORM EDITAR INSPECAO*@
+    <div class="row" hidden>
+        <div class="col col-md-offset-0 col-lg-offset-0 col-sm-offset-0 col-xs-offset-0">
             <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                            <label asp-for="Observacoes">Observações:</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                            <textarea asp-for="Observacoes" class="form-control" required rows="5" id="ObservacoesTxtArea" maxlength="1000"></textarea>
-                        </div>
-                    </div>
-                </div>
+                <form asp-controller="Inspecao" asp-action="EditarInspecao" method="post" id="editarInspecaoForm">
+                    <input name="Inspecao_ID" value="@Model.Inspecao.Inspecao_ID" hidden />
+                    <input type="text" id="id_inspVeiculo" name="InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" />
+                    <input type="text" name="Edicao" id="edicaoId" value="@Model.Edicao" hidden />
+                </form>
             </div>
+        </div>
+    </div>
 
-            <div class="form-group">
-                <div class="container">
-                    <div class="row">
-                        <div class="col col-lg-1 col-md-1 col-sm-3 col-xs-3">
-                            <button type="submit" name="tipoBotao" value="1" class="btn btn-success">Gravar</button> @*Action -> InspecaoController/InserirVeiculo - tipo 1*@
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-9">
-                            <button type="submit" name="tipoBotao" value="2" class="btn btn-danger">Registrar Avarias</button> @*Action -> InspecaoController/InserirVeiculo - tipo 2*@
-                        </div>
-
-
-                    </div>
-                </div>
-            </div>
-
-        </form><!--/Form-->
-    </div> <!--/Row-->
 </div> <!--/Container-->

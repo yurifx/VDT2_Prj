@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -22,6 +23,12 @@ namespace VDT2.Models
         public string VIN { get; set; }
 
         public string Observacoes { get; set; }
+
+        [NotMapped]
+        public bool Erro { get; set; }
+
+        [NotMapped]
+        public string MensagemErro { get; set; }
 
         }
     }

@@ -2,31 +2,43 @@
 
 @model VDT2.ViewModels.LoginViewModel
 
-
-
 @{
     Layout = "~/Views/Shared/_LayoutHome.cshtml";
 }
 
-<button class="btn btn-info btn-sm" value="Nova Inspeção" onclick="location.href='@Url.Action("Index", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span> Nova inspeção</button>
-
-
-
 <h1>    VDT - Vehicle Damage Tracking</h1>
 
-    @if (Model == null || !Model.Autenticado)
-        {
-        <div id="divConteudoInstitucional">
-            <iframe name="frameConteudoInstitucional" style="border: none; width: 98%; height:600px" src="~/ConteudoInstitucional.html"></iframe>
+@if (Model == null || !Model.Autenticado)
+    {
+    <div id="divConteudoInstitucional">
+        <iframe name="frameConteudoInstitucional" style="border: none; width: 98%; height:600px" src="~/ConteudoInstitucional.html"></iframe>
+    </div>
+    }
+
+@if (Model != null && Model.Autenticado)
+    {
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-block" id="cblk-id1">
+                    <h3 class="card-title">Nova Inspeção</h3>
+                    <p class="card-text">Clique no botão abaixo para iniciar uma nova inspeção</p>
+                    <button class="btn btn-info btn-sm" value="Nova Inspeção" onclick="location.href='@Url.Action("NovaInspecao", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span> Nova inspeção</button>
+                </div>
+            </div>
         </div>
-        }
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-block">
+                    <h3 class="card-title">BackOffice</h3>
+                    <p class="card-text">Clique no botão abaixo para conferência.</p>
+                    <button class="btn btn-warning btn-sm" value="Conferencia de Inspeção" onclick="location.href='@Url.Action("NovaConferencia", "Conferencia")'"><span class="glyphicon glyphicon-th-list"> </span> Conferência de Inspeção</button>
 
-    @if (Model != null && Model.Autenticado)
-        {
-
-        <div id="divMenu">
-
-            <p>AQUI: Menu</p>
-
+                </div>
+            </div>
         </div>
-        }
+    </div>
+
+
+
+    }

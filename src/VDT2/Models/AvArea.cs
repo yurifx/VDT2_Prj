@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
+using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
 using System.Threading.Tasks;
 
@@ -16,34 +17,6 @@ namespace VDT2.Models
         [StringLength(20)]
         public string Codigo { get; set; }
 
-        //[Required]
-        //[StringLength(50)]
-        //public string Area_Pt { get; set; }
-
-        //[StringLength(50)]
-        //public string Local_Pt { get; set; }
-
-        //[StringLength(50)]
-        //public string Lado_Pt { get; set; }
-
-        ////[StringLength(50)]
-        ////public string Area_En { get; set; }
-
-        //[StringLength(50)]
-        //public string Local_En { get; set; }
-
-        //[StringLength(50)]
-        //public string Lado_En { get; set; }
-
-        //[StringLength(50)]
-        //public string Area_Es { get; set; }
-
-        //[StringLength(50)]
-        //public string Local_Es { get; set; }
-
-        //[StringLength(50)]
-        //public string Lado_Es { get; set; }
-
         [StringLength(152)]
         public string Nome_Pt { get; set; }
 
@@ -53,6 +26,10 @@ namespace VDT2.Models
         [StringLength(152)]
         public string Nome_Es { get; set; }
 
-        //public bool Ativo { get; set; }
+        [NotMapped]
+        public bool Erro { get; set; }
+
+        [NotMapped]
+        public string MensagemErro { get; set; }
         }
 }

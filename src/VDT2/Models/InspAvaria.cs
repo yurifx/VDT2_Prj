@@ -12,7 +12,6 @@ namespace VDT2.Models
         [Key]
         public int InspAvaria_ID { get; set; }
 
-
         public int InspVeiculo_ID { get; set; }
 
         public int AvArea_ID { get; set; }
@@ -29,25 +28,29 @@ namespace VDT2.Models
 
         public string FabricaTransporte { get; set; }
 
-        //[NotMapped]
+        
         public int Inspecao_ID { get; set; }
 
-        //[NotMapped]
+        [NotMapped]
         public int Cliente_ID { get; set; }
 
-        //[NotMapped]
         public string Area_Pt { get; set; }
         
-        //[NotMapped]
         public string Dano_Pt { get; set; }
-        //[NotMapped]
+        
         public string Severidade_Pt { get; set; }
-        //[NotMapped]
+        
         public string Gravidade_Pt { get; set; }
-        //[NotMapped]
+        
         public string Quadrante_Pt { get; set; }
-        //[NotMapped]
+        
         public string Condicao_Pt { get; set; }
+
+        [NotMapped]
+        public bool Erro { get; set; }
+
+        [NotMapped]
+        public string MensagemErro { get; set; }
         }
     }
 

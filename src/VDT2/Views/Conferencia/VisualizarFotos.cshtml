@@ -1,0 +1,178 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+@model VDT2.ViewModels.ConferenciaVisualizarAvariasViewModel
+
+
+@{
+    Layout = "~/Views/Shared/_Layout.cshtml";
+}
+
+<script src="~/js/Conferencia/ConferenciaEditarFotos.js" asp-append-version="true"></script>
+
+<div class="container">
+    <div class="row">
+        <div class="form-group">
+            <h2>Adicionar Novas Fotos</h2><br />
+
+            <form asp-controller="Conferencia" asp-action="SalvarFotos" method="post" enctype="multipart/form-data">
+                <div class="row">
+                    <div class="container">
+                    <div class="row">
+                        @*FOTO1*@
+                        <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1">
+                            <span id="spanFoto1" value="1" class="inspecaoEditarAvarias-span glyphicon glyphicon-camera"></span>
+                            <p id="qtdFotosSelecionadas1"></p>
+                            <a id="visualizar1">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(1)" />
+
+                            </div>
+                        </div>
+
+                        @*FOTO2*@
+                        <div id="divspanFoto2" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto2" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas2"></p>
+                            <a id="visualizar2">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(2)" />
+                            </div>
+                        </div>
+
+                        @*FOTO3*@
+                        <div id="divspanFoto3" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto3" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas3"></p>
+                            <a id="visualizar3">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(3)" />
+                            </div>
+                        </div>
+
+                        @*FOTO4*@
+                        <div id="divspanFoto4" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto4" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas4"></p>
+                            <a id="visualizar4">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(4)" />
+                            </div>
+                        </div>
+
+                        @*FOTO5*@
+                        <div id="divspanFoto5" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto5" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas5"></p>
+                            <a id="visualizar5">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(5)" />
+                            </div>
+                        </div>
+
+                        @*FOTO6*@
+                        <div id="divspanFoto6" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto6" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas6"></p>
+                            <a id="visualizar6">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(6)" />
+                            </div>
+                        </div>
+
+                        @*FOTO7*@
+                        <div id="divspanFoto7" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto7" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas7"></p>
+                            <a id="visualizar7">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(7)" />
+                            </div>
+                        </div>
+
+                        @*FOTO8*@
+                        <div id="divspanFoto8" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto8" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas8"></p>
+                            <a id="visualizar8">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(8)" />
+                            </div>
+                        </div>
+
+                        @*FOTO9*@
+                        <div id="divspanFoto9" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto9" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas9"></p>
+                            <a id="visualizar9">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(9)" />
+                            </div>
+                        </div>
+
+                        @*FOTO10*@
+                        <div id="divspanFoto10" class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" hidden>
+                            <span id="spanFoto10" class="inspecaoEditarAvarias-span glyphicon glyphicon-plus"></span>
+                            <p id="qtdFotosSelecionadas10"></p>
+                            <a id="visualizar10">Foto</a>
+                            <div hidden>
+                                <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(10)" />
+                            </div>
+                        </div>
+
+                    </div>
+                </div><br />
+
+                    <img id="imgpreview" src="#" alt="" /><br /><br />
+                    <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-danger">Remover</button>
+
+                </div><br /><br /><br />
+                <div class="container">
+                    <div class="row">
+                        <div class="form-group">
+                            <button type="submit" class="botoesTelaEditarAvarias btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span> Salvar Fotos</button>
+                            <input type="text" hidden class="hidden" name="inspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />
+                        </div>
+                    </div>
+                </div>
+            </form>
+        </div>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row">
+        <div class="form-group">
+
+
+            @if (Model.ListaImagemAvarias != null)
+            {
+                @if (Model.ListaImagemAvarias.Count() > 0)
+                {
+                    <h2>Fotos Enviadas Anteriormente</h2>
+                    @foreach (var item in Model.ListaImagemAvarias)
+                    {
+                        @if (item.Erro != true)
+                        {
+                            <div class="row" id="@item.Imagem">
+                                <div class="col-md-12">
+                                    <img class="img-thumbnail" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
+                                </div>
+                                <div class="col-md-12">
+                                    <button type="button" class="btn btn-danger" value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
+                                </div>
+                            </div>
+                        }
+                    }
+                }
+            }
+        </div>
+    </div>
+</div>

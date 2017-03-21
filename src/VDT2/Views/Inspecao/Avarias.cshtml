@@ -5,33 +5,34 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
+<script src="~/js/Inspecao/VisualizarAvarias.js"></script>
 <div class="container">
     <div class="row" id="">
-        <h4>Chassi: @Model.VIN_6  - ID: @Model.InspVeiculo_ID</h4>
+        <h4>Chassi: @Model.VIN_6</h4>
         <p>Avarias neste CheckPoint</p>
         <table class="table table-striped table-bordered table-hover">
             <tr class="danger">
+                <th>Editar</th>
                 <th>Área</th>
                 <th>Condicao</th>
                 <th>Dano</th>
                 <th>Gravidade</th>
                 <th>Quadrante</th>
                 <th>Severidade</th>
-                <th>Editar</th>
-
             </tr>
             @foreach (var item in Model.Avarias)
                 {
                 @if (item.InspVeiculo_ID.Equals(Model.InspVeiculo_ID))
                     {
                     <tr>
+                        <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
                         <td>@item.Area_Pt</td>
                         <td>@item.Condicao_Pt</td>
                         <td>@item.Dano_Pt</td>
                         <td>@item.Gravidade_Pt</td>
                         <td>@item.Quadrante_Pt</td>
                         <td>@item.Severidade_Pt</td>
-                        <td><span class="glyphicon glyphicon-wrench" id="@item.Inspecao_ID"></span></td>
+                        
                     </tr>
                     }
                 }
@@ -39,6 +40,11 @@
     </div>
 </div>
 
+<form asp-controller="Inspecao" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
+    <div hidden>
+        <input type="text" name="inspAvaria_ID_form_editar" id="avariaIdFormSubmit" value="" />
+    </div>
+</form>
 
 <div class="container">
     <div class="row" id="">

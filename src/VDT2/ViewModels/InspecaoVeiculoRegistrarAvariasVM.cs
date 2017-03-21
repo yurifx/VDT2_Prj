@@ -9,7 +9,9 @@ namespace VDT2.ViewModels
     public class InspecaoVeiculoRegistrarAvariasVM
         {
         public LoginViewModel dadosUsuario;
-        public InspVeiculo insVeiculo;
+        public Inspecao Inspecao;
+        public InspVeiculo InspVeiculo;
+        
 
         //Lista de dados da avaria
         public List<AvArea> avAreaLista;
@@ -18,6 +20,8 @@ namespace VDT2.ViewModels
         public List<AvGravidade> avGravidadeLista;
         public List<AvQuadrante> avQuadranteLista;
         public List<AvSeveridade> avSeveridadeLista;
+
+        public InspAvaria InspAvaria;
 
         //Listar avarias
         public List<InspAvaria> listaAvarias;
@@ -32,6 +36,7 @@ namespace VDT2.ViewModels
         public int Severidade_ID { get; set; }
         public string fabricatransporte { get; set; }
         public string VIN_6 { get; set; }
+        public int UltimoVeiculo_InspVeiculo_ID { get; set; }
 
         }
     }

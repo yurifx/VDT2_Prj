@@ -1,7 +1,5 @@
 ﻿$(function () {  // Shorthand for $( document ).ready()
 
-    // $("#divConteudoInstitucional").show();
-    // $("#divMenu").hide();
 });
 
 var processandoLogin = false;

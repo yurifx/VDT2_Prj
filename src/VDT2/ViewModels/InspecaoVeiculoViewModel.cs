@@ -8,26 +8,30 @@ using VDT2.Models;
 namespace VDT2.ViewModels
 {
     public class InspecaoVeiculoViewModel
-    {
+        {
         public Inspecao Inspecao;
         public List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> Marca { get; set; }
         public List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> Modelo { get; set; }
-        
+
         //[StringLength(3, ErrorMessage = "Nao pode ter mais que 3 caracteres.")]
         public string Observacoes { get; set; }
 
+
         public int Inspecao_ID { get; set; }
+        public int InspVeiculo_ID { get; set; }
+
+        public InspVeiculo InspVeiculo { get; set; }
+
         public int LocalInspecao_ID { get; set; }
 
         //esses dois, pegar do model Veiculo
         public int Marca_ID { get; set; }
         public int Modelo_ID { get; set; }
+        public int Edicao { get; set; } //0 e 1 - 0 = não, 1 = sim
+
 
         public string VIN_6 { get; set; }
-
-        //após inserção
-
-        public int UltimoVeiculo_InspVeiculo_ID { get; set; }
-
         }
+
+        
 }

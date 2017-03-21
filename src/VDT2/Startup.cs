@@ -91,9 +91,11 @@ namespace VDT2
 
             app.UseSession();
 
+            app.UseDeveloperExceptionPage();
+
             app.UseMvc(routes =>
             {
-                //yuri
+                
                 // Working with MVC Areas in Asp.Net vNext (MVC 6)
                 // http://timjames.me/blog/2014/12/13/mvc-areas-with-vnext/
                 //routes.MapRoute(name: "areaRoute",

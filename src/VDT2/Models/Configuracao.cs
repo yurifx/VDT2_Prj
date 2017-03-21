@@ -22,5 +22,7 @@ namespace VDT2.Models
         /// String de conexão para acessar a base de dados
         /// </summary>
         public string ConnectionStringVDT { get; set; }
+
+        public string PastaFotos { get; set; }
     }
 }
