@@ -10,7 +10,15 @@ namespace VDT2.BLL
 {
     public class UploadTxt
     {
-        public static int SalvarArquivo(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+/// <summary>
+/// Salva o arquivo que o usuário enviou no input
+/// </summary>
+/// <param name="ListaVeiculo_ID">Após a inserção do cabeçalho no banco de dados, enviar o seu ID</param>
+/// <param name="tipo">Tipo: "P" - PackingList,  "L" - LoadingList</param>
+/// <param name="files">arquivo do usuário</param>
+/// <param name="configuracao">configurações do appsettings</param>
+/// <returns></returns>
+        public static bool SalvarArquivo(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
             {
@@ -18,7 +26,8 @@ namespace VDT2.BLL
                 string serverpath = configuracao.PastaUploadListas;
                 var file = files.FirstOrDefault();
 
-                if (tipo == 'F')
+                //Cria local para gravação do arquivo
+                if (tipo == 'P')
                 {
                     path = Path.Combine(serverpath, "Arquivos", "PackingList", Convert.ToString(ListaVeiculo_ID));
                 }
@@ -37,7 +46,7 @@ namespace VDT2.BLL
                 using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
                 {
                     file.CopyTo(fileStream);
-                    return 0;
+                    return true;
                 }
             }
             catch (Exception ex)
@@ -50,7 +59,7 @@ namespace VDT2.BLL
                         Mensagem = $"Erro ao realizar upload do arquivo Excel, erro: {ex}"
                     });
                 #endregion
-                return -1;
+                return false;
             }
         }
     }

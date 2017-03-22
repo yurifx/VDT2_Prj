@@ -63,8 +63,7 @@ namespace VDT2.DAL
                    Mensagem = $"Erro ao executar ListaVeiculos.Inserir: Erro:  {ex}"
                });
                 #endregion
-
-                return VeiculoVIN;
+                throw;
             }
 
 

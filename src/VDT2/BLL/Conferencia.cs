@@ -11,6 +11,31 @@ namespace VDT2.BLL
     public class Conferencia
     {
 
+        public static Models.ListaVeiculos InserirListaVeiculos(Models.ListaVeiculos listaVeiculos, Configuracao configuracao)
+        {
+
+            try
+            {
+                listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
+                return listaVeiculos;
+            }
+            catch (Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar a InserirListaVeiculos: Exception:  {ex}",
+                        Excecao = ex
+                    });
+                #endregion  
+                listaVeiculos.ListaVeiculo_ID = 0;
+                return listaVeiculos;
+            }
+        }
+
+
         public static int IntegrarArquivoPackingList(ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
@@ -28,42 +53,51 @@ namespace VDT2.BLL
         }
 
 
-        public static int IntegrarArquivoLoadingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
-        {   
+        public static bool IntegrarArquivoLoadingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+        {
             try
             {
                 string path = "";
                 string serverpath = configuracao.PastaUploadListas;
                 var file = files.FirstOrDefault();
 
-                if (tipo == 'F')
+                if (tipo == 'P')
                 {
                     path = Path.Combine(serverpath, "Arquivos", "PackingList", Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
                 else
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", Convert.ToString(ListaVeiculo_ID),  file.FileName);
+                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
-                
-
 
                 string[] linhas = System.IO.File.ReadAllLines(path);
 
                 foreach (var linha in linhas)
                 {
-                    Models.ListaVeiculosVin VeiculoVin = new Models.ListaVeiculosVin { ListaVeiculos_ID = ListaVeiculo_ID, VIN = linha };
-                    DAL.ListaVeiculosVin.Inserir(VeiculoVin, configuracao);
+                    if (linha.Length == 17)
+                    {
+                        Models.ListaVeiculosVin VeiculoVin = new Models.ListaVeiculosVin { ListaVeiculos_ID = ListaVeiculo_ID, VIN = linha };
+                        DAL.ListaVeiculosVin.Inserir(VeiculoVin, configuracao);
+                    }
                 }
 
 
                 var caminho = configuracao.PastaUploadListas;
 
-                return 0;
+                return true;
             }
             catch (Exception ex)
             {
-                //gravar log {ex}
-                return -1;
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar IntegrarArquivoLoadingList",
+                        Excecao = ex
+                    });
+                #endregion
+                return false;
             }
         }
 

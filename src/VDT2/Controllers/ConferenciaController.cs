@@ -268,8 +268,13 @@ namespace VDT2.Controllers
 
         public IActionResult LoadingListSalvar(ConferenciaLoadingListViewModel conferenciaLoadingListVM, ICollection<IFormFile> files)
         {
+            bool salvou = false;
+            bool inseriuArquivo = false;
+            bool integrou = false;
+
             //Verifica dados do usuário
             ViewModels.LoginViewModel dadosUsuario = null;
+
             #region dadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -280,11 +285,20 @@ namespace VDT2.Controllers
             {
                 ViewData["UsuarioNome"] = dadosUsuario.Nome;
             }
-
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
 
-           // BLL.Conferencia.IntegrarArquivo;
+            conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+
+
+            if (files.FirstOrDefault().ContentType != "text/plain")
+            {
+                ViewData["MensagemErro"] = "Só é permitido o envio de arquivos .txt";
+                return View("LoadingListInicio", conferenciaLoadingListVM);
+            }
+
+            // BLL.Conferencia.IntegrarArquivo;
             Models.ListaVeiculos listaVeiculos = new ListaVeiculos
             {
                 Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
@@ -295,34 +309,51 @@ namespace VDT2.Controllers
                 Usuario_ID = dadosUsuario.UsuarioId
             };
 
-            listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
+            listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
 
-
-            int erro = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
-            if (erro.Equals(-1))
+            if (listaVeiculos.ListaVeiculo_ID != 0)
             {
-                //fazer algo ..
+                inseriuArquivo = true;
 
+                salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+                if (salvou)
+                {
+                    integrou = BLL.Conferencia.IntegrarArquivoLoadingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+                    if (integrou)
+                    {
+                        ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+                        return View("LoadingListInicio", conferenciaLoadingListVM);
+                    }
+                }
             }
 
-            BLL.Conferencia.IntegrarArquivoLoadingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+            if (!salvou || !integrou || !inseriuArquivo)
+            {
+                ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+            }
 
-
-            ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
-
-
-            conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
 
             return View("LoadingListInicio", conferenciaLoadingListVM);
-
         }
 
+        /// <summary>
+        /// Salvar PackingList Informado pelo usuároi
+        /// </summary>
+        /// <param name="conferenciaPackingListVM"></param>
+        /// <param name="files"></param>
+        /// <returns></returns>
 
         public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
         {
+            bool salvou = false;
+            bool inseriuArquivo = false;
+            bool integrou = false;
+
             //Verifica dados do usuário
             ViewModels.LoginViewModel dadosUsuario = null;
+
             #region dadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -333,33 +364,60 @@ namespace VDT2.Controllers
             {
                 ViewData["UsuarioNome"] = dadosUsuario.Nome;
             }
-
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
-            #endregion  
-
-            int erro = BLL.UploadExcel.SalvarArquivo('P', files, configuracao);
-            if (erro.Equals(-1))
-            {
-                //fazer algo ..
-
-            }
-
-            Models.ListaVeiculos listaVeiculos = new ListaVeiculos
-            {
-                Cliente_ID = conferenciaPackingListVM.Cliente_ID,
-                DataHoraInclusao = DateTime.Now,
-                LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
-                NomeArquivo = files.FirstOrDefault().FileName,
-                Tipo = 'P',
-                Usuario_ID = dadosUsuario.UsuarioId
-            };
-
-            listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
-            ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
-
+            #endregion
 
             conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
             conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+
+            if (files.Count() > 0)
+            {
+                if (files.FirstOrDefault().ContentType == "text/plain")
+                {
+                    Models.ListaVeiculos listaVeiculos = new ListaVeiculos
+                    {
+                        Cliente_ID = conferenciaPackingListVM.Cliente_ID,
+                        DataHoraInclusao = DateTime.Now,
+                        LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
+                        NomeArquivo = files.FirstOrDefault().FileName,
+                        Tipo = 'P',
+                        Usuario_ID = dadosUsuario.UsuarioId
+                    };
+
+                    listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
+
+                    if (listaVeiculos.ListaVeiculo_ID != 0)
+                    {
+                        inseriuArquivo = true;
+
+                        salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
+
+                        if (salvou)
+                        {
+                            integrou = BLL.Conferencia.IntegrarArquivoLoadingList(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
+
+                            if (integrou)
+                            {
+                                ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+                            }
+                        }
+                    }
+
+                    if (!salvou || !integrou || !inseriuArquivo)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo.Tente novamente mais tarde ou entre em contato com service desk";
+                    }
+                }
+                else if(files.FirstOrDefault().ContentType != "text/plain")
+                {
+                    ViewData["MensagemErro"] = "Arquivo inválido, por favor, faça upload de um arquivo .txt";
+                }
+            }
+            else if(files.Count()==0)
+            {
+                ViewData["MensagemErro"] = "Nenhum arquivo selecionado, por favor tente novamente mais tarde";
+            }
+            
 
             return View("PackingListInicio", conferenciaPackingListVM);
         }
