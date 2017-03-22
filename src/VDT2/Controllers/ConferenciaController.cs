@@ -56,6 +56,11 @@ namespace VDT2.Controllers
             return View(conferenciaVM);
         }
 
+    /// <summary>
+    /// Listagem de veículos e suas respectivas avarias 2a tela.
+    /// </summary>
+    /// <param name="conferenciaVM"></param>
+    /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
             #region dadosUsuario
@@ -144,9 +149,15 @@ namespace VDT2.Controllers
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
 
         }
+
+        /// <summary>
+        /// Visualizar fotos da avaria - Botão Fotos
+        /// </summary>
+        /// <param name="inspAvaria_ID"></param>
+        /// <returns></returns>
         public IActionResult VisualizarFotos(int inspAvaria_ID)
         {
-            ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
+             ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
 
             visualizarAvariasVM.InspAvaria = new Models.InspAvaria();
             visualizarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);

@@ -4,16 +4,12 @@
 
 
 function Btn_Click_EditarAvaria(valor) {
-    inspAvaria_ID = valor;
-    $("#avariaIdFormSubmit").val(inspAvaria_ID);
-    console.log("Avaria a ser editada.:", inspAvaria_ID)
+    $("#avariaIdFormSubmit").val(valor);
     $("#editarAvariaForm").submit();
 }
 
 
 function Btn_Click_VisualizarFotos(valor) {
-    inspAvaria_ID = valor;
-    $("#VisualizarFotosFormSubmit").val(inspAvaria_ID);
-    console.log("Avaria a ser editada.:", inspAvaria_ID)
+    $("#inspAvaria_ID_FormVisualizarFotos_input").val(valor);
     $("#VisualizarFotosForm").submit();
 }

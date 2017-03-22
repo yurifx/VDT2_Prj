@@ -61,7 +61,7 @@
                     <td>@item.Quadrante_Pt</td>
                     <td>@item.Severidade_Pt</td>
                     <td>@item.FabricaTransporte</td>
-                    <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_VisualizarFotos(this.value)">Fotos</button></td>
+                    <td><button type="button" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
                 </tr>   
                 }
 
@@ -74,7 +74,7 @@
 
         <form asp-controller="Conferencia" asp-action="VisualizarFotos" method="post" id="VisualizarFotosForm">
             <div hidden>
-                <input type="text" name="inspAvaria_ID" id="VisualizarFotosFormSubmit" value="" />
+                <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
             </div>
         </form>
     </div>
