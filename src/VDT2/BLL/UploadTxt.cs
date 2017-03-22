@@ -25,15 +25,16 @@ namespace VDT2.BLL
                 string path = "";
                 string serverpath = configuracao.PastaUploadListas;
                 var file = files.FirstOrDefault();
+                string mesdia = DateTime.Now.ToString("MMdd");
+                string ano = DateTime.Now.ToString("yyyy");
 
-                //Cria local para gravação do arquivo
                 if (tipo == 'P')
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "PackingList", Convert.ToString(ListaVeiculo_ID));
+                    path = Path.Combine(serverpath, "Arquivos", "PackingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID));
                 }
                 else
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", Convert.ToString(ListaVeiculo_ID));
+                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID));
                 }
 
 

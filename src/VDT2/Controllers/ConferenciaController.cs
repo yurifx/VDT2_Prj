@@ -319,7 +319,7 @@ namespace VDT2.Controllers
 
                 if (salvou)
                 {
-                    integrou = BLL.Conferencia.IntegrarArquivoLoadingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+                    integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
 
                     if (integrou)
                     {
@@ -394,7 +394,7 @@ namespace VDT2.Controllers
 
                         if (salvou)
                         {
-                            integrou = BLL.Conferencia.IntegrarArquivoLoadingList(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
+                            integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
 
                             if (integrou)
                             {

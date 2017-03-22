@@ -34,40 +34,25 @@ namespace VDT2.BLL
                 return listaVeiculos;
             }
         }
+        
 
-
-        public static int IntegrarArquivoPackingList(ICollection<IFormFile> files, Configuracao configuracao)
-        {
-            try
-            {
-                var caminho = configuracao.PastaUploadListas;
-                string nomeArquivo = files.FirstOrDefault().FileName;
-
-                return 0;
-            }
-            catch (Exception ex)
-            {
-                //gravar log {ex}
-                return -1;
-            }
-        }
-
-
-        public static bool IntegrarArquivoLoadingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+        public static bool IntegrarArquivoLoadingPackingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
             {
                 string path = "";
                 string serverpath = configuracao.PastaUploadListas;
                 var file = files.FirstOrDefault();
+                string mesdia = DateTime.Now.ToString("MMdd");
+                string ano = DateTime.Now.ToString("yyyy");
 
                 if (tipo == 'P')
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "PackingList", Convert.ToString(ListaVeiculo_ID), file.FileName);
+                    path = Path.Combine(serverpath, "Arquivos", "PackingList", ano, mesdia,  Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
                 else
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", Convert.ToString(ListaVeiculo_ID), file.FileName);
+                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
 
                 string[] linhas = System.IO.File.ReadAllLines(path);
