@@ -25,10 +25,10 @@ namespace VDT2.Controllers
             this.configuracao = settings.Value;
         }
 
-/// <summary>
-/// Inicio da Conferência. Carrega os dados dos dropdownlists [select options]
-/// </summary>
-/// <returns></returns>
+        /// <summary>
+        /// Inicio da Conferência. Carrega os dados dos dropdownlists [select options]
+        /// </summary>
+        /// <returns></returns>
         public IActionResult NovaConferencia()
         {
             #region dadosUsuario
@@ -56,11 +56,11 @@ namespace VDT2.Controllers
             return View(conferenciaVM);
         }
 
-    /// <summary>
-    /// Listagem de veículos e suas respectivas avarias 2a tela.
-    /// </summary>
-    /// <param name="conferenciaVM"></param>
-    /// <returns></returns>
+        /// <summary>
+        /// Listagem de veículos e suas respectivas avarias 2a tela.
+        /// </summary>
+        /// <param name="conferenciaVM"></param>
+        /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
             #region dadosUsuario
@@ -86,11 +86,11 @@ namespace VDT2.Controllers
         }
 
 
-/// <summary>
-/// Realiza edição das avarias
-/// </summary>
-/// <param name="inspAvaria_ID">ID da avaria</param>
-/// <returns></returns>
+        /// <summary>
+        /// Realiza edição das avarias
+        /// </summary>
+        /// <param name="inspAvaria_ID">ID da avaria</param>
+        /// <returns></returns>
 
         public IActionResult EditarAvarias(int inspAvaria_ID)
         {
@@ -113,11 +113,11 @@ namespace VDT2.Controllers
         }
 
 
-/// <summary>
-/// Salva avaria no banco de dados
-/// </summary>
-/// <param name="conferenciaEditarAvariasVM"></param>
-/// <returns></returns>
+        /// <summary>
+        /// Salva avaria no banco de dados
+        /// </summary>
+        /// <param name="conferenciaEditarAvariasVM"></param>
+        /// <returns></returns>
         public IActionResult SalvarAvaria(ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM)
         {
 
@@ -157,7 +157,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult VisualizarFotos(int inspAvaria_ID)
         {
-             ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
+            ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
 
             visualizarAvariasVM.InspAvaria = new Models.InspAvaria();
             visualizarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
@@ -168,15 +168,15 @@ namespace VDT2.Controllers
             return View("VisualizarFotos", visualizarAvariasVM);
 
         }
-/// <summary>
-/// Grava fotos da avaria
-/// </summary>
-/// <param name="inspAvaria_ID">ID da avaria</param>
-/// <param name="files">Fotos referentes a avaria</param>
-/// <returns></returns>
+        /// <summary>
+        /// Grava fotos da avaria
+        /// </summary>
+        /// <param name="inspAvaria_ID">ID da avaria</param>
+        /// <param name="files">Fotos referentes a avaria</param>
+        /// <returns></returns>
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
-            
+
             bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
@@ -209,6 +209,156 @@ namespace VDT2.Controllers
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.listaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
+
+        public IActionResult LoadingListInicio()
+        {
+            ViewModels.LoginViewModel dadosUsuario = null;
+
+            //Verifica dados do usuário
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            else
+            {
+                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            }
+
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
+
+            ConferenciaLoadingListViewModel conferenciaLoadingListVM = new ConferenciaLoadingListViewModel();
+
+            conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            return View("LoadingListInicio", conferenciaLoadingListVM);
+        }
+
+
+        public IActionResult PackingListInicio()
+        {
+            ViewModels.LoginViewModel dadosUsuario = null;
+
+            //Verifica dados do usuário
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+
+            else
+            {
+                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            }
+
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
+
+            ConferenciaPackingListViewModel conferenciaPackingListVM = new ConferenciaPackingListViewModel();
+
+            conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            return View("PackingListInicio", conferenciaPackingListVM);
+
+        }
+
+        public IActionResult LoadingListSalvar(ConferenciaLoadingListViewModel conferenciaLoadingListVM, ICollection<IFormFile> files)
+        {
+            //Verifica dados do usuário
+            ViewModels.LoginViewModel dadosUsuario = null;
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            }
+
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
+
+
+            int erro = BLL.UploadExcel.SalvarArquivo(files, configuracao);
+            if (erro.Equals(-1))
+            {
+                //fazer algo ..
+
+            }
+
+            Models.ListaVeiculos listaVeiculos = new ListaVeiculos
+            {
+                Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
+                DataHoraInclusao = DateTime.Now,
+                LocalInspecao_ID = conferenciaLoadingListVM.LocalInspecao_ID,
+                NomeArquivo = files.FirstOrDefault().FileName,
+                Tipo = 'L',
+                Usuario_ID = dadosUsuario.UsuarioId
+            };
+
+            listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
+            ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+
+
+            conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+
+            return View("LoadingListInicio", conferenciaLoadingListVM);
+
+        }
+
+
+        public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
+        {
+            //Verifica dados do usuário
+            ViewModels.LoginViewModel dadosUsuario = null;
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                return RedirectToAction("Index", "Home");
+            }
+            else
+            {
+                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            }
+
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion  
+
+            int erro = BLL.UploadExcel.SalvarArquivo(files, configuracao);
+            if (erro.Equals(-1))
+            {
+                //fazer algo ..
+
+            }
+
+            Models.ListaVeiculos listaVeiculos = new ListaVeiculos
+            {
+                Cliente_ID = conferenciaPackingListVM.Cliente_ID,
+                DataHoraInclusao = DateTime.Now,
+                LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
+                NomeArquivo = files.FirstOrDefault().FileName,
+                Tipo = 'P',
+                Usuario_ID = dadosUsuario.UsuarioId
+            };
+
+            listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
+            ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+
+
+            conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+
+            return View("PackingListInicio", conferenciaPackingListVM);
+        }
+
 
     }
 }

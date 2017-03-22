@@ -1219,7 +1219,6 @@ namespace VDT2.Controllers
             }
             catch
             {
-                return -1;
                 #region gravalogErro
                 Diag.Log.Grava(
                new Diag.LogItem()
@@ -1228,6 +1227,7 @@ namespace VDT2.Controllers
                    Mensagem = $"Erro ao executar InspecaoController.InserirNovoModelo() | Cliente_ID {cliente_ID}, modelo_nome {novoModeloNome}"
                });
                 #endregion
+                return -1;
             }
         }
 

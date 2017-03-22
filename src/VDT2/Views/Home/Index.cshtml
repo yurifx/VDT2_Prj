@@ -30,9 +30,31 @@
         <div class="col-sm-6">
             <div class="card">
                 <div class="card-block">
-                    <h3 class="card-title">BackOffice</h3>
+                    <h3 class="card-title">Conferência de Inspeção</h3>
                     <p class="card-text">Clique no botão abaixo para conferência.</p>
                     <button class="btn btn-warning btn-sm" value="Conferencia de Inspeção" onclick="location.href='@Url.Action("NovaConferencia", "Conferencia")'"><span class="glyphicon glyphicon-th-list"> </span> Conferência de Inspeção</button>
+
+                </div>
+            </div>
+        </div>
+    </div><br/><br />
+
+    <div class="row">
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-block" id="cblk-id3">
+                    <h3 class="card-title">Packing List</h3>
+                    <p class="card-text">Upload de arquivos referentes ao Packing List</p>
+                    <button class="btn btn-primary btn-sm" value="PackingList" onclick="location.href='@Url.Action("PackingListInicio", "Conferencia")'"><span class="glyphicon glyphicon-plus"> </span> PackingList</button>
+                </div>
+            </div>
+        </div>
+        <div class="col-sm-6">
+            <div class="card">
+                <div class="card-block">
+                    <h3 class="card-title">Loading List</h3>
+                    <p class="card-text">Upload de arquivos referentes ao Loading List..</p>
+                    <button class="btn btn-danger btn-sm" value="LoadingList" onclick="location.href='@Url.Action("LoadingListInicio", "Conferencia")'"><span class="glyphicon glyphicon-th-list"> </span> LoadingList</button>
 
                 </div>
             </div>
@@ -41,4 +63,4 @@
 
 
 
-    }
+}

@@ -42,6 +42,7 @@ namespace VDT2.DAL
         public DbSet<Models.AvSeveridade> AvSeveridade { get; set; }
         public DbSet<Models.InspAvaria> InspAvaria { get; set; }
         public DbSet<Models.InspAvaria_Conf> InspAvaria_Conf { get; set; }
+        public DbSet<Models.ListaVeiculos> ListaVeiculos { get; set; }
 
 
 
