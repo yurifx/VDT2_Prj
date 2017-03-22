@@ -285,13 +285,17 @@ namespace VDT2.Controllers
             #endregion
 
 
-            int erro = BLL.UploadExcel.SalvarArquivo(files, configuracao);
+            int erro = BLL.UploadExcel.SalvarArquivo('L', files, configuracao);
             if (erro.Equals(-1))
             {
                 //fazer algo ..
 
             }
 
+
+            BLL.Conferencia.IntegrarArquivoLoadingList('L', files, configuracao);
+
+           // BLL.Conferencia.IntegrarArquivo;
             Models.ListaVeiculos listaVeiculos = new ListaVeiculos
             {
                 Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
@@ -332,7 +336,7 @@ namespace VDT2.Controllers
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion  
 
-            int erro = BLL.UploadExcel.SalvarArquivo(files, configuracao);
+            int erro = BLL.UploadExcel.SalvarArquivo('P', files, configuracao);
             if (erro.Equals(-1))
             {
                 //fazer algo ..

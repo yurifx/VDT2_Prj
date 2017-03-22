@@ -10,34 +10,44 @@ namespace VDT2.BLL
 {
     public class UploadExcel
     {
-        public static int SalvarArquivo(ICollection<IFormFile> files, Configuracao configuracao) {
-            try { 
-            string serverpath = configuracao.PastaUploadListas;
-            var file = files.FirstOrDefault();
-
-            var path = Path.Combine(serverpath, "Arquivos");
-
-            //1- Cria a pasta no servidor, caso não exista
-            if (!Directory.Exists(path))
+        public static int SalvarArquivo(char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+        {
+            try
             {
-                System.IO.Directory.CreateDirectory(path);
-            };
+                string path = "";
+                string serverpath = configuracao.PastaUploadListas;
+                var file = files.FirstOrDefault();
 
-            using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
-            {
-                file.CopyTo(fileStream);
+                if (tipo == 'F')
+                {
+                     path = Path.Combine(serverpath, "Arquivos", "PackingList");
+                }
+                else {
+                     path = Path.Combine(serverpath, "Arquivos", "LoadingList");
+                }
+
+
+                //1- Cria a pasta no servidor, caso não exista
+                if (!Directory.Exists(path))
+                {
+                    System.IO.Directory.CreateDirectory(path);
+                };
+
+                using (var fileStream = new FileStream(Path.Combine(path, file.FileName), FileMode.Create))
+                {
+                    file.CopyTo(fileStream);
                     return 0;
+                }
             }
-            }
-            catch(Exception ex)
+            catch (Exception ex)
             {
                 #region gravalogErro
-                    Diag.Log.Grava(
-                        new Diag.LogItem()
-                        {
-                            Nivel = Diag.Nivel.Erro,
-                            Mensagem = $"Erro ao realizar upload do arquivo Excel, erro: {ex}"
-                        });
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Erro ao realizar upload do arquivo Excel, erro: {ex}"
+                    });
                 #endregion
                 return -1;
             }
