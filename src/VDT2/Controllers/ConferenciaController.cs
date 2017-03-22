@@ -25,7 +25,10 @@ namespace VDT2.Controllers
             this.configuracao = settings.Value;
         }
 
-
+/// <summary>
+/// Inicio da Conferência. Carrega os dados dos dropdownlists [select options]
+/// </summary>
+/// <returns></returns>
         public IActionResult NovaConferencia()
         {
             #region dadosUsuario
@@ -77,6 +80,13 @@ namespace VDT2.Controllers
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
 
+
+/// <summary>
+/// Realiza edição das avarias
+/// </summary>
+/// <param name="inspAvaria_ID">ID da avaria</param>
+/// <returns></returns>
+
         public IActionResult EditarAvarias(int inspAvaria_ID)
         {
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
@@ -97,6 +107,12 @@ namespace VDT2.Controllers
             return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
         }
 
+
+/// <summary>
+/// Salva avaria no banco de dados
+/// </summary>
+/// <param name="conferenciaEditarAvariasVM"></param>
+/// <returns></returns>
         public IActionResult SalvarAvaria(ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM)
         {
 
@@ -120,6 +136,7 @@ namespace VDT2.Controllers
 
 
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
+
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.listaInspAvaria_Conf.FirstOrDefault().LocalNome;
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.listaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
@@ -140,7 +157,12 @@ namespace VDT2.Controllers
             return View("VisualizarFotos", visualizarAvariasVM);
 
         }
-
+/// <summary>
+/// Grava fotos da avaria
+/// </summary>
+/// <param name="inspAvaria_ID">ID da avaria</param>
+/// <param name="files">Fotos referentes a avaria</param>
+/// <returns></returns>
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
             

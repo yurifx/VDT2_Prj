@@ -14,9 +14,6 @@ using Microsoft.AspNetCore.Hosting;
 using System.IO;
 
 
-/// <summary>
-/// Classe de inspeção de avarias 21032017 -22:09
-/// </summary>
 namespace VDT2.Controllers
 {
     public class InspecaoController : Controller
@@ -468,10 +465,16 @@ namespace VDT2.Controllers
 
                 return View("RegistrarAvarias", RegistrarAvariasViewModel);
             };
-
-
             return RedirectToAction("Index", "Home");
         }
+
+        /// <summary>
+        /// Insere avaria no banco de dados
+        /// </summary>
+        /// <param name="registrarAvariasViewModel">ViewModel contendo informações pertinentes a avaria</param>
+        /// <param name="tipoBotao"></param>
+        /// <param name="files">Arquivos contendo as fotos da avaria</param>
+        /// <returns></returns>
 
         [HttpPost]
         public IActionResult InserirAvaria(InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel, int tipoBotao, ICollection<IFormFile> files)
@@ -598,7 +601,12 @@ namespace VDT2.Controllers
             return View("RegistrarAvarias", registrarAvariasViewModel);
         }
 
-
+        /// <summary>
+        /// Realiza visualização dos dados da avaria que foi clicada 
+        /// </summary>
+        /// <param name="VisualizarAvariasVM"></param>
+        /// <param name="tipoBotao"></param>
+        /// <returns>View("Avarias")</returns>
         [HttpPost]
         public IActionResult VisualizarAvarias(VisualizarAvariasViewModel VisualizarAvariasVM, int tipoBotao) //melhorar para pegar do viewmodel
         {
@@ -632,6 +640,12 @@ namespace VDT2.Controllers
             return View("Avarias", VisualizarAvariasVM);
         }
 
+
+        /// <summary>
+        /// Realiza Edição das avarias
+        /// </summary>
+        /// <param name="inspAvaria_ID_form_editar">ID da avaria</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult EditarAvarias(int inspAvaria_ID_form_editar)
         {
@@ -725,7 +739,12 @@ namespace VDT2.Controllers
 
 
 
-
+        /// <summary>
+        /// Gravação da avaria no banco de dados - Contendo as fotos
+        /// </summary>
+        /// <param name="EditarAvariasVM">Dados da avaria</param>
+        /// <param name="files">Fotos da avaria</param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult SalvarAvaria(InspecaoEditarAvariasViewModel EditarAvariasVM, ICollection<IFormFile> files)
         {
@@ -856,6 +875,13 @@ namespace VDT2.Controllers
             return View("RegistrarAvarias", registrarAvariasViewModel);
         }
 
+
+        /// <summary>
+        /// Edição de veículos / Botão Editar Veículo
+        /// </summary>
+        /// <param name="inspecaoVeiculoVM">Dados do veículo via ViewModel</param>
+        /// <param name="tipobotao"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult EditarVeiculo(InspecaoVeiculoViewModel inspecaoVeiculoVM, int tipobotao)
         {
@@ -930,7 +956,6 @@ namespace VDT2.Controllers
         /// <param name="inspecaoDadosGeraisVM"></param>
         /// <param name="tipobotao"></param>
         /// <returns>View ("NovaInspecao")</returns>
-
         [HttpPost]
         public IActionResult EditarInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, int tipobotao)
         {
@@ -1096,7 +1121,12 @@ namespace VDT2.Controllers
             return View("NovaInspecao", inspecaoDadosGeraisVM);
         }
 
-
+        /// <summary>
+        /// Novo Veículo
+        /// </summary>
+        /// <param name="NovoVeiculo">Dados do novo veículo</param>
+        /// <param name="tipobotao"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult NovoVeiculo(InspecaoVeiculoViewModel NovoVeiculo, int tipobotao)
         {
@@ -1106,7 +1136,7 @@ namespace VDT2.Controllers
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Controller: NovoVeiculo | Parametros: /InspecaoViewModel/ Edição: {NovoVeiculo.Edicao}, InspVeiculo_ID: {NovoVeiculo.InspVeiculo_ID}"
+                        Mensagem = $"Inspecao/NovoVeiculo | Parametros:  Edição: {NovoVeiculo.Edicao}, InspVeiculo_ID: {NovoVeiculo.InspVeiculo_ID}"
                     });
             }
             catch { }
@@ -1261,7 +1291,7 @@ namespace VDT2.Controllers
                 Models.InspAvaria inspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
                 //Models.InspVeiculo inspVeiculo = BLL.InspecaoVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao);
                 Models.Inspecao inspecao = BLL.Inspecao.ListarPorId(inspAvaria.Inspecao_ID, configuracao);
-                
+
                 string _cliente_id = Convert.ToString(inspecao.Cliente_ID);
                 string _inspecao_id = Convert.ToString(inspecao.Inspecao_ID);
                 string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao).Inspecao_ID);
