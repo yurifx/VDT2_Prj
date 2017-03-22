@@ -291,49 +291,54 @@ namespace VDT2.Controllers
             conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
             conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
 
-
-            if (files.FirstOrDefault().ContentType != "text/plain")
+            if (files.Count() >= 0)
             {
-                ViewData["MensagemErro"] = "Só é permitido o envio de arquivos .txt";
-                return View("LoadingListInicio", conferenciaLoadingListVM);
-            }
-
-            // BLL.Conferencia.IntegrarArquivo;
-            Models.ListaVeiculos listaVeiculos = new ListaVeiculos
-            {
-                Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
-                DataHoraInclusao = DateTime.Now,
-                LocalInspecao_ID = conferenciaLoadingListVM.LocalInspecao_ID,
-                NomeArquivo = files.FirstOrDefault().FileName,
-                Tipo = 'L',
-                Usuario_ID = dadosUsuario.UsuarioId
-            };
-
-            listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
-
-            if (listaVeiculos.ListaVeiculo_ID != 0)
-            {
-                inseriuArquivo = true;
-
-                salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
-
-                if (salvou)
+                if (files.FirstOrDefault().ContentType == "text/plain")
                 {
-                    integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
-
-                    if (integrou)
+                    Models.ListaVeiculos listaVeiculos = new ListaVeiculos
                     {
-                        ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
-                        return View("LoadingListInicio", conferenciaLoadingListVM);
+                        Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
+                        DataHoraInclusao = DateTime.Now,
+                        LocalInspecao_ID = conferenciaLoadingListVM.LocalInspecao_ID,
+                        NomeArquivo = files.FirstOrDefault().FileName,
+                        Tipo = 'L',
+                        Usuario_ID = dadosUsuario.UsuarioId
+                    };
+
+                    listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
+
+                    if (listaVeiculos.ListaVeiculo_ID != 0)
+                    {
+                        inseriuArquivo = true;
+
+                        salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+                        if (salvou)
+                        {
+                            integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+                            if (integrou)
+                            {
+                                ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+                                return View("LoadingListInicio", conferenciaLoadingListVM);
+                            }
+                        }
+                    }
+
+                    if (!salvou || !integrou || !inseriuArquivo)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
                     }
                 }
+                else if (files.FirstOrDefault().ContentType == "text/plain")
+                {
+                    ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                }
             }
-
-            if (!salvou || !integrou || !inseriuArquivo)
+            else if (files.Count() >= 0)
             {
-                ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
             }
-
 
             return View("LoadingListInicio", conferenciaLoadingListVM);
         }
@@ -408,16 +413,16 @@ namespace VDT2.Controllers
                         ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo.Tente novamente mais tarde ou entre em contato com service desk";
                     }
                 }
-                else if(files.FirstOrDefault().ContentType != "text/plain")
+                else if (files.FirstOrDefault().ContentType != "text/plain")
                 {
                     ViewData["MensagemErro"] = "Arquivo inválido, por favor, faça upload de um arquivo .txt";
                 }
             }
-            else if(files.Count()==0)
+            else if (files.Count() == 0)
             {
                 ViewData["MensagemErro"] = "Nenhum arquivo selecionado, por favor tente novamente mais tarde";
             }
-            
+
 
             return View("PackingListInicio", conferenciaPackingListVM);
         }
