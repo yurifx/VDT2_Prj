@@ -16,10 +16,10 @@ using VDT2.DAL;
 using VDT2.ViewModels;
 
 namespace VDT2.Controllers
-    {
+{
     [Microsoft.AspNetCore.Authorization.Authorize(ActiveAuthenticationSchemes = VDT2.BLL.Globais.NomeCookieAutenticacao)]
     public class HomeController : Controller
-        {
+    {
         /// <summary>
         /// Configuração geral do aplicativo, carregada de appsettings.json
         /// </summary>
@@ -31,10 +31,10 @@ namespace VDT2.Controllers
         /// </summary>
         /// <param name="settings">Configuração geral do aplicativo, carregada de appsettings.json</param>
         public HomeController(IOptions<VDT2.Models.Configuracao> settings)
-            {
+        {
 
             this.configuracao = settings.Value;
-            }
+        }
 
         /// <summary>
         /// Método acionado depois que o usuário já foi autenticado
@@ -43,185 +43,185 @@ namespace VDT2.Controllers
         /// <returns></returns>
         [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public IActionResult Index(string returnUrl)
-            {
-            RedirectToAction("Inspecao");
+
+        {
 
             // Testes - INICIO
             if (this.HttpContext.User == null)
-                {
+            {
 
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = "this.HttpContext.User == null"
-                        });
-                }
+                    });
+            }
             else if (this.HttpContext.User.Identity == null)
-                {
+            {
 
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = "this.HttpContext.User.Identity == null"
-                        });
-                }
+                    });
+            }
             else if (this.HttpContext.User.Identity.Name == null)
-                {
+            {
 
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = "this.HttpContext.User.Identity.Name == null"
-                        });
-                }
+                    });
+            }
             else
-                {
+            {
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = "this.HttpContext.User.Identity.Name:" + this.HttpContext.User.Identity.Name
-                        });
-                }
+                    });
+            }
 
             if (this.HttpContext.User.Identity != null)
-                {
+            {
                 var identityAux = (System.Security.Claims.ClaimsIdentity)User.Identity;
 
                 if (identityAux == null)
-                    {
+                {
 
                     Diag.Log.Grava(
                         new Diag.LogItem()
-                            {
+                        {
                             Nivel = Diag.Nivel.Informacao,
                             Mensagem = "identityAux == null"
-                            });
-                    }
+                        });
+                }
                 else
-                    {
+                {
                     IEnumerable<System.Security.Claims.Claim> claimsAux = identityAux.Claims;
 
                     if (claimsAux == null)
-                        {
+                    {
 
                         Diag.Log.Grava(
                             new Diag.LogItem()
-                                {
+                            {
                                 Nivel = Diag.Nivel.Informacao,
                                 Mensagem = "claimsAux == null"
-                                });
-                        }
+                            });
+                    }
                     else
-                        {
+                    {
                         Diag.Log.Grava(
                             new Diag.LogItem()
-                                {
+                            {
                                 Nivel = Diag.Nivel.Informacao,
                                 Mensagem = "identityAux.Claims:"
-                                });
+                            });
 
                         foreach (var x in claimsAux)
-                            {
+                        {
                             string s = $"  Type: {x.Type} Value:{x.Value}";
                             if (x.Properties != null && x.Properties.Count > 0)
-                                {
+                            {
                                 foreach (var p in x.Properties)
-                                    {
+                                {
                                     s += $" Key:{p.Key} Value:{p.Value}";
-                                    }
                                 }
+                            }
 
                             Diag.Log.Grava(
                                 new Diag.LogItem()
-                                    {
+                                {
                                     Nivel = Diag.Nivel.Informacao,
                                     Mensagem = s
-                                    });
-                            }
+                                });
                         }
                     }
                 }
+            }
 
             if (this.HttpContext.User.Claims == null)
-                {
+            {
 
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = "this.HttpContext.User.Claims == null"
-                        });
-                }
+                    });
+            }
             else
-                {
+            {
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = "this.HttpContext.User.Claims:"
-                        });
+                    });
 
                 foreach (var x in this.HttpContext.User.Claims)
-                    {
+                {
                     string s = $"  Type: {x.Type} Value:{x.Value}";
                     if (x.Properties != null && x.Properties.Count > 0)
-                        {
+                    {
                         foreach (var p in x.Properties)
-                            {
+                        {
                             s += $" Key:{p.Key} Value:{p.Value}";
-                            }
                         }
+                    }
 
                     Diag.Log.Grava(
                         new Diag.LogItem()
-                            {
+                        {
                             Nivel = Diag.Nivel.Informacao,
                             Mensagem = s
-                            });
-                    }
+                        });
                 }
+            }
             // Testes - FIM
 
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
 
             if (dadosUsuario == null)
-                {
+            {
 
                 // Testes - INICIO
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Erro,
                         Mensagem = "dadosUsuario == null"
-                        });
+                    });
                 // Testes - FIM
 
                 return View();
-                }
+            }
 
             // Testes - INICIO
             Diag.Log.Grava(
                 new Diag.LogItem()
-                    {
+                {
                     Nivel = Diag.Nivel.Informacao,
                     Mensagem = $"Login:{dadosUsuario.Identificacao}"
-                    });
+                });
             // Testes - FIM
 
             if (!string.IsNullOrEmpty(returnUrl))
-                {
+            {
                 return Redirect(returnUrl);
-                }
+            }
 
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
 
             return View(dadosUsuario);
-            }
+        }
 
         /// <summary>
         /// Método acionado eventualmente, se o usuário adicionar "/Login" no fim o URL.
@@ -232,19 +232,10 @@ namespace VDT2.Controllers
         /// <returns></returns>
         [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public IActionResult Login()
-            {
+        {
             return View("Index");
-            }
-        
-        public IActionResult Inspecao()
-            {
-            //InspecaoDadosGeraisViewModel InspecaoVM = new InspecaoDadosGeraisViewModel();
-            //InspecaoVM.ListaCliente = ClienteRepositorio.Listar(1);
-            //InspecaoVM.ListaLocalInspecao = LocalInspecaoRepositorio.Listar();
-            //InspecaoVM.ListaLocalCheckPoint = LocalCheckPointRepositorio.Listar(1);
-            //InspecaoVM.ListaTransportador = TransportadorRepositorio.Listar(1);
-            return View();
-            }
+        }
+
 
         /// <summary>
         /// Método principal de autenticação
@@ -253,7 +244,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         [HttpPost, Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public async Task<JsonResult> Login(ViewModels.LoginViewModel dados)
-            {
+        {
 
             /* http://stackoverflow.com/questions/35202804/submitting-a-razor-form-using-jquery-ajax-in-mvc6-using-the-built-in-functionali
              * data-ajax="true" data-ajax-method="POST" 
@@ -282,24 +273,24 @@ namespace VDT2.Controllers
 
             Diag.Log.Grava(
                 new Diag.LogItem()
-                    {
+                {
                     Nivel = Diag.Nivel.Informacao,
                     Mensagem = $"Usuário: {dados.Identificacao}"
-                    });
+                });
 
             string msg = string.Empty;
 
             if (string.IsNullOrEmpty(dados.Identificacao) || string.IsNullOrEmpty(dados.Senha))
-                {
+            {
                 msg = "Você deve informar sua identificação e sua senha";
-                }
+            }
             else
-                {
+            {
 
                 Models.Usuario dadosUsuario = AutenticaUsuario(dados.Identificacao, dados.Senha, this.configuracao);
 
                 if (dadosUsuario != null)
-                    {
+                {
 
                     List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>(6);
                     claims.Add(new System.Security.Claims.Claim("Login", dadosUsuario.Login, System.Security.Claims.ClaimValueTypes.String));
@@ -316,34 +307,34 @@ namespace VDT2.Controllers
                         VDT2.BLL.Globais.NomeCookieAutenticacao,
                         userPrincipal,
                         new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties
-                            {
+                        {
                             ExpiresUtc = DateTime.UtcNow.AddMinutes(VDT2.BLL.Globais.ExpiracaoCookieAutenticacao),
                             IsPersistent = false,
                             AllowRefresh = false
-                            });
+                        });
 
                     Diag.Log.Grava(
                         new Diag.LogItem()
-                            {
+                        {
                             Nivel = Diag.Nivel.Informacao,
                             Mensagem = "Executou SignInAsync"
-                            });
+                        });
                     msg = "OK:";
-                    }
-                else
-                    {
-                    msg = "Identificação ou senha inválidos";
-                    }
                 }
+                else
+                {
+                    msg = "Identificação ou senha inválidos";
+                }
+            }
 
             return Json(msg);
-            }
+        }
 
         public async Task<IActionResult> Logout()
-            {
+        {
             await HttpContext.Authentication.SignOutAsync("Cookies");
-            return Redirect("/");
-            }
+            return RedirectToAction("Index");
+        }
 
         /// <summary>
         /// Autenticação do usuário
@@ -353,26 +344,33 @@ namespace VDT2.Controllers
         /// <param name="configuracao"></param>
         /// <returns></returns>
         private static Models.Usuario AutenticaUsuario(string login, string senha, VDT2.Models.Configuracao configuracao)
-            {
+        {
 
             VDT2.Models.Usuario dadosUsuario = VDT2.BLL.Login.EfetuaLogin(login, senha, configuracao);
 
             if (dadosUsuario == null)
-                {
+            {
 
                 // TODO: Gravar no LOG
                 return null; // Não conseguiu autenticar o usuário - o usuário não foi encontrado na tabela tbUsrId ou ocorreu um erro na consulta à base de dados
-                }
+            }
 
             if (!dadosUsuario.Autenticou)
-                {
+            {
 
                 // TODO: Gravar no LOG
                 return null;  // Não conseguiu autenticar o usuário - senha inválida
-                }
-
-            return dadosUsuario;
             }
 
+            return dadosUsuario;
         }
+
+        [HttpGet]
+        public IActionResult Logoff()
+        {
+
+            return RedirectToAction("Index");
+        }
+
     }
+}

@@ -475,7 +475,6 @@ namespace VDT2.Controllers
         /// <param name="tipoBotao"></param>
         /// <param name="files">Arquivos contendo as fotos da avaria</param>
         /// <returns></returns>
-
         [HttpPost]
         public IActionResult InserirAvaria(InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel, int tipoBotao, ICollection<IFormFile> files)
         {

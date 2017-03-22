@@ -69,7 +69,7 @@ namespace VDT2.DAL
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
-                    listaVeiculos = contexto.ListaVeiculos.FromSql(chamada, parametros).ToList().FirstOrDefault();
+                    contexto.Database.ExecuteSqlCommand(chamada, parametros);
                     listaVeiculos.ListaVeiculo_ID = (int)parmListaVeiculo_ID.Value;
                     return listaVeiculos;
                 }

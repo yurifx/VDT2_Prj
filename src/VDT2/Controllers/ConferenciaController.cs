@@ -180,7 +180,7 @@ namespace VDT2.Controllers
             bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
-                ViewData["MensagemErro"] = "Erro ao relaizar upload de imagens da avaria";
+                ViewData["MensagemErro"] = "Erro ao realizar upload de imagens da avaria";
             }
             else
             {
@@ -284,17 +284,6 @@ namespace VDT2.Controllers
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
 
-
-            int erro = BLL.UploadExcel.SalvarArquivo('L', files, configuracao);
-            if (erro.Equals(-1))
-            {
-                //fazer algo ..
-
-            }
-
-
-            BLL.Conferencia.IntegrarArquivoLoadingList('L', files, configuracao);
-
            // BLL.Conferencia.IntegrarArquivo;
             Models.ListaVeiculos listaVeiculos = new ListaVeiculos
             {
@@ -307,6 +296,18 @@ namespace VDT2.Controllers
             };
 
             listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
+
+
+            int erro = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+            if (erro.Equals(-1))
+            {
+                //fazer algo ..
+
+            }
+
+            BLL.Conferencia.IntegrarArquivoLoadingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+
             ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
 
 
