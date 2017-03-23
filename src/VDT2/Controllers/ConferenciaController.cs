@@ -42,16 +42,19 @@ namespace VDT2.Controllers
             ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
 
             conferenciaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-            if (conferenciaVM.ListaLocalInspecao.Count() == 0)
+            conferenciaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+
+            #region EM_ERRO
+            if (conferenciaVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] = "Não há locais a serem listados, por favor entre em contato com o suporte técnico";
+                ViewData["MensagemErro"] = conferenciaVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
             }
 
-            conferenciaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-            if (conferenciaVM.ListaLocalCheckPoint.Count() == 0)
+            if (conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] = "Não há locais a serem listados, por favor entre em contato com o suporte técnico";
+                ViewData["MensagemErro"] = conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
             }
+            #endregion  
 
             return View(conferenciaVM);
         }
@@ -79,8 +82,7 @@ namespace VDT2.Controllers
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
 
-
-            listarConferenciaAvariaVM.listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
+            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
 
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
@@ -137,9 +139,7 @@ namespace VDT2.Controllers
             List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
 
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
-            listarConferenciaAvariaVM.listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
-
-
+            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
@@ -188,10 +188,9 @@ namespace VDT2.Controllers
             }
 
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
-
-            conferenciaEditarAvariasVM.InspAvaria = new Models.InspAvaria();
-            conferenciaEditarAvariasVM.InspVeiculo = new Models.InspVeiculo();
-            conferenciaEditarAvariasVM.Inspecao = new Models.Inspecao();
+            //conferenciaEditarAvariasVM.InspAvaria = new Models.InspAvaria();
+            //conferenciaEditarAvariasVM.InspVeiculo = new Models.InspVeiculo();
+            //conferenciaEditarAvariasVM.Inspecao = new Models.Inspecao();
 
             conferenciaEditarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
@@ -199,10 +198,9 @@ namespace VDT2.Controllers
 
 
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+            
+            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
 
-
-            //Mudar para pegar via BLL
-            listarConferenciaAvariaVM.listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.listaInspAvaria_Conf.FirstOrDefault().LocalNome;
@@ -231,32 +229,17 @@ namespace VDT2.Controllers
 
             ConferenciaLoadingListViewModel conferenciaLoadingListVM = new ConferenciaLoadingListViewModel();
             conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            if (conferenciaLoadingListVM.ListaCliente.Count() == 0)
-            {
-                ViewData["MensagemErro"] = "Erro ao listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-                conferenciaLoadingListVM.ListaCliente = new List<Models.Cliente>();
-                conferenciaLoadingListVM.ListaCliente.Add(new Cliente { Erro = true, Nome = "Erro", Cliente_ID = 0 });
-            }
-            else if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = "Erro ao listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-            }
-
-
             conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-
-            if (conferenciaLoadingListVM.ListaLocalInspecao.Count() == 0)
+            #region EM_ERRO
+            if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] = "Erro ao listar Locais Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-                conferenciaLoadingListVM.ListaLocalInspecao = new List<Models.LocalInspecao>();
-                conferenciaLoadingListVM.ListaLocalInspecao.Add(new Models.LocalInspecao { Erro = true, Nome = "Erro", LocalInspecao_ID = 0 });
+                ViewData["MensagemErro"] = (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().MensagemErro);
             }
-
-            else if (conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+            if (conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] = "Erro ao listar Locais Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico.";
+                ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
             }
-
+            #endregion  
 
             return View("LoadingListInicio", conferenciaLoadingListVM);
         }
@@ -285,198 +268,191 @@ namespace VDT2.Controllers
             ConferenciaPackingListViewModel conferenciaPackingListVM = new ConferenciaPackingListViewModel();
 
             conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            if (conferenciaPackingListVM.ListaCliente.Count() == 0)
-            {
-                ViewData["MensagemErro"] = "Erro ao listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-                conferenciaPackingListVM.ListaCliente = new List<Models.Cliente>();
-                conferenciaPackingListVM.ListaCliente.Add(new Cliente { Erro = true, Nome = "Erro", Cliente_ID = 0 });
-            }
-            else if (conferenciaPackingListVM.ListaCliente.FirstOrDefault().Erro == true)
+
+            if (conferenciaPackingListVM.ListaCliente.FirstOrDefault().Erro == true)
             {
                 ViewData["MensagemErro"] = "Erro ao listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
             }
-        
+
 
             conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-
-            if (conferenciaPackingListVM.ListaLocalInspecao.Count() == 0)
+            
+            if (conferenciaPackingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] = "Erro ao listar Locais Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-                conferenciaPackingListVM.ListaLocalInspecao = new List<Models.LocalInspecao>();
-                conferenciaPackingListVM.ListaLocalInspecao.Add(new Models.LocalInspecao { Erro = true, Nome = "Erro", LocalInspecao_ID = 0 });
+                ViewData["MensagemErro"] = conferenciaPackingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
             }
 
-            else if (conferenciaPackingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = "Erro ao listar Locais Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-            }
-          
 
             return View("PackingListInicio", conferenciaPackingListVM);
 
-    }
+        }
 
-    public IActionResult LoadingListSalvar(ConferenciaLoadingListViewModel conferenciaLoadingListVM, ICollection<IFormFile> files)
-{
-    bool salvou = false;
-    bool inseriuArquivo = false;
-    bool integrou = false;
-
-    //Verifica dados do usuário
-    ViewModels.LoginViewModel dadosUsuario = null;
-
-    #region dadosUsuario
-    dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-    if (dadosUsuario == null)
-    {
-        return RedirectToAction("Index", "Home");
-    }
-    else
-    {
-        ViewData["UsuarioNome"] = dadosUsuario.Nome;
-    }
-    ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
-    #endregion
-
-    conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-    conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-
-    if (files.Count() > 0)
-    {
-        if (files.FirstOrDefault().ContentType == "text/plain")
+        public IActionResult LoadingListSalvar(ConferenciaLoadingListViewModel conferenciaLoadingListVM, ICollection<IFormFile> files)
         {
-            Models.ListaVeiculos listaVeiculos = new ListaVeiculos
+            bool salvou = false;
+            bool inseriuArquivo = false;
+            bool integrou = false;
+
+            //Verifica dados do usuário
+            ViewModels.LoginViewModel dadosUsuario = null;
+
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
             {
-                Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
-                DataHoraInclusao = DateTime.Now,
-                LocalInspecao_ID = conferenciaLoadingListVM.LocalInspecao_ID,
-                NomeArquivo = files.FirstOrDefault().FileName,
-                Tipo = 'L',
-                Usuario_ID = dadosUsuario.UsuarioId
-            };
-
-            listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
-
-            if (listaVeiculos.ListaVeiculo_ID != 0)
+                return RedirectToAction("Index", "Home");
+            }
+            else
             {
-                inseriuArquivo = true;
+                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            }
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
 
-                salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
-
-                if (salvou)
-                {
-                    integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
-
-                    if (integrou)
-                    {
-                        ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
-                        return View("LoadingListInicio", conferenciaLoadingListVM);
-                    }
-                }
+            conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
             }
 
-            if (!salvou || !integrou || !inseriuArquivo)
+            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+
+            if (files.Count() > 0)
+            {
+                if (files.FirstOrDefault().ContentType == "text/plain")
+                {
+                    Models.ListaVeiculos listaVeiculos = new ListaVeiculos
+                    {
+                        Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
+                        DataHoraInclusao = DateTime.Now,
+                        LocalInspecao_ID = conferenciaLoadingListVM.LocalInspecao_ID,
+                        NomeArquivo = files.FirstOrDefault().FileName,
+                        Tipo = 'L',
+                        Usuario_ID = dadosUsuario.UsuarioId
+                    };
+
+                    listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
+
+                    if (listaVeiculos.ListaVeiculo_ID != 0)
+                    {
+                        inseriuArquivo = true;
+
+                        salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+                        if (salvou)
+                        {
+                            integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'L', files, configuracao);
+
+                            if (integrou)
+                            {
+                                ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+                                return View("LoadingListInicio", conferenciaLoadingListVM);
+                            }
+                        }
+                    }
+
+                    if (!salvou || !integrou || !inseriuArquivo)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                    }
+                }
+                else if (files.FirstOrDefault().ContentType != "text/plain")
+                {
+                    ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                }
+            }
+            else if (files.Count() >= 0)
             {
                 ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
             }
+
+            return View("LoadingListInicio", conferenciaLoadingListVM);
         }
-        else if (files.FirstOrDefault().ContentType == "text/plain")
+
+        /// <summary>
+        /// Salvar PackingList Informado pelo usuároi
+        /// </summary>
+        /// <param name="conferenciaPackingListVM"></param>
+        /// <param name="files"></param>
+        /// <returns></returns>
+
+        public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
         {
-            ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
-        }
-    }
-    else if (files.Count() >= 0)
-    {
-        ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
-    }
+            bool salvou = false;
+            bool inseriuArquivo = false;
+            bool integrou = false;
 
-    return View("LoadingListInicio", conferenciaLoadingListVM);
-}
+            //Verifica dados do usuário
+            ViewModels.LoginViewModel dadosUsuario = null;
 
-/// <summary>
-/// Salvar PackingList Informado pelo usuároi
-/// </summary>
-/// <param name="conferenciaPackingListVM"></param>
-/// <param name="files"></param>
-/// <returns></returns>
-
-public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
-{
-    bool salvou = false;
-    bool inseriuArquivo = false;
-    bool integrou = false;
-
-    //Verifica dados do usuário
-    ViewModels.LoginViewModel dadosUsuario = null;
-
-    #region dadosUsuario
-    dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-    if (dadosUsuario == null)
-    {
-        return RedirectToAction("Index", "Home");
-    }
-    else
-    {
-        ViewData["UsuarioNome"] = dadosUsuario.Nome;
-    }
-    ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
-    #endregion
-
-    conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-    conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-
-    if (files.Count() > 0)
-    {
-        if (files.FirstOrDefault().ContentType == "text/plain")
-        {
-            Models.ListaVeiculos listaVeiculos = new ListaVeiculos
+            #region dadosUsuario
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
             {
-                Cliente_ID = conferenciaPackingListVM.Cliente_ID,
-                DataHoraInclusao = DateTime.Now,
-                LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
-                NomeArquivo = files.FirstOrDefault().FileName,
-                Tipo = 'P',
-                Usuario_ID = dadosUsuario.UsuarioId
-            };
-
-            listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
-
-            if (listaVeiculos.ListaVeiculo_ID != 0)
+                return RedirectToAction("Index", "Home");
+            }
+            else
             {
-                inseriuArquivo = true;
+                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            }
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
 
-                salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
+            conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
 
-                if (salvou)
+            if (files.Count() > 0)
+            {
+                if (files.FirstOrDefault().ContentType == "text/plain")
                 {
-                    integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
-
-                    if (integrou)
+                    Models.ListaVeiculos listaVeiculos = new ListaVeiculos
                     {
-                        ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+                        Cliente_ID = conferenciaPackingListVM.Cliente_ID,
+                        DataHoraInclusao = DateTime.Now,
+                        LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
+                        NomeArquivo = files.FirstOrDefault().FileName,
+                        Tipo = 'P',
+                        Usuario_ID = dadosUsuario.UsuarioId
+                    };
+
+                    listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
+
+                    if (listaVeiculos.ListaVeiculo_ID != 0)
+                    {
+                        inseriuArquivo = true;
+
+                        salvou = BLL.UploadTxt.SalvarArquivo(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
+
+                        if (salvou)
+                        {
+                            integrou = BLL.Conferencia.IntegrarArquivoLoadingPackingList(listaVeiculos.ListaVeiculo_ID, 'P', files, configuracao);
+
+                            if (integrou)
+                            {
+                                ViewData["MensagemSucesso"] = "Upload realizado com sucessso";
+                            }
+                        }
+                    }
+
+                    if (!salvou || !integrou || !inseriuArquivo)
+                    {
+                        ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo.Tente novamente mais tarde ou entre em contato com service desk";
                     }
                 }
+                else if (files.FirstOrDefault().ContentType != "text/plain")
+                {
+                    ViewData["MensagemErro"] = "Arquivo inválido, por favor, faça upload de um arquivo .txt";
+                }
             }
-
-            if (!salvou || !integrou || !inseriuArquivo)
+            else if (files.Count() == 0)
             {
-                ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo.Tente novamente mais tarde ou entre em contato com service desk";
+                ViewData["MensagemErro"] = "Nenhum arquivo selecionado, por favor tente novamente mais tarde";
             }
+
+
+            return View("PackingListInicio", conferenciaPackingListVM);
         }
-        else if (files.FirstOrDefault().ContentType != "text/plain")
-        {
-            ViewData["MensagemErro"] = "Arquivo inválido, por favor, faça upload de um arquivo .txt";
-        }
+
+
     }
-    else if (files.Count() == 0)
-    {
-        ViewData["MensagemErro"] = "Nenhum arquivo selecionado, por favor tente novamente mais tarde";
-    }
-
-
-    return View("PackingListInicio", conferenciaPackingListVM);
-}
-
-
-}
 }

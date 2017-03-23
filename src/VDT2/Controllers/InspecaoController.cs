@@ -60,6 +60,24 @@ namespace VDT2.Controllers
             inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
             inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
             inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+            #region EM_ERRO
+            if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+            }
+            if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
+            }
+            if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+            }
+            if (inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
+            }
+            #endregion
 
             //TODO- EM ERRO
             return View("NovaInspecao", inspecaoDadosGeraisVM);
@@ -1083,37 +1101,25 @@ namespace VDT2.Controllers
             inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
             inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
             #region EM_ERRO
-            if (inspecaoDadosGeraisVM.ListaCliente.Count() > 0)
+
+            if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
             {
-                if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
-                {
-                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
-                }
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
             }
 
-            if (inspecaoDadosGeraisVM.ListaLocalInspecao.Count() > 0)
+            if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
-                if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
-                {
-                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
-                }
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
             }
 
-            if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.Count() > 0)
+            if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
             {
-                if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
-                {
-                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
-                }
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
             }
 
-
-            if (inspecaoDadosGeraisVM.ListaTransportador.Count() > 0)
+            if (inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().Erro == true)
             {
-                if (inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().Erro == true)
-                {
-                    ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
-                }
+                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
             }
             #endregion  
 

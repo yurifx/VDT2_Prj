@@ -4,7 +4,7 @@
 @model VDT2.ViewModels.ConferenciaIndexViewModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
 }
 
 <script src="~/js/Conferencia/ConferenciaTelaInicial.js" asp-append-version="true"></script>
@@ -47,13 +47,13 @@
                             <label>Data</label>
                         </div>
                         <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                            <input type="date" id="data" name="Data" />
+                            <input type="date" id="data" name="Data" class="inputDataTelaNovaConferencia"/>
                         </div>
                     </div>
                     <br />
                     <div class="form-group">
                         <div class="col col-lg-offset-2 col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <button type="submit" class="btn btn-success">Listar</button>
+                            <button type="submit" class="btnTelaNovaConferencia btn btn-sm btn-success">Listar</button>
                         </div>
                     </div>
                 </div>

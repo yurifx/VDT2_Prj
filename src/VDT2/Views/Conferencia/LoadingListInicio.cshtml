@@ -3,12 +3,13 @@
 @model VDT2.ViewModels.ConferenciaLoadingListViewModel
 
 @{
-    Layout = "~/Views/Shared/_Layout.cshtml";
+    Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
 }
 
-<h3>Loading List</h3>
-<form asp-controller="Conferencia" asp-action="LoadingListSalvar" method="post" enctype="multipart/form-data">
+<br />
 
+<form asp-controller="Conferencia" asp-action="LoadingListSalvar" method="post" enctype="multipart/form-data">
+    
     <div class="container">
         @if (ViewData["MensagemErro"] != null)
         {
@@ -27,6 +28,8 @@
     </div>
 
     <div class="container">
+
+        <h3>Loading List</h3><br/>
         @*Cliente*@
         <div class="row form-group">
             <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
@@ -60,13 +63,15 @@
             </div>
 
             <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input type="file" name="files" />
+                <input type="file" name="files" class="inputTelaPacking-e-LoadingList" />
             </div>
-        </div>
+        </div><br /><br />
 
         <div class="row form-group">
-            <button type="submit" class="btn btn-success">Upload</button>
-            <button type="button" class="btn btn-primary" onclick="">Voltar</button>
+            <div class="col col-lg-offset-2 col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <button type="submit" class="btnTelaLoadingListInicio btn btn-sm btn-success">Upload</button>
+                <button type="button" class="btnTelaLoadingListInicio btn btn-sm btn-primary" onclick="">Voltar</button>
+            </div>
         </div>
     </div>
 

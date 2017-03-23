@@ -2,73 +2,77 @@
 
 @model VDT2.ViewModels.ConferenciaPackingListViewModel
 
-@{
-    Layout = "~/Views/Shared/_Layout.cshtml";
-}
+    @{
+        Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
+    }
 
-<h3>Packing List</h3>
-<form asp-controller="Conferencia" asp-action="PackingListSalvar" method="post" enctype="multipart/form-data">
 
-    <div class="container">
-        @if (ViewData["MensagemErro"] != null)
-        {
-            <div class="alert alert-danger">
-                <p>@ViewData["MensagemErro"]</p>
-            </div>
-        }
-    </div>
-    <div class="container">
-        @if (ViewData["MensagemSucesso"] != null)
-        {
-            <div class="alert alert-success">
-                <p>@ViewData["MensagemSucesso"]</p>
-            </div>
-        }
-    </div>
+    <form asp-controller="Conferencia" asp-action="PackingListSalvar" method="post" enctype="multipart/form-data">
 
-    <div class="container">
-        @*Cliente*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+        <div class="container">
+            @if (ViewData["MensagemErro"] != null)
+            {
+                <div class="alert alert-danger">
+                    <p>@ViewData["MensagemErro"]</p>
+                </div>
+            }
+        </div>
+        <div class="container">
+            @if (ViewData["MensagemSucesso"] != null)
+            {
+                <div class="alert alert-success">
+                    <p>@ViewData["MensagemSucesso"]</p>
+                </div>
+            }
+        </div>
+
+        <div class="container">
+            <h3>Packing List</h3><br/><br/>
+
+            @*Cliente*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaCliente" name="Cliente_ID" class="form-control"
+                            asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
+                        <option disabled selected>Selecione Cliente</option>
+                    </select>
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <select id="ListaCliente" name="Cliente_ID" class="form-control"
-                        asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
-                    <option disabled selected>Selecione Cliente</option>
-                </select>
+
+            @*Local Inspeção*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaLocalInspecao">Local Inspecao</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
+                            asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
+                        <option disabled selected>Selecione Local</option>
+                    </select>
+                </div>
+            </div>
+
+            @*ARQUIVO*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="Arquivo">Arquivo</label><br/><br /><br/>
+                </div>
+
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <input type="file" name="files" class="inputTelaPacking-e-LoadingList"/>
+                </div>
+            </div>
+
+            
+            <div class="row form-group">
+                <div class="col col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
+                    <button type="submit" class="btn btnTelaPackingListInicio btn-sm btn-success">Upload</button>
+                    <button type="button" class="btn btnTelaPackingListInicio btn-sm btn-primary" onclick="">Voltar</button>
+                </div>
             </div>
         </div>
 
-        @*Local Inspeção*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="ListaLocalInspecao">Local Inspecao</label>
-            </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
-                        asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
-                    <option disabled selected>Selecione Local</option>
-                </select>
-            </div>
-        </div>
-
-        @*ARQUIVO*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="Arquivo">Arquivo</label>
-            </div>
-
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input type="file" name="files" />
-            </div>
-        </div>
-
-        <div class="row form-group">
-            <button type="submit" class="btn btn-success">Upload</button>
-            <button type="button" class="btn btn-primary" onclick="">Voltar</button>
-        </div>
-    </div>
-
-</form>
-
+    </form>
