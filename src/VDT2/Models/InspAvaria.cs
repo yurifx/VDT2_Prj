@@ -28,7 +28,9 @@ namespace VDT2.Models
 
         public string FabricaTransporte { get; set; }
 
-        
+        public Boolean DanoOrigem { get; set; } 
+        //Novo Campo - versão 0.0.3
+
         public int Inspecao_ID { get; set; }
 
         [NotMapped]

@@ -16,7 +16,7 @@ namespace VDT2.BLL
                 listaAvarias = DAL.InspAvaria.Listar(cliente_ID, VIN_6, configuracao);
                 return listaAvarias;
                 }
-            catch
+            catch (Exception ex)
                 {
                 listaAvarias.Add(new Models.InspAvaria { Erro = true, MensagemErro = "Erro ao processar DAL - InspAvaria - Listar()" });
                 return listaAvarias;
@@ -37,7 +37,6 @@ namespace VDT2.BLL
                 inspAvaria.MensagemErro = "Erro ao inserir avaria, tente novamente mais tarde ou entre em contato com o service desk";
                 return inspAvaria;
                 }
-
             }
 
 

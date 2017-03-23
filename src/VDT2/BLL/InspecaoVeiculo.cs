@@ -154,6 +154,22 @@ namespace VDT2.BLL
             return modeloSelectList;
             }
 
+
+        public static bool IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, Configuracao configuracao)
+        {
+            try
+            {
+                DAL.InspVeiculo.IntegrarVIN(Cliente_ID, LocalInspecao_ID, configuracao);
+                return true;    
+            }
+            catch (Exception)
+            {
+                return false;
+            }
+
+            
+        }
+
         }
     }
 

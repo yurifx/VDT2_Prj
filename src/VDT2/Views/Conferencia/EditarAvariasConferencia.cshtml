@@ -9,7 +9,7 @@
 
 
 <div class="inicioTelaEditarAvariasConferencia container">
-    
+
 
     @if (ViewData["MensagemErro"] != null)
             {
@@ -47,7 +47,7 @@
     </div>
 
     <div class="container">
-        
+
         <form asp-controller="Conferencia" asp-action="SalvarAvaria" method="post" id="salvarAvariaForm">
             <h4>Dados Veículo</h4>
             @*Chassi*@
@@ -212,18 +212,29 @@
                         <div class="form-group">
                             <div class="row">
                                 <div class="col col-lg-offset-3 col-md-offset-2 col-xs-offset-1 col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                    <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required />Fabrica
+                                    <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> Fabrica
                                 </div>
                                 <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                                    <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required />Transporte
+                                    <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required /> Transporte
                                 </div>
                             </div>
                         </div>
+
+                        @*Dano Origem*@
+                        <div class="form-group">
+                            <div class="row">
+                                <div class="col col-lg-3 col-md-3  col-sm-4  col-xs-6 ladoesquerdo">
+                                    <label>Dano na Origem:</label>
+                                </div>
+                                <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                    <input asp-for="@Model.InspAvaria.DanoOrigem" type="checkbox" />
+                                </div>
+                            </div>
+                        </div>
+
                     </div>
                 </div>
             </div>
-
-
 
             <div hidden>
                 Avaria ID: <input type="text" name="InspAvaria.InspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" /><br />
@@ -234,9 +245,12 @@
 
             </div>
 
-            <button type="submit" class="botoesTelaEditarAvariasConferencia btn btn-success">Atualizar</button>
-            <input type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)">
-
+            <div class="row">
+                <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <button type="submit" class="botoesTelaEditarAvariasConferencia btn btn-success">Atualizar</button>
+                    <input type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)">
+                </div><br/><br /><br /><br /><br />
+            </div>
         </form>
     </div>
 </div>

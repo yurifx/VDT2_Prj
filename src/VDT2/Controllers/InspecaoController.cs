@@ -529,6 +529,7 @@ namespace VDT2.Controllers
                 AvQuadrante_ID = registrarAvariasViewModel.Quadrante_ID,
                 AvSeveridade_ID = registrarAvariasViewModel.Severidade_ID,
                 FabricaTransporte = registrarAvariasViewModel.fabricatransporte,
+                DanoOrigem = false 
             };
 
             registrarAvariasViewModel.Inspecao = BLL.Inspecao.ListarPorId(registrarAvariasViewModel.InspAvaria.Inspecao_ID, configuracao);
@@ -794,7 +795,8 @@ namespace VDT2.Controllers
                 AvGravidade_ID = EditarAvariasVM.Gravidade_ID,
                 AvQuadrante_ID = EditarAvariasVM.Quadrante_ID,
                 AvSeveridade_ID = EditarAvariasVM.Severidade_ID,
-                FabricaTransporte = EditarAvariasVM.fabricatransporte
+                FabricaTransporte = EditarAvariasVM.fabricatransporte,
+                DanoOrigem = false
             };
 
             //Faz update dos dados da avaria

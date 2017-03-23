@@ -62,7 +62,7 @@ namespace VDT2.Models
 
         public string FabricaTransporte { get; set; }
 
-
+        public bool DanoOrigem { get; set; }
 
         }
     }

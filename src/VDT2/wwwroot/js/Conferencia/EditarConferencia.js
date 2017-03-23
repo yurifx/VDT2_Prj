@@ -33,6 +33,16 @@
     $("#avSeveridadeLista").prop('selectedIndex', $('#severidadeHiddenDiv').val());
     $('#severidadeNumericoInput').val($('#severidadeHiddenDiv').val());
 
+    //DanoOrigem
+    danoOrigem = $("#pDanoOrigemID").text();
+    if (danoOrigem == 'true') {
+        $("#InspAvaria_DanoOrigem").prop("checked", true);
+    }
+    else if (danoOrigem == 'false') {
+        $("#InspAvaria_DanoOrigem").prop("checked", false);
+
+    }
+
 });
 
 

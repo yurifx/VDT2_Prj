@@ -74,6 +74,8 @@ namespace VDT2.Controllers
             }
             #endregion
 
+            bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.ClienteID, conferenciaVM.LocalInspecao_ID, configuracao);
+
             List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
 
@@ -122,7 +124,6 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarAvaria(ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM)
         {
-
             //realiza updates
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.Update(conferenciaEditarAvariasVM.InspAvaria, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.Update(conferenciaEditarAvariasVM.InspVeiculo, configuracao);
