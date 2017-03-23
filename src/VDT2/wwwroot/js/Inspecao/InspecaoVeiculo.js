@@ -8,7 +8,7 @@
 
     var edicao = $('#edicaoId').val();
     if (edicao == 1) {
-        $("#botoesClasseVeiculoGravar").text("Atualizar");
+        $("#botoesClasseVeiculoGravar").text("Alterar");
     } else {
         $("#botoesClasseVeiculoGravar").text("Gravar");
     }
@@ -45,7 +45,7 @@ function EditarVeiculo_BtnCLick() {
         alert("Não é possível editar veículo anterior");
         $("#botoesClasseVeiculoGravar").text("Gravar");
     } else {
-        $("#botoesClasseVeiculoGravar").text("Atualizar");
+        $("#botoesClasseVeiculoGravar").text("Alterar");
         $("#editarVeiculoForm").submit();
     }
 }

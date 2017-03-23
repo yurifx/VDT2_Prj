@@ -120,24 +120,27 @@
 
                     </div>
                 </div><br />
-
-                    <img id="imgpreview" src="#" alt="" /><br /><br />
-                    <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-danger">Remover</button>
-                    <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-danger">Remover</button>
-
+                    <div class="container">
+                        <div class="form-group">
+                            <img id="imgpreview" src="#" alt="" /><br /><br />
+                            <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-danger">Remover</button>
+                            <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-danger">Remover</button>
+                        </div>
+                    </div>
                 </div><br /><br /><br />
                 <div class="container">
                     <div class="row">
                         <div class="form-group">
                             <button type="submit" class="botoesTelaEditarAvarias btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span> Salvar Fotos</button>
+                            <input type="button" class="botoesTelaEditarAvarias btn btn-sm btn-primary" value="Voltar" onClick="history.go(-1)">
                             <input type="text" hidden class="hidden" name="inspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />
                         </div>
                     </div>
@@ -163,7 +166,7 @@
                         {
                             <div class="row" id="@item.Imagem">
                                 <div class="col-md-12">
-                                    <img class="imgTelaConferenciaVisualizarFotos VisualizarFotos img-thumbnail" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
+                                    <img class="imgTelaConferenciaVisualizarFotos img-thumbnail" style="max-width: 500px; width: 380px;" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
                                 </div>
                                 <div class="col-md-12">
                                     <button type="button" class="btn btn-danger" value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>

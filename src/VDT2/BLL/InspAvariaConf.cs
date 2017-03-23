@@ -20,17 +20,26 @@ namespace VDT2.BLL
         /// <param name="Data">Data da Avaria</param>
         /// <param name="configuracao"></param>
         /// <returns>Lista de Avarias</returns>
-        public static List<Models.InspAvaria_Conf> ListarAvarias_Conf(int LocalInspecao_ID, int LocalCheckPoint_ID, DateTime Data, Configuracao configuracao)
+        public static List<Models.InspAvaria_Conf> ListarAvarias_Conf(int Cliente_ID, int LocalInspecao_ID, int LocalCheckPoint_ID, DateTime Data, Configuracao configuracao)
         {
             List<Models.InspAvaria_Conf> listaInspAvaria_Conf = new List<Models.InspAvaria_Conf>();
 
             try { 
-            listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(LocalInspecao_ID, LocalCheckPoint_ID, Data, configuracao);
+            listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(Cliente_ID, LocalInspecao_ID, LocalCheckPoint_ID, Data, configuracao);
             return listaInspAvaria_Conf;
             }
 
-            catch
+            catch (Exception ex)
             {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu Executar ListarAvarias_Conf. Erro: {ex}",
+                        Excecao = ex
+                    });
+                #endregion
                 //fazer tratamento de erro
                 return listaInspAvaria_Conf;
             }

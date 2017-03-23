@@ -16,6 +16,21 @@
             <form asp-controller="Conferencia" asp-action="ConferenciaListarVeiculos" method="post" onSubmit="return ValidarFormularioIndex()">
                 <div class="col col-lg-12 col-md-12">
                     <br />
+
+                    @*Cliente*@
+                    <div class="row form-group">
+                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                            <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                            <select id="ListaCliente" name="Cliente_ID" class="form-control"
+                                    asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
+                                <option disabled selected>Selecione Cliente</option>
+                            </select>
+                        </div>
+                    </div>
+
+
                     @*Local Inspeção*@
                     <div class="row form-group">
                         <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
@@ -51,9 +66,10 @@
                         </div>
                     </div>
                     <br />
-                    <div class="form-group">
-                        <div class="col col-lg-offset-2 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <div class="form-group"><br/>
+                        <div class="col col-lg-offset-0 col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <button type="submit" class="btnTelaNovaConferencia btn btn-sm btn-success">Listar</button>
+                            <input type="button" class="btnTelaNovaConferencia btn btn-sm btn-primary" value="Voltar" onClick="history.go(-1)">
                         </div>
                     </div>
                 </div>

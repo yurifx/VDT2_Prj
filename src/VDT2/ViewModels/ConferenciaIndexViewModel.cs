@@ -10,11 +10,14 @@ namespace VDT2.ViewModels
         {
         public List<InspAvaria> InspAvarias { get; set; }
         public List<InspAvaria> Inspecao { get; set; }
-        public int ClienteID { get; set; }
+        
         public List<Models.LocalInspecao> ListaLocalInspecao { get; set; }
         public List<Models.LocalCheckPoint> ListaLocalCheckPoint { get; set; }
+        public List<Models.Cliente> ListaCliente { get; set; }
+
         public DateTime Data { get; set; }
         public int LocalInspecao_ID { get; set; }
         public int LocalCheckPoint_ID { get; set; }
-        }
+        public int Cliente_ID { get; set; }
+    }
     }

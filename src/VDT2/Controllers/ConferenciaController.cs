@@ -41,10 +41,18 @@ namespace VDT2.Controllers
 
             ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
 
+            conferenciaVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
             conferenciaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
             conferenciaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
 
+
             #region EM_ERRO
+
+            if (conferenciaVM.ListaCliente.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = conferenciaVM.ListaCliente.FirstOrDefault().MensagemErro;
+            }
+
             if (conferenciaVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
                 ViewData["MensagemErro"] = conferenciaVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
@@ -56,7 +64,7 @@ namespace VDT2.Controllers
             }
             #endregion  
 
-            return View(conferenciaVM);
+            return View("NovaConferencia", conferenciaVM);
         }
 
         /// <summary>
@@ -74,7 +82,7 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.ClienteID, conferenciaVM.LocalInspecao_ID, configuracao);
+            bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, configuracao);
 
             List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
@@ -84,7 +92,10 @@ namespace VDT2.Controllers
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
 
-            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
+            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
+
+            //listarConferenciaAvariaVM.listaInspAvaria_Conf = null; //Teste1
+            //listarConferenciaAvariaVM.listaInspAvaria_Conf.Clear(); //teste2
 
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
@@ -113,6 +124,7 @@ namespace VDT2.Controllers
             conferenciaEditarAvariasVM.listaQuadrantes = BLL.RegistrarAvarias.ListarQuadrantes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             conferenciaEditarAvariasVM.listaSeveridades = BLL.RegistrarAvarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
+            //TODO: Validações de Erro
             return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
         }
 
@@ -140,7 +152,7 @@ namespace VDT2.Controllers
             List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
 
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
-            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
@@ -200,8 +212,7 @@ namespace VDT2.Controllers
 
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
             
-            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
-
+            listarConferenciaAvariaVM.listaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.listaInspAvaria_Conf.FirstOrDefault().LocalNome;
@@ -454,6 +465,10 @@ namespace VDT2.Controllers
             return View("PackingListInicio", conferenciaPackingListVM);
         }
 
+        public IActionResult Voltar(string nomeView)
+        {
+            return RedirectToAction("NovaConferencia", "Conferencia");
+        }
 
     }
 }

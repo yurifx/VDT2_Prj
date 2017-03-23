@@ -38,7 +38,7 @@
 
     var edicao = $('#edicaoInputini').val();
     if (edicao == 1) {
-        $("#botaoEnviarId").text("Atualizar");
+        $("#botaoEnviarId").text("Alterar");
 
         //recebe os campos
         var ClienteSelecionado = $("#clienteIdini").val();

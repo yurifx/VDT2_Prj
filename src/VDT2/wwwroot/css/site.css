@@ -484,8 +484,9 @@ LayoutCSS:.. Ordenação
 
     /* < View Conferencia/VisualizarFotos > */
 
-    imgTelaConferenciaVisualizarFotos .textarea.form-control {
-        max-width: 300px;
+    .imgTelaConferenciaVisualizarFotos .textarea.form-control {
+        max-width: 40%;
+        width: 40%;
     }
 
     /* < View Conferencia/LoadingListInicio > */

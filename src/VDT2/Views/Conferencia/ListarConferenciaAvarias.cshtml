@@ -47,6 +47,7 @@
                 <th>Fotos</th>
             </tr>
 
+            @if(Model.listaInspAvaria_Conf != null) { 
             @foreach (var item in Model.listaInspAvaria_Conf)
                 {
                 <tr>
@@ -64,6 +65,7 @@
                     <td><button type="button" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
                 </tr>   
                 }
+            }
 
         </table>
         <form asp-controller="Conferencia" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
@@ -77,5 +79,11 @@
                 <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
             </div>
         </form>
-    </div>
+
+        <form asp-controller="Conferencia" asp-action="Voltar" method="post" id="VisualizarFotosForm">
+            <input type="submit" class="btn btn-sm btn-primary" value="Voltar" onClick="">
+            <input type="text" name="View" value="ListarConferenciaAvarias" hidden/>
+        </form>
+            
+</div>
 </div>

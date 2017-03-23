@@ -335,12 +335,18 @@ namespace VDT2.DAL
         /// <param name="inspAvaria_ID">Id da avaria</param>
         /// <param name="configuracao">string de conexão com o banco de dados</param>
         /// <returns>InspAvaria</returns>
-        public static List<Models.InspAvaria_Conf> InspAvariaConf(int localInspecao_ID, int localCheckPoint_ID, DateTime data, Configuracao configuracao)
+        public static List<Models.InspAvaria_Conf> InspAvariaConf(int cliente_ID, int localInspecao_ID, int localCheckPoint_ID, DateTime data, Configuracao configuracao)
         {
             List<Models.InspAvaria_Conf> listaAvarias_conf = new List<Models.InspAvaria_Conf>();
             string nomeStoredProcedure = "InspAvaria_Conf";
             try
             {
+                SqlParameter parmClienteID = new SqlParameter("@p_Cliente_ID", SqlDbType.Int)
+                {
+                    Value = cliente_ID
+                };
+
+
                 SqlParameter parmLocalInspecao_ID = new SqlParameter("@p_LocalInspecao_ID", SqlDbType.Int)
                 {
                     Value = localInspecao_ID
@@ -358,13 +364,14 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                     {
+                        parmClienteID,
                         parmLocalInspecao_ID,
                         parmLocalCheckPoint_ID,
                         parmData
 
                     };
 
-                string chamada = $"{nomeStoredProcedure} {parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPoint_ID.ParameterName}, {parmData.ParameterName}  ";
+                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPoint_ID.ParameterName}, {parmData.ParameterName}  ";
 
                 using (var contexto = new GeralDbContext(configuracao))
 
