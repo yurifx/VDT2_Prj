@@ -501,10 +501,12 @@ LayoutCSS:.. Ordenação
 
 
     /* < View Conferencia/ListarConferenciasAvarias > */
+    .btnVoltarTelaConferenciaListarVeiculos{
+        width: 12%;
+    }
 
 
     /* < View Conferencia/EditarAvariasConferencia > */
-
     .DivDadosVeiculo_TelaEditarAvarias {
         border-style: solid;
         border-width: 1px;

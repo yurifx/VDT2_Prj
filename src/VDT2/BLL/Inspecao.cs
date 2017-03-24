@@ -342,6 +342,7 @@ namespace VDT2.BLL
 
         public static Models.Inspecao Update(Models.Inspecao inspecao, Configuracao configuracao)
         {
+            const string _mensagemErro = "Erro ao atualizar inspeção";
             try
             {
                 inspecao = DAL.Inspecao.Update(inspecao, configuracao);
@@ -350,14 +351,14 @@ namespace VDT2.BLL
             catch
             {
                 inspecao.Erro = true;
-                inspecao.MensagemErro = "Erro ao atualizar inspeção";
+                inspecao.MensagemErro = _mensagemErro;
                 return inspecao;
             }
         }
 
         public static Models.Inspecao Inserir(Models.Inspecao inspecao, Configuracao configuracao)
         {
-
+            const string _mensagemErro = "Erro ao inserir dados inspeção, por favor entre em contato com o suporte";
             try
             {
                 inspecao = DAL.Inspecao.Inserir(inspecao, configuracao);
@@ -366,7 +367,7 @@ namespace VDT2.BLL
             catch
             {
                 inspecao.Erro = true;
-                inspecao.MensagemErro = "Erro ao inserir dados inspeção, por favor entre em contato com o suporte";
+                inspecao.MensagemErro = _mensagemErro;
                 return inspecao;
             }
         }
@@ -375,7 +376,7 @@ namespace VDT2.BLL
         public static List<Models.Cliente> ListarClientes(int usuario_ID, Configuracao configuracao)
         {
 
-            string _mensagemErro = "Não foi possível listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
+            const string _mensagemErro = "Não foi possível listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
             List<Models.Cliente> listaClientes = new List<Models.Cliente>();
             try
             {
@@ -397,7 +398,7 @@ namespace VDT2.BLL
         public static List<Models.LocalInspecao> ListarLocaisInspecao(int usuario_ID, Configuracao configuracao)
         {
 
-            string _mensagemErro = "Não foi possível listar LocalInspecao, tente novamente mais tarde ou entre em contato com o suporte técnico.";
+            const string _mensagemErro = "Não foi possível listar LocalInspecao, tente novamente mais tarde ou entre em contato com o suporte técnico.";
 
             List<Models.LocalInspecao> listaLocaisInspecao = new List<Models.LocalInspecao>();
             try
@@ -419,7 +420,7 @@ namespace VDT2.BLL
         public static List<Models.LocalCheckPoint> ListarLocalCheckPoint(int usuario_ID, Configuracao configuracao)
         {
 
-            string _mensagemErro = "Não foi possível listar LocalCheckPoint, tente novamente mais tarde ou entre em contato com o suporte técnico.";
+            const string _mensagemErro = "Não foi possível listar LocalCheckPoint, tente novamente mais tarde ou entre em contato com o suporte técnico.";
 
             List<Models.LocalCheckPoint> listaLocalCheckPoint = new List<Models.LocalCheckPoint>();
             try
@@ -443,7 +444,7 @@ namespace VDT2.BLL
         public static List<Models.Transportador> ListarTransportadores(int usuario_ID, Configuracao configuracao)
         {
 
-            string _mensagemErro = "Não foi possível listar LocalCheckPoint, tente novamente mais tarde ou entre em contato com o suporte técnico.";
+            const string _mensagemErro = "Não foi possível listar LocalCheckPoint, tente novamente mais tarde ou entre em contato com o suporte técnico.";
             List<Models.Transportador> listaTransportadores = new List<Models.Transportador>();
 
             try

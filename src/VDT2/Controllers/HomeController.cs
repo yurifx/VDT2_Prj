@@ -14,6 +14,8 @@ using Microsoft.AspNetCore.Mvc;
 using Microsoft.Extensions.Options;  // Para usar IOptions
 using VDT2.DAL;
 using VDT2.ViewModels;
+using Microsoft.AspNetCore.Authentication.Cookies;
+using Microsoft.AspNetCore.Http;
 
 namespace VDT2.Controllers
 {
@@ -332,7 +334,16 @@ namespace VDT2.Controllers
 
         public async Task<IActionResult> Logout()
         {
-            await HttpContext.Authentication.SignOutAsync("Cookies");
+            //await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
+            //var cookie = this.Request.Cookies[".AspNetCore.VDT_AuthCookie"];
+            //if (cookie != null)
+            //{
+            //    var options = new CookieOptions { Expires = DateTime.Now.AddDays(-1) };
+            //    this.Response.Cookies.Append("VDT_AuthCookie", cookie, options);
+            //}
+            //this.HttpContext.Session.Clear();
+
+            Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie"); //único que funcionou
             return RedirectToAction("Index");
         }
 
@@ -357,19 +368,17 @@ namespace VDT2.Controllers
 
             if (!dadosUsuario.Autenticou)
             {
+                Diag.Log.Grava(
+                  new Diag.LogItem()
+                  {
+                      Nivel = Diag.Nivel.Informacao,
+                      Mensagem = $"Não conseguiu autenticar usuário, senha inválida | Login: {login}",
+                  });
 
-                // TODO: Gravar no LOG
                 return null;  // Não conseguiu autenticar o usuário - senha inválida
             }
 
             return dadosUsuario;
-        }
-
-        [HttpGet]
-        public IActionResult Logoff()
-        {
-
-            return RedirectToAction("Index");
         }
 
     }
