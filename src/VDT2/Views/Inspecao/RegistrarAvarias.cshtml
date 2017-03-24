@@ -5,48 +5,29 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/js/Inspecao/InspecaoRegistrarAvarias.js"  asp-append-version="true"></script>
+<script src="~/js/Inspecao/InspecaoRegistrarAvarias.js" asp-append-version="true"></script>
 
 
-<script type="text/javascript">
-function id(el) {
-	return document.getElementById(el);
-}
-function hide(el) {
-	id(el).style.display = 'none';//escondendo tudo
-}
-window.onload = function () {
-    setInterval(function () {
-        id('all').style.display = 'block';//liberando qndo terminar
-        hide('loading');
-    }, 20)
-	
-}
+<div class="container">
 
-</script>
-
-<div id="loading">
-    <span class="glyphicon glyphicon-cog"></span>
-</div>
-
-<div class="container" id="all">
     <div class="container">
-        <div class="container">
-            @if (ViewData["MensagemErro"] != null)
-                {
-                <div class="alert alert-danger">
-                    <p>@ViewData["MensagemErro"]</p>
-                </div>
-                }
-        </div>
-        <div class="container">
-            @if (ViewData["MensagemSucesso"] != null)
-                {
-                <div class="alert alert-success">
-                    <p>@ViewData["MensagemSucesso"]</p>
-                </div>
-                }
-        </div>
+        @if (ViewData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger">
+                <p>@ViewData["MensagemErro"]</p>
+            </div>
+        }
+    </div>
+    <div class="container">
+        @if (ViewData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success">
+                <p>@ViewData["MensagemSucesso"]</p>
+            </div>
+        }
+    </div>
+
+    <div class="container">
         <h4>Dados da Avaria</h4>
 
 
@@ -221,7 +202,7 @@ window.onload = function () {
                 </div>
 
                 <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto2" hidden>
-                    <span id="spanFoto2" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus" ></span>
+                    <span id="spanFoto2" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
                     <p id="qtdFotosSelecionadas2"></p>
                     <a id="visualizar2">Foto</a>
                     <div hidden>
@@ -385,7 +366,7 @@ window.onload = function () {
 
     <div class="container">
         @if (Model.listaAvarias.Count > 0)
-                {
+        {
             <br>
             <div class="row" id="mostrarAvarias">
                 <h4>Avarias neste CheckPoint</h4><p>Chassi @Model.InspVeiculo.VIN_6</p>
@@ -396,19 +377,19 @@ window.onload = function () {
                         <th>Dano</th>
                     </tr>
                     @foreach (var item in Model.listaAvarias)
-                    {
+                {
                         @if (item.Inspecao_ID.Equals(Model.InspVeiculo.Inspecao_ID))
-                        {
+                    {
                             <tr>
                                 <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
                                 <td>@item.Area_Pt</td>
                                 <td>@item.Dano_Pt</td>
                             </tr>
-                            }
                         }
+                    }
                 </table>
             </div>
-            }
+        }
 
     </div>
 

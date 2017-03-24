@@ -384,25 +384,13 @@ LayoutCSS:.. Ordenação
 /* < View Home/Index > */
 
 .BotaoLogin {
-    padding-left: 78%;
+    padding-left: 60%;
 }
 
 #cardblockTelaInspecao-Index {
     border-radius: 3px 3px;
     border-color: black;
 }
-
-#loading {
-    display: none;
-    width: 200px;
-}
-
-
-.btnTelaIndex{
-    width: 40%;
-
-}
-
 
 
 /* < View Inspecao/NovaInspecao > */
@@ -414,7 +402,7 @@ LayoutCSS:.. Ordenação
 
 /* < View Inspecao/Veiculo > */
 .botoesTelaVeiculo {
-    width: 120px;
+    width: 140px;
 }
 
 .lblModalTelaVeiculo {
@@ -462,11 +450,17 @@ LayoutCSS:.. Ordenação
 }
 
 
-
+/* < View Home/index > */
+.btnTelaIndex {
+    width: 45%;
+}
 
 /* < DISPOSITIVOS COM TELAS GRANDES SUPERIOR A 780px >*/
 
 @media only screen and (min-device-width:780px) {
+
+    
+
 
     /* < View NovaInspecao > */
 
