@@ -12,7 +12,7 @@ using Microsoft.AspNetCore.Mvc.Rendering;
 using VDT2.BLL;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
-
+using Newtonsoft.Json;
 
 namespace VDT2.Controllers
 {
@@ -51,6 +51,12 @@ namespace VDT2.Controllers
             else
             {
                 ViewData["UsuarioNome"] = dadosUsuario.Nome;
+                var identificacao = this.Request.Cookies["Usr"];
+
+                if (identificacao != null)
+                {
+                    var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+                }
             }
 
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;

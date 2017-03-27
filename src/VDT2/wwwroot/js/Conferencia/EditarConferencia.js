@@ -1,5 +1,12 @@
 ﻿$(function () {  // Shorthand for $( document ).ready()
 
+    var alteraInspecao = $("#hiddenAlteraInspecao").val();
+    if (alteraInspecao == 'False ') {
+        $("fieldset").prop("disabled", "disabled");
+        $("#btnGravar-EditarAvariasConferencia").hide();
+    }
+    
+
     //Recebe todos valores do post 
     //Area
 

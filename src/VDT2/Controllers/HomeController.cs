@@ -16,6 +16,7 @@ using VDT2.DAL;
 using VDT2.ViewModels;
 using Microsoft.AspNetCore.Authentication.Cookies;
 using Microsoft.AspNetCore.Http;
+using Newtonsoft.Json;
 
 namespace VDT2.Controllers
 {
@@ -219,6 +220,16 @@ namespace VDT2.Controllers
                 return Redirect(returnUrl);
             }
 
+            //Recebe Dados Cookies - Teste Yuri
+
+            var identificacao = this.Request.Cookies["Usr"];
+            if (identificacao != null)
+            {
+                var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+                dadosUsuario.Usuario = objUsuario;
+            }
+
+
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
 
@@ -290,9 +301,23 @@ namespace VDT2.Controllers
             {
 
                 Models.Usuario dadosUsuario = AutenticaUsuario(dados.Identificacao, dados.Senha, this.configuracao);
-
+              
                 if (dadosUsuario != null)
                 {
+                    //Grava cookie do usuário: Teste Yuri
+                    var jsonDadosUsuario = JsonConvert.SerializeObject(dadosUsuario);
+                    Response.Cookies.Append(
+                        "Usr",
+                        jsonDadosUsuario,
+                        new CookieOptions()
+                        {
+                            Path = "/",
+                            HttpOnly = false,
+                            Secure = false
+                        }
+                    );
+                    //
+
 
                     List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>(6);
                     claims.Add(new System.Security.Claims.Claim("Login", dadosUsuario.Login, System.Security.Claims.ClaimValueTypes.String));
@@ -332,18 +357,9 @@ namespace VDT2.Controllers
             return Json(msg);
         }
 
-        public async Task<IActionResult> Logout()
+        public IActionResult Logout()
         {
-            //await HttpContext.Authentication.SignOutAsync(CookieAuthenticationDefaults.AuthenticationScheme);
-            //var cookie = this.Request.Cookies[".AspNetCore.VDT_AuthCookie"];
-            //if (cookie != null)
-            //{
-            //    var options = new CookieOptions { Expires = DateTime.Now.AddDays(-1) };
-            //    this.Response.Cookies.Append("VDT_AuthCookie", cookie, options);
-            //}
-            //this.HttpContext.Session.Clear();
-
-            Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie"); //único que funcionou
+            Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie");
             return RedirectToAction("Index");
         }
 

@@ -1,7 +1,6 @@
 ﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
 @model VDT2.ViewModels.ListarConferenciaAvariaViewModel
 
-
 @{
     Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
 }
@@ -9,6 +8,11 @@
 
 <script src="~/js/Conferencia/ConferenciaAvarias.js"  asp-append-version="true"></script>
 
+<div class="hidden">
+    @if(Model.Usuario != null) { 
+    <p>Altera Inifecao? </p><input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao "/>
+    }
+</div>
 
 <div class="container">
     <div class="container" id="EM_ERRO">
@@ -47,11 +51,11 @@
                 <th>Fotos</th>
             </tr>
 
-            @if(Model.listaInspAvaria_Conf != null) { 
-            @foreach (var item in Model.listaInspAvaria_Conf)
-                {
+            @if(Model.ListaInspAvaria_Conf != null) {
+            @foreach (var item in Model.ListaInspAvaria_Conf)
+            {
                 <tr>
-                    <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+                    <td><button type="button" class="btnEditarEditarListarConferenciaAvarias" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
                     <td>@item.VIN_6</td>
                     <td>@item.MarcaNome</td>
                     <td>@item.ModeloNome</td>

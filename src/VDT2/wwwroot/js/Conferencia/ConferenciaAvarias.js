@@ -1,5 +1,10 @@
 ﻿$(function () {  // Shorthand for $( document ).ready()
-
+    var alteraInspecao = $("#hiddenAlteraInspecao").val();
+    if (alteraInspecao == 'False ') {
+        $(".btnEditarEditarListarConferenciaAvarias").each(function () {
+            $(this).text("Visualizar");
+        });
+    }
 });
 
 

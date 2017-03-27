@@ -36,5 +36,6 @@ namespace VDT2.ViewModels
             this.Autenticado = false;
         }
 
+        public Models.Usuario Usuario { get; set; }
     }
 }
