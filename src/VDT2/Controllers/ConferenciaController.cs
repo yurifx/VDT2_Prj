@@ -70,7 +70,7 @@ namespace VDT2.Controllers
         /// <summary>
         /// Listagem de veículos e suas respectivas avarias 2a tela.
         /// </summary>
-        /// <param name="conferenciaVM"></param>
+        /// <param name="conferenciaVM">Dados da conferência</param>
         /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
@@ -110,19 +110,19 @@ namespace VDT2.Controllers
         public IActionResult EditarAvarias(int inspAvaria_ID)
         {
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
-            conferenciaEditarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
+            conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
 
             //preenche dados próxima view
             conferenciaEditarAvariasVM.listaMarcas = BLL.InspecaoVeiculo.ListaMarca(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             conferenciaEditarAvariasVM.listaModelos = BLL.InspecaoVeiculo.ListaModelo(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            conferenciaEditarAvariasVM.listaAreas = BLL.RegistrarAvarias.ListarAreas(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            conferenciaEditarAvariasVM.listaCondicoes = BLL.RegistrarAvarias.ListarCondicoes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            conferenciaEditarAvariasVM.listaDanos = BLL.RegistrarAvarias.ListarDanos(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            conferenciaEditarAvariasVM.listaGravidades = BLL.RegistrarAvarias.ListarGravidades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            conferenciaEditarAvariasVM.listaQuadrantes = BLL.RegistrarAvarias.ListarQuadrantes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            conferenciaEditarAvariasVM.listaSeveridades = BLL.RegistrarAvarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            conferenciaEditarAvariasVM.listaAreas = BLL.Avarias.ListarAreas(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            conferenciaEditarAvariasVM.listaCondicoes = BLL.Avarias.ListarCondicoes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            conferenciaEditarAvariasVM.listaDanos = BLL.Avarias.ListarDanos(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            conferenciaEditarAvariasVM.listaGravidades = BLL.Avarias.ListarGravidades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            conferenciaEditarAvariasVM.listaQuadrantes = BLL.Avarias.ListarQuadrantes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            conferenciaEditarAvariasVM.listaSeveridades = BLL.Avarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
             //TODO: Validações de Erro
             return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
@@ -173,7 +173,7 @@ namespace VDT2.Controllers
             ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
 
             visualizarAvariasVM.InspAvaria = new Models.InspAvaria();
-            visualizarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
+            visualizarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
 
             visualizarAvariasVM.ListaImagemAvarias = BLL.UploadImagens.Listar(inspAvaria_ID, configuracao);
 
@@ -189,7 +189,6 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
-
             bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
@@ -201,11 +200,8 @@ namespace VDT2.Controllers
             }
 
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
-            //conferenciaEditarAvariasVM.InspAvaria = new Models.InspAvaria();
-            //conferenciaEditarAvariasVM.InspVeiculo = new Models.InspVeiculo();
-            //conferenciaEditarAvariasVM.Inspecao = new Models.Inspecao();
 
-            conferenciaEditarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
+            conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
 
@@ -299,15 +295,21 @@ namespace VDT2.Controllers
 
         }
 
+        /// <summary>
+        /// Salva as informações de cabeçalho da LoadingList Enviada pelo usuário
+        /// </summary>
+        /// <param name="conferenciaLoadingListVM"></param>
+        /// <param name="files">Arquivo contendo os dados em txt.</param>
+        /// <returns></returns>
         public IActionResult LoadingListSalvar(ConferenciaLoadingListViewModel conferenciaLoadingListVM, ICollection<IFormFile> files)
         {
             bool salvou = false;
             bool inseriuArquivo = false;
             bool integrou = false;
-
+            string _mensagemErro = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+            
             //Verifica dados do usuário
             ViewModels.LoginViewModel dadosUsuario = null;
-
             #region dadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -324,11 +326,16 @@ namespace VDT2.Controllers
             conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
             if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] = "Erro ao listar Clientes, tente novamente mais tarde ou entre em contato com o suporte técnico.";
+                ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaCliente.FirstOrDefault().MensagemErro;
             }
 
             conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            if (conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+            {
+                ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+            }
 
+            //Verifica o arquivo enviado. 
             if (files.Count() > 0)
             {
                 if (files.FirstOrDefault().ContentType == "text/plain")
@@ -365,17 +372,17 @@ namespace VDT2.Controllers
 
                     if (!salvou || !integrou || !inseriuArquivo)
                     {
-                        ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                        ViewData["MensagemErro"] = _mensagemErro;
                     }
                 }
                 else if (files.FirstOrDefault().ContentType != "text/plain")
                 {
-                    ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                    ViewData["MensagemErro"] = _mensagemErro;
                 }
             }
             else if (files.Count() >= 0)
             {
-                ViewData["MensagemErro"] = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
+                ViewData["MensagemErro"] = _mensagemErro;
             }
 
             return View("LoadingListInicio", conferenciaLoadingListVM);
@@ -385,9 +392,8 @@ namespace VDT2.Controllers
         /// Salvar PackingList Informado pelo usuároi
         /// </summary>
         /// <param name="conferenciaPackingListVM"></param>
-        /// <param name="files"></param>
+        /// <param name="files">Arquivo contendo dados da PackingList</param>
         /// <returns></returns>
-
         public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
         {
             bool salvou = false;

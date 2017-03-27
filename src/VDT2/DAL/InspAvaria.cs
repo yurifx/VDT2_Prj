@@ -79,16 +79,16 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                parmInspVeiculo_ID,
-                parmAvArea_ID,
-                parmAvCondicao_ID,
-                parmAvDano_ID,
-                parmAvGravidade_ID,
-                parmAvQuadrante_ID,
-                parmAvSeveridade_ID,
-                parmFabricaTransporte,
-                parmDanoOrigem,
-                parmInspAvaria_ID
+                    parmInspVeiculo_ID,
+                    parmAvArea_ID,
+                    parmAvCondicao_ID,
+                    parmAvDano_ID,
+                    parmAvGravidade_ID,
+                    parmAvQuadrante_ID,
+                    parmAvSeveridade_ID,
+                    parmFabricaTransporte,
+                    parmDanoOrigem,
+                    parmInspAvaria_ID
                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspVeiculo_ID.ParameterName}, { parmAvArea_ID.ParameterName}, { parmAvDano_ID.ParameterName}, { parmAvSeveridade_ID.ParameterName}, { parmAvQuadrante_ID.ParameterName}, { parmAvGravidade_ID.ParameterName}, { parmAvCondicao_ID.ParameterName},     { parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}, {parmInspAvaria_ID.ParameterName} out";
@@ -101,7 +101,7 @@ namespace VDT2.DAL
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"BLL.InspAvaria.Inserir() realizado com sucesso:  Dados atualizados | inspAvaria_ID: {inspAvaria.InspAvaria_ID} | Inspecao_ID: {inspAvaria.Inspecao_ID},  Veiculo_ID: {inspAvaria.InspVeiculo_ID}, Área: {inspAvaria.AvArea_ID}, Condição: {inspAvaria.AvCondicao_ID}, Dano: {inspAvaria.AvDano_ID}, Gravidade: {inspAvaria.AvGravidade_ID}, Quadrante: {inspAvaria.AvQuadrante_ID}, Severidade {inspAvaria.AvSeveridade_ID}"
+                            Mensagem = $"DAL.InspAvaria.Inserir() realizado com sucesso:  Dados registrados | inspAvaria_ID: {inspAvaria.InspAvaria_ID} | Inspecao_ID: {inspAvaria.Inspecao_ID},  Veiculo_ID: {inspAvaria.InspVeiculo_ID}, Área: {inspAvaria.AvArea_ID}, Condição: {inspAvaria.AvCondicao_ID}, Dano: {inspAvaria.AvDano_ID}, Gravidade: {inspAvaria.AvGravidade_ID}, Quadrante: {inspAvaria.AvQuadrante_ID}, Severidade {inspAvaria.AvSeveridade_ID}"
                         });
                     #endregion
                     return inspAvaria;
@@ -162,6 +162,14 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     avarias = contexto.InspAvaria.FromSql(chamada, parametros).ToList();
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"DAL.InspAvaria.Listar() realizado com sucesso - Registros encontrados: {avarias.Count()}"
+                        });
+                    #endregion
                     return avarias;
                 }
             }
@@ -209,6 +217,14 @@ namespace VDT2.DAL
 
                 {
                     inspAvaria = contexto.InspAvaria.FromSql(chamada, parametros).FirstOrDefault();
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"DAL.InspAvaria.Listar() realizado com sucesso"
+                        });
+                    #endregion
                     return inspAvaria;
                 }
 
@@ -223,8 +239,8 @@ namespace VDT2.DAL
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
                     });
-                throw;
                 #endregion
+                throw;
             }
         }
 
@@ -285,15 +301,15 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                parmInspAvaria_ID,
-                parmAvArea_ID,
-                parmAvDano_ID,
-                parmAvSeveridade_ID,
-                parmAvQuadrante_ID,
-                parmAvGravidade_ID,
-                parmAvCondicao_ID,
-                parmFabricaTransporte,
-                parmDanoOrigem
+                    parmInspAvaria_ID,
+                    parmAvArea_ID,
+                    parmAvDano_ID,
+                    parmAvSeveridade_ID,
+                    parmAvQuadrante_ID,
+                    parmAvGravidade_ID,
+                    parmAvCondicao_ID,
+                    parmFabricaTransporte,
+                    parmDanoOrigem
                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspAvaria_ID.ParameterName}, {parmAvArea_ID.ParameterName}, {parmAvDano_ID.ParameterName}, {parmAvSeveridade_ID.ParameterName}, {parmAvQuadrante_ID.ParameterName}, {parmAvGravidade_ID.ParameterName}, {parmAvCondicao_ID.ParameterName}, {parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}";
@@ -306,7 +322,7 @@ namespace VDT2.DAL
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"BLL.InspAvaria.Inserir() realizado com sucesso:  Dados atualizados | inspAvaria_ID: {inspAvaria.InspAvaria_ID} | Inspecao_ID: {inspAvaria.Inspecao_ID},  Veiculo_ID: {inspAvaria.InspVeiculo_ID}, Área: {inspAvaria.AvArea_ID}, Condição: {inspAvaria.AvCondicao_ID}, Dano: {inspAvaria.AvDano_ID}, Gravidade: {inspAvaria.AvGravidade_ID}, Quadrante: {inspAvaria.AvQuadrante_ID}, Severidade {inspAvaria.AvSeveridade_ID}"
+                            Mensagem = $"DAL.InspAvaria.Update() realizado com sucesso:  Dados atualizados | inspAvaria_ID: {inspAvaria.InspAvaria_ID} | Inspecao_ID: {inspAvaria.Inspecao_ID},  Veiculo_ID: {inspAvaria.InspVeiculo_ID}, Área: {inspAvaria.AvArea_ID}, Condição: {inspAvaria.AvCondicao_ID}, Dano: {inspAvaria.AvDano_ID}, Gravidade: {inspAvaria.AvGravidade_ID}, Quadrante: {inspAvaria.AvQuadrante_ID}, Severidade {inspAvaria.AvSeveridade_ID}"
                         });
                     #endregion
                     return inspAvaria;
@@ -322,9 +338,8 @@ namespace VDT2.DAL
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
                     });
-                throw;
-
                 #endregion
+                throw;
             }
 
         }
@@ -377,6 +392,15 @@ namespace VDT2.DAL
 
                 {
                     listaAvarias_conf = contexto.InspAvaria_Conf.FromSql(chamada, parametros).ToList();
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"DAL.InspAvaria.InspAvariaConf() realizado com sucesso - Registros encontrados {listaAvarias_conf.Count()}"
+                        });
+                    #endregion
+
                     return listaAvarias_conf;
                 }
 

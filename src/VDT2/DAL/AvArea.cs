@@ -7,10 +7,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
 
+
+/// <summary>
+/// Camada de acesso aos dados AvArea
+/// </summary>
 namespace VDT2.DAL
     {
     public class AvArea
         {
+
+        /// <summary>
+        /// Lista areas referentes ao Cliente
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Lista de areas</returns>
         public static List<Models.AvArea> Listar(int Cliente_ID, VDT2.Models.Configuracao configuracao)
             {
             List<Models.AvArea> listaAreas = new List<Models.AvArea>();

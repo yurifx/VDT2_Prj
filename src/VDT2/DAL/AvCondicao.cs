@@ -7,10 +7,21 @@ using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
 
+
+/// <summary>
+/// Camada de acesso a dados: AvCondicao
+/// </summary>
 namespace VDT2.DAL
     {
     public class AvCondicao
         {
+
+        /// <summary>
+        /// Lista as condicoes do cliente informado
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Lista de Condicoes</returns>
         public static List<Models.AvCondicao> Listar(int Cliente_ID, VDT2.Models.Configuracao configuracao)
             {
             List<Models.AvCondicao> listaAvCondicao = new List<Models.AvCondicao>();
@@ -38,12 +49,14 @@ namespace VDT2.DAL
                 }
             catch (System.Exception ex)
                 {
-                    new Diag.LogItem()
+                #region gravalogErro
+                new Diag.LogItem()
                         {
                         Nivel = Diag.Nivel.Erro,
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
                         };
+                #endregion  
                 throw;
                 }
             }

@@ -6,10 +6,22 @@ using VDT2.DAL;
 using VDT2.Models;
 using VDT2.ViewModels;
 
+
+/// <summary>
+/// Camada de negócios Inspecao
+/// </summary>
 namespace VDT2.BLL
 {
     public class Inspecao
     {
+
+        /// <summary>
+        /// Insere um novo modelo de veículo no banco de dados.
+        /// </summary>
+        /// <param name="cliente_ID">ID do cliente</param>
+        /// <param name="novoModeloNome">Nome do modelo</param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static int InserirNovoModelo(int cliente_ID, string novoModeloNome, Configuracao configuracao)
         {
             try

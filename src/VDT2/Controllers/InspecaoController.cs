@@ -387,12 +387,12 @@ namespace VDT2.Controllers
                 RegistrarAvariasViewModel.InspVeiculo = VeiculoViewModel.InspVeiculo;
 
                 //recebe listas
-                RegistrarAvariasViewModel.avAreaLista = BLL.RegistrarAvarias.ListarAreas(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-                RegistrarAvariasViewModel.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-                RegistrarAvariasViewModel.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-                RegistrarAvariasViewModel.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-                RegistrarAvariasViewModel.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-                RegistrarAvariasViewModel.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avAreaLista = BLL.Avarias.ListarAreas(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avCondicaoLista = BLL.Avarias.ListarCondicoes(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avDanoRepositorioLista = BLL.Avarias.ListarDanos(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avGravidadeLista = BLL.Avarias.ListarGravidades(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avQuadranteLista = BLL.Avarias.ListarQuadrantes(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+                RegistrarAvariasViewModel.avSeveridadeLista = BLL.Avarias.ListarSeveridades(RegistrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
                 #region EM_ERRO
                 if (RegistrarAvariasViewModel.avAreaLista.Count() > 0)
                 {
@@ -528,7 +528,7 @@ namespace VDT2.Controllers
                 AvQuadrante_ID = registrarAvariasViewModel.Quadrante_ID,
                 AvSeveridade_ID = registrarAvariasViewModel.Severidade_ID,
                 FabricaTransporte = registrarAvariasViewModel.fabricatransporte,
-                DanoOrigem = false 
+                DanoOrigem = false
             };
 
             registrarAvariasViewModel.Inspecao = BLL.Inspecao.ListarPorId(registrarAvariasViewModel.InspAvaria.Inspecao_ID, configuracao);
@@ -566,12 +566,12 @@ namespace VDT2.Controllers
             registrarAvariasViewModel.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(registrarAvariasViewModel.InspVeiculo_ID, configuracao);
 
             #region preencheListas
-            registrarAvariasViewModel.avAreaLista = BLL.RegistrarAvarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avAreaLista = BLL.Avarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avCondicaoLista = BLL.Avarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avDanoRepositorioLista = BLL.Avarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avGravidadeLista = BLL.Avarias.ListarGravidades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avQuadranteLista = BLL.Avarias.ListarQuadrantes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avSeveridadeLista = BLL.Avarias.ListarSeveridades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
             #region EM_ERRO
             if (registrarAvariasViewModel.avAreaLista.FirstOrDefault().Erro == true)
             {
@@ -680,7 +680,7 @@ namespace VDT2.Controllers
 
             InspecaoEditarAvariasViewModel EditarAvariasVM = new InspecaoEditarAvariasViewModel();
 
-            EditarAvariasVM.InspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID_form_editar, configuracao);
+            EditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID_form_editar, configuracao);
             EditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(EditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
             EditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(EditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
 
@@ -703,12 +703,12 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            EditarAvariasVM.avAreaLista = BLL.RegistrarAvarias.ListarAreas(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            EditarAvariasVM.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            EditarAvariasVM.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            EditarAvariasVM.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            EditarAvariasVM.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            EditarAvariasVM.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avAreaLista = BLL.Avarias.ListarAreas(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avCondicaoLista = BLL.Avarias.ListarCondicoes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avDanoRepositorioLista = BLL.Avarias.ListarDanos(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avGravidadeLista = BLL.Avarias.ListarGravidades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avQuadranteLista = BLL.Avarias.ListarQuadrantes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avSeveridadeLista = BLL.Avarias.ListarSeveridades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             #region EM_ERRO
             if (EditarAvariasVM.avAreaLista.FirstOrDefault().Erro == true)
             {
@@ -752,8 +752,6 @@ namespace VDT2.Controllers
             }
             return View(EditarAvariasVM);
         }
-
-
 
 
         /// <summary>
@@ -821,7 +819,7 @@ namespace VDT2.Controllers
             registrarAvariasViewModel.dadosUsuario = dadosUsuario;
 
             //carrega dados Avaria
-            registrarAvariasViewModel.InspAvaria = BLL.InspecaoAvaria.ListarPorId(EditarAvariasVM.InspAvaria_ID, configuracao);
+            registrarAvariasViewModel.InspAvaria = BLL.Avarias.ListarPorId(EditarAvariasVM.InspAvaria_ID, configuracao);
 
             //carrega dados do Veículo
             registrarAvariasViewModel.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(registrarAvariasViewModel.InspAvaria.InspVeiculo_ID, configuracao);
@@ -830,12 +828,12 @@ namespace VDT2.Controllers
             registrarAvariasViewModel.Inspecao = BLL.Inspecao.ListarPorId(registrarAvariasViewModel.InspAvaria.Inspecao_ID, configuracao);
 
             //Carrega dados Próxima View
-            registrarAvariasViewModel.avAreaLista = BLL.RegistrarAvarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avCondicaoLista = BLL.RegistrarAvarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avDanoRepositorioLista = BLL.RegistrarAvarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avGravidadeLista = BLL.RegistrarAvarias.ListarGravidades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avQuadranteLista = BLL.RegistrarAvarias.ListarQuadrantes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
-            registrarAvariasViewModel.avSeveridadeLista = BLL.RegistrarAvarias.ListarSeveridades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avAreaLista = BLL.Avarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avCondicaoLista = BLL.Avarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avDanoRepositorioLista = BLL.Avarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avGravidadeLista = BLL.Avarias.ListarGravidades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avQuadranteLista = BLL.Avarias.ListarQuadrantes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
+            registrarAvariasViewModel.avSeveridadeLista = BLL.Avarias.ListarSeveridades(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
 
             #region EM_ERRO
             if (registrarAvariasViewModel.InspAvaria.Erro == true)
@@ -1294,7 +1292,7 @@ namespace VDT2.Controllers
             {
                 string serverpath = configuracao.PastaFotos;
 
-                Models.InspAvaria inspAvaria = BLL.InspecaoAvaria.ListarPorId(inspAvaria_ID, configuracao);
+                Models.InspAvaria inspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
                 //Models.InspVeiculo inspVeiculo = BLL.InspecaoVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao);
                 Models.Inspecao inspecao = BLL.Inspecao.ListarPorId(inspAvaria.Inspecao_ID, configuracao);
 

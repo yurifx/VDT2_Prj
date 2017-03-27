@@ -24,9 +24,10 @@ namespace VDT2.BLL
         {
             List<Models.InspAvaria_Conf> listaInspAvaria_Conf = new List<Models.InspAvaria_Conf>();
 
-            try { 
-            listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(Cliente_ID, LocalInspecao_ID, LocalCheckPoint_ID, Data, configuracao);
-            return listaInspAvaria_Conf;
+            try
+            { 
+                listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(Cliente_ID, LocalInspecao_ID, LocalCheckPoint_ID, Data, configuracao);
+                return listaInspAvaria_Conf;
             }
 
             catch (Exception ex)
@@ -40,7 +41,6 @@ namespace VDT2.BLL
                         Excecao = ex
                     });
                 #endregion
-                //fazer tratamento de erro
                 return listaInspAvaria_Conf;
             }
         }
