@@ -5,12 +5,19 @@ using System.IO;
 using System.Linq;
 using VDT2.Models;
 
-
+/// <summary>
+/// Camada de negócios - Conferência de avarias
+/// </summary>
 namespace VDT2.BLL
 {
     public class Conferencia
     {
-
+        /// <summary>
+        /// Insere a lista de veículos no banco de dados.
+        /// </summary>
+        /// <param name="listaVeiculos"></param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static Models.ListaVeiculos InserirListaVeiculos(Models.ListaVeiculos listaVeiculos, Configuracao configuracao)
         {
 
@@ -35,7 +42,14 @@ namespace VDT2.BLL
             }
         }
         
-
+/// <summary>
+/// Realiza integração do arquivo de Loading ou PackingList
+/// </summary>
+/// <param name="ListaVeiculo_ID"></param>
+/// <param name="tipo">Tipo: "P" = Packing, "L" = Loading</param>
+/// <param name="files">Arquivo enviado</param>
+/// <param name="configuracao"></param>
+/// <returns></returns>
         public static bool IntegrarArquivoLoadingPackingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
@@ -65,10 +79,7 @@ namespace VDT2.BLL
                         DAL.ListaVeiculosVin.Inserir(VeiculoVin, configuracao);
                     }
                 }
-
-
-                var caminho = configuracao.PastaUploadListas;
-
+                
                 return true;
             }
             catch (Exception ex)

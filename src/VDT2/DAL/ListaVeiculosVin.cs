@@ -7,10 +7,19 @@ using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
 
+/// <summary>
+/// Camada de acesso aos dados - ListaVeiculosVin
+/// </summary>
 namespace VDT2.DAL
 {
     public class ListaVeiculosVin
     {
+        /// <summary>
+        /// Insere o registro do VIN com 17 dígitos na tabela ListaVeículosVin_Ins via arquivo recebido pelo usuário
+        /// </summary>
+        /// <param name="VeiculoVIN"></param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static Models.ListaVeiculosVin Inserir(Models.ListaVeiculosVin VeiculoVIN, Configuracao configuracao)
         {
             string nomeStoredProcedure = "ListaVeiculosVin_Ins";
@@ -33,21 +42,26 @@ namespace VDT2.DAL
                     Direction = ParameterDirection.Output
                 };
 
-
-
                 SqlParameter[] parametros = new SqlParameter[]
-                    {
+                {
                     parmListaVeiculos_ID,
                     parmVIN,
                     parmListaVeiculosVin_ID
-                    };
+                };
 
                 string chamada = $"{nomeStoredProcedure} {parmListaVeiculos_ID.ParameterName}, {parmVIN.ParameterName}, {parmListaVeiculosVin_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
-                  //  VeiculoVIN.ListaVeiculosVin_ID = (int)parmListaVeiculosVin_ID.Value;
+                    #region gravalogInformacao
+                   Diag.Log.Grava(
+                   new Diag.LogItem()
+                   {
+                       Nivel = Diag.Nivel.Informacao,
+                       Mensagem = $"VIN_6 integrados com sucesso - ListaVeiculosVin_Ins"
+                   });
+                    #endregion
                     return VeiculoVIN;
                 }
 
@@ -56,13 +70,13 @@ namespace VDT2.DAL
             catch (Exception ex)
             {
                 #region gravalogErro
-                Diag.Log.Grava(
-               new Diag.LogItem()
-               {
-                   Nivel = Diag.Nivel.Erro,
-                   Mensagem = $"Erro ao executar ListaVeiculos.Inserir: Erro:  {ex}"
-               });
-                #endregion
+                    Diag.Log.Grava(
+                   new Diag.LogItem()
+                   {
+                       Nivel = Diag.Nivel.Erro,
+                       Mensagem = $"Erro ao executar ListaVeiculos.Inserir: Erro:  {ex}"
+                   });
+                    #endregion
                 throw;
             }
 
