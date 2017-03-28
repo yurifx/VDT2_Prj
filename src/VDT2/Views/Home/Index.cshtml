@@ -8,17 +8,6 @@
 
 <h1>    VDT - Vehicle Damage Tracking</h1>
 
-<div hidden>
-    @if (Model != null)
-    {
-        @if (Model.Usuario != null)
-        {
-            <p>Autenticou?</p> @Model.Usuario.Autenticou
-            <p>Acessa modulo inspecao?</p> @Model.Usuario.AcessaModuloInspecao
-        }
-    }
-</div>
-
 @if (Model == null || !Model.Autenticado)
 {
     <div id="divConteudoInstitucional">
@@ -26,9 +15,9 @@
     </div>
 }
 
-@if (Model != null && Model.Autenticado)
+@if (Model != null && Model.Autenticado && Model.Usuario != null)
 {
-   <div class="row">
+    <div class="row">
         @if (Model.Usuario.AcessaModuloInspecao)
         {
             <div class="col-sm-6">
@@ -81,5 +70,6 @@
             </div>
         </div>
     }
+}
 
 }

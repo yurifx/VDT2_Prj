@@ -218,7 +218,12 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
-            bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
+            bool uploadImagem = false;
+            ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
+            ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+            listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf(); ;
+
+            uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao); 
             if (uploadImagem == false)
             {
                 ViewData["MensagemErro"] = "Erro ao realizar upload de imagens da avaria";
@@ -227,21 +232,19 @@ namespace VDT2.Controllers
             {
                 ViewData["MensagemSucesso"] = "Fotos atualizadas com sucesso";
             }
-
-            ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
-
+            
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
-
-
-            ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
-
+            
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
-            listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
+            
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
+
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
+
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
+
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
 
