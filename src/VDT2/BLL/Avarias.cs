@@ -98,6 +98,10 @@ namespace VDT2.BLL
             try
             {
                 listaAreas = DAL.AvArea.Listar(cliente_ID, configuracao);
+                if (listaAreas.Count() == 0)
+                {
+                    listaAreas.Add(new AvArea { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvArea_ID = 0 });
+                }
                 return listaAreas;
             }
             catch
@@ -120,6 +124,10 @@ namespace VDT2.BLL
             try
             {
                 listaCondicoes = DAL.AvCondicao.Listar(cliente_ID, configuracao);
+                if (listaCondicoes.Count() == 0)
+                {
+                    listaCondicoes.Add(new AvCondicao { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvCondicao_ID = 0 });
+                }
                 return listaCondicoes;
             }
             catch
@@ -142,6 +150,12 @@ namespace VDT2.BLL
             try
             {
                 listaDanos = DAL.AvDano.Listar(cliente_ID, configuracao);
+
+                if (listaDanos.Count() == 0)
+                {
+                    listaDanos.Add(new AvDano { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvDano_ID = 0 });
+                }
+
                 return listaDanos;
             }
             catch
@@ -164,6 +178,12 @@ namespace VDT2.BLL
             try
             {
                 listaGravidades = DAL.AvGravidade.Listar(cliente_ID, configuracao);
+
+                if (listaGravidades.Count() == 0)
+                {
+                    listaGravidades.Add(new AvGravidade { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas",  AvGravidade_ID= 0 });
+                }
+
                 return listaGravidades;
             }
             catch
@@ -185,6 +205,12 @@ namespace VDT2.BLL
             try
             {
                 listaQuadrantes = DAL.AvQuadrante.Listar(cliente_ID, configuracao);
+
+                if (listaQuadrantes.Count() == 0)
+                {
+                    listaQuadrantes.Add(new AvQuadrante { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvQuadrante_ID = 0 });
+                }
+                
                 return listaQuadrantes;
             }
             catch
@@ -207,6 +233,12 @@ namespace VDT2.BLL
             try
             {
                 listaSeveridades = DAL.AvSeveridade.Listar(cliente_ID, configuracao);
+
+                if (listaSeveridades.Count() == 0)
+                {
+                    listaSeveridades.Add(new AvSeveridade { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvSeveridade_ID = 0 });
+                }
+
                 return listaSeveridades;
             }
             catch

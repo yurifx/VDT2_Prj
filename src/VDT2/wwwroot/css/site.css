@@ -491,11 +491,14 @@ LayoutCSS:.. Ordenação
 
 
     /* < View Conferencia/PackingListInicio > */
+    .btnTelaPackingListInicio{
+        width: 8%;
+    }
 
 
 
     /* < View Conferencia/ListarConferenciasAvarias > */
-    .btnVoltarTelaConferenciaListarVeiculos{
+    .btnVoltarTelaConferenciaListarVeiculos {
         width: 12%;
     }
 

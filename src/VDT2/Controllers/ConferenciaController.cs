@@ -53,6 +53,10 @@ namespace VDT2.Controllers
                     var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
                     dadosUsuario.Usuario = objUsuario;
 
+                    //Testes EM_ERRO
+                    //dadosUsuario.Usuario.Locais = null;
+                    //dadosUsuario = null;
+
                     conferenciaVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
 
                     conferenciaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
@@ -62,17 +66,17 @@ namespace VDT2.Controllers
                     #region EM_ERRO
                     if (conferenciaVM.ListaCliente.FirstOrDefault().Erro == true)
                     {
-                        ViewData["MensagemErro"] = conferenciaVM.ListaCliente.FirstOrDefault().MensagemErro;
+                        ViewData["MensagemErro"] += conferenciaVM.ListaCliente.FirstOrDefault().MensagemErro;
                     }
 
                     if (conferenciaVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
                     {
-                        ViewData["MensagemErro"] = conferenciaVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+                        ViewData["MensagemErro"] += conferenciaVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
                     }
 
                     if (conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
                     {
-                        ViewData["MensagemErro"] = conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                        ViewData["MensagemErro"] += conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
                     }
                     #endregion
                 }
@@ -100,10 +104,11 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
-            string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
+            const string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
+            const string _mensagemErro = "Não foi possível listar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
-            List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
-            
+            listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
+
             #region recebeDadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -127,19 +132,36 @@ namespace VDT2.Controllers
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
-            
-            bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, configuracao);
 
-            listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
+            if (conferenciaVM != null)
+            {
+                if (!(conferenciaVM.Cliente_ID == 0 || conferenciaVM.LocalInspecao_ID == 0 || conferenciaVM.LocalCheckPoint_ID == 0 || conferenciaVM.Data == null))
+                {
+                    bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, configuracao);
 
-            listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
+                    //Lista todas as avarias dos referentes ao cliente/localInspecao e LocalCheckPoint informados
+                    listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
+                    if (listarConferenciaAvariaVM.ListaInspAvaria_Conf == null)
+                    {
+                        ViewData["MensagemErro"] = _mensagemErro;
+                    }
 
-            listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
+                    //preenche dados do cabecalho da proxima view
+                    listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
+                    listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
+                    listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = _mensagemErro;
+                }
+            }
+            else
+            {
+                ViewData["MensagemErro"] = _mensagemErro;
+            }
 
-            listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
-
-            listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
-
+            //Testes EM_ERRO
             //listarConferenciaAvariaVM.listaInspAvaria_Conf = null; //Teste1
             //listarConferenciaAvariaVM.listaInspAvaria_Conf.Clear(); //teste2
 
@@ -174,40 +196,98 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
+            if (inspAvaria_ID != 0)
+            {
+                conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
 
-            conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
+                conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
 
-            conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
+                conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
 
-            //preenche dados próxima view
-            
-            //Marcas
-            conferenciaEditarAvariasVM.ListaMarcas = BLL.InspecaoVeiculo.ListaMarca(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //preenche dados próxima view
 
-            //Modelos
-            conferenciaEditarAvariasVM.ListaModelos = BLL.InspecaoVeiculo.ListaModelo(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Marcas
+                conferenciaEditarAvariasVM.ListaMarcas = BLL.InspecaoVeiculo.ListaMarca(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-            //Areas
-            conferenciaEditarAvariasVM.ListaAreas = BLL.Avarias.ListarAreas(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Modelos
+                conferenciaEditarAvariasVM.ListaModelos = BLL.InspecaoVeiculo.ListaModelo(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-            //Condicoes
-            conferenciaEditarAvariasVM.ListaCondicoes = BLL.Avarias.ListarCondicoes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Areas
+                conferenciaEditarAvariasVM.ListaAreas = BLL.Avarias.ListarAreas(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-            //Danos
-            conferenciaEditarAvariasVM.ListaDanos = BLL.Avarias.ListarDanos(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Condicoes
+                conferenciaEditarAvariasVM.ListaCondicoes = BLL.Avarias.ListarCondicoes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-            //Gravidades
-            conferenciaEditarAvariasVM.ListaGravidades = BLL.Avarias.ListarGravidades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Danos
+                conferenciaEditarAvariasVM.ListaDanos = BLL.Avarias.ListarDanos(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-            //Quadrantes
-            conferenciaEditarAvariasVM.ListaQuadrantes = BLL.Avarias.ListarQuadrantes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Gravidades
+                conferenciaEditarAvariasVM.ListaGravidades = BLL.Avarias.ListarGravidades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+                //Quadrantes
+                conferenciaEditarAvariasVM.ListaQuadrantes = BLL.Avarias.ListarQuadrantes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
 
-            //Severidades
-            conferenciaEditarAvariasVM.ListaSeveridades = BLL.Avarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+                //Severidades
+                conferenciaEditarAvariasVM.ListaSeveridades = BLL.Avarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-            //TODO: Validações de Erro
+
+                #region EM_ERRO
+                //Marca
+                if (conferenciaEditarAvariasVM.ListaMarcas.FirstOrDefault().Text == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Marcas, tente novamente mais tarde";
+                }
+
+                //Modelos
+                if (conferenciaEditarAvariasVM.ListaModelos.FirstOrDefault().Text == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Modelos, tente novamente mais tarde";
+                }
+
+                //Areas
+                if (conferenciaEditarAvariasVM.ListaAreas.FirstOrDefault().Nome_Pt == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Marcas, tente novamente mais tarde";
+                }
+
+                //Condicoes
+                if (conferenciaEditarAvariasVM.ListaCondicoes.FirstOrDefault().Nome_Pt == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Condicoes, tente novamente mais tarde";
+                }
+
+                //Danos
+                if (conferenciaEditarAvariasVM.ListaDanos.FirstOrDefault().Nome_Pt == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Danos, tente novamente mais tarde";
+                }
+
+
+                //Gravidades
+                if (conferenciaEditarAvariasVM.ListaGravidades.FirstOrDefault().Nome_Pt == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Gravidades, tente novamente mais tarde";
+                }
+
+                //Quadrantes
+                if (conferenciaEditarAvariasVM.ListaQuadrantes.FirstOrDefault().Nome_Pt == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Quadrantes, tente novamente mais tarde";
+                }
+
+
+                //Severidades
+                if (conferenciaEditarAvariasVM.ListaSeveridades.FirstOrDefault().Nome_Pt == "ERRO")
+                {
+                    ViewData["MensagemErro"] = "Erro ao listar Severidades, tente novamente mais tarde";
+                }
+            }
+            else
+            {
+                ViewData["MensagemErro"] = "Erro editar avaria por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
+                return RedirectToAction("Index", "Home");
+            }
 
             return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
         }

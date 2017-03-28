@@ -9,6 +9,23 @@
 
 <script src="~/js/Conferencia/ConferenciaTelaInicial.js" asp-append-version="true"></script>
 <div class="container">
+    <div class="container" id="EM_ERRO">
+        @if (ViewData["MensagemErro"] != null)
+            {
+            <div class="alert alert-danger">
+                <p>@ViewData["MensagemErro"]</p>
+            </div>
+        }
+    </div>
+    <div class="container" id="EM_SUCESSO">
+        @if (ViewData["MensagemSucesso"] != null)
+            {
+            <div class="alert alert-success">
+                <p>@ViewData["MensagemSucesso"]</p>
+            </div>
+        }
+    </div>
+
     <div class="row">
         <h3>Conferência de Inspeção:</h3><br />
         <div class="form-group">

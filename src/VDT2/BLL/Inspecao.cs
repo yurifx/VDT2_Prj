@@ -454,8 +454,17 @@ namespace VDT2.BLL
                 }
                 return listaLocaisInspecao;
             }
-            catch
+            catch (Exception ex)
             {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar BLL.ListarLocaisInspecao() | Parâmetros Informados: UsuarioID {usuario_ID}, locaisUsuario: {locaisUsuario} ",
+                        Excecao = ex
+                    });
+                #endregion
                 listaLocaisInspecao.Add(new Models.LocalInspecao { Erro = true, MensagemErro = _mensagemErro, LocalInspecao_ID = 0, Nome = "Erro" });
                 return listaLocaisInspecao;
             }
@@ -478,8 +487,17 @@ namespace VDT2.BLL
                 }
                 return listaLocalCheckPoint;
             }
-            catch
+            catch (Exception ex)
             {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar BLL.ListarLocalCheckPoint() | Parâmetros Informados: UsuarioID {usuario_ID} ",
+                        Excecao = ex
+                    });
+                #endregion
                 listaLocalCheckPoint.Add(new Models.LocalCheckPoint { Erro = true, MensagemErro = _mensagemErro, LocalCheckPoint_ID = 0, Nome_Pt = "Erro" });
                 return listaLocalCheckPoint;
             }
@@ -502,9 +520,17 @@ namespace VDT2.BLL
                 return listaTransportadores;
             }
 
-            catch
-
+            catch (Exception ex)
             {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar BLL.ListarTransportadores() | Parâmetros Informados: UsuarioID {usuario_ID} ",
+                        Excecao = ex
+                    });
+                #endregion
                 listaTransportadores.Add(new Models.Transportador { Erro = true, MensagemErro = _mensagemErro, Transportador_ID = 0, Nome = "Erro" });
                 return listaTransportadores;
             }
