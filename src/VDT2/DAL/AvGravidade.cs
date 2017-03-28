@@ -7,50 +7,71 @@ using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
 
+
+/// <summary>
+/// Camada de acesso aos dados - AvGravidade
+/// </summary>
+
 namespace VDT2.DAL
 {
     public class AvGravidade
     {
+        /// <summary>
+        /// Realiza listagem das gravidades referentes ao cliente informado
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static List<Models.AvGravidade> Listar(int Cliente_ID, VDT2.Models.Configuracao configuracao)
-            {
+        {
             List<Models.AvGravidade> listaGravidades = new List<Models.AvGravidade>();
             string nomeStoredProcedure = "AvGravidade_Lst";
 
             try
-                {
+            {
                 SqlParameter parmClienteID = new SqlParameter("@p_Cliente_ID", SqlDbType.Int)
                 {
-                Value = Cliente_ID
+                    Value = Cliente_ID
                 };
 
-
-            SqlParameter[] parametros = new SqlParameter[]
+                SqlParameter[] parametros = new SqlParameter[]
                 {
-                parmClienteID
+                    parmClienteID
                 };
 
-            string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}";
-            
+                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}";
+
                 using (var contexto = new GeralDbContext(configuracao))
-                    {
+                {
+
                     listaGravidades = contexto.AvGravidade.FromSql(chamada, parametros).OrderBy(x => x.AvGravidade_ID).ToList();
+                    
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"AvGravidade.Listar Realizado com sucesso. Registros encontrados - {listaGravidades.Count()}"
+                        });
+                    #endregion
+
                     return listaGravidades;
-                    }
                 }
+            }
 
             catch (System.Exception ex)
-                {
+            {
                 #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Erro,
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
-                        });
+                    });
                 #endregion
-                throw;  
-                }
+                throw;
             }
         }
+    }
 }

@@ -10,9 +10,9 @@ using VDT2.Models;
 /// Camda de acesso aos dados - Inspecao
 /// </summary>
 namespace VDT2.DAL
-    {
+{
     public class Inspecao
-        {
+    {
 
         /// <summary>
         /// Insere uma nova inspecao no banco de dados - Inspecao_ins
@@ -21,70 +21,70 @@ namespace VDT2.DAL
         /// <param name="configuracao">string de conexão com o banco de dados</param>
         /// <returns></returns>
         public static Models.Inspecao Inserir(Models.Inspecao inspecao, VDT2.Models.Configuracao configuracao)
-            {
-            string nomeStoredProcedure = "Inspecao_Ins"; 
+        {
+            string nomeStoredProcedure = "Inspecao_Ins";
             try
-                {
+            {
                 SqlParameter parmCliente_ID = new SqlParameter("@p_Cliente_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.Cliente_ID
-                    };
+                };
 
                 SqlParameter parmLocalInspecao_ID = new SqlParameter("@p_LocalInspecao_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.LocalInspecao_ID
-                    };
+                };
 
                 SqlParameter parmLocalCheckPointID = new SqlParameter("@p_LocalCheckPoint_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.LocalCheckPoint_ID
-                    };
+                };
 
                 SqlParameter parmTransportador_ID = new SqlParameter("@p_Transportador_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.Transportador_ID
-                    };
+                };
 
                 SqlParameter parmFrotaViagem_ID = new SqlParameter("@p_FrotaViagem_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.FrotaViagem_ID
-                    };
+                };
 
                 SqlParameter parmNavio_ID = null;
 
                 if (!inspecao.Navio_ID.HasValue)
-                    {  //Verifica se é nulo, se for -> adiciona System.DbNull
+                {  //Verifica se é nulo, se for -> adiciona System.DbNull
                     parmNavio_ID = new SqlParameter("@p_Navio_ID", SqlDbType.Int)
-                        {
-                        Value = DBNull.Value
-                        };
-                    }
-                else
                     {
+                        Value = DBNull.Value
+                    };
+                }
+                else
+                {
                     parmNavio_ID = new SqlParameter("@p_Navio_ID", SqlDbType.Int)
-                        {
+                    {
                         Value = inspecao.Navio_ID.Value
-                        };
-                    }
+                    };
+                }
 
                 SqlParameter parmUsuario_ID = new SqlParameter("@p_Usuario_ID", SqlDbType.Int)
-                    {
+                {
                     Value = 1
-                    };
+                };
 
                 SqlParameter parmData = new SqlParameter("@p_Data", SqlDbType.DateTime)
-                    {
+                {
                     Value = System.DateTime.Today
-                    };
+                };
 
                 SqlParameter parmInspecao_ID = new SqlParameter("@p_Inspecao_ID", SqlDbType.Int)
-                    {
+                {
                     Value = 1,
                     Direction = ParameterDirection.Output
-                    };
+                };
 
                 SqlParameter[] parametros = new SqlParameter[]
-                    {
+                 {
                     parmCliente_ID,
                     parmLocalInspecao_ID,
                     parmLocalCheckPointID,
@@ -94,89 +94,100 @@ namespace VDT2.DAL
                     parmUsuario_ID,
                     parmData,
                     parmInspecao_ID
-                    };
+                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmCliente_ID.ParameterName}, {parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTransportador_ID.ParameterName}, {parmFrotaViagem_ID.ParameterName}, {parmNavio_ID.ParameterName}, {parmUsuario_ID.ParameterName}, {parmData.ParameterName}, {parmInspecao_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
-                    {
+                {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     inspecao.Inspecao_ID = (int)parmInspecao_ID.Value;
 
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
-                            {
+                        {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"InspecaoRepositorio.Inserir realizado com sucesso:  Dados inseridos | Inspecao_ID {inspecao.Inspecao_ID}, Cliente ID: {inspecao.Cliente_ID}, Local Inspeção: {inspecao.LocalInspecao_ID}, LocalCheckPoint: {inspecao.LocalCheckPoint_ID},  Transportador_ID {inspecao.Transportador_ID}, FrotaViagem: {inspecao.FrotaViagem_ID}, Navio ID: {inspecao.Navio_ID}"
-                            });
+                            Mensagem = $"Inspecao.Inserir realizado com sucesso:  Dados inseridos | Inspecao_ID {inspecao.Inspecao_ID}, Cliente ID: {inspecao.Cliente_ID}, Local Inspeção: {inspecao.LocalInspecao_ID}, LocalCheckPoint: {inspecao.LocalCheckPoint_ID},  Transportador_ID {inspecao.Transportador_ID}, FrotaViagem: {inspecao.FrotaViagem_ID}, Navio ID: {inspecao.Navio_ID}"
+                        });
                     #endregion
 
                     return inspecao;
-                    }
                 }
+            }
             catch (System.Exception ex)
-                {
+            {
                 #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Erro,
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
-                        });
+                    });
                 #endregion
                 throw;
-                }
             }
+        }
 
         /// <summary>
         /// Listar inspecao informando ID
         /// </summary>
         /// <param name="inspecao_ID">ID da inspeção</param>
         /// <param name="configuracao">string de conexão com o banco de dados</param>
-        /// <returns></returns>
+        /// <returns>Models.Inspecao</returns>
         public static Models.Inspecao ListarPorId(int inspecao_ID, Configuracao configuracao)
-            {
+        {
             Models.Inspecao inspecao = new Models.Inspecao();
             string nomeStoredProcedure = "Inspecao_Sel";
 
             try
-                {
+            {
                 SqlParameter parmInspecao_ID = new SqlParameter("@p_Inspecao_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao_ID
-                    };
+                };
 
                 SqlParameter[] parametros = new SqlParameter[]
-                    {
+                {
                     parmInspecao_ID
-                    };
+                };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
 
-                    {
+                {
                     inspecao = contexto.Inspecao.FromSql(chamada, parametros).FirstOrDefault();
+
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"Inspecao.ListarPorId realizado com sucesso:  Inspecao_ID = {inspecao_ID}"
+                        });
+                    #endregion
+
                     return inspecao;
-                    }
                 }
+            }
 
             catch (System.Exception ex)
-                {
-                #region gravalogerrro
+            {
+                #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Erro,
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
-                        });
+                    });
                 #endregion
                 throw;
-                }
             }
+        }
         /// <summary>
         /// Atualiza informações sobre a inspeção - Inspecao_Upd
         /// </summary>
@@ -184,101 +195,103 @@ namespace VDT2.DAL
         /// <param name="configuracao">string de conexão com o banco de dados</param>
         /// <returns>bool ERRO?</returns>
         public static Models.Inspecao Update(Models.Inspecao inspecao, VDT2.Models.Configuracao configuracao)
-            {
+        {
             inspecao.Erro = false;
             inspecao.MensagemErro = "";
 
             string nomeStoredProcedure = "Inspecao_Upd";
             try
-                {
+            {
                 SqlParameter parmInspecao_ID = new SqlParameter("@p_Inspecao_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.Inspecao_ID
-                    };
+                };
 
                 SqlParameter parmCliente_ID = new SqlParameter("@p_Cliente_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.Cliente_ID
-                    };
+                };
 
                 SqlParameter parmLocalInspecao_ID = new SqlParameter("@p_LocalInspecao_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.LocalInspecao_ID
-                    };
+                };
 
                 SqlParameter parmLocalCheckPointID = new SqlParameter("@p_LocalCheckPoint_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.LocalCheckPoint_ID
-                    };
+                };
 
                 SqlParameter parmTransportador_ID = new SqlParameter("@p_Transportador_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.Transportador_ID
-                    };
+                };
 
                 SqlParameter parmFrotaViagem_ID = new SqlParameter("@p_FrotaViagem_ID", SqlDbType.Int)
-                    {
+                {
                     Value = inspecao.FrotaViagem_ID
-                    };
+                };
 
                 SqlParameter parmNavio_ID = null;
 
                 if (!inspecao.Navio_ID.HasValue)
-                    {
+                {
                     parmNavio_ID = new SqlParameter("@p_Navio_ID", SqlDbType.Int)
-                        {
+                    {
                         Value = DBNull.Value
-                        };
-                    }
+                    };
+                }
                 else
-                    {
+                {
                     parmNavio_ID = new SqlParameter("@p_Navio_ID", SqlDbType.Int)
-                        {
+                    {
                         Value = inspecao.Navio_ID.Value
-                        };
-                    }
+                    };
+                }
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                parmInspecao_ID,
-                parmCliente_ID,
-                parmLocalInspecao_ID,
-                parmLocalCheckPointID,
-                parmTransportador_ID,
-                parmFrotaViagem_ID,
-                parmNavio_ID
+                    parmInspecao_ID,
+                    parmCliente_ID,
+                    parmLocalInspecao_ID,
+                    parmLocalCheckPointID,
+                    parmTransportador_ID,
+                    parmFrotaViagem_ID,
+                    parmNavio_ID
                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}, {parmCliente_ID.ParameterName}, {parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTransportador_ID.ParameterName}, {parmFrotaViagem_ID.ParameterName}, {parmNavio_ID.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
-                    {
+                {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
-                            {
+                        {
                             Nivel = Diag.Nivel.Informacao,
                             Mensagem = $"InspecaoRepositorio.Update realizado com sucesso:  Dados atualizados | Inspecao_ID {inspecao.Inspecao_ID}, Cliente ID: {inspecao.Cliente_ID}, Local Inspeção: {inspecao.LocalInspecao_ID}, LocalCheckPoint: {inspecao.LocalCheckPoint_ID},  Transportador_ID {inspecao.Transportador_ID}, FrotaViagem: {inspecao.FrotaViagem_ID}, Navio ID: {inspecao.Navio_ID}"
-                            });
+                        });
                     #endregion
+
                     return inspecao;
-                    }
                 }
+            }
             catch (System.Exception ex)
-                {
+            {
                 #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
-                        {
+                    {
                         Nivel = Diag.Nivel.Erro,
                         Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
                         Excecao = ex
-                        });
+                    });
                 #endregion
                 throw;
-                }
-
             }
+
         }
     }
+}

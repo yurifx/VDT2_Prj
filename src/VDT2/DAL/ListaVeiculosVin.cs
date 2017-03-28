@@ -62,34 +62,32 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     #region gravalogInformacao
-                   Diag.Log.Grava(
-                   new Diag.LogItem()
-                   {
-                       Nivel = Diag.Nivel.Informacao,
-                       Mensagem = $"VIN_6 integrados com sucesso - ListaVeiculosVin_Ins"
-                   });
+                    Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"ListaVeiculosVin.Inserir registrado om sucesso"
+                    });
                     #endregion
+
                     return VeiculoVIN;
                 }
-
             }
 
             catch (Exception ex)
             {
                 #region gravalogErro
-                    Diag.Log.Grava(
-                   new Diag.LogItem()
-                   {
-                       Nivel = Diag.Nivel.Erro,
-                       Mensagem = $"Erro ao executar ListaVeiculos.Inserir: Erro:  {ex}"
-                   });
-                    #endregion
+                Diag.Log.Grava(
+               new Diag.LogItem()
+               {
+                   Nivel = Diag.Nivel.Erro,
+                   Mensagem = $"Erro ao executar ListaVeiculos.Inserir: Erro:  {ex}"
+               });
+                #endregion
                 throw;
             }
-
-
-
         }
     }
 }

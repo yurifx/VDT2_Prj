@@ -33,7 +33,7 @@ namespace VDT2.Controllers
         public IActionResult NovaConferencia()
         {
             ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
-            string _mensagemLogin = "Usuário não identificado, faça login novamente";
+            const string _mensagemLogin = "Usuário não identificado, faça login novamente";
 
             #region dadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
@@ -95,8 +95,7 @@ namespace VDT2.Controllers
             string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
             List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
-
-           
+            
             #region recebeDadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -120,12 +119,15 @@ namespace VDT2.Controllers
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
-
-
+            
             bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, configuracao);
+
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
+
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
+
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
+
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
 
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
@@ -142,7 +144,6 @@ namespace VDT2.Controllers
         /// </summary>
         /// <param name="inspAvaria_ID">ID da avaria</param>
         /// <returns></returns>
-
         public IActionResult EditarAvarias(int inspAvaria_ID)
         {
 
@@ -165,22 +166,41 @@ namespace VDT2.Controllers
             }
             #endregion
 
-
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
+
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
+
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
 
             //preenche dados próxima view
+            
+            //Marcas
             conferenciaEditarAvariasVM.ListaMarcas = BLL.InspecaoVeiculo.ListaMarca(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+            //Modelos
             conferenciaEditarAvariasVM.ListaModelos = BLL.InspecaoVeiculo.ListaModelo(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+            //Areas
             conferenciaEditarAvariasVM.ListaAreas = BLL.Avarias.ListarAreas(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+            //Condicoes
             conferenciaEditarAvariasVM.ListaCondicoes = BLL.Avarias.ListarCondicoes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+            //Danos
             conferenciaEditarAvariasVM.ListaDanos = BLL.Avarias.ListarDanos(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+            //Gravidades
             conferenciaEditarAvariasVM.ListaGravidades = BLL.Avarias.ListarGravidades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+            //Quadrantes
             conferenciaEditarAvariasVM.ListaQuadrantes = BLL.Avarias.ListarQuadrantes(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+
+
+            //Severidades
             conferenciaEditarAvariasVM.ListaSeveridades = BLL.Avarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
             //TODO: Validações de Erro
+
             return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
         }
 
@@ -261,7 +281,9 @@ namespace VDT2.Controllers
             }
 
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
+
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
+
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
 
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
@@ -357,7 +379,6 @@ namespace VDT2.Controllers
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
 
-
             ConferenciaPackingListViewModel conferenciaPackingListVM = new ConferenciaPackingListViewModel();
 
             conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
@@ -374,7 +395,6 @@ namespace VDT2.Controllers
             {
                 ViewData["MensagemErro"] = conferenciaPackingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
             }
-
 
             return View("PackingListInicio", conferenciaPackingListVM);
 
@@ -414,6 +434,7 @@ namespace VDT2.Controllers
             }
 
             var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+
             dadosUsuario.Usuario = objUsuario;
 
             ViewData["UsuarioNome"] = dadosUsuario.Nome;

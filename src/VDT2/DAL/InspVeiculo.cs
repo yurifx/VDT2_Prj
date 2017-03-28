@@ -66,14 +66,13 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                parmInspecao_ID,
-                parmMarca_ID,
-                parmModelo_ID,
-                parmVIN_6,
-                parmVIN,
-                parmObservacoes,
-                parmInspVeiculo_ID
-
+                    parmInspecao_ID,
+                    parmMarca_ID,
+                    parmModelo_ID,
+                    parmVIN_6,
+                    parmVIN,
+                    parmObservacoes,
+                    parmInspVeiculo_ID
                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}, { parmMarca_ID.ParameterName}, { parmModelo_ID.ParameterName}, { parmVIN_6.ParameterName}, { parmVIN.ParameterName}, { parmObservacoes.ParameterName}, {parmInspVeiculo_ID.ParameterName} out";
@@ -81,21 +80,23 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     inspVeiculo.InspVeiculo_ID = (int)parmInspVeiculo_ID.Value;
+
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"BLL.InspVeiculo.Inserir realizado com sucesso:  Dados atualizados | inspVeiculo_ID: {inspVeiculo.InspVeiculo_ID}"
+                            Mensagem = $"InspVeiculo.Inserir realizado com sucesso:  Dados atualizados | inspVeiculo_ID: {inspVeiculo.InspVeiculo_ID}"
                         });
                     #endregion
+
                     return inspVeiculo;
                 }
             }
             catch (System.Exception ex)
             {
-
                 #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
@@ -105,6 +106,7 @@ namespace VDT2.DAL
                         Excecao = ex
                     });
                 #endregion
+
                 throw;
             }
         }
@@ -143,20 +145,23 @@ namespace VDT2.DAL
                 };
 
                 SqlParameter[] parametros = new SqlParameter[]
-                    {
+                {
                     parmInspecao_ID,
                     parmVIN_6,
                     parmVIN,
                     parmInspVeiculo_ID
-                    };
+                };
+
                 string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}, {parmVIN_6.ParameterName}, {parmVIN.ParameterName}, {parmInspVeiculo_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
 
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     string Veiculo_ID = Convert.ToString(parmInspVeiculo_ID.Value);
-                    if (!(Veiculo_ID == ""))
+
+                    if (Veiculo_ID != "")
                     {
                         var _inspVeiculoId = Convert.ToInt32(Veiculo_ID);
                         #region gravalogResultado
@@ -164,7 +169,7 @@ namespace VDT2.DAL
                             new Diag.LogItem()
                             {
                                 Nivel = Diag.Nivel.Informacao,
-                                Mensagem = $"InspVeiculo.Existe() realizado com sucesso:  id encontrado: {_inspVeiculoId}"
+                                Mensagem = $"InspVeiculo.Existe realizado com sucesso:  id encontrado: {_inspVeiculoId}"
                             });
                         #endregion
                         return _inspVeiculoId;
@@ -199,7 +204,9 @@ namespace VDT2.DAL
         public static Models.InspVeiculo ListarPorId(int InspVeiculo_ID, VDT2.Models.Configuracao configuracao)
         {
             Models.InspVeiculo veiculo;
+
             string nomeStoredProcedure = "InspVeiculo_Sel";
+
             try
             {
                 SqlParameter parmInspecao_ID = new SqlParameter("@p_Inspecao_ID", SqlDbType.Int)
@@ -208,9 +215,9 @@ namespace VDT2.DAL
                 };
 
                 SqlParameter[] parametros = new SqlParameter[]
-                    {
-                parmInspecao_ID
-                    };
+                {
+                    parmInspecao_ID
+                };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}";
 
@@ -218,6 +225,16 @@ namespace VDT2.DAL
 
                 {
                     veiculo = contexto.InspVeiculo.FromSql(chamada, parametros).FirstOrDefault();
+
+                    #region gravalogResultado
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"InspVeiculo.ListarPorId realizado com sucesso:  id veículo: {InspVeiculo_ID}"
+                        });
+                    #endregion
+
                     return veiculo;
                 }
             }
@@ -236,13 +253,14 @@ namespace VDT2.DAL
             }
         }
         /// <summary>
-        /// Atualização dos dados  - InspVeiculo_Upd
+        /// Atualização dos dados via procedure InspVeiculo_Upd
         /// </summary>
-        /// <param name="inspVeiculo">Obj contendo os dados do veículo a ser atualizado</param>
+        /// <param name="inspVeiculo">Objeto contendo os dados do veículo a ser atualizado</param>
         /// <param name="configuracao">string de conexão com o banco de dados</param>
         public static Models.InspVeiculo Update(Models.InspVeiculo inspVeiculo, VDT2.Models.Configuracao configuracao)
         {
             string nomeStoredProcedure = "InspVeiculo_Upd";
+
             try
             {
                 SqlParameter parmInspVeiculo_ID = new SqlParameter("@p_Inspecao_ID", SqlDbType.Int)
@@ -266,10 +284,9 @@ namespace VDT2.DAL
                     Value = inspVeiculo.VIN_6
                 };
 
-                //CHASSI COM 17 DÍGITOS, NECESSÁRIO LÓGICA PARA PEGAR ESSA NUMERAÇÃO
+                //CHASSI COM 17 DÍGITOS
                 SqlParameter parmVIN = new SqlParameter("@p_VIN", SqlDbType.Char)
                 {
-                    //  Value = _inspVeiculo.VIN
                     Value = DBNull.Value
                 };
 
@@ -280,12 +297,12 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                parmInspVeiculo_ID,
-                parmMarca_ID,
-                parmModelo_ID,
-                parmVIN_6,
-                parmVIN,
-                parmObservacoes
+                    parmInspVeiculo_ID,
+                    parmMarca_ID,
+                    parmModelo_ID,
+                    parmVIN_6,
+                    parmVIN,
+                    parmObservacoes
                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmInspVeiculo_ID.ParameterName}, { parmMarca_ID.ParameterName}, { parmModelo_ID.ParameterName}, { parmVIN_6.ParameterName}, { parmVIN.ParameterName}, { parmObservacoes.ParameterName}";
@@ -293,14 +310,16 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"BLL.InspVeiculo.Inserir realizado com sucesso:  Dados atualizados | inspVeiculo_ID: {inspVeiculo.InspVeiculo_ID}"
+                            Mensagem = $"InspVeiculo.Inserir realizado com sucesso:  Dados atualizados | inspVeiculo_ID: {inspVeiculo.InspVeiculo_ID}"
                         });
                     #endregion
+
                     return inspVeiculo;
                 }
             }
@@ -320,10 +339,18 @@ namespace VDT2.DAL
             }
         }
 
+
+        /// <summary>
+        /// Realiza a integração das informações enviadas loading/packing list via procedure IntegraVinVeiculos
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="LocalInspecao_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>retorna verdadeiro ou falso, caso tenha integrado</returns>
         public static bool IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, Configuracao configuracao)
         {
-
             string nomeStoredProcedure = "IntegraVinVeiculos";
+
             try
             {
                 SqlParameter parmCliente_ID = new SqlParameter("@p_Cliente_ID", SqlDbType.Int)
@@ -338,8 +365,8 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
-                        parmCliente_ID,
-                        parmLocalInspecao_ID
+                    parmCliente_ID,
+                    parmLocalInspecao_ID
                 };
 
                 string chamada = $"{nomeStoredProcedure} {parmCliente_ID.ParameterName}, { parmLocalInspecao_ID.ParameterName}";
@@ -347,14 +374,16 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"BLL.InspVeiculo.IntegrarVIN realizado com sucesso"
+                            Mensagem = $"InspVeiculo.IntegrarVIN realizado com sucesso"
                         });
                     #endregion
+
                     return true;
                 }
             }

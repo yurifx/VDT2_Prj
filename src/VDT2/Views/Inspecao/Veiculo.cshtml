@@ -16,7 +16,7 @@
             <div class="alert alert-danger">
                 <p>@ViewData["MensagemErro"]</p>
             </div>
-            }
+        }
     </div>
     <div class="container" id="EM_SUCESSO">
         @if (ViewData["MensagemSucesso"] != null)
@@ -24,7 +24,7 @@
             <div class="alert alert-success">
                 <p>@ViewData["MensagemSucesso"]</p>
             </div>
-            }
+        }
     </div>
     <h4>Dados do Veículo</h4><br />
     <form asp-controller="Inspecao" asp-action="InserirVeiculo" method="post" onsubmit="return ValidarFormularioInserirVeiculo()">
@@ -41,7 +41,7 @@
         </div>
 
         @*Chassi*@
-        <div class="form-group">
+        <div class="form-group" id="divChassi">
             <div class="row">
                 <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
                     <label asp-for="VIN_6">Chassi</label>
@@ -49,7 +49,7 @@
 
                 <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
                     <div class="input-group">
-                        <input asp-for="VIN_6" value="@Model.VIN_6" maxlength="6" required pattern=".{6,6}" class="form-control has-success"/>
+                        <input asp-for="VIN_6" id="chassiInput" data-toggle="tooltip" title="Insira o Chassi do Veículo!" value="@Model.VIN_6" maxlength="6" required pattern=".{6,6}" class="form-control" onchange="ValidarChassi()" /><span id="chassiSuccess" class="glyphicon glyphicon-remove form-control-feedback"></span>
                     </div>
                 </div>
             </div>
@@ -214,4 +214,4 @@
         </div>
     </div>
 
-</div> <!--/Container-->
+</div>

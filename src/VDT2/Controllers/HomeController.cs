@@ -316,8 +316,7 @@ namespace VDT2.Controllers
                         }
                     );
                     //
-
-
+                    
                     List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>(6);
                     claims.Add(new System.Security.Claims.Claim("Login", dadosUsuario.Login, System.Security.Claims.ClaimValueTypes.String));
                     claims.Add(new System.Security.Claims.Claim("Nome", dadosUsuario.Nome, System.Security.Claims.ClaimValueTypes.String));

@@ -7,6 +7,7 @@ using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
 
+
 /// <summary>
 /// Camada de acesso aos dados - Modelo
 /// </summary>
@@ -23,6 +24,7 @@ namespace VDT2.DAL
         public static List<Models.Modelo> Listar(int cliente_ID, VDT2.Models.Configuracao configuracao)
         {
             List<Models.Modelo> listaModelo = new List<Models.Modelo>();
+
             string nomeStoredProcedure = "Modelo_Lst";
             string _mensagemErro = "Erro ao listar marcas DAL";
 
@@ -40,30 +42,33 @@ namespace VDT2.DAL
                 };
 
                 SqlParameter[] parametros = new SqlParameter[]
-                 {
-                     parmClienteID,
-                     parmAtivos
-                 };
+                {
+                    parmClienteID,
+                    parmAtivos
+                };
 
                 string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName} , {parmAtivos.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     listaModelo = contexto.Modelo.FromSql(chamada, parametros).ToList();
+
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"DAL.ModeloRepositorio.Listar() realizado com sucesso:  Registros encontrados: {listaModelo.Count()}"
+                            Mensagem = $"Modelo.Listar() realizado com sucesso:  Registros encontrados: {listaModelo.Count()}"
                         });
                     #endregion  
+
                     return listaModelo;
                 }
             }
             catch (System.Exception ex)
             {
                 listaModelo.Add(new Models.Modelo { Erro = true, MensagemErro = _mensagemErro });
+
                 #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
@@ -73,6 +78,7 @@ namespace VDT2.DAL
                         Excecao = ex
                     });
                 #endregion
+
                 return listaModelo;
             }
         }
@@ -123,15 +129,18 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
                     var id = (int)parmModelo_ID.Value;
+
                     #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"ModeloRepositorio.Inserir realizado com sucesso:  Dados atualizados | Modelo_ID {id}"
+                            Mensagem = $"Modelo.Inserir realizado com sucesso:  Dados atualizados | Modelo_ID {id}"
                         });
                     #endregion  
+
                     return id;
                 }
             }

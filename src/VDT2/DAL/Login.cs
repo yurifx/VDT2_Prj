@@ -24,7 +24,8 @@ namespace VDT2.DAL
         /// <param name="usuarioLogin">Identificação (nome de login) do usuário (Usuario.Login)</param>
         /// <param name="configuracao">Configuração geral do aplicativo</param>
         /// <returns></returns>
-        public static Models.Usuario EfetuaLogin(string usuarioLogin, VDT2.Models.Configuracao configuracao) {
+        public static Models.Usuario EfetuaLogin(string usuarioLogin, VDT2.Models.Configuracao configuracao)
+        {
 
             Models.Usuario dadosUsuario = null;
 
@@ -42,12 +43,25 @@ namespace VDT2.DAL
 
             // Monta a chamada à stored procedure
             string chamada = $"{nomeStoredProcedure} {parmUsuarioId.ParameterName}";
-            try {
-                using (var contexto = new GeralDbContext(configuracao)) {
+            try
+            {
+                using (var contexto = new GeralDbContext(configuracao))
+                {
                     dadosUsuario = contexto.Usuario.FromSql(chamada, parametros).FirstOrDefault();
+                    
+                    #region gravalogResultado
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"Login.EfetuaLogin realizado com sucesso:  Login: {dadosUsuario.Login}"
+                        });
+                    #endregion
+
                 }
             }
-            catch (System.Exception ex) {
+            catch (System.Exception ex)
+            {
 
                 Diag.Log.Grava(
                     new Diag.LogItem()

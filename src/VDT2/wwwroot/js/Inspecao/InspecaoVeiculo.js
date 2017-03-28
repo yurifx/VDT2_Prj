@@ -1,6 +1,8 @@
 ﻿$(function () {  // $(document).ready()
     console.log("Inicializou InspecaoVeiculo.JS");
 
+    $('[data-toggle="tooltip"]').tooltip();
+
     var sMarca = $('#MarcaLabelHidden').val();
     var sModelo = $('#ModeloLabelHidden').val();
     $('#ListaMarca').val(sMarca);
@@ -14,6 +16,22 @@
     }
 });
 
+
+function ValidarChassi() {
+    var qtd = $("#chassiInput").val()
+    if (qtd.length == 6) {
+        $("#chassiSuccess").removeClass("glyphicon-remove");
+        $("#chassiSuccess").addClass("glyphicon-ok");
+        $("#divChassi").addClass("has-success has-feedback");
+    }
+    else {
+        $("#chassiSuccess").addClass("glyphicon-remove");
+        $("#chassiSuccess").removeClass("glyphicon-ok");
+        $("#divChassi").removeClass("has-success has-feedback");
+    }
+
+    
+}
 
 function ValidarFormularioInserirVeiculo() {
 

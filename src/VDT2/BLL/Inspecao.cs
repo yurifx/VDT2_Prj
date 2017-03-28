@@ -355,6 +355,7 @@ namespace VDT2.BLL
         public static Models.Inspecao Update(Models.Inspecao inspecao, Configuracao configuracao)
         {
             const string _mensagemErro = "Erro ao atualizar inspeção";
+
             try
             {
                 inspecao = DAL.Inspecao.Update(inspecao, configuracao);
@@ -371,6 +372,7 @@ namespace VDT2.BLL
         public static Models.Inspecao Inserir(Models.Inspecao inspecao, Configuracao configuracao)
         {
             const string _mensagemErro = "Erro ao inserir dados inspeção, por favor entre em contato com o suporte";
+
             try
             {
                 inspecao = DAL.Inspecao.Inserir(inspecao, configuracao);
@@ -436,7 +438,7 @@ namespace VDT2.BLL
                     listaLocaisInspecao = DAL.LocalInspecao.Listar(usuario_ID, configuracao);
                 }
 
-                
+
                 if (listaLocaisInspecao.Count() == 0)
                 {
                     listaLocaisInspecao.Add(new Models.LocalInspecao { Erro = true, MensagemErro = _mensagemErro, LocalInspecao_ID = 0, Nome = "Erro" });
