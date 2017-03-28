@@ -7,260 +7,267 @@
 
 <script src="~/js/Conferencia/EditarConferencia.js" asp-append-version="true"></script>
 
-@if (Model.Usuario != null)
+@if (Model != null && Model.Usuario != null && Model.ListaAreas != null && Model.ListaCondicoes != null && Model.ListaDanos != null && Model.ListaGravidades != null && Model.ListaQuadrantes != null && Model.ListaSeveridades != null && Model.ListaMarcas != null && Model.ListaModelos != null && Model.Inspecao != null && Model.InspAvaria != null && Model.InspVeiculo != null)
 {
+
     <div class="hidden">
         Altera Inspecao? <input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao " />
     </div>
+    <div class="inicioTelaEditarAvariasConferencia container">
+
+
+        @if (ViewData["MensagemErro"] != null)
+        {
+            <div class="container" id="EM_ERRO">
+                <div class="alert alert-danger">
+                    <p>@ViewData["MensagemErro"]</p>
+                </div>
+            </div>
+        }
+
+
+        @if (ViewData["MensagemSucesso"] != null)
+        {
+            <div class="container" id="EM_SUCESSO">
+                <div class="alert alert-success">
+                    <p>@ViewData["MensagemSucesso"]</p>
+                </div>
+            </div>
+        }
+
+        <div hidden>
+            Avaria ID: <input type="text" value="@Model.InspAvaria.InspAvaria_ID" /><br />
+            Veículo ID<input type="text" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
+            VIN_6 inicial<input type="text" value="@Model.InspVeiculo.VIN_6" /><br />
+            Inspecao ID:<input type="text" value="@Model.Inspecao.Inspecao_ID" /><br />
+            Marca Inicial: <input type="text" id="marcaHiddenDiv" value="@Model.InspVeiculo.Marca_ID" /><br />
+            Modelo Inicial: <input type="text" id="modeloHiddenDiv" value="@Model.InspVeiculo.Modelo_ID" /><br />
+            Area Inicial:<input type="text" id="areaHiddenDiv" value="@Model.InspAvaria.AvArea_ID" /><br />
+            Condicao Inicial:<input type="text" id="condicaoHiddenDiv" value="@Model.InspAvaria.AvCondicao_ID" /><br />
+            Dano Inicial:<input type="text" id="danoHiddenDiv" value="@Model.InspAvaria.AvDano_ID" /><br />
+            Gravidade Inicial:<input type="text" id="gravidadeHiddenDiv" value="@Model.InspAvaria.AvGravidade_ID" /><br />
+            Quadrante Inicial:<input type="text" id="quadranteHiddenDiv" value="@Model.InspAvaria.AvQuadrante_ID" /><br />
+            Severidade Inicial:<input type="text" id="severidadeHiddenDiv" value="@Model.InspAvaria.AvSeveridade_ID" /><br />
+            Observações Inicial: <input type="text" value="@Model.InspVeiculo.Observacoes" />
+        </div>
+
+        <div class="container">
+
+            <form asp-controller="Conferencia" asp-action="SalvarAvaria" method="post" id="salvarAvariaForm">
+                <fieldset>
+                    <h4>Dados Veículo</h4>
+                    @*Chassi*@
+                    <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
+                        <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                        <label asp-for="@Model.InspVeiculo.VIN_6">Chassi</label>
+                                    </div>
+                                    <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                                        <input asp-for="@Model.InspVeiculo.VIN_6" value="@Model.InspVeiculo.VIN_6" maxlength="6" required pattern=".{6,6}" />
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Marca*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                        <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
+                                    </div>
+                                    <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
+                                        <select id="ListaMarca" name="InspVeiculo.Marca_ID" class="form-control" required
+                                                asp-items="@Model.ListaMarcas" value="@Model.InspVeiculo.Marca_ID"></select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Modelo*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                        <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
+                                    </div>
+                                    <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
+                                        <select id="ListaModelo" name="InspVeiculo.Modelo_ID" class="form-control" required
+                                                asp-items="@Model.ListaModelos" value="@Model.ListaModelos">
+                                            @*<option> Selecione um Modelo</option>*@
+                                        </select>
+                                    </div>
+                                </div>
+                            </div>
+
+                            @*Observacoes*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                        <label>Observações:</label>
+                                    </div>
+                                    <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                                        <textarea class="form-control" name="InspVeiculo.Observacoes" id="ObservacoesTxtArea" text="@Model.InspVeiculo.Observacoes" maxlength="1000" required>@Model.InspVeiculo.Observacoes</textarea>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+
+                    <h4>Dados Avaria</h4>
+                    @*AREA*@
+                    <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
+                        <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
+                            <div class="DivDadosAvaria_TelaEditarAvarias form-group">
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                            <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
+                                            <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
+                                        </div>
+                                        <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                            <select id="avAreaLista" name="InspAvaria.AvArea_ID" class="form-control" value="@Model.InspAvaria.AvArea_ID" onchange="areaDropDownInputFunc()"
+                                                    asp-items="@(new SelectList(Model.ListaAreas, "AvArea_ID", "Nome_Pt"))">
+                                                <option disabled selected>Área</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*CONDICAO*@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condicao</label>
+                                            <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
+                                        </div>
+
+                                        <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                            <select id="avCondicaoLista" name="InspAvaria.AvCondicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
+                                                    asp-items="@(new SelectList(Model.ListaCondicoes, "AvCondicao_ID", "Nome_Pt"))">
+                                                <option disabled selected>Condição</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*DANO*@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                            <label for="avDanoRepositorioLista" id="avDanoRepositorioListaLabel">Dano</label>
+                                            <input type="text" id="danoNumericoInput" onchange="danoNumericoInputFunc()" required pattern="[0-9]+$" />
+                                        </div>
+                                        <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                            <select id="avDanoRepositorioLista" name="InspAvaria.AvDano_ID" class="form-control" onchange="danoDropDownInputFunc()"
+                                                    asp-items="@(new SelectList(Model.ListaDanos, "AvDano_ID", "Nome_Pt"))">
+                                                <option disabled selected>Dano</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*GRAVIDADE*@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                            <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
+                                            <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+                                        </div>
+                                        <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                            <select id="avGravidadeLista" name="InspAvaria.AvGravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
+                                                    asp-items="@(new SelectList(Model.ListaGravidades, "AvGravidade_ID", "Nome_Pt"))">
+                                                <option disabled selected>Gravidade</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*QUADRANTE*@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                            <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
+                                            <input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />
+                                        </div>
+
+                                        <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                            <select id="avQuadranteLista" name="InspAvaria.AvQuadrante_ID" class="form-control" onchange="quadranteDropDownInputFunc()"
+                                                    asp-items="@(new SelectList(Model.ListaQuadrantes, "AvQuadrante_ID", "Nome_Pt"))">
+                                                <option disabled selected>Quadrante</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*SERVERIDADE*@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                            <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
+                                            <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+                                        </div>
+                                        <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                            <select id="avSeveridadeLista" name="InspAvaria.AvSeveridade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
+                                                    asp-items="@(new SelectList(Model.ListaSeveridades, "AvSeveridade_ID", "Nome_Pt"))">
+                                                <option disabled selected>Severidade</option>
+                                            </select>
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*DEFEITO DE FABRICA OU TRANSPORTADOR *@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-offset-3 col-md-offset-2 col-xs-offset-1 col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                            <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> Fabrica
+                                        </div>
+                                        <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
+                                            <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required /> Transporte
+                                        </div>
+                                    </div>
+                                </div>
+
+                                @*Dano Origem*@
+                                <div class="form-group">
+                                    <div class="row">
+                                        <div class="col col-lg-3 col-md-3  col-sm-4  col-xs-6 ladoesquerdo">
+                                            <label>Dano na Origem:</label>
+                                        </div>
+                                        <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                            <input asp-for="@Model.InspAvaria.DanoOrigem" type="checkbox" />
+                                        </div>
+                                    </div>
+                                </div>
+
+                            </div>
+                        </div>
+
+                    </div>
+
+
+                    <div hidden>
+                        Avaria ID: <input type="text" name="InspAvaria.InspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" /><br />
+                        Veículo ID<input type="text" name="InspVeiculo.InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
+                        Inspecao ID<input type="text" name="Inspecao.Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" /><br />
+                        Inspecao ID<input type="text" name="Inspecao.LocalInspecao_ID" value="@Model.Inspecao.LocalInspecao_ID" /><br />
+                        Inspecao ID<input type="text" name="Inspecao.LocalCheckPoint_ID" value="@Model.Inspecao.LocalCheckPoint_ID" /><br />
+
+                    </div>
+                </fieldset>
+                <div class="row">
+                    <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button type="submit" id="btnGravar-EditarAvariasConferencia" class="botoesTelaEditarAvariasConferencia btn btn-success">Gravar</button>
+                        <input type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)">
+                    </div><br /><br /><br /><br /><br />
+                </div>
+
+            </form>
+        </div>
+
+    </div>
 
 }
-<div class="inicioTelaEditarAvariasConferencia container">
-
-
-    @if (ViewData["MensagemErro"] != null)
-    {
-        <div class="container" id="EM_ERRO">
-            <div class="alert alert-danger">
-                <p>@ViewData["MensagemErro"]</p>
-            </div>
-        </div>
-    }
-
-
-    @if (ViewData["MensagemSucesso"] != null)
-    {
-        <div class="container" id="EM_SUCESSO">
-            <div class="alert alert-success">
-                <p>@ViewData["MensagemSucesso"]</p>
-            </div>
-        </div>
-    }
-
-    <div hidden>
-        Avaria ID: <input type="text" value="@Model.InspAvaria.InspAvaria_ID" /><br />
-        Veículo ID<input type="text" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
-        VIN_6 inicial<input type="text" value="@Model.InspVeiculo.VIN_6" /><br />
-        Inspecao ID:<input type="text" value="@Model.Inspecao.Inspecao_ID" /><br />
-        Marca Inicial: <input type="text" id="marcaHiddenDiv" value="@Model.InspVeiculo.Marca_ID" /><br />
-        Modelo Inicial: <input type="text" id="modeloHiddenDiv" value="@Model.InspVeiculo.Modelo_ID" /><br />
-        Area Inicial:<input type="text" id="areaHiddenDiv" value="@Model.InspAvaria.AvArea_ID" /><br />
-        Condicao Inicial:<input type="text" id="condicaoHiddenDiv" value="@Model.InspAvaria.AvCondicao_ID" /><br />
-        Dano Inicial:<input type="text" id="danoHiddenDiv" value="@Model.InspAvaria.AvDano_ID" /><br />
-        Gravidade Inicial:<input type="text" id="gravidadeHiddenDiv" value="@Model.InspAvaria.AvGravidade_ID" /><br />
-        Quadrante Inicial:<input type="text" id="quadranteHiddenDiv" value="@Model.InspAvaria.AvQuadrante_ID" /><br />
-        Severidade Inicial:<input type="text" id="severidadeHiddenDiv" value="@Model.InspAvaria.AvSeveridade_ID" /><br />
-        Observações Inicial: <input type="text" value="@Model.InspVeiculo.Observacoes" />
-    </div>
-
-    <div class="container">
-
-        <form asp-controller="Conferencia" asp-action="SalvarAvaria" method="post" id="salvarAvariaForm">
-            <fieldset>
-                <h4>Dados Veículo</h4>
-                @*Chassi*@
-                <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
-                    <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                                    <label asp-for="@Model.InspVeiculo.VIN_6">Chassi</label>
-                                </div>
-                                <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                                    <input asp-for="@Model.InspVeiculo.VIN_6" value="@Model.InspVeiculo.VIN_6" maxlength="6" required pattern=".{6,6}" />
-                                </div>
-                            </div>
-                        </div>
-
-                        @*Marca*@
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                                    <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
-                                </div>
-                                <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
-                                    <select id="ListaMarca" name="InspVeiculo.Marca_ID" class="form-control" required
-                                            asp-items="@Model.ListaMarcas" value="@Model.InspVeiculo.Marca_ID"></select>
-                                </div>
-                            </div>
-                        </div>
-
-                        @*Modelo*@
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                                    <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
-                                </div>
-                                <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
-                                    <select id="ListaModelo" name="InspVeiculo.Modelo_ID" class="form-control" required
-                                            asp-items="@Model.ListaModelos" value="@Model.ListaModelos">
-                                        @*<option> Selecione um Modelo</option>*@
-                                    </select>
-                                </div>
-                            </div>
-                        </div>
-
-                        @*Observacoes*@
-                        <div class="form-group">
-                            <div class="row">
-                                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                                    <label>Observações:</label>
-                                </div>
-                                <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                                    <textarea class="form-control" name="InspVeiculo.Observacoes" id="ObservacoesTxtArea" text="@Model.InspVeiculo.Observacoes" maxlength="1000" required>@Model.InspVeiculo.Observacoes</textarea>
-                                </div>
-                            </div>
-                        </div>
-                    </div>
-                </div>
-
-                <h4>Dados Avaria</h4>
-                @*AREA*@
-                <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
-                    <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
-                        <div class="DivDadosAvaria_TelaEditarAvarias form-group">
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                        <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
-                                        <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
-                                    </div>
-                                    <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                        <select id="avAreaLista" name="InspAvaria.AvArea_ID" class="form-control" value="@Model.InspAvaria.AvArea_ID" onchange="areaDropDownInputFunc()"
-                                                asp-items="@(new SelectList(Model.ListaAreas, "AvArea_ID", "Nome_Pt"))">
-                                            <option disabled selected>Área</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*CONDICAO*@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                        <label for="avCondicaoLista" id="avCondicaoListaLabel">Condicao</label>
-                                        <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
-                                    </div>
-
-                                    <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                        <select id="avCondicaoLista" name="InspAvaria.AvCondicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
-                                                asp-items="@(new SelectList(Model.ListaCondicoes, "AvCondicao_ID", "Nome_Pt"))">
-                                            <option disabled selected>Condição</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*DANO*@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                        <label for="avDanoRepositorioLista" id="avDanoRepositorioListaLabel">Dano</label>
-                                        <input type="text" id="danoNumericoInput" onchange="danoNumericoInputFunc()" required pattern="[0-9]+$" />
-                                    </div>
-                                    <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                        <select id="avDanoRepositorioLista" name="InspAvaria.AvDano_ID" class="form-control" onchange="danoDropDownInputFunc()"
-                                                asp-items="@(new SelectList(Model.ListaDanos, "AvDano_ID", "Nome_Pt"))">
-                                            <option disabled selected>Dano</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*GRAVIDADE*@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                        <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
-                                        <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
-                                    </div>
-                                    <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                        <select id="avGravidadeLista" name="InspAvaria.AvGravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
-                                                asp-items="@(new SelectList(Model.ListaGravidades, "AvGravidade_ID", "Nome_Pt"))">
-                                            <option disabled selected>Gravidade</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*QUADRANTE*@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                        <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
-                                        <input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />
-                                    </div>
-
-                                    <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                        <select id="avQuadranteLista" name="InspAvaria.AvQuadrante_ID" class="form-control" onchange="quadranteDropDownInputFunc()"
-                                                asp-items="@(new SelectList(Model.ListaQuadrantes, "AvQuadrante_ID", "Nome_Pt"))">
-                                            <option disabled selected>Quadrante</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*SERVERIDADE*@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                        <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
-                                        <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
-                                    </div>
-                                    <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                        <select id="avSeveridadeLista" name="InspAvaria.AvSeveridade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
-                                                asp-items="@(new SelectList(Model.ListaSeveridades, "AvSeveridade_ID", "Nome_Pt"))">
-                                            <option disabled selected>Severidade</option>
-                                        </select>
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*DEFEITO DE FABRICA OU TRANSPORTADOR *@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-offset-3 col-md-offset-2 col-xs-offset-1 col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                        <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> Fabrica
-                                    </div>
-                                    <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                                        <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required /> Transporte
-                                    </div>
-                                </div>
-                            </div>
-
-                            @*Dano Origem*@
-                            <div class="form-group">
-                                <div class="row">
-                                    <div class="col col-lg-3 col-md-3  col-sm-4  col-xs-6 ladoesquerdo">
-                                        <label>Dano na Origem:</label>
-                                    </div>
-                                    <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                        <input asp-for="@Model.InspAvaria.DanoOrigem" type="checkbox" />
-                                    </div>
-                                </div>
-                            </div>
-
-                        </div>
-                    </div>
-
-                </div>
-
-
-                <div hidden>
-                    Avaria ID: <input type="text" name="InspAvaria.InspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" /><br />
-                    Veículo ID<input type="text" name="InspVeiculo.InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
-                    Inspecao ID<input type="text" name="Inspecao.Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" /><br />
-                    Inspecao ID<input type="text" name="Inspecao.LocalInspecao_ID" value="@Model.Inspecao.LocalInspecao_ID" /><br />
-                    Inspecao ID<input type="text" name="Inspecao.LocalCheckPoint_ID" value="@Model.Inspecao.LocalCheckPoint_ID" /><br />
-
-                </div>
-            </fieldset>
-            <div class="row">
-                <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                    <button type="submit" id="btnGravar-EditarAvariasConferencia" class="botoesTelaEditarAvariasConferencia btn btn-success">Gravar</button>
-                    <input type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)">
-                </div><br /><br /><br /><br /><br />
-            </div>
-
-        </form>
-    </div>
-</div>
+else
+{
+    <p class="alert alert-danger"><strong>Erro ao editar registros. Tente novamente mais tarde ou entre em contato com o suporte técnico</strong></p>
+        <input type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)">
+}

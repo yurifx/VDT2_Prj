@@ -231,7 +231,6 @@ namespace VDT2.Controllers
                 //Severidades
                 conferenciaEditarAvariasVM.ListaSeveridades = BLL.Avarias.ListarSeveridades(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, configuracao);
 
-
                 #region EM_ERRO
                 //Marca
                 if (conferenciaEditarAvariasVM.ListaMarcas.FirstOrDefault().Text == "ERRO")
@@ -282,6 +281,8 @@ namespace VDT2.Controllers
                 {
                     ViewData["MensagemErro"] = "Erro ao listar Severidades, tente novamente mais tarde";
                 }
+                #endregion
+
             }
             else
             {
@@ -289,6 +290,10 @@ namespace VDT2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+
+            //Testes EM_ERRO
+            //conferenciaEditarAvariasVM = null; //teste1;
+            //conferenciaEditarAvariasVM.ListaAreas = null;
             return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
         }
 
