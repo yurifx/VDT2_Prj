@@ -6,6 +6,8 @@
 // <date>2017-03-28</date>
 // <summary>Controllers de Inspecao</summary>
 
+
+//Dependencias
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -45,6 +47,14 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaInspecao()
         {
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: NovaInspecao",
+            });
+            #endregion
             string _mensagemLogin = "Erro ao validar usuário, por favor realize o login novamente";
 
             InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM = new InspecaoDadosGeraisViewModel();
@@ -109,6 +119,14 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult InserirDadosCabecalhoInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, string botaoEnviar)
         {
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: InserirDadosCabecalhoInspecao | Parametros: Cliente_ID: {inspecaoDadosGeraisVM.Cliente_ID}, Local Inspeção: {inspecaoDadosGeraisVM.LocalInspecao_ID}, LocalCheckPoint: {inspecaoDadosGeraisVM.LocalCheckPoint_ID}, Transportador[Id_Tipo] {inspecaoDadosGeraisVM.IdTipo}, NomeNavio: {inspecaoDadosGeraisVM.NomeNavio}, FrotaViagemNome {inspecaoDadosGeraisVM.FrotaViagemNome}, Em Edição: {inspecaoDadosGeraisVM.Edicao}",
+            });
+            #endregion
 
             string _mensagemLogin = "Erro ao validar usuário, por favor realize o login novamente";
 
@@ -162,18 +180,30 @@ namespace VDT2.Controllers
             {
                 #region verificarReload
                 //Verifica se é um reload do formulário anterior
-                string formsubmit = inspecaoDadosGeraisVM.Cliente_ID + inspecaoDadosGeraisVM.LocalInspecao_ID + inspecaoDadosGeraisVM.LocalCheckPoint_ID + inspecaoDadosGeraisVM.Transportador_ID + inspecaoDadosGeraisVM.FrotaViagemNome + inspecaoDadosGeraisVM.IdTipo;
+                string formsubmit = inspecaoDadosGeraisVM.Cliente_ID + inspecaoDadosGeraisVM.LocalInspecao_ID + inspecaoDadosGeraisVM.LocalCheckPoint_ID + inspecaoDadosGeraisVM.FrotaViagemNome + inspecaoDadosGeraisVM.IdTipo;
+
                 var ultimosubmit = this.HttpContext.Session.GetString("formsubmit");
+
                 if (formsubmit != ultimosubmit)
                 {
                     this.HttpContext.Session.SetString("formsubmit", formsubmit);
                 }
                 else
                 {
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Não foi possível finalizar solicitação. Dados são identicos aos enviados anteriormente - Prevent (f5)",
+                    });
+                    #endregion
+
                     ViewData["MensagemErro"] = "Não é possível atualizar dados identicos aos informados anteriormente!";
                     return RedirectToAction("NovaInspecao");
                 }
                 #endregion
+
                 InspecaoVeiculoVM.Inspecao = BLL.Inspecao.Inserir(InspecaoVeiculoVM.Inspecao, configuracao);
                 if (InspecaoVeiculoVM.Inspecao != null)
                 {
@@ -225,12 +255,21 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult InserirVeiculo(ViewModels.InspecaoVeiculoViewModel VeiculoViewModel, int tipoBotao)
         {
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: InserirVeículo | Parametros: Inspecao_ID: {VeiculoViewModel.Inspecao_ID},  VIN_6: {VeiculoViewModel.VIN_6},  Marca: {VeiculoViewModel.Marca_ID}, Modelo {VeiculoViewModel.Modelo_ID}, Observações {VeiculoViewModel.Observacoes}",
+            });
+            #endregion
+
             //Verifica dados do usuário
             #region dadosusuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
-                #region gravalog
+                #region gravalogInformacao
                 try
                 {
                     Diag.Log.Grava(
@@ -508,6 +547,16 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult InserirAvaria(InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel, int tipoBotao, ICollection<IFormFile> files)
         {
+
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: InserirAvaria | Parametros: InspecaoID: {registrarAvariasViewModel.Inspecao_ID}, InspVeiculo_ID: {registrarAvariasViewModel.InspVeiculo_ID},  Area_ID: {registrarAvariasViewModel.Area_ID}, Condicao_ID {registrarAvariasViewModel.Condicao_ID}, Dano_ID {registrarAvariasViewModel.Dano_ID}, GravidadeID {registrarAvariasViewModel.Gravidade_ID}, QuadranteID {registrarAvariasViewModel.Quadrante_ID}, Severidade {registrarAvariasViewModel.Severidade_ID}, FabricaTransporte {registrarAvariasViewModel.fabricatransporte}",
+            });
+            #endregion
+
             //verifica dados usuário
             #region dadosusuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
@@ -640,6 +689,16 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult VisualizarAvarias(VisualizarAvariasViewModel VisualizarAvariasVM, int tipoBotao) //melhorar para pegar do viewmodel
         {
+
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action VisualizarAvarias acionada: Parametros: InspecaoID {VisualizarAvariasVM.Inspecao_ID}, InspVeiculo_ID {VisualizarAvariasVM.InspVeiculo_ID}",
+            });
+            #endregion
+
             #region dadosusuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -679,6 +738,16 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult EditarAvarias(int inspAvaria_ID_form_editar)
         {
+
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action EditarAvarias acionada: Parametros: InspAvaria_ID {inspAvaria_ID_form_editar}",
+            });
+            #endregion
+
             try
             {
                 Diag.Log.Grava(
@@ -776,6 +845,7 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult SalvarAvaria(InspecaoEditarAvariasViewModel EditarAvariasVM, ICollection<IFormFile> files)
         {
+            #region gravalogInformacao
             try
             {
                 Diag.Log.Grava(
@@ -786,6 +856,7 @@ namespace VDT2.Controllers
                     });
             }
             catch { }
+            #endregion
 
             #region recebeDadosUsuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);

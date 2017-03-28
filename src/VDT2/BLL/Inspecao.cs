@@ -370,13 +370,25 @@ namespace VDT2.BLL
                 inspecao = DAL.Inspecao.Update(inspecao, configuracao);
                 return inspecao;
             }
-            catch
+
+            catch (System.Exception ex)
             {
                 inspecao.Erro = true;
                 inspecao.MensagemErro = _mensagemErro;
+
+                #region gravalogerro
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Erro,
+                            Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Update | Erro: {ex}",
+                            Excecao = ex
+                        });
+                #endregion  
+
                 return inspecao;
+                }
             }
-        }
 
         public static Models.Inspecao Inserir(Models.Inspecao inspecao, Configuracao configuracao)
         {
@@ -387,10 +399,21 @@ namespace VDT2.BLL
                 inspecao = DAL.Inspecao.Inserir(inspecao, configuracao);
                 return inspecao;
             }
-            catch
+            catch (Exception ex)
             {
                 inspecao.Erro = true;
                 inspecao.MensagemErro = _mensagemErro;
+                
+                #region gravalogerro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Inserir | Erro: {ex}",
+                        Excecao = ex
+                    });
+                #endregion  
+
                 return inspecao;
             }
         }
@@ -411,9 +434,20 @@ namespace VDT2.BLL
 
                 return listaClientes;
             }
-            catch
+            catch (Exception ex)
             {
                 listaClientes.Add(new Models.Cliente { Erro = true, MensagemErro = _mensagemErro, Cliente_ID = 0, Nome = "Erro" });
+
+                #region gravalogerro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar Inspecao | ListarCliente | Erro: {ex}",
+                        Excecao = ex
+                    });
+                #endregion  
+
                 return listaClientes;
             }
         }
@@ -454,6 +488,7 @@ namespace VDT2.BLL
                 }
                 return listaLocaisInspecao;
             }
+
             catch (Exception ex)
             {
                 #region gravalogErro
@@ -461,7 +496,7 @@ namespace VDT2.BLL
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar BLL.ListarLocaisInspecao() | Parâmetros Informados: UsuarioID {usuario_ID}, locaisUsuario: {locaisUsuario} ",
+                        Mensagem = $"Não conseguiu executar Inspecao | ListarLocaisInspecao() | Parâmetros Informados: UsuarioID {usuario_ID}, locaisUsuario: {locaisUsuario} ",
                         Excecao = ex
                     });
                 #endregion
@@ -494,7 +529,7 @@ namespace VDT2.BLL
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar BLL.ListarLocalCheckPoint() | Parâmetros Informados: UsuarioID {usuario_ID} ",
+                        Mensagem = $"Não conseguiu executar Inspecao | ListarLocalCheckPoint() | Parâmetros Informados: UsuarioID {usuario_ID} ",
                         Excecao = ex
                     });
                 #endregion
@@ -527,7 +562,7 @@ namespace VDT2.BLL
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar BLL.ListarTransportadores() | Parâmetros Informados: UsuarioID {usuario_ID} ",
+                        Mensagem = $"Não conseguiu executar Inspecao | ListarTransportadores() | Parâmetros Informados: UsuarioID {usuario_ID} ",
                         Excecao = ex
                     });
                 #endregion

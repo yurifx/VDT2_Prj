@@ -228,7 +228,7 @@ namespace VDT2.Controllers
                 var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
                 dadosUsuario.Usuario = objUsuario;
             }
-            
+
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
 
@@ -300,7 +300,7 @@ namespace VDT2.Controllers
             {
 
                 Models.Usuario dadosUsuario = AutenticaUsuario(dados.Identificacao, dados.Senha, this.configuracao);
-              
+
                 if (dadosUsuario != null)
                 {
                     //Grava cookie do usuário: Teste Yuri
@@ -316,7 +316,7 @@ namespace VDT2.Controllers
                         }
                     );
                     //
-                    
+
                     List<System.Security.Claims.Claim> claims = new List<System.Security.Claims.Claim>(6);
                     claims.Add(new System.Security.Claims.Claim("Login", dadosUsuario.Login, System.Security.Claims.ClaimValueTypes.String));
                     claims.Add(new System.Security.Claims.Claim("Nome", dadosUsuario.Nome, System.Security.Claims.ClaimValueTypes.String));

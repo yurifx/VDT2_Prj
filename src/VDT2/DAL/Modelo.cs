@@ -68,7 +68,7 @@ namespace VDT2.DAL
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"Modelo.Listar() realizado com sucesso:  Registros encontrados: {listaModelo.Count()}"
+                            Mensagem = $"Modelo.Listar realizado com sucesso:  Registros encontrados: {listaModelo.Count()}"
                         });
                     #endregion  
 
