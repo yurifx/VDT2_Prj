@@ -32,38 +32,55 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaConferencia()
         {
+            ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
+            string _mensagemLogin = "Usuário não identificado, faça login novamente";
+
             #region dadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-            if (dadosUsuario == null)
+            if (dadosUsuario != null)
             {
+                var identificacao = this.Request.Cookies["Usr"];
+                if (identificacao != null)
+                {
+                    var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+                    dadosUsuario.Usuario = objUsuario;
+
+                    conferenciaVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+
+                    conferenciaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
+
+                    conferenciaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+
+                    #region EM_ERRO
+                    if (conferenciaVM.ListaCliente.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = conferenciaVM.ListaCliente.FirstOrDefault().MensagemErro;
+                    }
+
+                    if (conferenciaVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = conferenciaVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+                    }
+
+                    if (conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                    }
+                    #endregion
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = _mensagemLogin;
+                    return RedirectToAction("Index", "Home");
+                }
+            }
+            else
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
+
             #endregion
-
-            ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
-
-            conferenciaVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            conferenciaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-            conferenciaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-
-
-            #region EM_ERRO
-
-            if (conferenciaVM.ListaCliente.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = conferenciaVM.ListaCliente.FirstOrDefault().MensagemErro;
-            }
-
-            if (conferenciaVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = conferenciaVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
-            }
-
-            if (conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = conferenciaVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
-            }
-            #endregion  
 
             return View("NovaConferencia", conferenciaVM);
         }
@@ -75,30 +92,40 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
+            string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
             List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
 
-            #region dadosUsuario
+           
+            #region recebeDadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
-            else
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
             {
-                var identificacao = this.Request.Cookies["Usr"];
-                if (identificacao != null)
-                {
-                    var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
-                    listarConferenciaAvariaVM.Usuario = objUsuario;
-                }
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            listarConferenciaAvariaVM.Usuario = objUsuario;
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
+
 
             bool Integrou = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, configuracao);
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
-            listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
+            listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
             listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
 
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
@@ -138,7 +165,7 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            
+
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
@@ -223,7 +250,7 @@ namespace VDT2.Controllers
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf(); ;
 
-            uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao); 
+            uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
                 ViewData["MensagemErro"] = "Erro ao realizar upload de imagens da avaria";
@@ -232,13 +259,13 @@ namespace VDT2.Controllers
             {
                 ViewData["MensagemSucesso"] = "Fotos atualizadas com sucesso";
             }
-            
+
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
             conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
-            
+
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
-            
+
             listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
 
             listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
@@ -254,26 +281,35 @@ namespace VDT2.Controllers
         /// <returns>View</returns>
         public IActionResult LoadingListInicio()
         {
+            string _mensagemLogin = "Erro ao validar dados do usuário, faça login novamente";
             ViewModels.LoginViewModel dadosUsuario = null;
 
-            //Verifica dados do usuário
-            #region dadosUsuario
+            #region recebeDadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
-            else
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
             {
-                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
 
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
 
             ConferenciaLoadingListViewModel conferenciaLoadingListVM = new ConferenciaLoadingListViewModel();
             conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
             #region EM_ERRO
             if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
             {
@@ -283,7 +319,7 @@ namespace VDT2.Controllers
             {
                 ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
             }
-            #endregion  
+            #endregion
 
             return View("LoadingListInicio", conferenciaLoadingListVM);
         }
@@ -294,23 +330,33 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult PackingListInicio()
         {
-            ViewModels.LoginViewModel dadosUsuario = null;
-
             //Verifica dados do usuário
-            #region dadosUsuario
+            string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
+            ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
+
+            #region recebeDadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
 
-            else
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
             {
-                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
 
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
+
 
             ConferenciaPackingListViewModel conferenciaPackingListVM = new ConferenciaPackingListViewModel();
 
@@ -322,7 +368,7 @@ namespace VDT2.Controllers
             }
 
 
-            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
 
             if (conferenciaPackingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
@@ -348,17 +394,29 @@ namespace VDT2.Controllers
             string _mensagemErro = "Erro ao gravar arquivo. Tente novamente mais tarde ou entre em contato com service desk";
 
             //Verifica dados do usuário
-            ViewModels.LoginViewModel dadosUsuario = null;
-            #region dadosUsuario
+            string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
+            ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
+
+            #region recebeDadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
-            else
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
             {
-                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
 
@@ -368,7 +426,7 @@ namespace VDT2.Controllers
                 ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaCliente.FirstOrDefault().MensagemErro;
             }
 
-            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
             if (conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
             {
                 ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
@@ -440,23 +498,34 @@ namespace VDT2.Controllers
             bool integrou = false;
 
             //Verifica dados do usuário
-            ViewModels.LoginViewModel dadosUsuario = null;
+            string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
+            ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
 
-            #region dadosUsuario
+            #region recebeDadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
-            else
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
             {
-                ViewData["UsuarioNome"] = dadosUsuario.Nome;
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
 
             conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+            conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
 
             if (files.Count() > 0)
             {

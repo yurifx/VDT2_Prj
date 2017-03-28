@@ -228,8 +228,7 @@ namespace VDT2.Controllers
                 var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
                 dadosUsuario.Usuario = objUsuario;
             }
-
-
+            
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
 

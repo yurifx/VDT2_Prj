@@ -37,55 +37,59 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaInspecao()
         {
+            string _mensagemLogin = "Erro ao validar usuário, por favor realize o login novamente";
+
             InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM = new InspecaoDadosGeraisViewModel();
+
             ViewModels.LoginViewModel dadosUsuario = null;
 
-            //Verifica dados do usuário
-            #region dadosUsuario
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-            if (dadosUsuario == null)
-            {
-                return RedirectToAction("Index", "Home");
-            }
-
-            else
+            if (dadosUsuario != null)
             {
                 ViewData["UsuarioNome"] = dadosUsuario.Nome;
-                var identificacao = this.Request.Cookies["Usr"];
+                ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
 
+                var identificacao = this.Request.Cookies["Usr"];
                 if (identificacao != null)
                 {
                     var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+                    dadosUsuario.Usuario = objUsuario;
+
+                    inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+                    inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
+                    inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+                    inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+                    #region EM_ERRO
+                    if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+                    }
+                    if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
+                    }
+                    if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                    }
+                    if (inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().Erro == true)
+                    {
+                        ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
+                    }
+                    #endregion
+                    return View("NovaInspecao", inspecaoDadosGeraisVM);
+                }
+                else
+                {
+                    ViewData["MensagemErro"] = _mensagemLogin;
+                    return RedirectToAction("Index", "Home");
                 }
             }
-
-            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
-            #endregion
-
-            inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-            inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-            inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
-            #region EM_ERRO
-            if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
+            else
             {
-                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
-            if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
-            }
-            if (inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
-            }
-            if (inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().Erro == true)
-            {
-                ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
-            }
-            #endregion
-
-            return View("NovaInspecao", inspecaoDadosGeraisVM);
         }
 
         /// <summary>
@@ -98,31 +102,28 @@ namespace VDT2.Controllers
         public IActionResult InserirDadosCabecalhoInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, string botaoEnviar)
         {
 
+            string _mensagemLogin = "Erro ao validar usuário, por favor realize o login novamente";
+
             InspecaoVeiculoViewModel InspecaoVeiculoVM = new InspecaoVeiculoViewModel();
             InspecaoVeiculoVM.InspVeiculo = new Models.InspVeiculo();
 
             //Verifica dados do usuário
-            #region recebedadosusuario
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-            #region gravalog
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Parametros: Nome:  {dadosUsuario.Nome} |  Autenticado: {dadosUsuario.Autenticado}"
-                    });
-            }
-            catch { }
-            #endregion
 
             if (dadosUsuario == null)
             {
+                ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
 
-            #endregion
+            var identificacao = this.Request.Cookies["Usr"];
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
 
             InspecaoVeiculoVM.Inspecao = BLL.Inspecao.MontaDadosInspecao(inspecaoDadosGeraisVM, configuracao);
 
@@ -135,7 +136,6 @@ namespace VDT2.Controllers
                     if (InspecaoVeiculoVM.Inspecao.Inspecao_ID != 0)
                     {
                         InspecaoVeiculoVM.Inspecao = BLL.Inspecao.Update(InspecaoVeiculoVM.Inspecao, configuracao);
-
 
                         if (InspecaoVeiculoVM.Inspecao.Erro == true)
                         {
@@ -174,7 +174,7 @@ namespace VDT2.Controllers
                         #region EM_ERRO
                         ViewData["MensagemErro"] = InspecaoVeiculoVM.Inspecao.MensagemErro;
                         inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-                        inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
+                        inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, objUsuario.Locais);
                         inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
                         inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
                         return View("NovaInspecao", inspecaoDadosGeraisVM);
@@ -190,7 +190,6 @@ namespace VDT2.Controllers
             //Preenche Dados para próxima View
             InspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoDadosGeraisVM.Cliente_ID, configuracao);
             InspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoDadosGeraisVM.Cliente_ID, configuracao);
-
             #region EM_ERRO
             if (InspecaoVeiculoVM.Modelo.FirstOrDefault().Text == "ERRO")
             {
@@ -203,7 +202,7 @@ namespace VDT2.Controllers
             }
 
             InspecaoVeiculoVM.InspVeiculo_ID = 0;
-            #endregion  
+            #endregion
 
             return View("Veiculo", InspecaoVeiculoVM);
         }
@@ -473,7 +472,7 @@ namespace VDT2.Controllers
                 {
                     ViewData["MensagemErro"] = "Não há Severidades para este cliente, por favor entre em contato com o suporte técnico";
                 }
-                #endregion  
+                #endregion
 
                 RegistrarAvariasViewModel.listaAvarias = BLL.Avarias.Listar(RegistrarAvariasViewModel.Inspecao.Cliente_ID, VeiculoViewModel.VIN_6, configuracao);
                 #region EM_ERRO
@@ -981,81 +980,59 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult EditarInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, int tipobotao)
         {
+
+            string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
+
             ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
 
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"EditarInspecao| Parametros:  Edição: {inspecaoDadosGeraisVM.Edicao}, Inspecao_ID: {inspecaoDadosGeraisVM.Inspecao_ID}"
-                    });
-            }
-            catch { }
-
             #region recebeDadosUsuario
-            try
+            dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
             {
-                dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-                if (dadosUsuario == null)
-                {
-                    ViewData["MensagemErro"] = "Sua sessão expirou, faça login novamente";
-                    return RedirectToAction("Index", "Home");
-                }
-                else
-                {
-                    ViewData["UsuarioNome"] = dadosUsuario.Nome;
-                }
-
-                ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
 
-            catch (Exception ex)
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
             {
-                #region gravalogErro
-                Diag.Log.Grava(
-               new Diag.LogItem()
-               {
-                   Nivel = Diag.Nivel.Erro,
-                   Mensagem = $"Erro ao executar EditarInspecao.ReceberDadosUsuario"
-               });
-                throw (ex);
-                #endregion
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
             }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
+
+            //Preenche dados proxima view            
+            inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
+            inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+            inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+
 
             inspecaoDadosGeraisVM.Edicao = 1;
 
+            //Erro ao receber dados da inspeção
             if (inspecaoDadosGeraisVM.Inspecao_ID == 0)
-            #region EM_ERRO
             {
                 ViewData["MensagemErro"] = "Erro ao processar informação, tente novamente mais tarde ou entre em contato com o suporte";
-                InspecaoDadosGeraisViewModel erroVM = new ViewModels.InspecaoDadosGeraisViewModel();
-                erroVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-                erroVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-                erroVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-                erroVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
-                return View("NovaInspecao", erroVM);
+                return View("NovaInspecao", inspecaoDadosGeraisVM);
             }
-            #endregion  
 
 
             inspecaoDadosGeraisVM.Inspecao = BLL.Inspecao.ListarPorId(inspecaoDadosGeraisVM.Inspecao_ID, configuracao);
+
+            //Erro ao receber dados da inspeção
             if (inspecaoDadosGeraisVM.Inspecao.Erro == true)
-            #region EM_ERRO
             {
                 ViewData["MensagemErro"] = inspecaoDadosGeraisVM.Inspecao.MensagemErro;
-                InspecaoDadosGeraisViewModel erroVM = new ViewModels.InspecaoDadosGeraisViewModel();
-
-                erroVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-                erroVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-                erroVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-                erroVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
-
-                return View("NovaInspecao", erroVM);
+                return View("NovaInspecao", inspecaoDadosGeraisVM);
             }
-            #endregion
 
             inspecaoDadosGeraisVM.Inspecao_ID = inspecaoDadosGeraisVM.Inspecao.Inspecao_ID;
             inspecaoDadosGeraisVM.Cliente_ID = inspecaoDadosGeraisVM.Inspecao.Cliente_ID;
@@ -1064,12 +1041,12 @@ namespace VDT2.Controllers
             inspecaoDadosGeraisVM.Transportador_ID = inspecaoDadosGeraisVM.Inspecao.Transportador_ID;
 
             inspecaoDadosGeraisVM.Transportador = BLL.Inspecao.ListarTransportadorPorId(inspecaoDadosGeraisVM.Inspecao.Transportador_ID, configuracao);
+
+            //Erro ao listar Transportador
             if (inspecaoDadosGeraisVM.Transportador.Erro == true)
-            #region EM_ERRO
             {
                 ViewBag["MensagemErro"] = inspecaoDadosGeraisVM.Transportador.MensagemErro;
             }
-            #endregion
 
             inspecaoDadosGeraisVM.TipoTransportador = inspecaoDadosGeraisVM.Transportador.Tipo;
 
@@ -1077,12 +1054,11 @@ namespace VDT2.Controllers
             inspecaoDadosGeraisVM.IdTipo = inspecaoDadosGeraisVM.Transportador_ID + "_" + inspecaoDadosGeraisVM.TipoTransportador;
             inspecaoDadosGeraisVM.FrotaViagem = BLL.Inspecao.ConsultaFrotaViagemPorId(inspecaoDadosGeraisVM.Inspecao.FrotaViagem_ID, configuracao);
 
+            //Erro ao listar Frota
             if (inspecaoDadosGeraisVM.FrotaViagem.Erro == true)
-            #region EM_ERRO
             {
                 ViewData["MensagemErro"] = inspecaoDadosGeraisVM.FrotaViagem.MensagemErro;
             }
-            #endregion  
 
             inspecaoDadosGeraisVM.FrotaViagemNome = inspecaoDadosGeraisVM.FrotaViagem.Nome;
 
@@ -1091,22 +1067,14 @@ namespace VDT2.Controllers
             {
                 var navio = BLL.Inspecao.ConsultaNavioPorId(inspecaoDadosGeraisVM.Inspecao.Navio_ID, configuracao);
                 if (navio.Erro == true)
-                #region EM_ERRO
                 {
                     ViewData["MensagemErro"] = navio.MensagemErro;
                 }
-                #endregion
 
                 inspecaoDadosGeraisVM.NomeNavio = navio.Nome;
             }
 
-            //Lista a ser preenchida
-            inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
-            inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao);
-            inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-            inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
             #region EM_ERRO
-
             if (inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().Erro == true)
             {
                 ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaCliente.FirstOrDefault().MensagemErro;
@@ -1126,7 +1094,7 @@ namespace VDT2.Controllers
             {
                 ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
             }
-            #endregion  
+            #endregion
 
             return View("NovaInspecao", inspecaoDadosGeraisVM);
         }
@@ -1140,6 +1108,8 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult NovoVeiculo(InspecaoVeiculoViewModel NovoVeiculo, int tipobotao)
         {
+            string _mensagemLogin = "Erro ao validar usuário por favor faça login novamente";
+            #region gravalogInicial
             try
             {
                 Diag.Log.Grava(
@@ -1150,6 +1120,30 @@ namespace VDT2.Controllers
                     });
             }
             catch { }
+            #endregion
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            ViewData["UsuarioNome"] = dadosUsuario.Nome;
+            ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
+            #endregion
 
             NovoVeiculo.Edicao = 0;
 

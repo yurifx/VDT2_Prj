@@ -407,15 +407,36 @@ namespace VDT2.BLL
             }
         }
 
-        public static List<Models.LocalInspecao> ListarLocaisInspecao(int usuario_ID, Configuracao configuracao)
+        public static List<Models.LocalInspecao> ListarLocaisInspecao(int usuario_ID, Configuracao configuracao, string locaisUsuario)
         {
 
             const string _mensagemErro = "Não foi possível listar LocalInspecao, tente novamente mais tarde ou entre em contato com o suporte técnico.";
-
             List<Models.LocalInspecao> listaLocaisInspecao = new List<Models.LocalInspecao>();
+
             try
             {
-                listaLocaisInspecao = DAL.LocalInspecao.Listar(usuario_ID, configuracao);
+                if (locaisUsuario != "*")
+                {
+                    var _lst = locaisUsuario.Split('|');
+
+                    List<int> _listaLocaisUsuario = new List<int>();
+
+                    foreach (var local in _lst)
+                    {
+                        if (local != "")
+                        {
+                            _listaLocaisUsuario.Add(Convert.ToInt32(local));
+                        }
+                    }
+
+                    listaLocaisInspecao = DAL.LocalInspecao.Listar(usuario_ID, configuracao).Where(x => _listaLocaisUsuario.Contains(x.LocalInspecao_ID)).ToList();
+                }
+                else
+                {
+                    listaLocaisInspecao = DAL.LocalInspecao.Listar(usuario_ID, configuracao);
+                }
+
+                
                 if (listaLocaisInspecao.Count() == 0)
                 {
                     listaLocaisInspecao.Add(new Models.LocalInspecao { Erro = true, MensagemErro = _mensagemErro, LocalInspecao_ID = 0, Nome = "Erro" });
