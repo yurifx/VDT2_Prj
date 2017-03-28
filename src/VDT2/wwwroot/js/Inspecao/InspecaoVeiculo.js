@@ -29,8 +29,6 @@ function ValidarChassi() {
         $("#chassiSuccess").removeClass("glyphicon-ok");
         $("#divChassi").removeClass("has-success has-feedback");
     }
-
-    
 }
 
 function ValidarFormularioInserirVeiculo() {
@@ -106,12 +104,11 @@ function ValidarFormularioNovaMarca() {
                         value: response,
                         text: novaMarcaNome
                     }))
+                //informa o usuário que a  marca foi adidioncada: Esta linha se faz necessário pois senão terei que adicionar callback.
                 alert("Nova marca adicionada com sucesso");
             };
 
-            //informa o usuário que a  marca foi adidioncada: Esta linha se faz necessário pois senão terei que adicionar callback.
-
-
+            
             //seta como selected o valor da resposta (id) 
             $('#ListaMarca').val(response);
             $("#ListaMarca").css("color", "blue");
@@ -157,11 +154,9 @@ function ValidarFormularioNovoModelo() {
                     value: response,
                     text: novoModeloNome
                 }));
+                //informa o usuário - esta linha se faz necessário pois senão terei que adicionar callback.
                 alert("Novo Modelo adicionado com sucesso");
             }
-
-            //informa o usuário - esta linha se faz necessário pois senão terei que adicionar callback.
-
 
             //seta como selected o valor da resposta (id) 
             $('#ListaModelo').val(response);
