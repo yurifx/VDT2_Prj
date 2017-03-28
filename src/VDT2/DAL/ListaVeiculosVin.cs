@@ -4,8 +4,10 @@
 // <author>Amauri Rodrigues & Yuri Vasconcelos</author>
 // <email>amauri.rodrigues@grupoasserth.com.br</email>
 // <date>2017-02-19</date>
-// <summary>Classe de acesso aos dados</summary>
+// <summary>Classe de acesso aos dados - ListaVeiculosVin</summary>
 
+
+//Dependencias
 using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;

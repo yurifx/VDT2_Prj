@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Mvc.Rendering;
+﻿// <copyright file="Inspecao.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
+// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>Classe referente a camada de negócios - Inspecao</summary>
+
+using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -6,10 +14,21 @@ using System.Threading.Tasks;
 using VDT2.Models;
 using VDT2.ViewModels;
 
+
+/// <summary>
+/// Camada de negócios - InspecaoVeículo
+/// </summary>
 namespace VDT2.BLL
 {
     public class InspecaoVeiculo
     {
+
+        /// <summary>
+        /// Realiza a atualização do veículo conforme os dados do veículo informado
+        /// </summary>
+        /// <param name="inspVeiculo"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Modelo de dados contendo as informações do veículo</returns>
         public static Models.InspVeiculo Update(InspVeiculo inspVeiculo, Configuracao configuracao)
         {
             try
@@ -25,6 +44,12 @@ namespace VDT2.BLL
             }
         }
 
+        /// <summary>
+        /// Realiza a inserção do veículo no banco de dados conforme os dados apresentados
+        /// </summary>
+        /// <param name="inspVeiculo">Objeto contendo todos os dados do veículo</param>
+        /// <param name="configuracao"></param>
+        /// <returns>Retorna o próprio objeto porém com o ID preenchido </returns>
         public static Models.InspVeiculo Inserir(InspVeiculo inspVeiculo, Configuracao configuracao)
         {
             try
@@ -61,6 +86,12 @@ namespace VDT2.BLL
 
         }
 
+        /// <summary>
+        /// Realiza a listagem do inpsVeículo informando o seu ID
+        /// </summary>
+        /// <param name="inspVeiculo_ID">ID do veículo</param>
+        /// <param name="configuracao"></param>
+        /// <returns>Retorna um objeto contendo os valores do</returns>
         public static Models.InspVeiculo ListarPorId(int inspVeiculo_ID, Configuracao configuracao)
         {
             Models.InspVeiculo inspVeiculo = DAL.InspVeiculo.ListarPorId(inspVeiculo_ID, configuracao);

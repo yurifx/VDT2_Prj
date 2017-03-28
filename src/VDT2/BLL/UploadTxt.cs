@@ -1,4 +1,12 @@
-﻿using Microsoft.AspNetCore.Http;
+﻿// <copyright file="UploadTxt.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
+// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>Classe referente a camada de negócios - UploadTxt</summary>
+
+using Microsoft.AspNetCore.Http;
 using System;
 using System.Collections.Generic;
 using System.IO;
@@ -6,10 +14,16 @@ using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
 
+
+
+/// <summary>
+/// Camada de  negócios UploadTxt
+/// </summary>
 namespace VDT2.BLL
 {
     public class UploadTxt
     {
+
 /// <summary>
 /// Salva o arquivo que o usuário enviou no input
 /// </summary>

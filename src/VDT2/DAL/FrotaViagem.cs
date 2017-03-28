@@ -1,4 +1,13 @@
-﻿using Microsoft.EntityFrameworkCore;
+﻿// <copyright file="FrotaViagem.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
+// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>Classe referente a camada de acesso aos dados - FrotaViagem</summary>
+
+
+using Microsoft.EntityFrameworkCore;
 using System;
 using System.Collections.Generic;
 using System.Data;
@@ -167,7 +176,6 @@ namespace VDT2.DAL
         /// <param name="frota_ID"></param>
         /// <param name="configuracao"></param>
         /// <returns>Retorna todos os dados da frotaviagem informada</returns>
-        /// 
         public static Models.FrotaViagem Selecionar(int? frota_ID, VDT2.Models.Configuracao configuracao)
         {
             Models.FrotaViagem frotaViagem = new Models.FrotaViagem();
