@@ -429,7 +429,8 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult VisualizarFotos(int inspAvaria_ID)
         {
-
+            const string _mensagemLogin = "Erro ao processar solicitação, usuário não identificado, tente novamente mais tarde";
+            
             #region gravalogInformacao
             try
             {
@@ -443,8 +444,29 @@ namespace VDT2.Controllers
             catch { }
             #endregion
 
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+            #endregion
+
             ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
 
+            visualizarAvariasVM.Usuario = dadosUsuario.Usuario;
             visualizarAvariasVM.InspAvaria = new Models.InspAvaria();
             visualizarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
 

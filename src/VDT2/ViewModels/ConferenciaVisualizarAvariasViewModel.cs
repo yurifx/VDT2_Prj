@@ -12,6 +12,8 @@ namespace VDT2.ViewModels
         public Models.InspAvaria InspAvaria { get; set; }
         public List<Models.ImagemAvaria> ListaImagemAvarias { get; set; }
 
-        }
+
+        public Models.Usuario Usuario { get; set; }
+    }
 }
 

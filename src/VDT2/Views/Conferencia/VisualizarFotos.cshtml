@@ -8,6 +8,13 @@
 
 <script src="~/js/Conferencia/ConferenciaEditarFotos.js" asp-append-version="true"></script>
 
+<div class="hidden">
+    @if (Model.Usuario != null)
+    {
+        <p>Altera Inifecao? </p><input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao " />
+    }
+</div>
+
 <div class="container">
     <div class="row">
         <div class="form-group">
