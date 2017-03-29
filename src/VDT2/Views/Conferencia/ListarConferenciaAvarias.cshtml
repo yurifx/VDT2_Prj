@@ -6,88 +6,106 @@
 }
 
 
-<script src="~/js/Conferencia/ConferenciaAvarias.js"  asp-append-version="true"></script>
+<script src="~/js/Conferencia/ConferenciaAvarias.js" asp-append-version="true"></script>
 
 <div class="hidden">
-    @if(Model.Usuario != null) { 
-    <p>Altera Inifecao? </p><input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao "/>
+    @if (Model.Usuario != null)
+    {
+        <p>Altera Inifecao? </p><input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao " />
     }
 </div>
 
+
+
 <div class="container">
-    <div class="container" id="EM_ERRO">
-        @if (ViewData["MensagemErro"] != null)
-            {
-            <div class="alert alert-danger">
-                <p>@ViewData["MensagemErro"]</p>
-            </div>
-            }
-    </div>
-    <div class="container" id="EM_SUCESSO">
-        @if (ViewData["MensagemSucesso"] != null)
-            {
-            <div class="alert alert-success">
-                <p>@ViewData["MensagemSucesso"]</p>
-            </div>
-            }
-    </div>
-    <h2>Conferência de avarias</h2><br />
-    <h4>Data da Inspeção @Model.InspAvaria_Conf.Data.Day/@Model.InspAvaria_Conf.Data.Month/@Model.InspAvaria_Conf.Data.Year | Local Inspecao: @Model.InspAvaria_Conf.LocalNome  | LocalCheckPoint:  @Model.InspAvaria_Conf.CheckPointNome</p></h4>
-    
-    <div class="row">
-        <table class="table table-striped table-bordered table-hover">
-            <tr class="danger">
-                <th>Editar</th>
-                <th>VIN</th>
-                <th>Marca</th>
-                <th>Modelo</th>
-                <th>Area</th>
-                <th>Condicao</th>
-                <th>Dano</th>
-                <th>Gravidade</th>
-                <th>Quadrante</th>
-                <th>Severidade</th>
-                <th>FabricaTransporte</th>
-                <th>Fotos</th>
-            </tr>
 
-            @if(Model.ListaInspAvaria_Conf != null) {
-            @foreach (var item in Model.ListaInspAvaria_Conf)
+    @if (Model == null || Model.ListaInspAvaria_Conf == null || Model.InspAvaria_Conf == null)
+    {
+        <div class="alert alert-danger">
+            <p><strong>Erro ao inicializar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico</strong></p>
+            <br />
+            <button class="btn btn-primary" onclick="history.go(-1)">Voltar</button>
+        </div>
+    }
+    else
+    {
+        <div class="container" id="EM_ERRO">
+            @if (ViewData["MensagemErro"] != null)
             {
-                <tr>
-                    <td><button type="button" class="btnEditarEditarListarConferenciaAvarias" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
-                    <td>@item.VIN_6</td>
-                    <td>@item.MarcaNome</td>
-                    <td>@item.ModeloNome</td>
-                    <td>@item.Area_Pt</td>
-                    <td>@item.Condicao_Pt</td>
-                    <td>@item.Dano_Pt</td>
-                    <td>@item.Gravidade_Pt</td>
-                    <td>@item.Quadrante_Pt</td>
-                    <td>@item.Severidade_Pt</td>
-                    <td>@item.FabricaTransporte</td>
-                    <td><button type="button" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
-                </tr>   
+                <div class="alert alert-danger">
+                    <p>@ViewData["MensagemErro"]</p>
+                </div>
+            }
+        </div>
+        <div class="container" id="EM_SUCESSO">
+            @if (ViewData["MensagemSucesso"] != null)
+            {
+                <div class="alert alert-success">
+                    <p>@ViewData["MensagemSucesso"]</p>
+                </div>
+            }
+        </div>
+
+        <h2>Conferência de avarias</h2><br />
+        <h4>Data da Inspeção @Model.InspAvaria_Conf.Data.Day/@Model.InspAvaria_Conf.Data.Month/@Model.InspAvaria_Conf.Data.Year | Local Inspecao: @Model.InspAvaria_Conf.LocalNome  | LocalCheckPoint:  @Model.InspAvaria_Conf.CheckPointNome</p></h4>
+
+        <div class="row">
+            <table class="table table-striped table-bordered table-hover">
+                <tr class="danger">
+                    <th>Editar</th>
+                    <th>VIN</th>
+                    <th>Marca</th>
+                    <th>Modelo</th>
+                    <th>Area</th>
+                    <th>Condicao</th>
+                    <th>Dano</th>
+                    <th>Gravidade</th>
+                    <th>Quadrante</th>
+                    <th>Severidade</th>
+                    <th>FabricaTransporte</th>
+                    <th>Fotos</th>
+                </tr>
+
+                @if (Model.ListaInspAvaria_Conf != null)
+                {
+                    @foreach (var item in Model.ListaInspAvaria_Conf)
+                    {
+                        <tr>
+                            <td><button type="button" class="btnEditarEditarListarConferenciaAvarias" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+                            <td>@item.VIN_6</td>
+                            <td>@item.MarcaNome</td>
+                            <td>@item.ModeloNome</td>
+                            <td>@item.Area_Pt</td>
+                            <td>@item.Condicao_Pt</td>
+                            <td>@item.Dano_Pt</td>
+                            <td>@item.Gravidade_Pt</td>
+                            <td>@item.Quadrante_Pt</td>
+                            <td>@item.Severidade_Pt</td>
+                            <td>@item.FabricaTransporte</td>
+                            <td><button type="button" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
+                        </tr>
+                    }
                 }
-            }
 
-        </table>
-        <form asp-controller="Conferencia" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
-            <div hidden>
-                <input type="text" name="inspAvaria_ID" id="avariaIdFormSubmit" value="" />
-            </div>
-        </form>
+            </table>
+            <form asp-controller="Conferencia" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
+                <div hidden>
+                    <input type="text" name="inspAvaria_ID" id="avariaIdFormSubmit" value="" />
+                </div>
+            </form>
 
-        <form asp-controller="Conferencia" asp-action="VisualizarFotos" method="post" id="VisualizarFotosForm">
-            <div hidden>
-                <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
-            </div>
-        </form>
+            <form asp-controller="Conferencia" asp-action="VisualizarFotos" method="post" id="VisualizarFotosForm">
+                <div hidden>
+                    <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
+                </div>
+            </form>
 
-        <form asp-controller="Home" asp-action="Index" method="post" id="VisualizarFotosForm">
-            <input type="submit" class="btnVoltarTelaConferenciaListarVeiculos btn btn-sm btn-primary" value="Voltar" onClick="">
-            <input type="text" name="View" value="ListarConferenciaAvarias" hidden/>
-        </form>
-            
-</div>
-</div>
+            <form asp-controller="Home" asp-action="Index" method="post" id="VisualizarFotosForm">
+                <input type="submit" class="btnVoltarTelaConferenciaListarVeiculos btn btn-sm btn-primary" value="Voltar" onClick="">
+                <input type="text" name="View" value="ListarConferenciaAvarias" hidden />
+            </form>
+
+        </div>
+    }
+    </div>
+    
