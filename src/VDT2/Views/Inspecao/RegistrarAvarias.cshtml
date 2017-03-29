@@ -7,395 +7,405 @@
 
 <script src="~/js/Inspecao/InspecaoRegistrarAvarias.js" asp-append-version="true"></script>
 
-
-<div class="container">
-
-    <div class="container">
-        @if (ViewData["MensagemErro"] != null)
-        {
-            <div class="alert alert-danger">
-                <p>@ViewData["MensagemErro"]</p>
-            </div>
-        }
+@if (Model == null || Model.InspVeiculo == null || Model.avAreaLista == null || Model.avCondicaoLista == null || Model.avDanoRepositorioLista == null || Model.avGravidadeLista == null || Model.avQuadranteLista == null || Model.avSeveridadeLista == null)
+{
+    <div class="alert alert-danger">
+        <p><strong>Erro ao inicializar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico</strong></p>
+        <br />
+        <button class="btn btn-primary" onclick="history.go(-1)">Voltar</button>
     </div>
+}
+else
+{
     <div class="container">
-        @if (ViewData["MensagemSucesso"] != null)
-        {
-            <div class="alert alert-success">
-                <p>@ViewData["MensagemSucesso"]</p>
-            </div>
-        }
-    </div>
 
-    <div class="container">
-        <h4>Dados da Avaria</h4>
+        <div class="container">
+            @if (ViewData["MensagemErro"] != null)
+            {
+                <div class="alert alert-danger">
+                    <p>@ViewData["MensagemErro"]</p>
+                </div>
+            }
+        </div>
+        <div class="container">
+            @if (ViewData["MensagemSucesso"] != null)
+            {
+                <div class="alert alert-success">
+                    <p>@ViewData["MensagemSucesso"]</p>
+                </div>
+            }
+        </div>
+
+        <div class="container">
+            <h4>Dados da Avaria</h4>
 
 
-        <form asp-controller="Inspecao" asp-action="InserirAvaria" method="post" enctype="multipart/form-data" onsubmit="return ValidarFormularioInserirAvaria()">
-            <div class="form-group">
-                @*Dados Usuário*@
-                <div class="row" hidden>
-                    <div class="col-sm-3">
-                        <div class="form-group">
-                            <label asp-for="dadosUsuario.Nome">Inspetor: @Model.dadosUsuario.Nome</label>
-                            <input asp-for="dadosUsuario.Nome" hidden />
+            <form asp-controller="Inspecao" asp-action="InserirAvaria" method="post" enctype="multipart/form-data" onsubmit="return ValidarFormularioInserirAvaria()">
+                <div class="form-group">
+                    @*Dados Usuário*@
+                    <div class="row" hidden>
+                        <div class="col-sm-3">
+                            <div class="form-group">
+                                <label asp-for="dadosUsuario.Nome">Inspetor: @Model.dadosUsuario.Nome</label>
+                                <input asp-for="dadosUsuario.Nome" hidden />
+                            </div>
+                        </div>
+                    </div>
+
+                    @*InspVeiculo_ID*@
+                    <div class="row" hidden>
+                        <div class="col-sm-6">
+                            <label asp-for="InspVeiculo.InspVeiculo_ID">Inspecao Veiculo: @Model.InspVeiculo.InspVeiculo_ID</label>
+                            <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
+                            <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
+                            <input name="VIN_6" value="@Model.InspVeiculo.VIN_6" hidden />
+                        </div>
+                    </div>
+
+                    @*Ultimo Veiculo*@
+                    <div class="row" hidden>
+                        <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                            <label asp-for="UltimoVeiculo_InspVeiculo_ID">Ultimo Veículo ID: @Model.InspVeiculo.InspVeiculo_ID</label>
+                            <input type="text" value="@Model.InspVeiculo.InspVeiculo_ID" name="UltimoVeiculo_InspVeiculo_ID" hidden />
                         </div>
                     </div>
                 </div>
 
-                @*InspVeiculo_ID*@
-                <div class="row" hidden>
-                    <div class="col-sm-6">
-                        <label asp-for="InspVeiculo.InspVeiculo_ID">Inspecao Veiculo: @Model.InspVeiculo.InspVeiculo_ID</label>
-                        <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
-                        <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
-                        <input name="VIN_6" value="@Model.InspVeiculo.VIN_6" hidden />
+                @*AREA*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
+                            <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avAreaLista" name="Area_ID" class="form-control" onchange="areaDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avAreaLista, "AvArea_ID", "Nome_Pt"))">
+                                <option disabled selected>Área</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
 
-                @*Ultimo Veiculo*@
-                <div class="row" hidden>
-                    <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                        <label asp-for="UltimoVeiculo_InspVeiculo_ID">Ultimo Veículo ID: @Model.InspVeiculo.InspVeiculo_ID</label>
-                        <input type="text" value="@Model.InspVeiculo.InspVeiculo_ID" name="UltimoVeiculo_InspVeiculo_ID" hidden />
+                @*CONDICAO*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condicao</label>
+                            <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avCondicaoLista" name="Condicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avCondicaoLista, "AvCondicao_ID", "Nome_Pt"))">
+                                <option disabled selected>Condição</option>
+                            </select>
+                        </div>
                     </div>
                 </div>
-            </div>
 
-            @*AREA*@
-            <div class="form-group">
+                @*DANO*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="avDanoRepositorioLista" id="avDanoRepositorioListaLabel">Dano</label>
+                            <input type="text" id="danoNumericoInput" onchange="danoNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avDanoRepositorioLista" name="Dano_ID" class="form-control" onchange="danoDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avDanoRepositorioLista, "AvDano_ID", "Nome_Pt"))">
+                                <option disabled selected>Dano</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                @*GRAVIDADE*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
+                            <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avGravidadeLista" name="Gravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avGravidadeLista, "AvGravidade_ID", "Nome_Pt"))">
+                                <option disabled selected>Gravidade</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                @*QUADRANTE*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
+                            <input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avQuadranteLista" name="Quadrante_ID" class="form-control" onchange="quadranteDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avQuadranteLista, "AvQuadrante_ID", "Nome_Pt"))">
+                                <option disabled selected>Quadrante</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                @*SERVERIDADE*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
+                            <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avSeveridadeLista" name="Severidade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avSeveridadeLista, "AvSeveridade_ID", "Nome_Pt"))">
+                                <option disabled selected>Severidade</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
+                @*OBSERVAÇÕES*@
+                <div class="form-group" hidden>
+                    <div class="row">
+                        <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                            @*//<input asp-for="" value="F" type="radio" required />Fabrica*@
+                        </div>
+                        <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
+                            @*<input asp-for="@Model.fabricatransporte" value="T" type="radio" required />Transporte*@
+                        </div>
+                    </div>
+                </div>
+
+
+                @*DEFEITO DE FABRICA OU TRANSPORTADOR *@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                            <input asp-for="@Model.Fabricatransporte" value="F" type="radio" required />Fabrica
+                        </div>
+                        <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
+                            <input asp-for="@Model.Fabricatransporte" value="T" type="radio" required />Transporte
+                        </div>
+                    </div>
+                </div>
+
+                @*http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded*@
+                @*https://jsfiddle.net/97dzkf70/*@
+
+                @*Fotos / Visualizar Imagens*@
+
                 <div class="row">
-                    <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                        <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
-                        <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto1">
+                        <span id="spanFoto1" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-camera"></span>
+                        <p id="qtdFotosSelecionadas1"></p>
+                        <a id="visualizar1">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(1)" />
+
+                        </div>
                     </div>
-                    <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                        <select id="avAreaLista" name="Area_ID" class="form-control" onchange="areaDropDownInputFunc()"
-                                asp-items="@(new SelectList(Model.avAreaLista,"AvArea_ID","Nome_Pt"))">
-                            <option disabled selected>Área</option>
-                        </select>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto2" hidden>
+                        <span id="spanFoto2" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas2"></p>
+                        <a id="visualizar2">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(2)" />
+                        </div>
                     </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto3" hidden>
+                        <span id="spanFoto3" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas3"></p>
+                        <a id="visualizar3">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(3)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto4" hidden>
+                        <span id="spanFoto4" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas4"></p>
+                        <a id="visualizar4">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(4)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto5" hidden>
+                        <span id="spanFoto5" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas5"></p>
+                        <a id="visualizar5">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(5)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto6" hidden>
+                        <span id="spanFoto6" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas6"></p>
+                        <a id="visualizar6">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(6)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto7" hidden>
+                        <span id="spanFoto7" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas7"></p>
+                        <a id="visualizar7">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(7)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto8" hidden>
+                        <span id="spanFoto8" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas8"></p>
+                        <a id="visualizar8">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(8)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto9" hidden>
+                        <span id="spanFoto9" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas9"></p>
+                        <a id="visualizar9">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(9)" />
+                        </div>
+                    </div>
+
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto10" hidden>
+                        <span id="spanFoto10" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
+                        <p id="qtdFotosSelecionadas10"></p>
+                        <a id="visualizar10">Foto</a>
+                        <div hidden>
+                            <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(10)" />
+                        </div>
+                    </div><br />
                 </div>
-            </div>
 
-            @*CONDICAO*@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                        <label for="avCondicaoLista" id="avCondicaoListaLabel">Condicao</label>
-                        <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
-                    </div>
-
-                    <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                        <select id="avCondicaoLista" name="Condicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
-                                asp-items="@(new SelectList(Model.avCondicaoLista,"AvCondicao_ID","Nome_Pt"))">
-                            <option disabled selected>Condição</option>
-                        </select>
-                    </div>
+                <img id="imgpreview" src="#" alt="" /><br />
+                <div form-group>
+                    <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
                 </div>
-            </div>
 
-            @*DANO*@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                        <label for="avDanoRepositorioLista" id="avDanoRepositorioListaLabel">Dano</label>
-                        <input type="text" id="danoNumericoInput" onchange="danoNumericoInputFunc()" required pattern="[0-9]+$" />
-                    </div>
-                    <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                        <select id="avDanoRepositorioLista" name="Dano_ID" class="form-control" onchange="danoDropDownInputFunc()"
-                                asp-items="@(new SelectList(Model.avDanoRepositorioLista,"AvDano_ID","Nome_Pt"))">
-                            <option disabled selected>Dano</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
+                <br /><br />
 
-            @*GRAVIDADE*@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                        <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
-                        <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
-                    </div>
-                    <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                        <select id="avGravidadeLista" name="Gravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
-                                asp-items="@(new SelectList(Model.avGravidadeLista,"AvGravidade_ID","Nome_Pt"))">
-                            <option disabled selected>Gravidade</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            @*QUADRANTE*@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                        <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
-                        <input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />
-                    </div>
-
-                    <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                        <select id="avQuadranteLista" name="Quadrante_ID" class="form-control" onchange="quadranteDropDownInputFunc()"
-                                asp-items="@(new SelectList(Model.avQuadranteLista,"AvQuadrante_ID","Nome_Pt"))">
-                            <option disabled selected>Quadrante</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            @*SERVERIDADE*@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                        <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
-                        <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
-                    </div>
-                    <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                        <select id="avSeveridadeLista" name="Severidade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
-                                asp-items="@(new SelectList(Model.avSeveridadeLista,"AvSeveridade_ID","Nome_Pt"))">
-                            <option disabled selected>Severidade</option>
-                        </select>
-                    </div>
-                </div>
-            </div>
-
-            @*OBSERVAÇÕES*@
-            <div class="form-group" hidden>
-                <div class="row">
-                    <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                        @*//<input asp-for="" value="F" type="radio" required />Fabrica*@
-                    </div>
-                    <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                        @*<input asp-for="@Model.fabricatransporte" value="T" type="radio" required />Transporte*@
-                    </div>
-                </div>
-            </div>
-
-
-            @*DEFEITO DE FABRICA OU TRANSPORTADOR *@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                        <input asp-for="@Model.fabricatransporte" value="F" type="radio" required />Fabrica
-                    </div>
-                    <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                        <input asp-for="@Model.fabricatransporte" value="T" type="radio" required />Transporte
-                    </div>
-                </div>
-            </div>
-
-            @*http://stackoverflow.com/questions/4459379/preview-an-image-before-it-is-uploaded*@
-            @*https://jsfiddle.net/97dzkf70/*@
-
-            @*Fotos / Visualizar Imagens*@
-
-            <div class="row">
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto1">
-                    <span id="spanFoto1" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-camera"></span>
-                    <p id="qtdFotosSelecionadas1"></p>
-                    <a id="visualizar1">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(1)" />
-
+                @*BTN - Gravar Avarias*@
+                @*<input type="button" class="btn btn-primary" value="Voltar" onClick="history.go(-1)">*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                            <button type="submit" id="btnGravarAvarias" name="tipoBotao" value="1" class="botoesTelaRegistrarAvarias btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
+                        </div>
+                        <div class="col col-lg-10 col-md-9 col-sm-8 col-xs-6">
+                            <button type="button" id="btnListarAvariasB" name="tipoBotao" value="2" class="botoesTelaRegistrarAvarias btn btn-danger btn-sm" onclick="VisualizarAvarias_BtnClick()"><span class="glyphicon glyphicon-list"> </span>&nbsp Avarias</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto2" hidden>
-                    <span id="spanFoto2" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas2"></p>
-                    <a id="visualizar2">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(2)" />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                            <button type="button" id="btnEditarVeiculo" name="tipoBotao" value="3" class="botoesTelaRegistrarAvarias btn btn-warning btn-sm" onclick="EditarVeiculo_BtnCLick()"><span class="glyphicon glyphicon-pencil"></span>&nbsp Veículo</button>
+                        </div>
+                        <div class="col col-lg-10 col-md-9 col-sm-8 col-xs-6">
+                            <button type="button" value="Nova Inspeção" class="botoesTelaRegistrarAvarias btn btn-info btn-sm" onclick="location.href='@Url.Action("NovaInspecao", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span>&nbsp Nova inspeção</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto3" hidden>
-                    <span id="spanFoto3" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas3"></p>
-                    <a id="visualizar3">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(3)" />
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
+                            <button type="button" id="btnNovoVeiculo" name="tipoBotao" value="5" class="botoesTelaRegistrarAvarias btn btn-info btn-sm" onclick="NovoVeiculo_BtnCLick()"><span class="glyphicon glyphicon-plus"> </span>&nbsp Novo Veículo</button>
+                        </div>
                     </div>
                 </div>
 
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto4" hidden>
-                    <span id="spanFoto4" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas4"></p>
-                    <a id="visualizar4">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(4)" />
-                    </div>
-                </div>
-
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto5" hidden>
-                    <span id="spanFoto5" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas5"></p>
-                    <a id="visualizar5">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(5)" />
-                    </div>
-                </div>
-
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto6" hidden>
-                    <span id="spanFoto6" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas6"></p>
-                    <a id="visualizar6">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(6)" />
-                    </div>
-                </div>
-
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto7" hidden>
-                    <span id="spanFoto7" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas7"></p>
-                    <a id="visualizar7">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(7)" />
-                    </div>
-                </div>
-
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto8" hidden>
-                    <span id="spanFoto8" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas8"></p>
-                    <a id="visualizar8">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(8)" />
-                    </div>
-                </div>
-
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto9" hidden>
-                    <span id="spanFoto9" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas9"></p>
-                    <a id="visualizar9">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(9)" />
-                    </div>
-                </div>
-
-                <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto10" hidden>
-                    <span id="spanFoto10" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-plus"></span>
-                    <p id="qtdFotosSelecionadas10"></p>
-                    <a id="visualizar10">Foto</a>
-                    <div hidden>
-                        <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(10)" />
-                    </div>
-                </div><br />
-            </div>
-
-            <img id="imgpreview" src="#" alt="" /><br />
-            <div form-group>
-                <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-            </div>
-
-            <br /><br />
-
-            @*BTN - Gravar Avarias*@
-            @*<input type="button" class="btn btn-primary" value="Voltar" onClick="history.go(-1)">*@
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                        <button type="submit" id="btnGravarAvarias" name="tipoBotao" value="1" class="botoesTelaRegistrarAvarias btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
-                    </div>
-                    <div class="col col-lg-10 col-md-9 col-sm-8 col-xs-6">
-                        <button type="button" id="btnListarAvariasB" name="tipoBotao" value="2" class="botoesTelaRegistrarAvarias btn btn-danger btn-sm" onclick="VisualizarAvarias_BtnClick()"><span class="glyphicon glyphicon-list"> </span>&nbsp Avarias</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                        <button type="button" id="btnEditarVeiculo" name="tipoBotao" value="3" class="botoesTelaRegistrarAvarias btn btn-warning btn-sm" onclick="EditarVeiculo_BtnCLick()"><span class="glyphicon glyphicon-pencil"></span>&nbsp Veículo</button>
-                    </div>
-                    <div class="col col-lg-10 col-md-9 col-sm-8 col-xs-6">
-                        <button type="button" value="Nova Inspeção" class="botoesTelaRegistrarAvarias btn btn-info btn-sm" onclick="location.href='@Url.Action("NovaInspecao", "Inspecao")'"><span class="glyphicon glyphicon-plus"> </span>&nbsp Nova inspeção</button>
-                    </div>
-                </div>
-            </div>
-
-            <div class="form-group">
-                <div class="row">
-                    <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                        <button type="button" id="btnNovoVeiculo" name="tipoBotao" value="5" class="botoesTelaRegistrarAvarias btn btn-info btn-sm" onclick="NovoVeiculo_BtnCLick()"><span class="glyphicon glyphicon-plus"> </span>&nbsp Novo Veículo</button>
-                    </div>
-                </div>
-            </div>
-
-        </form>
-    </div>
-
-
-
-    @*Ação do botão Visualizar AVARIAS*@
-    <div class="row" hidden>
-        <form asp-controller="Inspecao" asp-action="VisualizarAvarias" method="post" id="visualizarAvariasForm">
-            <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
-            <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
-            <input name="VIN_6" value="@Model.InspVeiculo.VIN_6" hidden />
-        </form>
-    </div>
-
-    @*Ação do botão EditarVeiculo*@
-    <div class="row" hidden>
-        <form asp-controller="Inspecao" asp-action="EditarVeiculo" method="post" id="editarVeiculoForm">
-            <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
-            <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
-            <input name="VIN_6" value="@Model.InspVeiculo.VIN_6" hidden />
-        </form>
-    </div>
-
-    @*Ação do botão Proximo Veículo*@
-    <div class="row" hidden>
-        <form asp-controller="Inspecao" asp-action="NovoVeiculo" method="post" id="novoVeiculoForm">
-            <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
-            <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
-        </form>
-    </div>
-
-
-
-    <div class="container">
-        @if (Model.listaAvarias.Count > 0)
-        {
-            <br>
-            <div class="row" id="mostrarAvarias">
-                <h4>Avarias neste CheckPoint</h4><p>Chassi @Model.InspVeiculo.VIN_6</p>
-                <table class="table table-striped table-bordered table-hover">
-                    <tr class="warning">
-                        <th>Editar</th>
-                        <th>Área</th>
-                        <th>Dano</th>
-                    </tr>
-                    @foreach (var item in Model.listaAvarias)
-                {
-                        @if (item.Inspecao_ID.Equals(Model.InspVeiculo.Inspecao_ID))
-                    {
-                            <tr>
-                                <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
-                                <td>@item.Area_Pt</td>
-                                <td>@item.Dano_Pt</td>
-                            </tr>
-                        }
-                    }
-                </table>
-            </div>
-        }
-
-    </div>
-
-    <form asp-controller="Inspecao" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
-        <div hidden>
-            <input type="text" name="inspAvaria_ID_form_editar" id="avariaIdFormSubmit" value="" />
+            </form>
         </div>
-    </form>
-</div>
+
+
+
+        @*Ação do botão Visualizar AVARIAS*@
+        <div class="row" hidden>
+            <form asp-controller="Inspecao" asp-action="VisualizarAvarias" method="post" id="visualizarAvariasForm">
+                <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
+                <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
+                <input name="VIN_6" value="@Model.InspVeiculo.VIN_6" hidden />
+            </form>
+        </div>
+
+        @*Ação do botão EditarVeiculo*@
+        <div class="row" hidden>
+            <form asp-controller="Inspecao" asp-action="EditarVeiculo" method="post" id="editarVeiculoForm">
+                <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
+                <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
+                <input name="VIN_6" value="@Model.InspVeiculo.VIN_6" hidden />
+            </form>
+        </div>
+
+        @*Ação do botão Proximo Veículo*@
+        <div class="row" hidden>
+            <form asp-controller="Inspecao" asp-action="NovoVeiculo" method="post" id="novoVeiculoForm">
+                <input name="Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" hidden />
+                <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
+            </form>
+        </div>
+
+
+
+        <div class="container">
+            @if (Model.listaAvarias.Count > 0)
+            {
+                <br>
+                <div class="row" id="mostrarAvarias">
+                    <h4>Avarias neste CheckPoint</h4><p>Chassi @Model.InspVeiculo.VIN_6</p>
+                    <table class="table table-striped table-bordered table-hover">
+                        <tr class="warning">
+                            <th>Editar</th>
+                            <th>Área</th>
+                            <th>Dano</th>
+                        </tr>
+                        @foreach (var item in Model.listaAvarias)
+                        {
+                            @if (item.Inspecao_ID.Equals(Model.InspVeiculo.Inspecao_ID))
+                            {
+                                <tr>
+                                    <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+                                    <td>@item.Area_Pt</td>
+                                    <td>@item.Dano_Pt</td>
+                                </tr>
+                            }
+                        }
+                    </table>
+                </div>
+            }
+
+        </div>
+
+        <form asp-controller="Inspecao" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
+            <div hidden>
+                <input type="text" name="inspAvaria_ID_form_editar" id="avariaIdFormSubmit" value="" />
+            </div>
+        </form>
+    </div>
+}

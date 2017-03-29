@@ -16,7 +16,7 @@ namespace VDT2.ViewModels
         //Lista de dados da avaria
         public List<AvArea> avAreaLista;
         public List<AvCondicao> avCondicaoLista;
-        public List<AvDano> avDanoRepositorioLista;
+        public List<AvDano> avDanoLista;
         public List<AvGravidade> avGravidadeLista;
         public List<AvQuadrante> avQuadranteLista;
         public List<AvSeveridade> avSeveridadeLista;
@@ -34,6 +34,12 @@ namespace VDT2.ViewModels
 
         public List<ImagemAvaria> ImagemAvarias;
 
-        public string fabricatransporte { get; set; }
+        public string Fabricatransporte { get; set; }
+
+        public InspecaoEditarAvariasViewModel()
+        {
+            Fabricatransporte = "";
+        }
+
         }
 }

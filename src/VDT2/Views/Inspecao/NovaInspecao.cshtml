@@ -8,10 +8,12 @@
 <script src="~/js/Inspecao/InspecaoDadosGerais.js"  asp-append-version="true"></script>
 
 
-@if (Model.Erro == true || Model == null || Model.ListaCliente == null || Model.ListaLocalCheckPoint == null || Model.ListaLocalInspecao == null || Model.ListaTransportador == null)
+@if (Model == null || Model.ListaCliente == null || Model.ListaLocalCheckPoint == null || Model.ListaLocalInspecao == null || Model.ListaTransportador == null)
 {
-    <div class="alert alert-warning">
+    <div class="alert alert-danger">
         <p><strong>Erro ao inicializar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico</strong></p>
+        <br/>
+        <button class="btn btn-primary" onclick="history.go(-1)">Voltar</button>
     </div>
 
 }

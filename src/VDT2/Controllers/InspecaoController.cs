@@ -98,6 +98,8 @@ namespace VDT2.Controllers
                     }
                     #endregion
 
+                    //inspecaoDadosGeraisVM = null;// teste erro
+                    //inspecaoDadosGeraisVM.ListaCliente = null;
                     return View("NovaInspecao", inspecaoDadosGeraisVM);
                 }
                 else
@@ -568,7 +570,7 @@ namespace VDT2.Controllers
             sbLog.Append($"  | Gravidade_ID: {registrarAvariasViewModel.Gravidade_ID}");
             sbLog.Append($"  | Quadrante_ID: {registrarAvariasViewModel.Quadrante_ID}");
             sbLog.Append($"  | Severidade_ID: {registrarAvariasViewModel.Severidade_ID}");
-            sbLog.Append($"  | FabricaTransporte: {registrarAvariasViewModel.fabricatransporte}");
+            sbLog.Append($"  | FabricaTransporte: {registrarAvariasViewModel.Fabricatransporte}");
 
             #region gravalogInformacao
             Diag.Log.Grava(
@@ -611,7 +613,7 @@ namespace VDT2.Controllers
                 AvGravidade_ID = registrarAvariasViewModel.Gravidade_ID,
                 AvQuadrante_ID = registrarAvariasViewModel.Quadrante_ID,
                 AvSeveridade_ID = registrarAvariasViewModel.Severidade_ID,
-                FabricaTransporte = registrarAvariasViewModel.fabricatransporte,
+                FabricaTransporte = registrarAvariasViewModel.Fabricatransporte,
                 DanoOrigem = false
             };
 
@@ -812,7 +814,7 @@ namespace VDT2.Controllers
 
             EditarAvariasVM.avAreaLista = BLL.Avarias.ListarAreas(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             EditarAvariasVM.avCondicaoLista = BLL.Avarias.ListarCondicoes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
-            EditarAvariasVM.avDanoRepositorioLista = BLL.Avarias.ListarDanos(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
+            EditarAvariasVM.avDanoLista = BLL.Avarias.ListarDanos(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             EditarAvariasVM.avGravidadeLista = BLL.Avarias.ListarGravidades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             EditarAvariasVM.avQuadranteLista = BLL.Avarias.ListarQuadrantes(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
             EditarAvariasVM.avSeveridadeLista = BLL.Avarias.ListarSeveridades(EditarAvariasVM.Inspecao.Cliente_ID, configuracao);
@@ -827,9 +829,9 @@ namespace VDT2.Controllers
                 ViewData["MensagemErro"] += EditarAvariasVM.avCondicaoLista.FirstOrDefault().MensagemErro;
             }
 
-            if (EditarAvariasVM.avDanoRepositorioLista.FirstOrDefault().Erro == true)
+            if (EditarAvariasVM.avDanoLista.FirstOrDefault().Erro == true)
             {
-                ViewData["MensagemErro"] += EditarAvariasVM.avDanoRepositorioLista.FirstOrDefault().MensagemErro;
+                ViewData["MensagemErro"] += EditarAvariasVM.avDanoLista.FirstOrDefault().MensagemErro;
             }
 
             if (EditarAvariasVM.avGravidadeLista.FirstOrDefault().Erro == true)
@@ -882,7 +884,7 @@ namespace VDT2.Controllers
                 sbLog.Append($"  | Gravidade_ID: {EditarAvariasVM.Gravidade_ID}");
                 sbLog.Append($"  | Quadrante_ID: {EditarAvariasVM.Quadrante_ID}");
                 sbLog.Append($"  | Severidade_ID: {EditarAvariasVM.Severidade_ID}");
-                sbLog.Append($"  | FabricaTransporte: {EditarAvariasVM.fabricatransporte}");
+                sbLog.Append($"  | FabricaTransporte: {EditarAvariasVM.Fabricatransporte}");
 
                 Diag.Log.Grava(
                     new Diag.LogItem()
@@ -912,7 +914,7 @@ namespace VDT2.Controllers
                 AvGravidade_ID = EditarAvariasVM.Gravidade_ID,
                 AvQuadrante_ID = EditarAvariasVM.Quadrante_ID,
                 AvSeveridade_ID = EditarAvariasVM.Severidade_ID,
-                FabricaTransporte = EditarAvariasVM.fabricatransporte,
+                FabricaTransporte = EditarAvariasVM.Fabricatransporte,
                 DanoOrigem = false
             };
 

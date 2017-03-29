@@ -34,9 +34,15 @@ namespace VDT2.ViewModels
         public int Gravidade_ID { get; set; }
         public int Quadrante_ID { get; set; }
         public int Severidade_ID { get; set; }
-        public string fabricatransporte { get; set; }
+        public string Fabricatransporte { get; set; }
         public string VIN_6 { get; set; }
         public int UltimoVeiculo_InspVeiculo_ID { get; set; }
 
+
+        public InspecaoVeiculoRegistrarAvariasVM()
+        {
+            Fabricatransporte = "";
+            VIN_6 = "";
+        }
         }
     }

@@ -6,6 +6,8 @@
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de negócios - Inspecao</summary>
 
+
+//Dependencias
 using Microsoft.AspNetCore.Mvc.Rendering;
 using System;
 using System.Collections.Generic;
@@ -83,7 +85,6 @@ namespace VDT2.BLL
             {
                 return -1;
             }
-
         }
 
         /// <summary>
@@ -94,7 +95,7 @@ namespace VDT2.BLL
         /// <returns>Retorna um objeto contendo os valores do</returns>
         public static Models.InspVeiculo ListarPorId(int inspVeiculo_ID, Configuracao configuracao)
         {
-            Models.InspVeiculo inspVeiculo = DAL.InspVeiculo.ListarPorId(inspVeiculo_ID, configuracao);
+            Models.InspVeiculo inspVeiculo = new Models.InspVeiculo();
             try
             {
                 inspVeiculo = DAL.InspVeiculo.ListarPorId(inspVeiculo_ID, configuracao);
@@ -107,8 +108,7 @@ namespace VDT2.BLL
                 return inspVeiculo;
             }
         }
-        
-        
+
         /// <summary>
         /// Realiza a listagem de todas as marcas do cliente_id informado
         /// </summary>
@@ -148,7 +148,6 @@ namespace VDT2.BLL
                         Value = item.Marca_ID.ToString()
                     });
             }
-
             return selectListMarca;
         }
 
@@ -216,8 +215,6 @@ namespace VDT2.BLL
             {
                 return false;
             }
-
-
         }
 
     }
