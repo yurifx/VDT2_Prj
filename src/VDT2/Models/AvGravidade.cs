@@ -16,6 +16,8 @@ namespace VDT2.Models
         public string Nome_Pt { get; set; }
         public string Nome_En { get; set; }
         public string Nome_Es { get; set; }
+
+        [NotMapped]
         public bool Erro { get; set; }
 
         [NotMapped]
