@@ -107,7 +107,14 @@ namespace VDT2.BLL
                 return inspVeiculo;
             }
         }
-
+        
+        
+        /// <summary>
+        /// Realiza a listagem de todas as marcas do cliente_id informado
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Objeto contendo todas as marcas</returns>
         public static List<Microsoft.AspNetCore.Mvc.Rendering.SelectListItem> ListaMarca(int Cliente_ID, Configuracao configuracao)
         {
             List<Models.Marca> marcaList = DAL.Marca.Listar(Cliente_ID, configuracao);
@@ -145,6 +152,12 @@ namespace VDT2.BLL
             return selectListMarca;
         }
 
+        /// <summary>
+        /// Realiza a listagem de todas os modelos do cliente_id informado
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Objeto contendo todas os modelos</returns>
         public static List<SelectListItem> ListaModelo(int Cliente_ID, Configuracao configuracao)
         {
             var modeloList = DAL.Modelo.Listar(Cliente_ID, configuracao);
@@ -185,6 +198,13 @@ namespace VDT2.BLL
         }
 
 
+        /// <summary>
+        /// Realiza a integração dos veículos no banco de dados;
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <param name="LocalInspecao_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Verdadeiro ou falso, caso tenha integrado corretamente</returns>
         public static bool IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, Configuracao configuracao)
         {
             try

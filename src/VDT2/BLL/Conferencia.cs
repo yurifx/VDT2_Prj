@@ -28,7 +28,6 @@ namespace VDT2.BLL
         /// <returns></returns>
         public static Models.ListaVeiculos InserirListaVeiculos(Models.ListaVeiculos listaVeiculos, Configuracao configuracao)
         {
-
             try
             {
                 listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
@@ -49,15 +48,15 @@ namespace VDT2.BLL
                 return listaVeiculos;
             }
         }
-        
-/// <summary>
-/// Realiza integração do arquivo de Loading ou PackingList
-/// </summary>
-/// <param name="ListaVeiculo_ID"></param>
-/// <param name="tipo">Tipo: "P" = Packing, "L" = Loading</param>
-/// <param name="files">Arquivo enviado</param>
-/// <param name="configuracao"></param>
-/// <returns></returns>
+
+        /// <summary>
+        /// Realiza integração do arquivo de Loading ou PackingList
+        /// </summary>
+        /// <param name="ListaVeiculo_ID"></param>
+        /// <param name="tipo">Tipo: "P" = Packing, "L" = Loading</param>
+        /// <param name="files">Arquivo enviado</param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static bool IntegrarArquivoLoadingPackingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
@@ -70,7 +69,7 @@ namespace VDT2.BLL
 
                 if (tipo == 'P')
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "PackingList", ano, mesdia,  Convert.ToString(ListaVeiculo_ID), file.FileName);
+                    path = Path.Combine(serverpath, "Arquivos", "PackingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
                 else
                 {
@@ -87,7 +86,7 @@ namespace VDT2.BLL
                         DAL.ListaVeiculosVin.Inserir(VeiculoVin, configuracao);
                     }
                 }
-                
+
                 return true;
             }
             catch (Exception ex)

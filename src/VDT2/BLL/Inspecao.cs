@@ -7,6 +7,7 @@
 // <summary>Classe referente a camada de negócios - Inspecao</summary>
 
 
+//Dependências
 using System;
 using System.Collections.Generic;
 using System.Linq;
@@ -95,12 +96,19 @@ namespace VDT2.BLL
 
                 return marca_ID;
             }
+
             catch
             {
                 return -1;
             }
         }
 
+        /// <summary>
+        /// Realiza a listagem de todos os dados da inspeção informando o ID
+        /// </summary>
+        /// <param name="inspecao_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Todas informações do cabeçalho da inspeção</returns>
         public static Models.Inspecao ListarPorId(int inspecao_ID, Configuracao configuracao)
         {
             Models.Inspecao inspecao = new Models.Inspecao();
@@ -118,6 +126,12 @@ namespace VDT2.BLL
             }
         }
 
+        /// <summary>
+        /// Realiza a listagem de todos os dados do transportador informando seu ID
+        /// </summary>
+        /// <param name="transportador_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Dados contendo informações do transportador</returns>
         public static Models.Transportador ListarTransportadorPorId(int transportador_ID, Configuracao configuracao)
         {
             Models.Transportador transportador = new Models.Transportador();
@@ -136,6 +150,13 @@ namespace VDT2.BLL
 
         }
 
+
+        /// <summary>
+        /// Realiza a listagem de todos os dados do navio informando seu ID
+        /// </summary>
+        /// <param name="navio_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Dados contendo informações sobre o transportador</returns>
         public static Models.Navio ConsultaNavioPorId(int? navio_ID, Configuracao configuracao)
         {
             Models.Navio navio = new Models.Navio();
@@ -361,6 +382,13 @@ namespace VDT2.BLL
             return inspecaoDadosGeraisVM.Inspecao;
         }
 
+
+        /// <summary>
+        /// Realiza a atualização das informações da Inspeção
+        /// </summary>
+        /// <param name="inspecao"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Um objeto contendo todos os valores informados</returns>
         public static Models.Inspecao Update(Models.Inspecao inspecao, Configuracao configuracao)
         {
             const string _mensagemErro = "Erro ao atualizar inspeção";
@@ -390,6 +418,13 @@ namespace VDT2.BLL
                 }
             }
 
+
+        /// <summary>
+        /// Realiza a inserção de um novo registro de inspeção.
+        /// </summary>
+        /// <param name="inspecao"></param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static Models.Inspecao Inserir(Models.Inspecao inspecao, Configuracao configuracao)
         {
             const string _mensagemErro = "Erro ao inserir dados inspeção, por favor entre em contato com o suporte";
@@ -419,6 +454,12 @@ namespace VDT2.BLL
         }
 
 
+        /// <summary>
+        /// Realiza a listagem de todas as informações do cliente informando seu ID
+        /// </summary>
+        /// <param name="usuario_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Objeto contendo todos os dados do cliente;</returns>
         public static List<Models.Cliente> ListarClientes(int usuario_ID, Configuracao configuracao)
         {
 
@@ -452,6 +493,14 @@ namespace VDT2.BLL
             }
         }
 
+
+        /// <summary>
+        /// Realiza a listagem de todos os locais de inpseção, informando seu usuario_id e locaisusuario. Este segundo, é referente ao seu perfil. Tabela UsuarioPerfil 
+        /// </summary>
+        /// <param name="usuario_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <param name="locaisUsuario"></param>
+        /// <returns></returns>
         public static List<Models.LocalInspecao> ListarLocaisInspecao(int usuario_ID, Configuracao configuracao, string locaisUsuario)
         {
 
@@ -505,6 +554,13 @@ namespace VDT2.BLL
             }
         }
 
+
+        /// <summary>
+        /// Realiza a listagem de todos os locais de CheckPoint informando  seu usuario_id
+        /// </summary>
+        /// <param name="usuario_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Objeto contendo todos checkpoints do usuario_id informado</returns>
         public static List<Models.LocalCheckPoint> ListarLocalCheckPoint(int usuario_ID, Configuracao configuracao)
         {
 
@@ -538,6 +594,13 @@ namespace VDT2.BLL
             }
         }
 
+
+        /// <summary>
+        /// Realiza a listagem de todos os transportadores informando seu usuario_id
+        /// </summary>
+        /// <param name="usuario_ID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Objeto contendo todos os dados do transportador</returns>
         public static List<Models.Transportador> ListarTransportadores(int usuario_ID, Configuracao configuracao)
         {
 

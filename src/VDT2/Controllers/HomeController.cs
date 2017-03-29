@@ -221,7 +221,6 @@ namespace VDT2.Controllers
             }
 
             //Recebe Dados Cookies - Teste Yuri
-
             var identificacao = this.Request.Cookies["Usr"];
             if (identificacao != null)
             {

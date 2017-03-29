@@ -16,6 +16,7 @@ using VDT2.ViewModels;
 using VDT2.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace VDT2.Controllers
 {
@@ -40,10 +41,19 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaConferencia()
         {
-            ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
-            const string _mensagemLogin = "Usuário não identificado, faça login novamente";
 
-            #region dadosUsuario
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: NovaConferencia | Sem Parametros",
+            });
+            #endregion
+
+            const string _mensagemLogin = "Usuário não identificado, faça login novamente";
+            ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
+
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario != null)
             {
@@ -92,7 +102,7 @@ namespace VDT2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
-            #endregion
+
 
             return View("NovaConferencia", conferenciaVM);
         }
@@ -104,6 +114,23 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
+            #region gravalogInformacao
+            StringBuilder sbLog = new StringBuilder("Action acionada: ConferenciaListarVeiculos | Parametros: ", 250);
+            sbLog.Append($"  | Cliente_ID: {conferenciaVM.Cliente_ID}");
+            sbLog.Append($"  | LocalInspecao_ID: {conferenciaVM.LocalInspecao_ID}");
+            sbLog.Append($"  | LocalCheckPoint: {conferenciaVM.LocalCheckPoint_ID}");
+            try
+            {
+                Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = Convert.ToString(sbLog)
+                });
+            }
+            catch { }
+            #endregion
+
             const string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
             const string _mensagemErro = "Não foi possível listar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
@@ -176,6 +203,18 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult EditarAvarias(int inspAvaria_ID)
         {
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Action acoinada: EditarAvarias | Parametros: InspAvaria_ID {inspAvaria_ID}"
+                });
+            }
+            catch { }
+            #endregion
 
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
 
@@ -305,6 +344,57 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarAvaria(ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM)
         {
+            const string _mensagemLogin = "Erro ao verificar dados do usuário tente novamente mais tarde ou entre em contato com o suporte técnico";
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            if (dadosUsuario.Usuario.AlteraInspecao != true)
+            {
+                ViewData["MensagemErro"] = _mensagemLogin;
+                return RedirectToAction("Index", "Home");
+            }
+            #endregion
+
+            #region gravalogInformacao
+            try
+            {
+                StringBuilder sbLog = new StringBuilder("Action acionada: SalvarAvaria - Parametros", 150);
+                sbLog.Append($"  | InspAvaria_ID: {conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID}");
+                sbLog.Append($"  | Area_ID: {conferenciaEditarAvariasVM.InspAvaria.AvArea_ID}");
+                sbLog.Append($"  | Condicao_ID: {conferenciaEditarAvariasVM.InspAvaria.AvCondicao_ID}");
+                sbLog.Append($"  | Dano_ID: {conferenciaEditarAvariasVM.InspAvaria.AvDano_ID}");
+                sbLog.Append($"  | Gravidade_ID: {conferenciaEditarAvariasVM.InspAvaria.AvGravidade_ID}");
+                sbLog.Append($"  | Quadrante_ID: {conferenciaEditarAvariasVM.InspAvaria.AvQuadrante_ID}");
+                sbLog.Append($"  | Severidade_ID: {conferenciaEditarAvariasVM.InspAvaria.AvSeveridade_ID}");
+                sbLog.Append($"  | FabricaTransporte: {conferenciaEditarAvariasVM.InspAvaria.FabricaTransporte}");
+
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = Convert.ToString(sbLog)
+                    });
+            }
+            catch { }
+            #endregion
+
             //realiza updates
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.Update(conferenciaEditarAvariasVM.InspAvaria, configuracao);
             conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.Update(conferenciaEditarAvariasVM.InspVeiculo, configuracao);
@@ -339,6 +429,20 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult VisualizarFotos(int inspAvaria_ID)
         {
+
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Action acionada: VisualizarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}"
+                    });
+            }
+            catch { }
+            #endregion
+
             ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
 
             visualizarAvariasVM.InspAvaria = new Models.InspAvaria();
@@ -358,6 +462,20 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
+
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Action acionada: SalvarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}"
+                    });
+            }
+            catch { }
+            #endregion
+
             bool uploadImagem = false;
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
@@ -396,6 +514,20 @@ namespace VDT2.Controllers
         /// <returns>View</returns>
         public IActionResult LoadingListInicio()
         {
+
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Action acionada: LoadingListInicio | Sem Parametros"
+                    });
+            }
+            catch { }
+            #endregion
+
             string _mensagemLogin = "Erro ao validar dados do usuário, faça login novamente";
             ViewModels.LoginViewModel dadosUsuario = null;
 
@@ -445,6 +577,20 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult PackingListInicio()
         {
+
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Action acionada: PackingListInicio | Sem Parametros"
+                    });
+            }
+            catch { }
+            #endregion
+
             //Verifica dados do usuário
             string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
             ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
@@ -501,6 +647,24 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult LoadingListSalvar(ConferenciaLoadingListViewModel conferenciaLoadingListVM, ICollection<IFormFile> files)
         {
+
+            #region gravalogInformacao
+            try
+            {
+                StringBuilder sbLog = new StringBuilder("Action acionada: LoadingListSalvar | Parametros ");
+                sbLog.Append($"  | Cliente_ID {conferenciaLoadingListVM.Cliente_ID}");
+                sbLog.Append($"  | LocalInspecao_ID {conferenciaLoadingListVM.LocalInspecao_ID}");
+
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = Convert.ToString(sbLog)
+                    });
+            }
+            catch { }
+            #endregion
+
             bool salvou = false;
             bool inseriuArquivo = false;
             bool integrou = false;
@@ -607,6 +771,24 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
         {
+
+            #region gravalogInformacao
+            try
+            {
+                StringBuilder sbLog = new StringBuilder("Action acionada: PackingListSalvar | Parametros ");
+                sbLog.Append($"  | Cliente_ID {conferenciaPackingListVM.Cliente_ID}");
+                sbLog.Append($"  | LocalInspecao_ID {conferenciaPackingListVM.LocalInspecao_ID}");
+
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = Convert.ToString(sbLog)
+                    });
+            }
+            catch { }
+            #endregion
+
             bool salvou = false;
             bool inseriuArquivo = false;
             bool integrou = false;
@@ -695,6 +877,18 @@ namespace VDT2.Controllers
 
         public IActionResult Voltar(string nomeView)
         {
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = "Action acionada: Voltar | Sem Parametros"
+                    });
+            }
+            catch { }
+            #endregion
             return RedirectToAction("NovaConferencia", "Conferencia");
         }
 

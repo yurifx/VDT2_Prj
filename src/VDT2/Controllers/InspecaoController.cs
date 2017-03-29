@@ -23,6 +23,7 @@ using VDT2.BLL;
 using Microsoft.AspNetCore.Hosting;
 using System.IO;
 using Newtonsoft.Json;
+using System.Text;
 
 namespace VDT2.Controllers
 {
@@ -255,14 +256,23 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult InserirVeiculo(ViewModels.InspecaoVeiculoViewModel VeiculoViewModel, int tipoBotao)
         {
+            StringBuilder sbLog = new StringBuilder("Action acionada: InserirVeículo - Parametros", 350);
+            sbLog.Append($" | Inspecao_ID: { VeiculoViewModel.Inspecao_ID}");
+            sbLog.Append($" | VIN_6: { VeiculoViewModel.VIN_6}");
+            sbLog.Append($" | Marca: { VeiculoViewModel.Marca_ID}");
+            sbLog.Append($" | Modelo { VeiculoViewModel.Modelo_ID}");
+            sbLog.Append($" | Modelo { VeiculoViewModel.Modelo_ID}");
+            sbLog.Append($" | Observações { VeiculoViewModel.Observacoes}");
+
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
             {
                 Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: InserirVeículo | Parametros: Inspecao_ID: {VeiculoViewModel.Inspecao_ID},  VIN_6: {VeiculoViewModel.VIN_6},  Marca: {VeiculoViewModel.Marca_ID}, Modelo {VeiculoViewModel.Modelo_ID}, Observações {VeiculoViewModel.Observacoes}",
+                Mensagem = Convert.ToString(sbLog),
             });
             #endregion
+
 
             //Verifica dados do usuário
             #region dadosusuario
@@ -547,13 +557,23 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult InserirAvaria(InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel, int tipoBotao, ICollection<IFormFile> files)
         {
+            StringBuilder sbLog = new StringBuilder("Action acionada: InserirAvaria - Parametros", 250);
+            sbLog.Append($"  | InspecaoID: {registrarAvariasViewModel.Inspecao_ID}");
+            sbLog.Append($"  | InspVeiculo_ID: {registrarAvariasViewModel.InspVeiculo_ID}");
+            sbLog.Append($"  | Area_ID: {registrarAvariasViewModel.Area_ID}");
+            sbLog.Append($"  | Condicao_ID: {registrarAvariasViewModel.Condicao_ID}");
+            sbLog.Append($"  | Dano_ID: {registrarAvariasViewModel.Dano_ID}");
+            sbLog.Append($"  | Gravidade_ID: {registrarAvariasViewModel.Gravidade_ID}");
+            sbLog.Append($"  | Quadrante_ID: {registrarAvariasViewModel.Quadrante_ID}");
+            sbLog.Append($"  | Severidade_ID: {registrarAvariasViewModel.Severidade_ID}");
+            sbLog.Append($"  | FabricaTransporte: {registrarAvariasViewModel.fabricatransporte}");
 
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
             {
                 Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: InserirAvaria | Parametros: InspecaoID: {registrarAvariasViewModel.Inspecao_ID}, InspVeiculo_ID: {registrarAvariasViewModel.InspVeiculo_ID},  Area_ID: {registrarAvariasViewModel.Area_ID}, Condicao_ID {registrarAvariasViewModel.Condicao_ID}, Dano_ID {registrarAvariasViewModel.Dano_ID}, GravidadeID {registrarAvariasViewModel.Gravidade_ID}, QuadranteID {registrarAvariasViewModel.Quadrante_ID}, Severidade {registrarAvariasViewModel.Severidade_ID}, FabricaTransporte {registrarAvariasViewModel.fabricatransporte}",
+                Mensagem = Convert.ToString(sbLog),
             });
             #endregion
 
@@ -689,13 +709,16 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult VisualizarAvarias(VisualizarAvariasViewModel VisualizarAvariasVM, int tipoBotao) //melhorar para pegar do viewmodel
         {
+            StringBuilder sbLog = new StringBuilder("Action acionada: VisualizarAvarias - Parametros", 100);
+            sbLog.Append($"  | Inspecao_ID: {VisualizarAvariasVM.Inspecao_ID}");
+            sbLog.Append($"  | InspVeiculo_ID: {VisualizarAvariasVM.InspVeiculo_ID}");
 
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
             {
                 Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action VisualizarAvarias acionada: Parametros: InspecaoID {VisualizarAvariasVM.Inspecao_ID}, InspVeiculo_ID {VisualizarAvariasVM.InspVeiculo_ID}",
+                Mensagem = Convert.ToString(sbLog),
             });
             #endregion
 
@@ -845,14 +868,25 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult SalvarAvaria(InspecaoEditarAvariasViewModel EditarAvariasVM, ICollection<IFormFile> files)
         {
+
             #region gravalogInformacao
             try
             {
+                StringBuilder sbLog = new StringBuilder("Action acionada: SalvarAvaria - Parametros", 150);
+                sbLog.Append($"  | InspAvaria_ID: {EditarAvariasVM.InspAvaria_ID}");
+                sbLog.Append($"  | Area_ID: {EditarAvariasVM.Area_ID}");
+                sbLog.Append($"  | Condicao_ID: {EditarAvariasVM.Condicao_ID}");
+                sbLog.Append($"  | Dano_ID: {EditarAvariasVM.Dano_ID}");
+                sbLog.Append($"  | Gravidade_ID: {EditarAvariasVM.Gravidade_ID}");
+                sbLog.Append($"  | Quadrante_ID: {EditarAvariasVM.Quadrante_ID}");
+                sbLog.Append($"  | Severidade_ID: {EditarAvariasVM.Severidade_ID}");
+                sbLog.Append($"  | FabricaTransporte: {EditarAvariasVM.fabricatransporte}");
+
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"SalvarAvaria | Parametros: InspAvaria_ID: {EditarAvariasVM.InspAvaria_ID} | AvArea_ID {EditarAvariasVM.Area_ID} | AvCondicao_ID: {EditarAvariasVM.Condicao_ID} | AvCondicao_ID: {EditarAvariasVM.Condicao_ID} | AvGravidade_ID: {EditarAvariasVM.Gravidade_ID} | AvQuadrante_ID: {EditarAvariasVM.Quadrante_ID} | AvSeveridade_ID = {EditarAvariasVM.Severidade_ID} |  FabricaTransporte: {EditarAvariasVM.fabricatransporte}"
+                        Mensagem = Convert.ToString(sbLog)
                     });
             }
             catch { }
@@ -866,7 +900,7 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            //recebe dados            
+            //recebe dados ViewModelo           
             EditarAvariasVM.InspAvaria = new Models.InspAvaria
             {
                 InspAvaria_ID = EditarAvariasVM.InspAvaria_ID,
@@ -891,7 +925,7 @@ namespace VDT2.Controllers
                 ViewData["MensagemSucesso"] = "Avaria atualizada com sucesso.";
             }
 
-            //Insere a nova referente a avaria
+            //Insere a nova imagem referente a avaria
             bool uploadImagem = BLL.UploadImagens.UploadImagensAvaria(EditarAvariasVM.InspAvaria_ID, files, configuracao);
             if (uploadImagem == false)
             {
@@ -899,7 +933,7 @@ namespace VDT2.Controllers
             }
             InspecaoVeiculoRegistrarAvariasVM registrarAvariasViewModel = new InspecaoVeiculoRegistrarAvariasVM();
 
-            //Carrega os dados da view.
+            //Carrega os dados da proxima view.
             registrarAvariasViewModel.dadosUsuario = dadosUsuario;
 
             //carrega dados Avaria
@@ -911,7 +945,7 @@ namespace VDT2.Controllers
             //carrega dados da Inspeção
             registrarAvariasViewModel.Inspecao = BLL.Inspecao.ListarPorId(registrarAvariasViewModel.InspAvaria.Inspecao_ID, configuracao);
 
-            //Carrega dados Próxima View
+            //lista
             registrarAvariasViewModel.avAreaLista = BLL.Avarias.ListarAreas(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
             registrarAvariasViewModel.avCondicaoLista = BLL.Avarias.ListarCondicoes(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
             registrarAvariasViewModel.avDanoRepositorioLista = BLL.Avarias.ListarDanos(registrarAvariasViewModel.Inspecao.Cliente_ID, configuracao);
@@ -985,16 +1019,19 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult EditarVeiculo(InspecaoVeiculoViewModel inspecaoVeiculoVM, int tipobotao)
         {
+
+            #region gravalogInformacao
             try
             {
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"EditarVeiculo | Parametros: Edição: {inspecaoVeiculoVM.Edicao} | Veículo_ID {inspecaoVeiculoVM.Inspecao_ID}"
+                        Mensagem = $"Action acionada: EditarVeiculo | Parametros: Edição: {inspecaoVeiculoVM.Edicao} | Veículo_ID {inspecaoVeiculoVM.Inspecao_ID}"
                     });
             }
             catch { }
+            #endregion  
 
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -1003,6 +1040,12 @@ namespace VDT2.Controllers
                 return RedirectToAction("Index", "Home");
             }
 
+            try
+            {
+                inspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+                inspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
+            }
+            catch { }
 
             inspecaoVeiculoVM.Edicao = 1;
 
@@ -1011,8 +1054,6 @@ namespace VDT2.Controllers
                 if (inspecaoVeiculoVM.Inspecao.Erro == true)
                 {
                     ViewData["MensagemErro"] = "Não foi possível encontrar inspeção informada, tente novamente mais tarde";
-                    inspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
-                    inspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
                     return View("Veiculo", inspecaoVeiculoVM);
                 }
             }
@@ -1020,8 +1061,6 @@ namespace VDT2.Controllers
             if (inspecaoVeiculoVM.InspVeiculo_ID == 0)
             {
                 ViewData["MensagemErro"] = "Nenhum veículo disponível para edição, tente novamente mais tarde ou entre em contato com o suporte técnico";
-                inspecaoVeiculoVM.Marca = BLL.InspecaoVeiculo.ListaMarca(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
-                inspecaoVeiculoVM.Modelo = BLL.InspecaoVeiculo.ListaModelo(inspecaoVeiculoVM.Inspecao.Cliente_ID, configuracao);
                 return View("Veiculo", inspecaoVeiculoVM);
             }
 
@@ -1062,9 +1101,23 @@ namespace VDT2.Controllers
 
             string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
 
-            ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
+            #region gravalogInformacao
+            try
+            {
+                StringBuilder sbLog = new StringBuilder("Action acionada: EditarInspecao - Parametros", 250);
+                sbLog.Append($"  | InspecaoID: {inspecaoDadosGeraisVM.Inspecao_ID}");
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = Convert.ToString(sbLog)
+                    });
+            }
+            catch { }
+            #endregion  
 
             #region recebeDadosUsuario
+            ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
             dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
@@ -1188,14 +1241,14 @@ namespace VDT2.Controllers
         public IActionResult NovoVeiculo(InspecaoVeiculoViewModel NovoVeiculo, int tipobotao)
         {
             string _mensagemLogin = "Erro ao validar usuário por favor faça login novamente";
-            #region gravalogInicial
+            #region gravalogInformacao
             try
             {
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Inspecao/NovoVeiculo | Parametros:  Edição: {NovoVeiculo.Edicao}, InspVeiculo_ID: {NovoVeiculo.InspVeiculo_ID}"
+                        Mensagem = $"Inspecao.NovoVeiculo | Parametros:  Edição: {NovoVeiculo.Edicao}, InspVeiculo_ID: {NovoVeiculo.InspVeiculo_ID}"
                     });
             }
             catch { }
@@ -1282,16 +1335,14 @@ namespace VDT2.Controllers
         [HttpPost]
         public int InserirNovoModelo(string cliente_ID, string novoModeloNome)
         {
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Controller: InserirNovoModelo | Cliente_ID: {cliente_ID}, NovoModelo_Nome: {novoModeloNome}"
-                    });
-            }
-            catch { }
+            #region gravalogInformacao
+            Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Controller: InserirNovoModelo | Cliente_ID: {cliente_ID}, NovoModelo_Nome: {novoModeloNome}"
+                });
+            #endregion
 
             int id = 0;
 
@@ -1307,7 +1358,7 @@ namespace VDT2.Controllers
                new Diag.LogItem()
                {
                    Nivel = Diag.Nivel.Erro,
-                   Mensagem = $"Erro ao executar InspecaoController.InserirNovoModelo() | Cliente_ID {cliente_ID}, modelo_nome {novoModeloNome}"
+                   Mensagem = $"Erro ao executar InspecaoController.InserirNovoModelo | Cliente_ID {cliente_ID}, modelo_nome {novoModeloNome}"
                });
                 #endregion
                 return -1;
@@ -1323,12 +1374,14 @@ namespace VDT2.Controllers
         [HttpPost]
         public int InserirNovaMarca(string cliente_ID, string novaMarcaNome)
         {
+            #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
             {
                 Nivel = Diag.Nivel.Informacao,
                 Mensagem = $"Nova Marca Acionada: {cliente_ID}, inspAvaria_ID: {novaMarcaNome}"
             });
+            #endregion
 
             int id = 0;
             try
@@ -1359,12 +1412,18 @@ namespace VDT2.Controllers
         /// <returns>FileContentResult</returns>
         public FileResult Foto(string imagem, int inspAvaria_ID)
         {
-            Diag.Log.Grava(
-            new Diag.LogItem()
+            #region gravalogInformacao
+            try
             {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Recebe dados binarios: Foto | Imagem: {imagem}, inspAvaria_ID: {inspAvaria_ID}"
-            });
+                Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Recebe dados binarios: Foto | Imagem: {imagem}, inspAvaria_ID: {inspAvaria_ID}"
+                });
+            }
+            catch { }
+            #endregion
 
             FileContentResult retorno = null;
             try
@@ -1409,31 +1468,52 @@ namespace VDT2.Controllers
             return retorno;
         }
 
+
+        /// <summary>
+        /// Deleta a imagem escolhida referente a avaria informada. Este método é acionado via Ajax
+        /// </summary>
+        /// <param name="inspAvaria_ID"></param>
+        /// <param name="imagem"></param>
+        /// <returns>inteiro : 0 -ok,  -1 nok</returns>
         [HttpPost]
         public int DeletarFoto(string inspAvaria_ID, string imagem)
         {
-            #region gravalogInformacao
-            Diag.Log.Grava(
-            new Diag.LogItem()
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Executou DeletarFoto via Ajax - Assíncrono",
-            });
-            #endregion
             int int_inspAvaria_ID;
-            int.TryParse(inspAvaria_ID, out int_inspAvaria_ID);
-            BLL.UploadImagens.DeletarImagem(int_inspAvaria_ID, imagem, configuracao);
-            return 0;
+            #region gravalogInformacao
+            try
+            {
+                Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Executou DeletarFoto via Ajax - Assíncrono",
+                });
+            }
+            catch { }
+            #endregion
+
+            try
+            {
+                int.TryParse(inspAvaria_ID, out int_inspAvaria_ID);
+                BLL.UploadImagens.DeletarImagem(int_inspAvaria_ID, imagem, configuracao);
+                return 0;
+            }
+            catch
+            {
+                return -1;
+            }
+
         }
 
         /// <summary>
-        /// Recebe locais checkpoint, perante ao LOCAL selecionado
+        /// Recebe locais checkpoint,  referente ao local selecionado
         /// </summary>
         /// <param name="localInspecao_ID">Local de inspeção ID</param>
         /// <returns>Retorna um JSON contendo a lista de checkpoints do referido local</returns>
         public JsonResult RecebeDadosLocalCheckPoint(int localInspecao_ID)
         {
             var listaLocalCheckpoint = new List<Models.LocalCheckPoint>();
+
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
@@ -1442,6 +1522,7 @@ namespace VDT2.Controllers
                 Mensagem = $"Executou RecebeDadosLocalCheckPoint via Ajax - Assíncrono",
             });
             #endregion
+
             try
             {
                 ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
