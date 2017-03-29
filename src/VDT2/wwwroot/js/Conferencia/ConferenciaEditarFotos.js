@@ -166,6 +166,25 @@
     $("#btnRemoverFoto10").on("click", function () {
         RemoverFoto(10);
     })
+
+
+    var alteraInspecao = $("#hiddenAlteraInspecao").val();
+    if (alteraInspecao == 'False ') {
+        $("#spanFoto1").hide();
+        $("#btnSalvar").hide();
+        $('#tituloPaginaVisualizarFotos').hide();
+
+        $('.btn-danger').each(function (i, e) {
+            $(e).hide();
+        });
+
+    } else {
+        $("#spanFoto1").show();
+        $("#btnSalvar").show();
+
+    }
+
+
 });
 
 
