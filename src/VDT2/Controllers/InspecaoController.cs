@@ -78,6 +78,7 @@ namespace VDT2.Controllers
                     inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
                     inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
                     inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
+                    
                     #region EM_ERRO
                     if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
                     {
@@ -96,6 +97,7 @@ namespace VDT2.Controllers
                         ViewData["MensagemErro"] = inspecaoDadosGeraisVM.ListaTransportador.FirstOrDefault().MensagemErro;
                     }
                     #endregion
+
                     return View("NovaInspecao", inspecaoDadosGeraisVM);
                 }
                 else

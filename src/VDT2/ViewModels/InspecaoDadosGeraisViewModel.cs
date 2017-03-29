@@ -5,9 +5,9 @@ using System.Threading.Tasks;
 using VDT2.Models;
 
 namespace VDT2.ViewModels
-    {
+{
     public class InspecaoDadosGeraisViewModel
-        {
+    {
         public List<Cliente> ListaCliente;
         public List<Transportador> ListaTransportador;
         public List<LocalInspecao> ListaLocalInspecao;
@@ -24,15 +24,29 @@ namespace VDT2.ViewModels
         public string NomeNavio { get; set; }
         public int Transportador_ID { get; set; }
         public string TipoTransportador { get; set; }
-        
+
         public FrotaViagem FrotaViagem { get; set; }
         public Transportador Transportador { get; set; }
-        
+
         public int Edicao { get; set; } //0-não está editando  1- editando
 
         public bool Erro { get; set; }
         public string MensagemErro { get; set; }
 
+
+        public InspecaoDadosGeraisViewModel()
+        {
+            IdTipo = "";
+            FrotaViagemNome = "";
+            NomeNavio = "";
+            TipoTransportador = "";
+            MensagemErro = "";
+            Inspecao = new Models.Inspecao();
+            InspVeiculo = new Models.InspVeiculo();
+            FrotaViagem = new Models.FrotaViagem();
+            Transportador = new Models.Transportador();
         }
+
     }
+}
 

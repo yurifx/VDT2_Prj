@@ -20,9 +20,9 @@ namespace VDT2.Models
 
         [NotMapped]
         public string IdTipo
-            {
+        {
             get { return $"{Transportador_ID.ToString()}_{Tipo}"; }
-            }
+        }
 
         [NotMapped]
         public bool Erro { get; set; }
@@ -30,5 +30,12 @@ namespace VDT2.Models
         [NotMapped]
         public string MensagemErro { get; set; }
 
+
+        public Transportador()
+        {
+            Nome = "";
+            Tipo = "";
+            MensagemErro = "";
         }
+    }
 }

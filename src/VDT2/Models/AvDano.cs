@@ -28,5 +28,14 @@ namespace VDT2.Models
         [NotMapped]
         public string MensagemErro { get; set; }
 
+
+        public AvDano()
+        {
+            MensagemErro = "";
+            Codigo = "";
+            Nome_Pt = "";
+            Nome_En = "";
+            Nome_Es = "";
         }
     }
+}

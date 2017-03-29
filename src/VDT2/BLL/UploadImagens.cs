@@ -173,7 +173,7 @@ namespace VDT2.BLL
                         if (imgsrc != "")
                         {
                             imagem.Imagem = imgsrc;
-                            imagem.path = arquivo;
+                            imagem.Path = arquivo;
                             listaimagens.Add(imagem);
                         }
                     }

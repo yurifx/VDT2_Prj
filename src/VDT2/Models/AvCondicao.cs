@@ -12,15 +12,12 @@ namespace VDT2.Models
         [Key]
         public int AvCondicao_ID { get; set; }
 
-        
         public string Codigo { get; set; }
 
-        
         public string Nome_Pt { get; set; }
 
         public string Nome_En { get; set; }
 
-        
         public string Nome_Es { get; set; }
 
         [NotMapped]
@@ -28,5 +25,14 @@ namespace VDT2.Models
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public AvCondicao()
+        {
+            Codigo = "";
+            Nome_Pt = "";
+            Nome_En = "";
+            Nome_Es = "";
+            MensagemErro = "";
         }
+    }
 }

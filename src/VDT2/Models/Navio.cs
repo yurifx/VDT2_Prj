@@ -21,5 +21,11 @@ namespace VDT2.Models
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public Navio()
+        {
+            Nome = "";
+            MensagemErro = "";
+        }
         }
 }

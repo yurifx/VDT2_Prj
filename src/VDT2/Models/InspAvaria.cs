@@ -53,6 +53,19 @@ namespace VDT2.Models
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public InspAvaria()
+        {
+            FabricaTransporte = "";
+            Area_Pt = "";
+            Dano_Pt = "";
+            Severidade_Pt = "";
+            Quadrante_Pt = "";
+            Condicao_Pt = "";
+            MensagemErro = "";
+        }
+
+
         }
     }
 

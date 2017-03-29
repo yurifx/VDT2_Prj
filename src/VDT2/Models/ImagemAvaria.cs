@@ -9,13 +9,20 @@ namespace VDT2.Models
     public class ImagemAvaria
     {
         public string Imagem { get; set; }
-        public string path { get; set; }
+        public string Path { get; set; }
 
         [NotMapped]
         public bool Erro { get; set; }
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public ImagemAvaria()
+        {
+            MensagemErro = "";
+            Imagem = "";
+            Path = "";
         }
+    }
 }
 

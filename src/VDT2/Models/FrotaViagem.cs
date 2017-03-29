@@ -18,11 +18,16 @@ namespace VDT2.Models
 
         public bool Ativo { get; set; }
 
-
         [NotMapped]
         public bool Erro { get; set; }
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public FrotaViagem()
+        {
+            Nome = "";
+            MensagemErro = "";
         }
     }
+}

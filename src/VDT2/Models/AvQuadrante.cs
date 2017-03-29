@@ -27,5 +27,16 @@ namespace VDT2.Models
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public AvQuadrante()
+        {
+            Codigo = "";
+            Nome_Pt = "";
+            Nome_En = "";
+            Nome_Es = "";
+            MensagemErro = "";
         }
+    }
+
+
 }

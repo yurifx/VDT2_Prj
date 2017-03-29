@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace VDT2.Models
 {
     public class Cliente
-        {
+    {
         [Key]
         public int Cliente_ID { get; set; }
 
@@ -22,5 +22,11 @@ namespace VDT2.Models
         [NotMapped]
         public string MensagemErro { get; set; }
 
+
+        public Cliente()
+        {
+            Nome = "";
+            MensagemErro = "";
         }
+    }
 }

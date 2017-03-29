@@ -8,7 +8,7 @@ using System.Threading.Tasks;
 namespace VDT2.Models
 {
     public class Marca
-        {
+    {
         [Key]
         public int Marca_ID { get; set; }
 
@@ -22,6 +22,10 @@ namespace VDT2.Models
         [NotMapped]
         public string MensagemErro { get; set; }
 
-
+        public Marca()
+        {
+            Nome = "";
+            MensagemErro = "";
         }
     }
+}

@@ -11,27 +11,25 @@ namespace VDT2.Models
     {
         [Key]
         public int AvGravidade_ID { get; set; }
-
         public int Cliente_ID { get; set; }
-
-        [StringLength(20)]
         public string Codigo { get; set; }
-
-        [Required]
-        [StringLength(50)]
         public string Nome_Pt { get; set; }
-
-        [StringLength(50)]
         public string Nome_En { get; set; }
-
-        [StringLength(50)]
         public string Nome_Es { get; set; }
-
-        [NotMapped]
         public bool Erro { get; set; }
 
         [NotMapped]
         public string MensagemErro { get; set; }
 
+        public AvGravidade()
+        {
+            Codigo = "";
+            Nome_Pt = "";
+            Nome_En = "";
+            Nome_Es = "";
+            MensagemErro = "";
+
         }
+
     }
+}

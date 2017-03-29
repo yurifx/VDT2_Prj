@@ -31,5 +31,15 @@ namespace VDT2.Models
 
         [NotMapped]
         public string MensagemErro { get; set; }
+
+        public AvArea()
+        {
+            MensagemErro = "";
+            Nome_Pt = "";
+            Codigo = "";
         }
+
+    }
+
+
 }

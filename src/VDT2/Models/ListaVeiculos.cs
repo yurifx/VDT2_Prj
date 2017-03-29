@@ -23,5 +23,10 @@ namespace VDT2.Models
 
         public char Tipo { get; set; }
 
+        public ListaVeiculos()
+        {
+            NomeArquivo = "";
+        }
+
     }
 }

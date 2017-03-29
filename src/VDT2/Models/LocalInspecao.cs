@@ -19,5 +19,11 @@ namespace VDT2.Models
         [NotMapped]
         public string MensagemErro { get; set; }
 
+
+        public LocalInspecao()
+        {
+            Nome = "";
+            MensagemErro = "";
+        }
         }
     }

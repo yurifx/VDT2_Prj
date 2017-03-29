@@ -14,5 +14,10 @@ namespace VDT2.Models
         public string VIN_6 { get; set; }
         public string VIN { get; set; }
 
+        public ListaVeiculosVin()
+        {
+            VIN_6 = "";
+            VIN = "";
+        }
     }
 }
