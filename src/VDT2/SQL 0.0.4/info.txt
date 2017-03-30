@@ -1,0 +1,3 @@
+Estas são as novas queries referentes ao projeto VDT
+Versão 0.0.4;
+Para melhor funcionalidade do sistema, por favor executar em ordem.
