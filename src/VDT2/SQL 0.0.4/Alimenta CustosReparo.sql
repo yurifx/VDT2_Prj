@@ -199,6 +199,7 @@ Select   cr.CustoReparo_ID,
          a.Lado_Pt, 
          cr.AvGravidade_ID, 
          g.Nome_Pt,
+         g.Codigo,
          cr.custo
 
 From CustoReparo       cr
