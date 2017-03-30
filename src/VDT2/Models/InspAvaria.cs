@@ -31,6 +31,9 @@ namespace VDT2.Models
         public Boolean DanoOrigem { get; set; } 
         //Novo Campo - versão 0.0.3
 
+        public decimal Custo { get; set; }
+        //Novo Campo - versão 0.0.4
+
         public int Inspecao_ID { get; set; }
 
         [NotMapped]

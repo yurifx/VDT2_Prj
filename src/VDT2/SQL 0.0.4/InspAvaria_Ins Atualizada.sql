@@ -39,7 +39,7 @@ Select  @Cliente_ID = Cliente_ID From Inspecao Where Inspecao_ID = @Inspecao_ID
 Declare @Custo Int
 If @p_CustoReparo IS NULL
 BEGIN
-  Set @Custo = (select custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID)
+  Set @Custo = (select Custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID)
 END
 Else 
   Set @Custo = @p_CustoReparo
