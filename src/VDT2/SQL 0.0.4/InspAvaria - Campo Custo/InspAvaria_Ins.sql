@@ -10,6 +10,7 @@ GO
 Create Procedure dbo.InspAvaria_Ins
 ----------------------------------------------------------------------------------------------------
 -- Insere um novo registro de avaria de um veículo
+-- Atualização: 30/03 Adicionando a lógica de custo
 ----------------------------------------------------------------------------------------------------
 (
 @p_InspVeiculo_ID     Int,
@@ -21,7 +22,6 @@ Create Procedure dbo.InspAvaria_Ins
 @p_AvCondicao_ID      Int,
 @p_FabricaTransporte  Char(1), -- F:Defeito de Fábrica  T:Avaria de Transporte
 @p_DanoOrigem         Bit,
-@p_CustoReparo        Decimal (7,2),
 @p_InspAvaria_ID      Int OUTPUT
 )
 AS
@@ -34,17 +34,8 @@ Select  @Inspecao_ID = Inspecao_ID From InspVeiculo Where InspVeiculo_ID = @p_In
 Declare @Cliente_ID Int
 Select  @Cliente_ID = Cliente_ID From Inspecao Where Inspecao_ID = @Inspecao_ID
 
-
---Inicio dos testes atualizações:
-Declare @Custo Int
-If @p_CustoReparo IS NULL
-BEGIN
-  Select @Custo = Custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID
-END
-
---Talvez esse Else só venha na UPD
-Else 
-  Set @Custo = @p_CustoReparo
+Declare @Custo decimal (7,2)
+Select  @Custo = Custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID
 
 -- Verifica se a 'área' corresponde ao 'cliente'
 If Not Exists ( Select 1

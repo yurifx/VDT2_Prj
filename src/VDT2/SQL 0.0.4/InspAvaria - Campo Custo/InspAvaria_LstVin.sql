@@ -11,6 +11,7 @@ Create Procedure dbo.InspAvaria_LstVin
 ----------------------------------------------------------------------------------------------------
 -- Lista as avarias de um veículo (VIN)
 -- 23/03 - Adicionando o campo DanoOrigem
+-- 30/03 - Adicionando o campo Custo
 ----------------------------------------------------------------------------------------------------
 (
 @p_Cliente_ID      Int,

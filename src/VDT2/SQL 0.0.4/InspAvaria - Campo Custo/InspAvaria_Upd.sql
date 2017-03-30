@@ -10,6 +10,7 @@ GO
 Create Procedure dbo.InspAvaria_Upd
 ----------------------------------------------------------------------------------------------------
 -- Modifica os dados de um registro de avaria de um veículo
+-- 30/03 - Adicionando o parametro @p_CustoReparo
 ----------------------------------------------------------------------------------------------------
 (
 @p_InspAvaria_ID      Int,

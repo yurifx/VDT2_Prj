@@ -10,6 +10,7 @@ GO
 Create Procedure dbo.InspAvaria_Lst
 ----------------------------------------------------------------------------------------------------
 -- Lista as avarias de um veículo (InspVeiculo_ID)
+-- 30/03 - Adicionando o campo Custo
 ----------------------------------------------------------------------------------------------------
 (
 @p_InspVeiculo_ID Int
