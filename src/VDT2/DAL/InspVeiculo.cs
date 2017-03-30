@@ -59,7 +59,6 @@ namespace VDT2.DAL
 
                 SqlParameter parmVIN = new SqlParameter("@p_VIN", SqlDbType.Char)
                 {
-                    //  Value = inspVeiculo.VIN
                     Value = DBNull.Value
                 };
 
@@ -67,6 +66,11 @@ namespace VDT2.DAL
                 {
                     Value = inspVeiculo.Observacoes
                 };
+
+                if (inspVeiculo.Observacoes == null)
+                {
+                    parmObservacoes.Value = DBNull.Value;
+                }
 
                 SqlParameter parmInspVeiculo_ID = new SqlParameter("@p_InspVeiculo_ID", SqlDbType.Int)
                 {

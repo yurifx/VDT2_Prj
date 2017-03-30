@@ -299,7 +299,7 @@ namespace VDT2.Controllers
             #endregion
 
             //Recebe os dados da View
-
+            
             VeiculoViewModel.InspVeiculo = new Models.InspVeiculo
             {
                 Inspecao_ID = VeiculoViewModel.Inspecao_ID,
@@ -308,12 +308,14 @@ namespace VDT2.Controllers
                 VIN_6 = VeiculoViewModel.VIN_6.RemoveEspacosUpperKey(),
                 VIN = null,
                 InspVeiculo_ID = VeiculoViewModel.InspVeiculo_ID, //recebe no postback
-                Observacoes = VeiculoViewModel.Observacoes.RemoveEspacosUpperKey(),
+                Observacoes = VeiculoViewModel.Observacoes,
                 Erro = false,
                 MensagemErro = ""
             };
 
-            VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.Inspecao_ID, configuracao);
+
+
+        VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.Inspecao_ID, configuracao);
             #region EM_ERRO
             if (VeiculoViewModel.Inspecao.Erro == true)
             {
@@ -639,11 +641,11 @@ namespace VDT2.Controllers
                 ViewData["MensagemSucesso"] = "Avaria registrada com sucesso";
 
                 //Faz Upload das imagens que o usuário inseriu
-                    bool realizouUpload = BLL.UploadImagens.UploadImagensAvaria(registrarAvariasViewModel.InspAvaria.InspAvaria_ID, files, configuracao);
-                    if (realizouUpload == false)
-                    {
-                        ViewData["MensagemErro"] += "Erro ao inserir fotos no sistema, tente novamente mais tarde ou entre em contato com o suporte técnico";
-                    }
+                bool realizouUpload = BLL.UploadImagens.UploadImagensAvaria(registrarAvariasViewModel.InspAvaria.InspAvaria_ID, files, configuracao);
+                if (realizouUpload == false)
+                {
+                    ViewData["MensagemErro"] += "Erro ao inserir fotos no sistema, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                }
             }
 
             registrarAvariasViewModel.dadosUsuario = dadosUsuario;
