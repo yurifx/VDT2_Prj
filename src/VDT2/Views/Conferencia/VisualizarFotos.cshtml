@@ -15,9 +15,11 @@
     }
 </div>
 
-<div class="container">
-    <div class="row">
-        <div class="form-group">
+@if (Model.Usuario.AlteraInspecao)
+{
+    <div class="container">
+        <div class="row">
+            <div class="form-group">
 
                 <h2 id="tituloPaginaVisualizarFotos">Adicionar Novas Fotos</h2><br />
 
@@ -157,6 +159,7 @@
             </div>
         </div>
     </div>
+}
 
 <div class="container">
     <div class="row">
