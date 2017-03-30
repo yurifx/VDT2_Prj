@@ -1,8 +1,6 @@
 ﻿$(function () {
     console.log("Inicializou - InspecaoRegistrarAvarias.js");
-
     
-
     $("#imgpreview").hide(0);
     $("#visualizar1").hide(0);
 
