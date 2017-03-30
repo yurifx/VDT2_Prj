@@ -3,11 +3,11 @@ GO
 
 If  Exists (Select Name
             From   sysobjects
-            Where  Name = 'InspAvaria_InsTT' and type = 'P')
-    Drop Procedure dbo.InspAvaria_InsTT
+            Where  Name = 'InspAvaria_Ins' and type = 'P')
+    Drop Procedure dbo.InspAvaria_Ins
 GO
 
-Create Procedure dbo.InspAvaria_InsTT
+Create Procedure dbo.InspAvaria_Ins
 ----------------------------------------------------------------------------------------------------
 -- Insere um novo registro de avaria de um veículo
 ----------------------------------------------------------------------------------------------------
@@ -39,8 +39,10 @@ Select  @Cliente_ID = Cliente_ID From Inspecao Where Inspecao_ID = @Inspecao_ID
 Declare @Custo Int
 If @p_CustoReparo IS NULL
 BEGIN
-  Set @Custo = (select Custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID)
+  Select @Custo = Custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID
 END
+
+--Talvez esse Else só venha na UPD
 Else 
   Set @Custo = @p_CustoReparo
 
@@ -143,7 +145,7 @@ SET @p_FabricaTransporte = 1
 SET @p_DanoOrigem = 1
 SET @p_CustoReparo = 100.00
 
-Exec InspAvaria_InsTT
+Exec InspAvaria_Ins
  @p_InspVeiculo_ID,
  @p_AvArea_ID,
  @p_AvDano_ID,

@@ -77,7 +77,7 @@ namespace VDT2.Controllers
                     inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
                     inspecaoDadosGeraisVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
                     inspecaoDadosGeraisVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(dadosUsuario.UsuarioId, configuracao);
-                    
+
                     #region EM_ERRO
                     if (inspecaoDadosGeraisVM.ListaLocalInspecao.FirstOrDefault().Erro == true)
                     {
@@ -639,13 +639,15 @@ namespace VDT2.Controllers
                 ViewData["MensagemSucesso"] = "Avaria registrada com sucesso";
 
                 //Faz Upload das imagens que o usuário inseriu
-                bool realizouUpload = BLL.UploadImagens.UploadImagensAvaria(registrarAvariasViewModel.InspAvaria.InspAvaria_ID, files, configuracao);
-                if (realizouUpload == false)
+                if (files.Count() > 0)
                 {
-                    ViewData["MensagemErro"] += "Erro ao inserir fotos no sistema, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    bool realizouUpload = BLL.UploadImagens.UploadImagensAvaria(registrarAvariasViewModel.InspAvaria.InspAvaria_ID, files, configuracao);
+                    if (realizouUpload == false)
+                    {
+                        ViewData["MensagemErro"] += "Erro ao inserir fotos no sistema, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    }
                 }
             }
-
 
             registrarAvariasViewModel.dadosUsuario = dadosUsuario;
             registrarAvariasViewModel.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(registrarAvariasViewModel.InspVeiculo_ID, configuracao);
@@ -1034,7 +1036,7 @@ namespace VDT2.Controllers
                     });
             }
             catch { }
-            #endregion  
+            #endregion
 
             ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -1117,7 +1119,7 @@ namespace VDT2.Controllers
                     });
             }
             catch { }
-            #endregion  
+            #endregion
 
             #region recebeDadosUsuario
             ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();

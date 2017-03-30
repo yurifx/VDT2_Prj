@@ -51,7 +51,6 @@ namespace VDT2.DAL
                     Value = inspAvaria.AvCondicao_ID
                 };
 
-
                 SqlParameter parmAvDano_ID = new SqlParameter("@p_AvDano_ID", SqlDbType.Int)
                 {
                     Value = inspAvaria.AvDano_ID
@@ -107,7 +106,7 @@ namespace VDT2.DAL
                     parmInspAvaria_ID
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmInspVeiculo_ID.ParameterName}, { parmAvArea_ID.ParameterName}, { parmAvDano_ID.ParameterName}, { parmAvSeveridade_ID.ParameterName}, { parmAvQuadrante_ID.ParameterName}, { parmAvGravidade_ID.ParameterName}, { parmAvCondicao_ID.ParameterName},     { parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}, {parmInspAvaria_ID.ParameterName} out";
+                string chamada = $"{nomeStoredProcedure} {parmInspVeiculo_ID.ParameterName}, { parmAvArea_ID.ParameterName}, { parmAvDano_ID.ParameterName}, { parmAvSeveridade_ID.ParameterName}, { parmAvQuadrante_ID.ParameterName}, { parmAvGravidade_ID.ParameterName}, { parmAvCondicao_ID.ParameterName},     { parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}, {parmCusto.ParameterName}, {parmInspAvaria_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
@@ -230,7 +229,6 @@ namespace VDT2.DAL
                     Value = inspAvaria_ID
                 };
 
-
                 SqlParameter[] parametros = new SqlParameter[]
                 {
                     parmInspAvaria_ID
@@ -327,6 +325,21 @@ namespace VDT2.DAL
                     Value = inspAvaria.DanoOrigem
                 };
 
+                if (inspAvaria.Custo == 0)
+                {
+                    SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
+                    {
+                        Value = DBNull.Value
+                    };
+                }
+                else
+                {
+                    SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
+                    {
+                        Value = inspAvaria.Custo
+                    };
+                }
+
                 SqlParameter[] parametros = new SqlParameter[]
                 {
                     parmInspAvaria_ID,
@@ -337,10 +350,11 @@ namespace VDT2.DAL
                     parmAvGravidade_ID,
                     parmAvCondicao_ID,
                     parmFabricaTransporte,
-                    parmDanoOrigem
+                    parmDanoOrigem,
+                    parmCusto
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmInspAvaria_ID.ParameterName}, {parmAvArea_ID.ParameterName}, {parmAvDano_ID.ParameterName}, {parmAvSeveridade_ID.ParameterName}, {parmAvQuadrante_ID.ParameterName}, {parmAvGravidade_ID.ParameterName}, {parmAvCondicao_ID.ParameterName}, {parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}";
+                string chamada = $"{nomeStoredProcedure} {parmInspAvaria_ID.ParameterName}, {parmAvArea_ID.ParameterName}, {parmAvDano_ID.ParameterName}, {parmAvSeveridade_ID.ParameterName}, {parmAvQuadrante_ID.ParameterName}, {parmAvGravidade_ID.ParameterName}, {parmAvCondicao_ID.ParameterName}, {parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}, {parmCusto.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
