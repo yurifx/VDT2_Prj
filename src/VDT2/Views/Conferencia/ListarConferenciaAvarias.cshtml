@@ -48,6 +48,7 @@
                 <th>Quadrante</th>
                 <th>Severidade</th>
                 <th>FabricaTransporte</th>
+                <th>Custo</th>
                 <th>Fotos</th>
             </tr>
 
@@ -66,6 +67,13 @@
                     <td>@item.Quadrante_Pt</td>
                     <td>@item.Severidade_Pt</td>
                     <td>@item.FabricaTransporte</td>
+                    @if(@item.Custo == null) {
+                        <td>0</td>
+                    }
+                    else
+                    {
+                    <td>@item.Custo</td>
+                    }
                     <td><button type="button" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
                 </tr>   
                 }

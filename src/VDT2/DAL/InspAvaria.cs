@@ -325,19 +325,14 @@ namespace VDT2.DAL
                     Value = inspAvaria.DanoOrigem
                 };
 
-                if (inspAvaria.Custo == 0)
+                SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
                 {
-                    SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
-                    {
-                        Value = DBNull.Value
-                    };
-                }
-                else
+                    Value = DBNull.Value
+                };
+
+                if (inspAvaria.Custo != 0)
                 {
-                    SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
-                    {
-                        Value = inspAvaria.Custo
-                    };
+                    parmCusto.Value = inspAvaria.Custo;
                 }
 
                 SqlParameter[] parametros = new SqlParameter[]

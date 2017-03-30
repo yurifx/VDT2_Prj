@@ -64,5 +64,6 @@ namespace VDT2.Models
 
         public bool DanoOrigem { get; set; }
 
+        public decimal? Custo { get; set; }
         }
     }
