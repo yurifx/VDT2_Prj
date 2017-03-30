@@ -81,6 +81,11 @@ namespace VDT2.DAL
                     Value = inspAvaria.DanoOrigem
                 };
 
+                SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
+                {
+                    Value = DBNull.Value
+                };
+
                 SqlParameter parmInspAvaria_ID = new SqlParameter("@p_InspAvaria_ID", SqlDbType.Int)
                 {
                     Value = 1,
@@ -98,6 +103,7 @@ namespace VDT2.DAL
                     parmAvSeveridade_ID,
                     parmFabricaTransporte,
                     parmDanoOrigem,
+                    parmCusto,
                     parmInspAvaria_ID
                 };
 
