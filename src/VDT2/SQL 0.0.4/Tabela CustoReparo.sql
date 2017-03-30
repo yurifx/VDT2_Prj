@@ -2,8 +2,8 @@ use VDT2
 GO
 
 if Exists(select 1 
-            from sys.objects 
-            where name like '%CustoReparo%')
+            From sys.objects 
+            Where name like '%CustoReparo%')
 
 BEGIN
   Truncate Table CustoReparo
