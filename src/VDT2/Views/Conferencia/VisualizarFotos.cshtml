@@ -169,7 +169,7 @@
             {
                 @if (Model.ListaImagemAvarias.Count() > 0)
                 {
-                    <h2>Fotos Enviadas Anteriormente</h2>
+                    <h2>Fotos</h2>
                     @foreach (var item in Model.ListaImagemAvarias)
                     {
                         @if (item.Erro != true)
@@ -185,7 +185,13 @@
                         }
                     }
                 }
+                else
+                {
+                    <h1>Não há fotos enviadas para esta avaria</h1>
+                    <button type="button" class="btn btn-primary" onclick="history.go(-1)">Voltar</button>
+                }
             }
+           
         </div>
     </div>
 </div>
