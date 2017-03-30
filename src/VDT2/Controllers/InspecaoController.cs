@@ -639,14 +639,11 @@ namespace VDT2.Controllers
                 ViewData["MensagemSucesso"] = "Avaria registrada com sucesso";
 
                 //Faz Upload das imagens que o usuário inseriu
-                if (files.Count() > 0)
-                {
                     bool realizouUpload = BLL.UploadImagens.UploadImagensAvaria(registrarAvariasViewModel.InspAvaria.InspAvaria_ID, files, configuracao);
                     if (realizouUpload == false)
                     {
                         ViewData["MensagemErro"] += "Erro ao inserir fotos no sistema, tente novamente mais tarde ou entre em contato com o suporte técnico";
                     }
-                }
             }
 
             registrarAvariasViewModel.dadosUsuario = dadosUsuario;

@@ -27,7 +27,7 @@
     </div>
 
     <div class="row">
-        <h3>Conferência de Inspeção:</h3><br />
+        <h3><strong>Conferência de Inspeção</strong></h3><br />
         <div class="form-group">
 
             <form asp-controller="Conferencia" asp-action="ConferenciaListarVeiculos" method="post" onSubmit="return ValidarFormularioIndex()">
@@ -86,15 +86,15 @@
                     <br />
 
                     @*Botões*@
-                    <div class="form-group">
-                        <br />
-                        <div class="col col-lg-offset-0 col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <br /><br />
+                    <div class="row">
+                        <div class="btnNovaConferencia col col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <button type="submit" class="btnTelaNovaConferencia btn btn-sm btn-success">Listar</button>
                             <input type="button" class="btnTelaNovaConferencia btn btn-sm btn-primary" value="Voltar" onClick="history.go(-1)">
                         </div>
                     </div>
+                
                 </div>
-
             </form>
         </div>
 

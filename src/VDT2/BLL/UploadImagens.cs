@@ -201,7 +201,7 @@ namespace VDT2.BLL
                                 Mensagem = $"Não conseguiu receber lista de imagens da avaria - Exception {ex}",
                                 Excecao = ex
                             });
-                listaimagens.Add(new ImagemAvaria { Erro = true, MensagemErro = "Erro ao listar imagens, tente novamente mais tarde ou entre em contato com o suporte técnico" });
+                listaimagens.Add(new ImagemAvaria { Erro = true, MensagemErro = "Não há imagem na pasta selecionada" });
                 return listaimagens;
             }
         }

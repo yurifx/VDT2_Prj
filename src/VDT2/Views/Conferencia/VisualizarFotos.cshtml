@@ -169,7 +169,10 @@
             {
                 @if (Model.ListaImagemAvarias.Count() > 0)
                 {
-                    <h2>Fotos</h2>
+                    @if (Model.ListaImagemAvarias.FirstOrDefault().Erro != true)
+                    {
+                        <h2>Fotos</h2>
+                    }
                     @foreach (var item in Model.ListaImagemAvarias)
                     {
                         @if (item.Erro != true)
@@ -181,7 +184,7 @@
                                 <div class="col-md-12">
                                     <button type="button" class="btn btn-danger" value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
                                 </div>
-                            </div>
+                            </div><br/><br /><br />
                         }
                     }
                 }
@@ -191,7 +194,7 @@
                     <button type="button" class="btn btn-primary" onclick="history.go(-1)">Voltar</button>
                 }
             }
-           
+
         </div>
     </div>
 </div>

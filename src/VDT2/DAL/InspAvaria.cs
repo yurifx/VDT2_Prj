@@ -325,9 +325,13 @@ namespace VDT2.DAL
                     Value = DBNull.Value
                 };
 
-                if (inspAvaria.Custo != 0)
+                if (inspAvaria.Custo != 0 && inspAvaria.Custo != null)
                 {
                     parmCusto.Value = inspAvaria.Custo;
+                }
+                else
+                {
+                    parmCusto.Value = DBNull.Value;
                 }
 
                 SqlParameter[] parametros = new SqlParameter[]

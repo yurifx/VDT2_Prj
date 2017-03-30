@@ -38,13 +38,16 @@ Select  @Inspecao_ID = Inspecao_ID From InspVeiculo Where InspVeiculo_ID = @Insp
 Declare @Cliente_ID Int
 Select  @Cliente_ID = Cliente_ID From Inspecao Where Inspecao_ID = @Inspecao_ID
 
-Declare @Custo Int
+Declare @Custo decimal(7,2)
 If @p_CustoReparo IS NULL
 BEGIN
   Select @Custo = Custo from CustoReparo cr where cr.AvArea_ID = @p_AvArea_ID and cr.AvGravidade_ID = @p_AvGravidade_ID
 END
 Else 
+BEGIN
   Set @Custo = @p_CustoReparo
+END
+  
 
 -- Verifica se a 'área' corresponde ao 'cliente'
 If Not Exists ( Select 1

@@ -380,11 +380,39 @@ LayoutCSS:.. Ordenação
 
 /* < TODOS OS DISPOSTIVOS > */
 
+.alert-success {
+    max-width: 68%;
+}
+
+.custoConferencia {
+    text-align: right;
+}
+
+
+.tabConferenciaListaVeiculo {
+    text-align: center;
+    
+}
+
+
+.tabConferenciaListaVeiculoHeader {
+    text-align: center;
+}
+
+.btnNovaConferencia{
+padding-left: 2%;
+
+}
+
+
 
 /* < View Home/Index > */
-
 .BotaoLogin {
     padding-left: 60%;
+}
+
+.btnVoltarTelaConferenciaListarVeiculos{
+
 }
 
 #cardblockTelaInspecao-Index {
@@ -455,25 +483,25 @@ LayoutCSS:.. Ordenação
     width: 45%;
 }
 
+
+/* < View Conferencia / ConferenciaListarVeiculos > */
+.btnVoltarTelaConferenciaAvarais{
+    width: 12%;
+}
+
+
 /* < DISPOSITIVOS COM TELAS GRANDES SUPERIOR A 780px >*/
-
 @media only screen and (min-device-width:780px) {
-
-    
-
-
     /* < View NovaInspecao > */
-
-
-
     /* < View Conferencia/NovaConferencia > */
-
     .inputDataTelaNovaConferencia {
         width: 20%;
     }
 
     .btnTelaNovaConferencia {
-        width: 15%;
+        width: 12%;
+        align-content: center;
+
     }
 
     /* < View Conferencia/VisualizarFotos > */
@@ -491,7 +519,7 @@ LayoutCSS:.. Ordenação
 
 
     /* < View Conferencia/PackingListInicio > */
-    .btnTelaPackingListInicio{
+    .btnTelaPackingListInicio {
         width: 8%;
     }
 
