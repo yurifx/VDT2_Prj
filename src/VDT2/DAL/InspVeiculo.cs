@@ -309,6 +309,11 @@ namespace VDT2.DAL
                     Value = inspVeiculo.Observacoes
                 };
 
+                if (inspVeiculo.Observacoes == null)
+                {
+                    parmObservacoes.Value = DBNull.Value;
+                }
+
                 SqlParameter[] parametros = new SqlParameter[]
                 {
                     parmInspVeiculo_ID,
