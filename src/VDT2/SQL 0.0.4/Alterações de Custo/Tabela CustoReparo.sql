@@ -7,7 +7,7 @@ if Exists(select 1
 
 BEGIN
   Truncate Table CustoReparo
-  Drop Table CustoReparo
+  Drop 	   Table CustoReparo
 END
 
 --------------------------------------------------------------------------------
