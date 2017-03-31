@@ -356,7 +356,30 @@ namespace VDT2.Controllers
 
         public IActionResult Logout()
         {
-            Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie");
+
+            var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.StartsWith("."));
+            foreach (var cookie in siteCookies)
+            {
+                Response.Cookies.Delete(cookie.Key);
+            }
+
+            //foreach (var key in HttpContext.Request.Cookies.Keys)
+            //{
+            //    HttpContext.Response.Cookies.Append(key, "", new CookieOptions() { Expires = DateTime.Now.AddDays(-1) });
+            //}
+
+
+            ////string sPath = path.Substring(0, path.Length - 12); //retira o /Home/Logout
+            ////Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie", new CookieOptions { Path = sPath });
+            //Diag.Log.Grava(
+            //        new Diag.LogItem()
+            //        {
+            //            Nivel = Diag.Nivel.Informacao,
+            //            Mensagem = $"Deletando Cookie: .AspNetCore.VDT_AuthCookie"
+            //        });
+            
+            //Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie", new CookieOptions { Path = "/"});
+            //Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie");
             return RedirectToAction("Index");
         }
 

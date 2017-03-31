@@ -256,7 +256,7 @@ function removerImagemAvaria(valor) {
     //ENVIANDO POST AJAX PARA O CONTROLLER:
     request = $.ajax({
         type: "POST",
-        url: "../../Inspecao/DeletarFoto",
+        url: "../Inspecao/DeletarFoto",
         data: {
             'imagem': imagem,
             'inspAvaria_ID': inspAvaria_ID
