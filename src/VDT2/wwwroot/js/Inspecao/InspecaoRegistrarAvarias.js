@@ -255,6 +255,7 @@ function areaNumericoInputFunc() {
 function areaDropDownInputFunc() {
     var selecionado = $('#avAreaLista').val();
     $('#areaNumericoInput').val(selecionado);
+    
 }
 
 //condicao

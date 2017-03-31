@@ -6,6 +6,7 @@
         $("#btnGravar-EditarAvariasConferencia").hide();
     }
     
+    $('[data-toggle="tooltip"]').tooltip();
 
     //Recebe todos valores do post 
     //Area
@@ -62,6 +63,7 @@ function areaNumericoInputFunc() {
 function areaDropDownInputFunc() {
     var selecionado = $('#avAreaLista').val();
     $('#areaNumericoInput').val(selecionado);
+    ZeraValorCusto();
 }
 
 
@@ -101,6 +103,7 @@ function gravidadeNumericoInputFunc() {
 function gravidadeDropDownInputFunc() {
     var selecionado = $('#avGravidadeLista').val();
     $('#gravidadeNumericoInput').val(selecionado);
+    ZeraValorCusto();
 }
 
 //quadrante
@@ -126,6 +129,12 @@ function severidadeNumericoInputFunc() {
 function severidadeDropDownInputFunc() {
     var selecionado = $('#avSeveridadeLista').val();
     $('#severidadeNumericoInput').val(selecionado);
+}
+
+
+function ZeraValorCusto() {
+    $("#InspAvaria_Custo").val(0);
+
 }
 
 

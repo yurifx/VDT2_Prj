@@ -121,13 +121,13 @@
                                     <div class="row">
                                         <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
                                             <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
-                                            <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
+                                            <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />  @*<span class="glyphicon glyphicon-asterisk" data-toggle="tooltip" title="Caso mude a Area, o custo será zerado"></span>*@
                                         </div>
                                         <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                            <select id="avAreaLista" name="InspAvaria.AvArea_ID" class="form-control" value="@Model.InspAvaria.AvArea_ID" onchange="areaDropDownInputFunc()"
+                                            <select id="avAreaLista" name="InspAvaria.AvArea_ID" class="form-control" value="@Model.InspAvaria.AvArea_ID" onchange="areaDropDownInputFunc()" 
                                                     asp-items="@(new SelectList(Model.ListaAreas, "AvArea_ID", "Nome_Pt"))">
-                                                <option disabled selected>Área</option>
-                                            </select>
+                                                <option disabled selected>Área</option></select>
+                                            
                                         </div>
                                     </div>
                                 </div>
