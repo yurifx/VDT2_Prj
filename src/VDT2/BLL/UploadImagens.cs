@@ -75,7 +75,6 @@ namespace VDT2.BLL
                 //verifica se existem arquivos nesta pasta
                 string[] arquivos = System.IO.Directory.GetFiles(path);
 
-                System.IO.Directory.CreateDirectory(path);
                 Diag.Log.Grava(new Diag.LogItem
                 {
                     Nivel = Diag.Nivel.Informacao,
@@ -137,7 +136,6 @@ namespace VDT2.BLL
                             file.CopyTo(fileStream);
                             arquivoatual = arquivoatual + 1;
 
-                            System.IO.Directory.CreateDirectory(path);
                             Diag.Log.Grava(new Diag.LogItem
                             {
                                 Nivel = Diag.Nivel.Informacao,
