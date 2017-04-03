@@ -456,8 +456,6 @@ namespace VDT2.Controllers
 
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
 
-
-                //Para testar colocar < 0
                 if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                 {
                     listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
@@ -483,9 +481,7 @@ namespace VDT2.Controllers
                 TempData["Erro"] = tempErro;
                 return RedirectToAction("NovaConferencia");
             }
-
-
-
+            
         }
 
         /// <summary>
