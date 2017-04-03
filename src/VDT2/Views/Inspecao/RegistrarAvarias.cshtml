@@ -75,7 +75,7 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                            <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
+                            <label for="areaNumericoInput" id="areaNumericoInputLabel">Área</label>
                             <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
                         </div>
                         <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
@@ -91,7 +91,7 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condicao</label>
+                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
                             <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
                         </div>
 
@@ -173,7 +173,7 @@ else
                 <div class="form-group" hidden>
                     <div class="row">
                         <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                            @*//<input asp-for="" value="F" type="radio" required />Fabrica*@
+                            @*//<input asp-for="" value="F" type="radio" required />Fábrica*@
                         </div>
                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
                             @*<input asp-for="@Model.fabricatransporte" value="T" type="radio" required />Transporte*@
@@ -182,11 +182,11 @@ else
                 </div>
 
 
-                @*DEFEITO DE FABRICA OU TRANSPORTADOR *@
+                @*DEFEITO DE FÁBRICA OU TRANSPORTADOR *@
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" value="F" type="radio" required />Fabrica
+                            <input asp-for="@Model.Fabricatransporte" value="F" type="radio" required />Fábrica
                         </div>
                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
                             <input asp-for="@Model.Fabricatransporte" value="T" type="radio" required />Transporte
