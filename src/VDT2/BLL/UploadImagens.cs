@@ -11,6 +11,7 @@ using System;
 using System.Collections.Generic;
 using System.IO;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using VDT2.DAL;
 using VDT2.Models;
@@ -44,24 +45,43 @@ namespace VDT2.BLL
                 //preenche dados para formar o path de upload
                 string _cliente_id = Convert.ToString(inspecao.Cliente_ID);
                 string _inspecao_id = Convert.ToString(inspecao.Inspecao_ID);
-                string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao).Inspecao_ID);
+                //string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao).Inspecao_ID);
                 string _inspVeiculo = Convert.ToString(inspAvaria.InspVeiculo_ID);
                 string _inspAvaria = Convert.ToString(inspAvaria.InspAvaria_ID);
                 string _ano = inspecao.Data.ToString("yyyy");
                 string _mesdia = inspecao.Data.ToString("MMdd");
 
                 //concatena todos os dados de path
-                var path = Path.Combine(configuracao.PastaFotos, "Imagens", "Avarias", _cliente_id, _ano, _mesdia, _inspecao, _inspVeiculo, _inspAvaria);
+                var path = Path.Combine(configuracao.PastaFotos, "Imagens", "Avarias", _cliente_id, _ano, _mesdia, _inspecao_id, _inspVeiculo, _inspAvaria);
 
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Upload Imagens Avaria Acionado: Parametros pasta: {path}"
+                });
 
                 //1- Cria a pasta no servidor desta avaria 
                 if (!Directory.Exists(path))
                 {
                     System.IO.Directory.CreateDirectory(path);
+                    Diag.Log.Grava(new Diag.LogItem
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Criou a pasta com sucesso Caminho: {path}"
+                    });
+
                 };
 
                 //verifica se existem arquivos nesta pasta
                 string[] arquivos = System.IO.Directory.GetFiles(path);
+
+                System.IO.Directory.CreateDirectory(path);
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Arquivos encontrados na pasta informada: {arquivos.Count()}"
+                });
+                
 
                 int arquivoMaiorNumeracao = 0;
                 foreach (var arquivo in arquivos)
@@ -116,6 +136,14 @@ namespace VDT2.BLL
                         {
                             file.CopyTo(fileStream);
                             arquivoatual = arquivoatual + 1;
+
+                            System.IO.Directory.CreateDirectory(path);
+                            Diag.Log.Grava(new Diag.LogItem
+                            {
+                                Nivel = Diag.Nivel.Informacao,
+                                Mensagem = $"Imagem copiada com sucesso: {file.Name}"
+                            });
+                            
                         }
                     }
                 }
