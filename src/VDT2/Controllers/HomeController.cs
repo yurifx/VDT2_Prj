@@ -377,7 +377,7 @@ namespace VDT2.Controllers
             //            Nivel = Diag.Nivel.Informacao,
             //            Mensagem = $"Deletando Cookie: .AspNetCore.VDT_AuthCookie"
             //        });
-            
+
             //Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie", new CookieOptions { Path = "/"});
             //Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie");
             return RedirectToAction("Index");
@@ -417,5 +417,9 @@ namespace VDT2.Controllers
             return dadosUsuario;
         }
 
+        public IActionResult Error()
+        {
+            return View();
+        }
     }
 }

@@ -384,10 +384,6 @@ LayoutCSS:.. Ordenação
     max-width: 68%;
 }
 
-.custoConferencia {
-    text-align: right;
-}
-
 
 .tabConferenciaListaVeiculo {
     text-align: center;
@@ -398,12 +394,6 @@ LayoutCSS:.. Ordenação
 .tabConferenciaListaVeiculoHeader {
     text-align: center;
 }
-
-.btnNovaConferencia{
-padding-left: 2%;
-
-}
-
 
 
 /* < View Home/Index > */
@@ -489,10 +479,22 @@ padding-left: 2%;
     width: 12%;
 }
 
+.btnNovaConferencia {
+    padding-left: 2%;
+}
+
+.custoConferencia {
+    text-align: right;
+}
+
 
 /* < DISPOSITIVOS COM TELAS GRANDES SUPERIOR A 780px >*/
+
 @media only screen and (min-device-width:780px) {
+
     /* < View NovaInspecao > */
+
+
     /* < View Conferencia/NovaConferencia > */
     .inputDataTelaNovaConferencia {
         width: 20%;

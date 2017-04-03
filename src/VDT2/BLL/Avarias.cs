@@ -265,7 +265,6 @@ namespace VDT2.BLL
             }
             catch (Exception ex)
             {
-
                 #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
@@ -275,7 +274,6 @@ namespace VDT2.BLL
                         Excecao = ex
                     });
                 #endregion
-
                 inspAvaria.InspAvaria_ID = 0;
                 inspAvaria.Erro = true;
                 inspAvaria.MensagemErro = "Erro ao consultar dados da avaria, tente novamente mais tarde ou entre em contato com o suporte técnico";
