@@ -24,6 +24,7 @@ namespace VDT2.Controllers
     {
 
         private VDT2.Models.Configuracao configuracao { get; set; }
+        private string tempErro = "Erro ao processar informação, tente novamente mais tarde";
 
         /// <summary>
         /// Construtor da classe
@@ -41,7 +42,10 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaConferencia()
         {
-
+            if (TempData.Count() > 0)
+            {
+                ViewData["MensagemErro"] = TempData["Erro"];
+            }
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
@@ -179,6 +183,7 @@ namespace VDT2.Controllers
                         listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
                         listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
                         listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
+
                     }
                     else
                     {
@@ -189,6 +194,8 @@ namespace VDT2.Controllers
                 {
                     ViewData["MensagemErro"] = _mensagemErro;
                 }
+
+                //Caso tudo ok, retorna a view;
                 return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
             }
 
@@ -201,6 +208,7 @@ namespace VDT2.Controllers
                     Mensagem = $"Erro ao solicitar operacao, ConferenciaListarVeiculos : { ex }"
                 });
 
+                TempData["Erro"] = tempErro;
                 return RedirectToAction("NovaConferencia");
             }
 
@@ -471,7 +479,9 @@ namespace VDT2.Controllers
                     Excecao = ex,
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, SalvarAvaria {ex}"
                 });
-                return View("NovaConferencia");
+
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
 
 
@@ -538,7 +548,9 @@ namespace VDT2.Controllers
                     Excecao = ex,
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, VisualizarFotos; {ex}"
                 });
-                return View("NovaConferencia");
+
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
 
         }
@@ -609,7 +621,8 @@ namespace VDT2.Controllers
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, SalvarFotos; {ex}"
                 });
 
-                return View("NovaConferencia");
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
         }
 
@@ -686,7 +699,8 @@ namespace VDT2.Controllers
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, LoadingListInicio; {ex}"
                 });
 
-                return View("NovaConferencia");
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
         }
 
@@ -696,6 +710,10 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult PackingListInicio()
         {
+
+            TempData["Erro"] = "Erro";
+            return RedirectToAction("NovaConferencia");
+
 
             #region gravalogInformacao
             try
@@ -768,7 +786,8 @@ namespace VDT2.Controllers
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, LoadingListInicio; {ex}"
                 });
 
-                return View("NovaConferencia");
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
         }
 
@@ -905,7 +924,8 @@ namespace VDT2.Controllers
                     Excecao = ex,
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, LoadingListSalvar; {ex}"
                 });
-                return View("NovaConferencia");
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
         }
 
@@ -917,7 +937,6 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult PackingListSalvar(ConferenciaPackingListViewModel conferenciaPackingListVM, ICollection<IFormFile> files)
         {
-
             #region gravalogInformacao
             try
             {
@@ -1030,7 +1049,8 @@ namespace VDT2.Controllers
                     Excecao = ex,
                     Mensagem = $"Erro ao processar informação tente novamente mais tarde, PackingListSalvar; {ex}"
                 });
-                return View("NovaConferencia");
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
             }
 
         }
