@@ -4,17 +4,14 @@
     var ListaLocalInspecao = $("#ListaLocalInspecao");
     var LocalInspecao = $("#localInspecaoIdini").val();
     var LocalCheckPoint = $("#localCheckPointIdini").val();
-
 });
 
 
 
 function ValidarFormularioIndex() {
-
     var localSelecionado = $("#ListaLocalInspecao").val();
     var checkPointSelecionado = $("#ListaLocalCheckPoint").val();
     var dataSelecionada = $("#data").val();
-
 
     //Valida Local
     if (localSelecionado == 0 || localSelecionado == null) {
@@ -45,6 +42,7 @@ function ValidarFormularioIndex() {
     }
 }
 
+//Função acionada toda vez que o usuário altera o local de inspeção.
 function PreencheListaCheckPoint() {
     var localInspecao_ID = $("#ListaLocalInspecao").val();
     var LocalCheckPoint = $("#ListaLocalCheckPoint");

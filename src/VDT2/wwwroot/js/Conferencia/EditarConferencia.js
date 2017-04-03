@@ -5,12 +5,13 @@
         $("fieldset").prop("disabled", "disabled");
         $("#btnGravar-EditarAvariasConferencia").hide();
     }
-    
+
+    //Mostra a informação em cima do html que tive a tip
     $('[data-toggle="tooltip"]').tooltip();
 
     //Recebe todos valores do post 
-    //Area
 
+    //Area
     var sMarca = $('#marcaHiddenDiv').val();
     var sModelo = $('#modeloHiddenDiv').val();
     $('#ListaMarca').val(sMarca);
@@ -53,13 +54,13 @@
 
 });
 
-
+//Caso o usuario o número, mudar também a combobox.
 function areaNumericoInputFunc() {
     var selecionado = ($('#areaNumericoInput').val());
     $("#avAreaLista").prop('selectedIndex', selecionado);
 }
 
-
+//Caso tenha selecionado o combobox, mudar também o numero
 function areaDropDownInputFunc() {
     var selecionado = $('#avAreaLista').val();
     $('#areaNumericoInput').val(selecionado);
@@ -132,6 +133,9 @@ function severidadeDropDownInputFunc() {
 }
 
 
+//Sempre que o usuário alterar uma Área ou Gravidade, zeramos o valor do custo;
+//Caso o usuário deixe zerado, o valor será calculado assim que enviarmos a informação no banco de dados
+//Ou seja, essa informação é calculada na procedure.
 function ZeraValorCusto() {
     $("#InspAvaria_Custo").val(0);
 

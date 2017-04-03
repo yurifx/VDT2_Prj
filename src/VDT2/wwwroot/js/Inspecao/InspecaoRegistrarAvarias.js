@@ -205,6 +205,7 @@ function EsconderBotoesRemover() {
     $("#btnRemoverFoto10").hide(0);
 }
 
+//Esconde a foto no banco de daods
 function RemoverFoto(i) {
     $("#btnRemoverFoto" + i).hide(0);
     $("#" + "inputFileImgAvaria" + i).val('');
@@ -215,6 +216,8 @@ function RemoverFoto(i) {
     $("#spanFoto" + i).css('background-color', 'white');
 }
 
+
+//Quando o usuário clicar em 'foto', ele visualizará a foto que selecionou/tirou
 function MostrarFotosSelecionadas(i) {
     var arquivosSelecionados = $("#" + "inputFileImgAvaria" + i).prop('files');
     var qtdSelecionada = arquivosSelecionados.length;
@@ -237,6 +240,8 @@ function MostrarFotosSelecionadas(i) {
     readURL(input[0]);
 }
 
+
+//Visualiza a foto dependendo do arquivo selecionado
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -247,11 +252,14 @@ function readURL(input) {
     }
 }
 
+//AREA
+//Caso tenha selecionado via Combobox, mudar também o valor do input numérico
 function areaNumericoInputFunc() {
     var selecionado = ($('#areaNumericoInput').val());
     $("#avAreaLista").prop('selectedIndex', selecionado);
 }
 
+//Caso tenha selecionado via Input Numérico, mudar também o Combobox
 function areaDropDownInputFunc() {
     var selecionado = $('#avAreaLista').val();
     $('#areaNumericoInput').val(selecionado);
@@ -315,6 +323,8 @@ function severidadeDropDownInputFunc() {
     $('#severidadeNumericoInput').val(selecionado);
 }
 
+
+//Realiza a validação front-end do formulário
 function ValidarFormularioInserirAvaria() {
 
     var areaSelecionado = $("#avAreaLista").val();

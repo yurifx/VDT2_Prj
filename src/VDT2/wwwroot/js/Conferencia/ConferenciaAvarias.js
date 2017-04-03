@@ -1,4 +1,4 @@
-﻿$(function () {  // Shorthand for $( document ).ready()
+﻿$(function () { 
     var alteraInspecao = $("#hiddenAlteraInspecao").val();
     if (alteraInspecao == 'False ') {
         $(".btnEditarEditarListarConferenciaAvarias").each(function () {

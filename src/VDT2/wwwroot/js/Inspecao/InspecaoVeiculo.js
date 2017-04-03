@@ -1,13 +1,17 @@
 ﻿$(function () {  // $(document).ready()
     console.log("Inicializou InspecaoVeiculo.JS");
 
+    //O html com 'tip', é acionado quando mouseouver;
     $('[data-toggle="tooltip"]').tooltip();
 
+    //Recebe valores de Marca e modelo
     var sMarca = $('#MarcaLabelHidden').val();
     var sModelo = $('#ModeloLabelHidden').val();
     $('#ListaMarca').val(sMarca);
     $('#ListaModelo').val(sModelo);
 
+
+    //Caso esteja em edição, muda o nome do botão para: Alterar
     var edicao = $('#edicaoId').val();
     if (edicao == 1) {
         $("#botoesClasseVeiculoGravar").text("Alterar");
@@ -16,7 +20,7 @@
     }
 });
 
-
+//Verifica se o Chassi informado pelo usuário corresponde com os requisitos básicos
 function ValidarChassi() {
     var qtd = $("#chassiInput").val()
     if (qtd.length == 6) {
@@ -31,6 +35,7 @@ function ValidarChassi() {
     }
 }
 
+//Realiza validação front-end de todo o formulário de veículo
 function ValidarFormularioInserirVeiculo() {
 
     var marcaSelecionado = $("#ListaMarca").val();
@@ -70,7 +75,7 @@ function EditarInspecao_BtnCLick() {
     $("#editarInspecaoForm").submit();
 }
 
-
+//Realiza validação do Formulário de marca; Caso esteja correto, realiza a inserção da nova marca no bdd via ajax post
 function ValidarFormularioNovaMarca() {
 
     var marcaid = 0;
@@ -122,6 +127,7 @@ function ValidarFormularioNovaMarca() {
     }
 }
 
+//Realiza validação do Formulário de Modelo; Caso esteja correto, realiza a inserção da nova modelo no bdd via ajax post
 function ValidarFormularioNovoModelo() {
 
     var cliente_ID = $("#novoModeloClienteID").val();

@@ -191,6 +191,7 @@ function MostrarFotosSelecionadas(i) {
 
 }
 
+//Esconde a foto para posteriormente remover da pasta
 function RemoverFoto(i) {
     $("#btnRemoverFoto" + i).hide(0);
     $("#" + "inputFileImgAvaria" + i).val('');
@@ -229,7 +230,7 @@ function EsconderBotoesVisualizar() {
 }
 
 
-
+//Visualizar a foto adicionada pelo usuário
 function readURL(input) {
     if (input.files && input.files[0]) {
         var reader = new FileReader();
@@ -240,9 +241,7 @@ function readURL(input) {
     }
 }
 
-//Adicionar fotos
-
-
+//Remover fotos
 function removerImagemAvaria(valor) {
     var arr = valor.split('_');
     var imagem = arr[0];

@@ -6,25 +6,7 @@
     var ListaTransportador = $("#ListaTransportador");
     var FrotaViagem = $("#FrotaViagem")
     var Navio = $("#Navio");
-
-    // LocalCheckPoint.empty();
-
-    //$("#ListaLocalInspecao").on("change", function () {
-    //    var localInspecao_ID_teste = $(this).val();
-    //    var localInspecao_ID = $("#ListaLocalInspecao").val();
-    //    $.getJSON(
-    //        "Inspecao/RecebeDadosLocalCheckPoint",
-    //        { 'localInspecao_ID': localInspecao_ID }, function (response) {
-    //            LocalCheckPoint.empty();
-    //            $.each(response, function (index, item) {
-    //                $(document.createElement('option'))
-    //                .attr('value', item.codigo)
-    //                .text(item.nome_Pt)
-    //                .appendTo(LocalCheckPoint);
-    //            });
-    //        });
-    //})
-
+    
     $("#botaoLimparID").on('click', function () {
         LocalCheckPoint.val();
         LocalCheckPoint.val();
@@ -35,7 +17,7 @@
         Navio.val();
     })
 
-
+    //Verifica se a inspeção está em edição. Caso esteja muda o nome de 'Gravar' para 'Alterar' e pega todos os dados da edição
     var edicao = $('#edicaoInputini').val();
     if (edicao == 1) {
         $("#botaoEnviarId").text("Alterar");
@@ -82,7 +64,7 @@
 });
 
 
-
+//Verifica se o transportador
 function TerrestreOuMaritimo() {
     var selecionado = $('#ListaTransportador').val();
     console.log("Dropdownlist, transportador selecionado " + selecionado);
@@ -105,6 +87,7 @@ function TerrestreOuMaritimo() {
     }
 }
 
+//Realiza a validação front-end do formulário
 function ValidarFormularioIndex() {
 
     var clienteSelecionado = $("#ListaCliente").val();
@@ -156,6 +139,7 @@ function ValidarFormularioIndex() {
     }
 }
 
+//Recebe dados do localcheckpoint, dependendo do local de inspeção. via AJAX
 function PreencheListaCheckPoint() {
     var localInspecao_ID = $("#ListaLocalInspecao").val();
     var LocalCheckPoint = $("#ListaLocalCheckPoint");
