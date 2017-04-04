@@ -469,6 +469,7 @@ LayoutCSS:.. Ordenação
 
 .inspecaoRegistrarAvarias-span, .inspecaoEditarAvarias-span {
     font-size: 35px;
+    /*margin-left: 30px;*/
 }
 
 #imgpreview {
