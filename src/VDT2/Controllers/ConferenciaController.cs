@@ -24,7 +24,7 @@ namespace VDT2.Controllers
     {
 
         private VDT2.Models.Configuracao configuracao { get; set; }
-        private string tempErro = "Erro ao processar informação, tente novamente mais tarde";
+        private const string tempErro = "Erro ao processar informação, tente novamente mais tarde";
 
         /// <summary>
         /// Construtor da classe
@@ -706,11 +706,6 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult PackingListInicio()
         {
-
-            TempData["Erro"] = "Erro";
-            return RedirectToAction("NovaConferencia");
-
-
             #region gravalogInformacao
             try
             {

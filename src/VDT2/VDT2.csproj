@@ -13,7 +13,7 @@
     <PackageId>VDT2</PackageId>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
-    <Version>0.0.3.0</Version>
+    <Version>0.0.4.0</Version>
   </PropertyGroup>
 
   <ItemGroup>

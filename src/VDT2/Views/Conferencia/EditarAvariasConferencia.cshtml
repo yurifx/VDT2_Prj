@@ -55,17 +55,17 @@
 
             <form asp-controller="Conferencia" asp-action="SalvarAvaria" method="post" id="salvarAvariaForm">
                 <fieldset>
-                    <h4>Dados Veículo</h4>
+                    <h4><strong> Dados Veículo</strong></h4>
                     @*Chassi*@
                     <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
                         <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                    <div class="col col-lg-3 col-md-2 col-sm-3 col-xs-4">
                                         <label asp-for="@Model.InspVeiculo.VIN_6">Chassi</label>
                                     </div>
-                                    <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                                        <input asp-for="@Model.InspVeiculo.VIN_6" value="@Model.InspVeiculo.VIN_6" maxlength="6" required pattern=".{6,6}" />
+                                    <div class="col col-lg-9 col-md-10 col-sm-9 col-xs-8">
+                                        <input class="inputEditarAvariasConferencia" asp-for="@Model.InspVeiculo.VIN_6" value="@Model.InspVeiculo.VIN_6" maxlength="6" required pattern=".{6,6}" />
                                     </div>
                                 </div>
                             </div>
@@ -73,11 +73,11 @@
                             @*Marca*@
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                    <div class="col col-lg-3 col-md-2 col-sm-3 col-xs-4">
                                         <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
                                     </div>
-                                    <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
-                                        <select id="ListaMarca" name="InspVeiculo.Marca_ID" class="form-control" required
+                                    <div class="col col-lg-9 col-md-3 col-sm-8 col-xs-5">
+                                        <select id="ListaMarca" name="InspVeiculo.Marca_ID" class="form-control inputEditarAvariasConferencia" required
                                                 asp-items="@Model.ListaMarcas" value="@Model.InspVeiculo.Marca_ID"></select>
                                     </div>
                                 </div>
@@ -86,11 +86,11 @@
                             @*Modelo*@
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                    <div class="col col-lg-3 col-md-2 col-sm-3 col-xs-4">
                                         <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
                                     </div>
-                                    <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
-                                        <select id="ListaModelo" name="InspVeiculo.Modelo_ID" class="form-control" required
+                                    <div class="col col-lg-9 col-md-3 col-sm-8 col-xs-5">
+                                        <select id="ListaModelo" name="InspVeiculo.Modelo_ID" class="form-control inputEditarAvariasConferencia" required
                                                 asp-items="@Model.ListaModelos" value="@Model.ListaModelos">
                                             @*<option> Selecione um Modelo</option>*@
                                         </select>
@@ -101,26 +101,26 @@
                             @*Observacoes*@
                             <div class="form-group">
                                 <div class="row">
-                                    <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                                    <div class="col col-lg-3 col-md-2 col-sm-3 col-xs-4">
                                         <label>Observações:</label>
                                     </div>
-                                    <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                                        <textarea class="form-control" name="InspVeiculo.Observacoes" id="ObservacoesTxtArea" text="@Model.InspVeiculo.Observacoes" maxlength="1000" required>@Model.InspVeiculo.Observacoes</textarea>
+                                    <div class="col col-lg-9 col-md-10 col-sm-9 col-xs-8">
+                                        <textarea class="form-control inputEditarAvariasConferencia" name="InspVeiculo.Observacoes" id="ObservacoesTxtArea" text="@Model.InspVeiculo.Observacoes" maxlength="1000" required>@Model.InspVeiculo.Observacoes</textarea>
                                     </div>
                                 </div>
                             </div>
                         </div>
                     </div>
-
-                    <h4>Dados Avaria</h4>
-                    @*AREA*@
+                    <br />
+                    <h4><strong> Dados Avaria</strong></h4>
+                    @*ÁREA*@
                     <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
                         <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
                             <div class="DivDadosAvaria_TelaEditarAvarias form-group">
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                            <label for="areaNumericoInput" id="areaNumericoInputLabel">Area</label>
+                                            <label for="areaNumericoInput" id="areaNumericoInputLabel">Área</label>
                                             <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />  @*<span class="glyphicon glyphicon-asterisk" data-toggle="tooltip" title="Caso mude a Area, o custo será zerado"></span>*@
                                         </div>
                                         <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
@@ -136,7 +136,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condicao</label>
+                                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
                                             <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
                                         </div>
 
@@ -218,7 +218,7 @@
                                 <div class="form-group">
                                     <div class="row">
                                         <div class="col col-lg-offset-3 col-md-offset-2 col-xs-offset-1 col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                            <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> Fabrica
+                                            <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> Fábrica
                                         </div>
                                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
                                             <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required /> Transporte

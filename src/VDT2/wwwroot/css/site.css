@@ -401,9 +401,6 @@ LayoutCSS:.. Ordenação
     padding-left: 60%;
 }
 
-.btnVoltarTelaConferenciaListarVeiculos{
-
-}
 
 #cardblockTelaInspecao-Index {
     border-radius: 3px 3px;
@@ -541,6 +538,10 @@ LayoutCSS:.. Ordenação
         max-width: 60%;
     }
 
+    .inputEditarAvariasConferencia{
+        max-width: 500px;
+        width: 200px;
+    }
 
     .botoesTelaEditarAvariasConferencia {
         width: 200px;
