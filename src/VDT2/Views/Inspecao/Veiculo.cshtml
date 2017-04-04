@@ -37,7 +37,7 @@
                     </div>
                 }
             </div>
-            <h4><strong>Dados do Veículo</strong></h4>
+            <h4><strong>Dados do Veículo</strong></h4><br/>
             <form asp-controller="Inspecao" asp-action="InserirVeiculo" method="post" onsubmit="return ValidarFormularioInserirVeiculo()">
 
                 <div hidden>
@@ -78,7 +78,7 @@
                         </div>
                         <input type="text" id="MarcaLabelHidden" value="@Model.Marca_ID" hidden />
                         <div class="col col-lg-3 col-md-1 col-sm-1 col-xs-3">
-                            <button type="button" class="btn btn-info btn-sm" value="Nova Marca" data-toggle="modal" data-target="#novaMarcaModal"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button type="button" class="botaoAdicionarModeloMarca btn btn-info btn-sm" value="Nova Marca" data-toggle="modal" data-target="#novaMarcaModal"><span class="glyphicon glyphicon-plus"></span></button>
                         </div>
                     </div>
                 </div>
@@ -97,7 +97,7 @@
                             <input type="text" id="ModeloLabelHidden" value="@Model.Modelo_ID" hidden />
                         </div>
                         <div class="col col-lg-3 col-md-3 col-sm-1 col-xs-3">
-                            <button type="button" class="btn btn-info btn-sm" value="Novo Modelo" data-toggle="modal" data-target="#novoModeloModal"><span class="glyphicon glyphicon-plus"></span></button>
+                            <button type="button" class="botaoAdicionarModeloMarca btn btn-info btn-sm" value="Novo Modelo" data-toggle="modal" data-target="#novoModeloModal"><span class="glyphicon glyphicon-plus"></span></button>
                         </div>
                     </div>
                 </div>
@@ -113,7 +113,7 @@
                         </div>
                     </div>
                 </div>
-
+            <br />
                 @*botoes Gravar e Registrar Avarias*@
                 <div class="form-group">
                     <div class="row">

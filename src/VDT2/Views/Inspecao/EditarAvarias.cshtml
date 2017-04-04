@@ -141,10 +141,10 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" id="inputFabrica" value="F" type="radio" required /> Fábrica
+                            <label class="radioRegistrarAvarias"><input asp-for="@Model.Fabricatransporte" id="inputFabrica" value="F" type="radio" required /> Fábrica</label>
                         </div>
                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" id="inputTransporte" value="T" type="radio" required /> Transporte
+                            <label class="radioRegistrarAvarias"><input asp-for="@Model.Fabricatransporte" id="inputTransporte" value="T" type="radio" required /> Transporte</label>
                         </div>
                     </div>
                 </div>
@@ -274,7 +274,7 @@ else
                 <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-danger">Remover</button>
 
 
-                <div class="form-group">
+                <div class="form-group"><br/>
                     <div class="row">
                         <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
                             <button type="button" id="btnGravar" class="botoesTelaEditarAvarias btn btn-sm btn-success" onclick="EnviarFormularioDesabilitarBotao(this)"><span class="glyphicon glyphicon-ok"></span> Gravar</button>

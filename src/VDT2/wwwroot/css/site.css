@@ -380,6 +380,7 @@ LayoutCSS:.. Ordenação
 
 /* < TODOS OS DISPOSTIVOS > */
 
+
 .tabConferenciaListaVeiculo {
     text-align: center;
 }
@@ -414,6 +415,18 @@ LayoutCSS:.. Ordenação
     width: 140px;
 }
 
+#chassiInput {
+    width: 200px;
+
+}
+
+
+.botaoAdicionarModeloMarca {
+    height: 34px;
+}
+
+
+
 .lblModalTelaVeiculo {
     width: 80px;
 }
@@ -432,6 +445,14 @@ LayoutCSS:.. Ordenação
 
 
 /* <View Inspecao/RegistrarAvarias*/
+
+.radioRegistrarAvarias {
+    font-weight: normal;
+    font-size: 14px;
+    color: #555;
+}
+
+
 
 .botoesTelaRegistrarAvarias {
     width: 120px;
