@@ -6,7 +6,8 @@
     var ListaTransportador = $("#ListaTransportador");
     var FrotaViagem = $("#FrotaViagem")
     var Navio = $("#Navio");
-    
+
+
     $("#botaoLimparID").on('click', function () {
         LocalCheckPoint.val();
         LocalCheckPoint.val();

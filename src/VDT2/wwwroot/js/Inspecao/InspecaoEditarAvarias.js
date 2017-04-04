@@ -470,3 +470,28 @@ function removerImagemAvaria(valor) {
         },
     });
 }
+
+function EnviarFormularioDesabilitarBotao(e) {
+    //e - botão
+    $(e).prop("disabled", "true");
+    $("#formPrincipal").submit();
+}
+
+function ValidarFormularioInspecaoEditarAvarias() {
+
+    var Fabrica = $("#inputFabrica").is(":checked");
+    var Transporte = $("#inputTransporte").is(":checked");
+
+    if (Fabrica == true || Transporte == true){
+        return true;
+    }
+    else {
+        alert("Por favor selecionar tipo de avaria")
+        $("#inputFabrica").css("color", "red");
+        $("#inputTransporte").css("color", "red")
+        $("#btnGravar").prop("disabled", false);
+        return false;
+    }
+
+}
+

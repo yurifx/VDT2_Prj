@@ -263,6 +263,7 @@ function removerImagemAvaria(valor) {
     });
 }
 
-function DesabilitarBotao(e) {
+function EnviarFormularioDesabilitarBotao(e) {
     $(e).prop("disabled", "true");
+    $("#formPrincipal").submit();
 }

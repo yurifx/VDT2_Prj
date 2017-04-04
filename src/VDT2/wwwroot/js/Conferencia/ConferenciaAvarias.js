@@ -18,3 +18,8 @@ function Btn_Click_VisualizarFotos(valor) {
     $("#inspAvaria_ID_FormVisualizarFotos_input").val(valor);
     $("#VisualizarFotosForm").submit();
 }
+
+function EnviarFormularioDesabilitarBotao(e) {
+    $(e).prop("disabled", "true");
+    $("#formPrincipal").submit();
+}

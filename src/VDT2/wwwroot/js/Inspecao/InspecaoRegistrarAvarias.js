@@ -1,6 +1,6 @@
 ﻿$(function () {
     console.log("Inicializou - InspecaoRegistrarAvarias.js");
-    
+
     $("#imgpreview").hide(0);
     $("#visualizar1").hide(0);
 
@@ -224,7 +224,7 @@ function MostrarFotosSelecionadas(i) {
 
     $('#spanFoto' + i).removeClass('glyphicon glyphicon-plus');
     $('#spanFoto' + i).addClass('glyphicon glyphicon-camera');
-    
+
 
     var count = i + 1;
     $("#spanFoto" + count).show(0);
@@ -263,7 +263,7 @@ function areaNumericoInputFunc() {
 function areaDropDownInputFunc() {
     var selecionado = $('#avAreaLista').val();
     $('#areaNumericoInput').val(selecionado);
-    
+
 }
 
 //condicao
@@ -338,6 +338,7 @@ function ValidarFormularioInserirAvaria() {
     if (areaSelecionado == null) {
         alert("Necessário selecionar Área");
         $("#avAreaLista").css("color", "red");
+        $("#btnGravarAvarias").prop("disabled", false);
         return false;
     } else {
         $("#avAreaLista").css("color", "black");
@@ -347,6 +348,7 @@ function ValidarFormularioInserirAvaria() {
     if (condicaoSelecionado == null) {
         alert("Necessário selecionar Condicao");
         $("#avCondicaoLista").css("color", "red");
+        $("#btnGravarAvarias").prop("disabled", false);
         return false;
     } else {
         $("#avCondicaoLista").css("color", "black");
@@ -356,6 +358,7 @@ function ValidarFormularioInserirAvaria() {
     if (danoSelecionado == null) {
         alert("Necessário selecionar Dano");
         $("#avDanoRepositorioLista").css("color", "red");
+        $("#btnGravarAvarias").prop("disabled", false);
         return false;
     } else {
         $("#avDanoRepositorioLista").css("color", "black");
@@ -365,6 +368,7 @@ function ValidarFormularioInserirAvaria() {
     if (gravidadeSelecionado == null) {
         alert("Necessário selecionar Gravidade");
         $("#avGravidadeLista").css("color", "red");
+        $("#btnGravarAvarias").prop("disabled", false);
         return false;
     } else {
         $("#avGravidadeLista").css("color", "black");
@@ -374,6 +378,7 @@ function ValidarFormularioInserirAvaria() {
     if (quadranteSelecionado == null) {
         alert("Necessário selecionar Quadrante");
         $("#avQuadranteLista").css("color", "red");
+        $("#btnGravarAvarias").prop("disabled", false);
         return false;
     } else {
         $("#avQuadranteLista").css("color", "black");
@@ -383,6 +388,7 @@ function ValidarFormularioInserirAvaria() {
     if (severidadeSelecionado == null) {
         alert("Necessário selecionar Severidade");
         $("#avSeveridadeLista").css("color", "red");
+        $("#btnGravarAvarias").prop("disabled", false);
         return false;
     } else {
         $("#avSeveridadeLista").css("color", "black");
@@ -412,4 +418,12 @@ function Btn_Click_EditarAvaria(valor) {
     $("#avariaIdFormSubmit").val(inspAvaria_ID);
     console.log("Avaria a ser editada.:", inspAvaria_ID)
     $("#editarAvariaForm").submit();
+}
+
+
+function EnviarFormularioDesabilitarBotao(e) {
+    //e = botão acionado
+    $(e).prop("disabled", true);
+    $("#formPrincipal").submit();
+
 }

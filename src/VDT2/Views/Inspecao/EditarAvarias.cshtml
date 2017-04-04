@@ -5,7 +5,7 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/js/Inspecao/EditarAvarias.js" asp-append-version="true"></script>
+<script src="~/js/Inspecao/InspecaoEditarAvarias.js" asp-append-version="true"></script>
 
 
 @if (Model == null || Model.avAreaLista == null || Model.avCondicaoLista == null || Model.avDanoLista == null || Model.avGravidadeLista == null || Model.avQuadranteLista == null || Model.avSeveridadeLista == null || Model.InspAvaria.InspAvaria_ID == 0 || Model.Fabricatransporte == null)
@@ -18,17 +18,15 @@
 }
 else
 {
-
-    
-        <div class="container">
-            <h4><strong>Editar Avarias</strong></h4><br />
-            @if (ViewData["MensagemErro"] != null)
-            {
-                <div class="alert alert-danger">
-                    <p>@ViewData["MensagemErro"]</p>
-                </div>
-            }
-        </div>
+    <div class="container">
+        <h4><strong>Editar Avarias</strong></h4><br />
+        @if (ViewData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger">
+                <p>@ViewData["MensagemErro"]</p>
+            </div>
+        }
+    </div>
         <div hidden>
             <input id="inspAvaria_IDHiddenDiv" value="@Model.InspAvaria.InspAvaria_ID" />
             <input id="areaHiddenDiv" value="@Model.InspAvaria.AvArea_ID" />
@@ -40,7 +38,7 @@ else
             <input id="fabricatransporteHiddenDiv" value="@Model.InspAvaria.FabricaTransporte" />
         </div>
         <div class="container">
-            <form asp-controller="Inspecao" asp-action="SalvarAvaria" method="post" enctype="multipart/form-data">
+            <form asp-controller="Inspecao" asp-action="SalvarAvaria" id="formPrincipal" method="post" onsubmit="return ValidarFormularioInspecaoEditarAvarias()" enctype="multipart/form-data">
                 @*AREA*@
                 <div class="form-group">
                     <div class="row">
@@ -143,10 +141,10 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" value="F" type="radio" required /> Fábrica
+                            <input asp-for="@Model.Fabricatransporte" id="inputFabrica" value="F" type="radio" required /> Fábrica
                         </div>
                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" value="T" type="radio" required /> Transporte
+                            <input asp-for="@Model.Fabricatransporte" id="inputTransporte" value="T" type="radio" required /> Transporte
                         </div>
                     </div>
                 </div>
@@ -279,7 +277,7 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                            <button type="submit" class="botoesTelaEditarAvarias btn btn-sm btn-success"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
+                            <button type="button" id="btnGravar" class="botoesTelaEditarAvarias btn btn-sm btn-success" onclick="EnviarFormularioDesabilitarBotao(this)"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
                         </div>
 
                         <div class="col col-lg-10 col-md-9 col-sm-8 col-xs-6">
@@ -340,4 +338,4 @@ else
                 }
             </div>
         </div>
- }
+}

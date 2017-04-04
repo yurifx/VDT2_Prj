@@ -39,8 +39,7 @@ else
         <div class="container">
             <h4><strong>Dados da Avaria</strong></h4>
 
-
-            <form asp-controller="Inspecao" asp-action="InserirAvaria" method="post" enctype="multipart/form-data" onsubmit="return ValidarFormularioInserirAvaria()">
+            <form asp-controller="Inspecao" id="formPrincipal" asp-action="InserirAvaria" method="post" enctype="multipart/form-data" onsubmit="return ValidarFormularioInserirAvaria()">
                 <div class="form-group">
                     @*Dados Usuário*@
                     <div class="row" hidden>
@@ -313,7 +312,7 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
-                            <button type="submit" id="btnGravarAvarias" name="tipoBotao" value="1" class="botoesTelaRegistrarAvarias btn btn-success btn-sm"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
+                            <button type="button" id="btnGravarAvarias" name="tipoBotao" value="1" class="botoesTelaRegistrarAvarias btn btn-success btn-sm" onclick="EnviarFormularioDesabilitarBotao(this)"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
                         </div>
                         <div class="col col-lg-10 col-md-9 col-sm-8 col-xs-6">
                             <button type="button" id="btnListarAvariasB" name="tipoBotao" value="2" class="botoesTelaRegistrarAvarias btn btn-danger btn-sm" onclick="VisualizarAvarias_BtnClick()"><span class="glyphicon glyphicon-list"> </span>&nbsp Avarias</button>
