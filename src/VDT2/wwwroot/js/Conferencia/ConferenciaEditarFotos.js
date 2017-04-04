@@ -262,3 +262,7 @@ function removerImagemAvaria(valor) {
         },
     });
 }
+
+function DesabilitarBotao(e) {
+    $(e).prop("disabled", "true");
+}

@@ -380,14 +380,8 @@ LayoutCSS:.. Ordenação
 
 /* < TODOS OS DISPOSTIVOS > */
 
-.alert-success {
-    max-width: 68%;
-}
-
-
 .tabConferenciaListaVeiculo {
     text-align: center;
-    
 }
 
 
@@ -472,7 +466,7 @@ LayoutCSS:.. Ordenação
 
 
 /* < View Conferencia / ConferenciaListarVeiculos > */
-.btnVoltarTelaConferenciaAvarais{
+.btnVoltarTelaConferenciaAvarais {
     width: 12%;
 }
 
@@ -489,7 +483,14 @@ LayoutCSS:.. Ordenação
 
 @media only screen and (min-device-width:780px) {
 
+    /* todos */
+
+    .alert-success {
+        max-width: 68%;
+    }
+
     /* < View NovaInspecao > */
+
 
 
     /* < View Conferencia/NovaConferencia > */
@@ -500,7 +501,6 @@ LayoutCSS:.. Ordenação
     .btnTelaNovaConferencia {
         width: 12%;
         align-content: center;
-
     }
 
     /* < View Conferencia/VisualizarFotos > */
@@ -538,7 +538,7 @@ LayoutCSS:.. Ordenação
         max-width: 60%;
     }
 
-    .inputEditarAvariasConferencia{
+    .inputEditarAvariasConferencia {
         max-width: 500px;
         width: 200px;
     }
@@ -559,6 +559,11 @@ LayoutCSS:.. Ordenação
 /* < DISPOSITIVOS COM TELAS MEDIAS INFERIOR A 480 >*/
 @media only screen and (max-device-width:480px) {
 
+    .alert-success {
+        max-width: 100%;
+    }
+
+
     .ladoesquerdo {
         max-width: 35%;
         min-width: 35%;
@@ -566,6 +571,7 @@ LayoutCSS:.. Ordenação
         padding-left: 0px;
         padding-right: 0px;
     }
+
 
     label {
         font-weight: normal;
@@ -582,6 +588,11 @@ LayoutCSS:.. Ordenação
 /* < DISPOSITIVOS COM TELAS PEQUENAS INFERIOR A 480 >*/
 
 @media only screen and (max-device-width:350px) {
+
+    .alert-success {
+        max-width: 100%;
+    }
+
     .ladoesquerdo {
         max-width: 40%;
         min-width: 40%;

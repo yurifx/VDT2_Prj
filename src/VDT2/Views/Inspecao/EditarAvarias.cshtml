@@ -19,9 +19,9 @@
 else
 {
 
-    <div class="container">
-        <h4><strong>Editar Avarias</strong></h4><br />
+    
         <div class="container">
+            <h4><strong>Editar Avarias</strong></h4><br />
             @if (ViewData["MensagemErro"] != null)
             {
                 <div class="alert alert-danger">
@@ -143,10 +143,10 @@ else
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-1 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" value="F" type="radio" required />Fábrica
+                            <input asp-for="@Model.Fabricatransporte" value="F" type="radio" required /> Fábrica
                         </div>
                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                            <input asp-for="@Model.Fabricatransporte" value="T" type="radio" required />Transporte
+                            <input asp-for="@Model.Fabricatransporte" value="T" type="radio" required /> Transporte
                         </div>
                     </div>
                 </div>
@@ -165,7 +165,7 @@ else
                             <p id="qtdFotosSelecionadas1"></p>
                             <a id="visualizar1">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(1)" />
+                                <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(1)" />
 
                             </div>
                         </div>
@@ -176,7 +176,7 @@ else
                             <p id="qtdFotosSelecionadas2"></p>
                             <a id="visualizar2">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(2)" />
+                                <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(2)" />
                             </div>
                         </div>
 
@@ -186,7 +186,7 @@ else
                             <p id="qtdFotosSelecionadas3"></p>
                             <a id="visualizar3">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(3)" />
+                                <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(3)" />
                             </div>
                         </div>
 
@@ -196,7 +196,7 @@ else
                             <p id="qtdFotosSelecionadas4"></p>
                             <a id="visualizar4">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(4)" />
+                                <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(4)" />
                             </div>
                         </div>
 
@@ -206,7 +206,7 @@ else
                             <p id="qtdFotosSelecionadas5"></p>
                             <a id="visualizar5">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(5)" />
+                                <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(5)" />
                             </div>
                         </div>
 
@@ -216,7 +216,7 @@ else
                             <p id="qtdFotosSelecionadas6"></p>
                             <a id="visualizar6">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(6)" />
+                                <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(6)" />
                             </div>
                         </div>
 
@@ -226,7 +226,7 @@ else
                             <p id="qtdFotosSelecionadas7"></p>
                             <a id="visualizar7">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(7)" />
+                                <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(7)" />
                             </div>
                         </div>
 
@@ -236,7 +236,7 @@ else
                             <p id="qtdFotosSelecionadas8"></p>
                             <a id="visualizar8">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(8)" />
+                                <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(8)" />
                             </div>
                         </div>
 
@@ -246,7 +246,7 @@ else
                             <p id="qtdFotosSelecionadas9"></p>
                             <a id="visualizar9">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(9)" />
+                                <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(9)" />
                             </div>
                         </div>
 
@@ -256,7 +256,7 @@ else
                             <p id="qtdFotosSelecionadas10"></p>
                             <a id="visualizar10">Foto</a>
                             <div hidden>
-                                <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(10)" />
+                                <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(10)" />
                             </div>
                         </div><br />
 
@@ -340,5 +340,4 @@ else
                 }
             </div>
         </div>
-    </div>
-}
+ }

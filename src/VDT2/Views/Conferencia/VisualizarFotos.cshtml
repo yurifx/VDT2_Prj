@@ -21,7 +21,7 @@
         <div class="row">
             <div class="form-group">
 
-                <h2 id="tituloPaginaVisualizarFotos">Adicionar Novas Fotos</h2><br />
+                <h4 id="tituloPaginaVisualizarFotos"><strong>Adicionar Novas Fotos</strong></h4><br />
 
                 <form asp-controller="Conferencia" asp-action="SalvarFotos" method="post" enctype="multipart/form-data">
                     <div class="row">
@@ -33,7 +33,7 @@
                                     <p id="qtdFotosSelecionadas1"></p>
                                     <a id="visualizar1">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(1)" />
+                                        <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(1)" />
                                     </div>
                                 </div>
 
@@ -43,7 +43,7 @@
                                     <p id="qtdFotosSelecionadas2"></p>
                                     <a id="visualizar2">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(2)" />
+                                        <input type="file" id="inputFileImgAvaria2" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(2)" />
                                     </div>
                                 </div>
 
@@ -53,7 +53,7 @@
                                     <p id="qtdFotosSelecionadas3"></p>
                                     <a id="visualizar3">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(3)" />
+                                        <input type="file" id="inputFileImgAvaria3" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(3)" />
                                     </div>
                                 </div>
 
@@ -63,7 +63,7 @@
                                     <p id="qtdFotosSelecionadas4"></p>
                                     <a id="visualizar4">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(4)" />
+                                        <input type="file" id="inputFileImgAvaria4" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(4)" />
                                     </div>
                                 </div>
 
@@ -73,7 +73,7 @@
                                     <p id="qtdFotosSelecionadas5"></p>
                                     <a id="visualizar5">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(5)" />
+                                        <input type="file" id="inputFileImgAvaria5" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(5)" />
                                     </div>
                                 </div>
 
@@ -83,7 +83,7 @@
                                     <p id="qtdFotosSelecionadas6"></p>
                                     <a id="visualizar6">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(6)" />
+                                        <input type="file" id="inputFileImgAvaria6" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(6)" />
                                     </div>
                                 </div>
 
@@ -93,7 +93,7 @@
                                     <p id="qtdFotosSelecionadas7"></p>
                                     <a id="visualizar7">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(7)" />
+                                        <input type="file" id="inputFileImgAvaria7" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(7)" />
                                     </div>
                                 </div>
 
@@ -103,7 +103,7 @@
                                     <p id="qtdFotosSelecionadas8"></p>
                                     <a id="visualizar8">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(8)" />
+                                        <input type="file" id="inputFileImgAvaria8" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(8)" />
                                     </div>
                                 </div>
 
@@ -113,7 +113,7 @@
                                     <p id="qtdFotosSelecionadas9"></p>
                                     <a id="visualizar9">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(9)" />
+                                        <input type="file" id="inputFileImgAvaria9" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(9)" />
                                     </div>
                                 </div>
 
@@ -123,7 +123,7 @@
                                     <p id="qtdFotosSelecionadas10"></p>
                                     <a id="visualizar10">Foto</a>
                                     <div hidden>
-                                        <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple onchange="MostrarFotosSelecionadas(10)" />
+                                        <input type="file" id="inputFileImgAvaria10" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(10)" />
                                     </div>
                                 </div>
 
@@ -149,7 +149,7 @@
                     <div class="container">
                         <div class="row">
                             <div class="form-group">
-                                <button type="submit" class="botoesTelaEditarAvarias btn btn-sm btn-success" id="btnSalvar" hidden><span class="glyphicon glyphicon-ok"></span> Salvar Fotos</button>
+                                <button type="submit" class="botoesTelaEditarAvarias btn btn-sm btn-success" id="btnSalvar" hidden onsubmit="DesabilitarBotao(this)"><span class="glyphicon glyphicon-ok"></span> Salvar Fotos</button>
                                 <input type="button" class="botoesTelaEditarAvarias btn btn-sm btn-primary" value="Voltar" onClick="history.go(-1)">
                                 <input type="text" hidden class="hidden" name="inspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />
                             </div>
@@ -171,7 +171,7 @@
                 {
                     @if (Model.ListaImagemAvarias.FirstOrDefault().Erro != true)
                     {
-                        <h2>Fotos</h2>
+                        <h4><strong>Fotos</strong></h4>
                     }
                     @foreach (var item in Model.ListaImagemAvarias)
                     {
@@ -182,7 +182,7 @@
                                     <img class="imgTelaConferenciaVisualizarFotos img-thumbnail" style="max-width: 500px; width: 380px;" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
                                 </div>
                                 <div class="col-md-12">
-                                    <button type="button" class="btn btn-danger" value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
+                                    <button type="button" class="btn btn-sm btn-danger" value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
                                 </div>
                             </div><br/><br /><br />
                         }
