@@ -143,6 +143,14 @@ namespace VDT2.Controllers
             if (dadosUsuario == null)
             {
                 ViewData["MensagemErro"] = _mensagemLogin;
+                #region gravalogInformacao
+                Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Dados do usuário estão nulos, InserirDadosCabecalhoInspecao",
+                });
+                #endregion
                 return RedirectToAction("Index", "Home");
             }
 
@@ -150,6 +158,14 @@ namespace VDT2.Controllers
             if (identificacao == null)
             {
                 ViewData["MensagemErro"] = _mensagemLogin;
+                #region gravalogInformacao
+                Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Identificacao está nulo, InserirDadosCabecalhoInspecao",
+                });
+                #endregion
                 return RedirectToAction("Index", "Home");
             }
 
