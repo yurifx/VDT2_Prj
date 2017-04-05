@@ -24,7 +24,7 @@ namespace VDT2.Controllers
     {
 
         private VDT2.Models.Configuracao configuracao { get; set; }
-        private const string tempErro = "Erro ao processar informação, tente novamente mais tarde";
+        private string tempErro = "Erro ao processar informação, tente novamente mais tarde";
 
         /// <summary>
         /// Construtor da classe
@@ -119,21 +119,18 @@ namespace VDT2.Controllers
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
             #region gravalogInformacao
-            StringBuilder sbLog = new StringBuilder("Action acionada: ConferenciaListarVeiculos | Parametros: ", 250);
-            sbLog.Append($"  | Cliente_ID: {conferenciaVM.Cliente_ID}");
-            sbLog.Append($"  | LocalInspecao_ID: {conferenciaVM.LocalInspecao_ID}");
-            sbLog.Append($"  | LocalCheckPoint: {conferenciaVM.LocalCheckPoint_ID}");
             try
             {
                 Diag.Log.Grava(
                 new Diag.LogItem()
                 {
                     Nivel = Diag.Nivel.Informacao,
-                    Mensagem = Convert.ToString(sbLog)
+                    Mensagem = $"Action acionada: ConferenciaListarVeiculos | Parametros: {conferenciaVM.TextoLog()}"
                 });
             }
             catch { }
             #endregion
+
             try
             {
                 const string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
@@ -408,21 +405,11 @@ namespace VDT2.Controllers
             #region gravalogInformacao
             try
             {
-                StringBuilder sbLog = new StringBuilder("Action acionada: SalvarAvaria - Parametros", 150);
-                sbLog.Append($"  | InspAvaria_ID: {conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID}");
-                sbLog.Append($"  | Area_ID: {conferenciaEditarAvariasVM.InspAvaria.AvArea_ID}");
-                sbLog.Append($"  | Condicao_ID: {conferenciaEditarAvariasVM.InspAvaria.AvCondicao_ID}");
-                sbLog.Append($"  | Dano_ID: {conferenciaEditarAvariasVM.InspAvaria.AvDano_ID}");
-                sbLog.Append($"  | Gravidade_ID: {conferenciaEditarAvariasVM.InspAvaria.AvGravidade_ID}");
-                sbLog.Append($"  | Quadrante_ID: {conferenciaEditarAvariasVM.InspAvaria.AvQuadrante_ID}");
-                sbLog.Append($"  | Severidade_ID: {conferenciaEditarAvariasVM.InspAvaria.AvSeveridade_ID}");
-                sbLog.Append($"  | FabricaTransporte: {conferenciaEditarAvariasVM.InspAvaria.FabricaTransporte}");
-
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
-                        Mensagem = Convert.ToString(sbLog)
+                        Mensagem = $"Action acionada: SalvarAvaria - Parametros: {conferenciaEditarAvariasVM.TextoLog()}"
                     });
             }
             catch { }
@@ -481,7 +468,7 @@ namespace VDT2.Controllers
                 TempData["Erro"] = tempErro;
                 return RedirectToAction("NovaConferencia");
             }
-            
+
         }
 
         /// <summary>
@@ -560,16 +547,12 @@ namespace VDT2.Controllers
         {
 
             #region gravalogInformacao
-            try
-            {
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = $"Action acionada: SalvarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}"
                     });
-            }
-            catch { }
             #endregion
 
             try
@@ -792,20 +775,15 @@ namespace VDT2.Controllers
         {
 
             #region gravalogInformacao
-            try
-            {
-                StringBuilder sbLog = new StringBuilder("Action acionada: LoadingListSalvar | Parametros ");
-                sbLog.Append($"  | Cliente_ID {conferenciaLoadingListVM.Cliente_ID}");
-                sbLog.Append($"  | LocalInspecao_ID {conferenciaLoadingListVM.LocalInspecao_ID}");
 
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = Convert.ToString(sbLog)
-                    });
-            }
-            catch { }
+            Diag.Log.Grava(
+                new Diag.LogItem()
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Action acionada: LoadingListSalvar | Parametros {conferenciaLoadingListVM.TextoLog()}"
+                });
+
+
             #endregion
 
             bool salvou = false;
@@ -840,6 +818,9 @@ namespace VDT2.Controllers
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
+
+
+
 
             try
             {
@@ -931,15 +912,11 @@ namespace VDT2.Controllers
             #region gravalogInformacao
             try
             {
-                StringBuilder sbLog = new StringBuilder("Action acionada: PackingListSalvar | Parametros ");
-                sbLog.Append($"  | Cliente_ID {conferenciaPackingListVM.Cliente_ID}");
-                sbLog.Append($"  | LocalInspecao_ID {conferenciaPackingListVM.LocalInspecao_ID}");
-
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
-                        Mensagem = Convert.ToString(sbLog)
+                        Mensagem = $"Action acionada: PackingListSalvar | Parametros {conferenciaPackingListVM.TextoLog()}"
                     });
             }
             catch { }
