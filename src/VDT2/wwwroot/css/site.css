@@ -379,6 +379,16 @@ LayoutCSS:.. Ordenação
 
 
 /* < TODOS OS DISPOSTIVOS > */
+.divVisualizarImagemTelaRegistrarAvariasBotoesRemover {
+    padding-left: 80px;
+}
+
+
+.divVisualizarImagemTelaRegistrarAvarias {
+    width: 400px;
+    max-width: 400px;
+    min-width: 400px;
+}
 
 
 .tabConferenciaListaVeiculo {
@@ -405,25 +415,30 @@ LayoutCSS:.. Ordenação
 
 /* < View Inspecao/NovaInspecao > */
 .botoesTelaInspecao {
-    width: 120px;
+    width: 115px;
 }
 
 
 
 /* < View Inspecao/Veiculo > */
 .botoesTelaVeiculo {
-    width: 140px;
-}
-
-#chassiInput {
-    width: 200px;
-
+    width: 115px;
 }
 
 
 .botaoAdicionarModeloMarca {
     height: 34px;
 }
+
+
+/* < View Inspecao EditarAvaria > */
+
+#formPrincipal {
+    padding-left: 20px;
+
+}
+
+
 
 
 
@@ -435,8 +450,8 @@ LayoutCSS:.. Ordenação
 /* <View Inspecao/EditarAvarias*/
 
 .img-editar-avaria {
-    width: 60%;
-    max-width: 60%;
+    width: 30%;
+    max-width: 30%;
 }
 
 .botoesTelaEditarAvarias {
@@ -451,6 +466,11 @@ LayoutCSS:.. Ordenação
     font-size: 14px;
     color: #555;
 }
+
+#divspanFoto2, #divspanFoto3, #divspanFoto4, #divspanFoto5, #divspanFoto6, #divspanFoto7, #divspanFoto8, #divspanFoto9, #divspanFoto10 {
+    padding-left: 30px;
+}
+
 
 
 
@@ -474,6 +494,7 @@ LayoutCSS:.. Ordenação
 
 #imgpreview {
     width: 300px;
+    height: 200px;
 }
 
 .removerbotao {
@@ -512,6 +533,21 @@ LayoutCSS:.. Ordenação
     }
 
     /* < View NovaInspecao > */
+    #ListaClienteLabelID, #labelListaTransportador, #lblChassiTelaVeiculo, #ListaMarcaLabel, #ListaModeloLabel {
+        margin-top: 6px;
+    }
+
+    .ListaClienteLabelID, labelListaTransportador {
+        margin-top: 7px;
+    }
+
+
+
+
+    /* < View NovoVeículo > */
+    #chassiInput {
+        width: 200px;
+    }
 
 
 
@@ -558,6 +594,7 @@ LayoutCSS:.. Ordenação
         border-width: 1px;
         border-radius: 12px;
         max-width: 60%;
+        border-color: #e0dfdf;
     }
 
     .inputEditarAvariasConferencia {
@@ -586,6 +623,23 @@ LayoutCSS:.. Ordenação
     }
 
 
+    #ListaClienteLabelID, #labelListaTransportador, #lblChassiTelaVeiculo, #ListaMarcaLabel, #ListaModeloLabel {
+        margin-top: 6px;
+    }
+
+    
+    
+    .diveiculoMarcaModeloBotaoAdicionar {
+        padding-right: 0px;
+        padding-left: 25px;
+    }
+
+
+    .divBotaoLimparTelaNovaInspecao {
+        padding-left: 40px;
+    }
+
+
     .ladoesquerdo {
         max-width: 35%;
         min-width: 35%;
@@ -607,7 +661,7 @@ LayoutCSS:.. Ordenação
     }
 }
 
-/* < DISPOSITIVOS COM TELAS PEQUENAS INFERIOR A 480 >*/
+/* < DISPOSITIVOS COM TELAS PEQUENAS INFERIOR A 350 >*/
 
 @media only screen and (max-device-width:350px) {
 
@@ -623,6 +677,14 @@ LayoutCSS:.. Ordenação
         padding-right: 0px;
         font-size: small;
     }
+
+
+
+    #ListaClienteLabelID, #labelListaTransportador, #lblChassiTelaVeiculo, #ListaMarcaLabel, #ListaModeloLabel {
+        margin-top: 6px;
+    }
+
+
 
     label {
         font-weight: normal;

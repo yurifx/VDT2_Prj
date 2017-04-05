@@ -61,7 +61,7 @@
                     @foreach (var item in Model.ListaInspAvaria_Conf)
                 {
                         <tr class="tabConferenciaListaVeiculo">
-                            <td><button type="button" class="btnEditarEditarListarConferenciaAvarias" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+                            <td><button type="button" class="btnEditarEditarListarConferenciaAvarias btn btn-sm btn-default" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
                             <td>@item.VIN_6</td>
                             <td>@item.MarcaNome</td>
                             <td>@item.ModeloNome</td>
@@ -86,7 +86,7 @@
                             {
                                 <td class="custoConferencia">@item.Custo</td>
                             }
-                            <td><button type="button" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
+                            <td><button type="button" class="btn btn-sm btn-default" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
                         </tr>
                     }
                 }

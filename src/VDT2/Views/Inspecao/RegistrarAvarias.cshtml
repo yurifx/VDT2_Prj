@@ -184,8 +184,8 @@ else
                 @*DEFEITO DE FÁBRICA OU TRANSPORTADOR *@
                 <div class="form-group">
                     <div class="row">
-                        <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-3 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                            <label class="radioRegistrarAvarias"><input asp-for="@Model.Fabricatransporte" value="F" type="radio" required> Fábrica </label> 
+                        <div class="col col-lg-offset-2 col-md-offset-2 col-xs-offset-2 col-lg-1 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                            <label class="radioRegistrarAvarias"><input asp-for="@Model.Fabricatransporte" value="F" type="radio" required> Fábrica </label>
                         </div>
                         <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-3 ladoesquerdo">
                             <label class="radioRegistrarAvarias"><input asp-for="@Model.Fabricatransporte" value="T" type="radio" required /> Transporte</label>
@@ -199,7 +199,7 @@ else
                 @*Fotos / Visualizar Imagens*@
 
                 <div class="row">
-                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-1" id="divspanFoto1">
+                    <div class="col col-lg-1 remover-md-1 col-sm-1 col-xs-1" id="divspanFoto1">
                         <span id="spanFoto1" class="inspecaoRegistrarAvarias-span glyphicon glyphicon-camera"></span>
                         <p id="qtdFotosSelecionadas1"></p>
                         <a id="visualizar1">Foto</a>
@@ -291,18 +291,20 @@ else
                     </div><br />
                 </div>
 
-                <img id="imgpreview" src="#" alt="" /><br />
-                <div form-group>
-                    <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
-                    <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                <div class="divVisualizarImagemTelaRegistrarAvarias">
+                    <img id="imgpreview" src="#" alt="" /><br />
+                    <div class="divVisualizarImagemTelaRegistrarAvariasBotoesRemover form-group">
+                        <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                        <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-sm btn-danger">Remover Foto</button>
+                    </div>
                 </div>
 
                 <br /><br />
@@ -377,7 +379,7 @@ else
             {
                 <br>
                 <div class="row" id="mostrarAvarias">
-                    <h4>Avarias neste CheckPoint</h4><p>Chassi @Model.InspVeiculo.VIN_6</p>
+                    <h4>Avarias neste CheckPoint</h4><p><strong>Chassi:</strong>  @Model.InspVeiculo.VIN_6</p>
                     <table class="table table-striped table-bordered table-hover">
                         <tr class="warning">
                             <th>Editar</th>
@@ -389,7 +391,7 @@ else
                             @if (item.Inspecao_ID.Equals(Model.InspVeiculo.Inspecao_ID))
                             {
                                 <tr>
-                                    <td><button type="button" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+                                    <td><button type="button" class="btn btn-sm btn-default" value="@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
                                     <td>@item.Area_Pt</td>
                                     <td>@item.Dano_Pt</td>
                                 </tr>

@@ -55,12 +55,12 @@
                 <div class="form-group" id="divChassi">
                     <div class="row">
                         <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                            <label asp-for="VIN_6">Chassi</label>
+                            <label asp-for="VIN_6" id="lblChassiTelaVeiculo">Chassi</label>
                         </div>
 
                         <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
                             <div class="input-group">
-                                <input asp-for="VIN_6" id="chassiInput" data-toggle="tooltip" title="Insira o Chassi do Veículo!" placeholder="Chassi com 6 dígitos" value="@Model.VIN_6" maxlength="6" required pattern=".{6,6}" class="form-control" autocomplete="off" onchange="ValidarChassi()" /><span id="chassiSuccess" class="glyphicon glyphicon-remove form-control-feedback"></span>
+                                <input asp-for="VIN_6" id="chassiInput" data-toggle="tooltip" title="Insira o Chassi do Veículo!" placeholder="" value="@Model.VIN_6" maxlength="6" required pattern=".{6,6}" class="form-control" autocomplete="off" onchange="ValidarChassi()" /><span id="chassiSuccess" class="glyphicon glyphicon-remove form-control-feedback"></span>
                             </div>
                         </div>
                     </div>
@@ -77,7 +77,7 @@
                                     asp-items="@Model.Marca"></select>
                         </div>
                         <input type="text" id="MarcaLabelHidden" value="@Model.Marca_ID" hidden />
-                        <div class="col col-lg-3 col-md-1 col-sm-1 col-xs-3">
+                        <div class="diveiculoMarcaModeloBotaoAdicionar col col-lg-3 col-md-1 col-sm-1 col-xs-3">
                             <button type="button" class="botaoAdicionarModeloMarca btn btn-info btn-sm" value="Nova Marca" data-toggle="modal" data-target="#novaMarcaModal"><span class="glyphicon glyphicon-plus"></span></button>
                         </div>
                     </div>
@@ -96,7 +96,7 @@
                             </select>
                             <input type="text" id="ModeloLabelHidden" value="@Model.Modelo_ID" hidden />
                         </div>
-                        <div class="col col-lg-3 col-md-3 col-sm-1 col-xs-3">
+                        <div class="diveiculoMarcaModeloBotaoAdicionar col col-lg-3 col-md-3 col-sm-1 col-xs-3">
                             <button type="button" class="botaoAdicionarModeloMarca btn btn-info btn-sm" value="Novo Modelo" data-toggle="modal" data-target="#novoModeloModal"><span class="glyphicon glyphicon-plus"></span></button>
                         </div>
                     </div>
@@ -121,7 +121,7 @@
                             <button type="submit" name="tipoBotao" value="1" class="botoesTelaVeiculo btn btn-success btn-sm" id="botoesClasseVeiculoGravar"><span class="glyphicon glyphicon-ok"></span>Gravar</button> @*Action -> InspecaoController/InserirVeiculo - tipo 1*@
                         </div>
                         <div class="col col-lg-10 col-md-10 col-sm-8 col-xs-6">
-                            <button type="submit" name="tipoBotao" value="2" class="botoesTelaVeiculo btn btn-danger btn-sm"><span class="glyphicon glyphicon-paperclip"></span> Registrar Avarias</button> @*Action -> InspecaoController/InserirVeiculo - tipo 2*@
+                            <button type="submit" name="tipoBotao" value="2" class="botoesTelaVeiculo btn btn-danger btn-sm"> Gravar Avarias</button> @*Action -> InspecaoController/InserirVeiculo - tipo 2*@
                         </div>
                     </div>
                 </div>

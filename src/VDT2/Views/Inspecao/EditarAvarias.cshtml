@@ -27,16 +27,16 @@ else
             </div>
         }
     </div>
-        <div hidden>
-            <input id="inspAvaria_IDHiddenDiv" value="@Model.InspAvaria.InspAvaria_ID" />
-            <input id="areaHiddenDiv" value="@Model.InspAvaria.AvArea_ID" />
-            <input id="condicaoHiddenDiv" value="@Model.InspAvaria.AvCondicao_ID" /><input id="inspAvariahiddendiv" value="@Model.InspAvaria.AvArea_ID" />
-            <input id="danoHiddenDiv" value="@Model.InspAvaria.AvDano_ID" />
-            <input id="gravidadeHiddenDiv" value="@Model.InspAvaria.AvGravidade_ID" />
-            <input id="quadranteHiddenDiv" value="@Model.InspAvaria.AvQuadrante_ID" />
-            <input id="severidadeHiddenDiv" value="@Model.InspAvaria.AvSeveridade_ID" />
-            <input id="fabricatransporteHiddenDiv" value="@Model.InspAvaria.FabricaTransporte" />
-        </div>
+    <div hidden>
+        <input id="inspAvaria_IDHiddenDiv" value="@Model.InspAvaria.InspAvaria_ID" />
+        <input id="areaHiddenDiv" value="@Model.InspAvaria.AvArea_ID" />
+        <input id="condicaoHiddenDiv" value="@Model.InspAvaria.AvCondicao_ID" /><input id="inspAvariahiddendiv" value="@Model.InspAvaria.AvArea_ID" />
+        <input id="danoHiddenDiv" value="@Model.InspAvaria.AvDano_ID" />
+        <input id="gravidadeHiddenDiv" value="@Model.InspAvaria.AvGravidade_ID" />
+        <input id="quadranteHiddenDiv" value="@Model.InspAvaria.AvQuadrante_ID" />
+        <input id="severidadeHiddenDiv" value="@Model.InspAvaria.AvSeveridade_ID" />
+        <input id="fabricatransporteHiddenDiv" value="@Model.InspAvaria.FabricaTransporte" />
+    </div>
         <div class="container">
             <form asp-controller="Inspecao" asp-action="SalvarAvaria" id="formPrincipal" method="post" onsubmit="return ValidarFormularioInspecaoEditarAvarias()" enctype="multipart/form-data">
                 @*AREA*@
@@ -260,21 +260,24 @@ else
 
                     </div>
                 </div>
-
+                
+                <br />
                 <img id="imgpreview" src="#" alt="your image" /><br />
-                <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-danger">Remover</button>
-                <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-danger">Remover</button>
+                <div class="divVisualizarImagemTelaRegistrarAvariasBotoesRemover form-group">
+                    <button type="button" id="btnRemoverFoto1" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto2" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto3" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto4" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto5" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto6" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto7" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto8" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto9" class="removerbotao btn btn-danger">Remover</button>
+                    <button type="button" id="btnRemoverFoto10" class="removerbotao btn btn-danger">Remover</button>
+                </div>
 
-
-                <div class="form-group"><br/>
+                <div class="form-group">
+                    <br /><br />
                     <div class="row">
                         <div class="col col-lg-2 col-md-3 col-sm-4 col-xs-6">
                             <button type="button" id="btnGravar" class="botoesTelaEditarAvarias btn btn-sm btn-success" onclick="EnviarFormularioDesabilitarBotao(this)"><span class="glyphicon glyphicon-ok"></span> Gravar</button>
