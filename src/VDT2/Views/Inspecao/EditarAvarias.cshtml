@@ -27,6 +27,8 @@ else
             </div>
         }
     </div>
+
+    @*Campos ocultos*@
     <div hidden>
         <input id="inspAvaria_IDHiddenDiv" value="@Model.InspAvaria.InspAvaria_ID" />
         <input id="areaHiddenDiv" value="@Model.InspAvaria.AvArea_ID" />
@@ -37,6 +39,7 @@ else
         <input id="severidadeHiddenDiv" value="@Model.InspAvaria.AvSeveridade_ID" />
         <input id="fabricatransporteHiddenDiv" value="@Model.InspAvaria.FabricaTransporte" />
     </div>
+
         <div class="container">
             <form asp-controller="Inspecao" asp-action="SalvarAvaria" id="formPrincipal" method="post" onsubmit="return ValidarFormularioInspecaoEditarAvarias()" enctype="multipart/form-data">
                 @*AREA*@
@@ -147,7 +150,7 @@ else
                             <label class="radioRegistrarAvarias"><input asp-for="@Model.Fabricatransporte" id="inputTransporte" value="T" type="radio" required /> Transporte</label>
                         </div>
                     </div>
-                </div>
+                </div><br/>
 
                 @*Avaria_ID*@
                 <div hidden>
@@ -326,19 +329,26 @@ else
                     <input name="inspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" hidden />
                 </form>
             </div>
+            <br /> <br />
 
-            <div>
-                @foreach (var item in Model.ImagemAvarias)
+            @*FOTOS*@
+            <div id="divEditarAvarias-Fotos">
+                <p><strong>Fotos</strong></p>
+                <div>
+                    @foreach (var item in Model.ImagemAvarias)
                 {
-                    <div class="row" id="@item.Imagem">
-                        <div class="col-md-12">
-                            <img class="img-editar-avaria img-thumbnail" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
+                        <div class="row" id="@item.Imagem">
+                            <div class="col-md-12">
+                                <img class="img-editar-avaria img-thumbnail" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
+                            </div>
+                            <div class="col-md-12">
+                                <button type="button" class="btn btn-sm btn-danger" hidden value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
+                            </div>
                         </div>
-                        <div class="col-md-12">
-                            <button type="button" class="btn btn-danger" hidden value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
-                        </div>
-                    </div>
-                }
+                    }
+                </div>
             </div>
+
+
         </div>
 }

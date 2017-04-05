@@ -205,8 +205,6 @@ function RemoverFoto(i) {
     $("#" + "inputFileImgAvaria" + i).val('');
     $('#imgpreview').hide(0);
     $('#visualizar' + i).hide(0);
-    $("#spanFoto" + i).removeClass('glyphicon glyphicon-camera');
-    $("#spanFoto" + i).addClass('glyphicon glyphicon-plus');
     $("#spanFoto" + i).css('background-color' ,'white');
 }
 

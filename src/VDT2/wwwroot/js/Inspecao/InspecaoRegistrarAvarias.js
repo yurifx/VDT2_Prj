@@ -211,8 +211,6 @@ function RemoverFoto(i) {
     $("#" + "inputFileImgAvaria" + i).val('');
     $('#imgpreview').hide(0);
     $('#visualizar' + i).hide(0);
-    $("#spanFoto" + i).removeClass('glyphicon glyphicon-camera');
-    $("#spanFoto" + i).addClass('glyphicon glyphicon-plus');
     $("#spanFoto" + i).css('background-color', 'white');
 }
 
@@ -221,7 +219,6 @@ function RemoverFoto(i) {
 function MostrarFotosSelecionadas(i) {
     var arquivosSelecionados = $("#" + "inputFileImgAvaria" + i).prop('files');
     var qtdSelecionada = arquivosSelecionados.length;
-
     $('#spanFoto' + i).removeClass('glyphicon glyphicon-plus');
     $('#spanFoto' + i).addClass('glyphicon glyphicon-camera');
 
@@ -230,7 +227,11 @@ function MostrarFotosSelecionadas(i) {
     $("#spanFoto" + count).show(0);
     $('#divspanFoto' + count).removeAttr('hidden');
     $("#visualizar" + i).show(0);
-    $("#visualizar" + count).hide(0);
+
+
+    var a = $("#visualizar" + count).is(":visible");
+    //alert(a);
+    //$("#visualizar" + count).hide(0);
     $("#spanFoto" + i).css("background-color", '#ffdb41');
 
 
