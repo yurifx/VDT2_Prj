@@ -167,6 +167,15 @@
         RemoverFoto(10);
     })
 
+
+
+    $(".imagensAvariaVisualizarFotos").each(function (i, e) {
+        if (i != 0) {
+            $(e).removeClass("active");
+        }
+
+    })
+
 });
 
 
@@ -240,7 +249,7 @@ function readURL(input) {
 }
 
 //Remover fotos
-function removerImagemAvaria(valor) {
+function removerImagemAvaria(valor, a) {
     var arr = valor.split('_');
     var imagem = arr[0];
     var inspAvaria_ID = arr[1];
@@ -248,7 +257,32 @@ function removerImagemAvaria(valor) {
     //1.png  - separa em 1 e png  -> adiciona o \\ para conseguir funcionar via ID => exemplo: id =  1\\.png 
     var imagemArr = arr[0].split('.');
     var imagemDiv = imagemArr[0] + '\\.' + imagemArr[1];
-    $("#" + imagemDiv).hide(0);
+
+
+
+    $("#" + imagemDiv).hide(0); //isso não é mais utilizado pois tudo encontra-se hidden no momento;
+
+    //Parte Carousel
+    $("#id_divimagem_" + a).remove(); //remove a imagem do carousel
+    var imgNumeric = parseInt(a, 10);
+    var imgProximaFoto = imgNumeric + 1;
+
+    var encontrouImagem = false;
+    //Verifica se dentro do carousel tem alguma imagem, caso tenha, define com ativa em ordem asc.
+    for (var i = 0; i < 10; i++) {
+        if ($("#id_divimagem_" + i).length != 0) {
+            $("#id_divimagem_" + i).addClass('active');
+            encontrouImagem = true;
+            break;
+        }
+    }
+
+    if (encontrouImagem == false) {
+        $("#lblFotosVisualizarFotosAvaria").hide();
+    } else {
+        $("#lblFotosVisualizarFotosAvaria").show();
+    }
+
 
     //ENVIANDO POST AJAX PARA O CONTROLLER:
     request = $.ajax({
