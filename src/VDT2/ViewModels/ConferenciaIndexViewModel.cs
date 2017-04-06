@@ -1,4 +1,12 @@
-﻿using System;
+﻿// <copyright file="ConferneciaIndexViewmodel.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
+// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>ViewModel Conferencia Index</summary>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -21,7 +29,10 @@ namespace VDT2.ViewModels
         public int LocalCheckPoint_ID { get; set; }
         public int Cliente_ID { get; set; }
 
-
+        /// <summary>
+        /// Metodo usado para retornar todos os valores do viewmodel.
+        /// </summary>
+        /// <returns>Concatenação de Strings</returns>
         public string TextoLog()
         {
             StringBuilder sbLog = new StringBuilder("", 100);

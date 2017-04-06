@@ -1,4 +1,12 @@
-﻿using System;
+﻿// <copyright file="ConferenciaEditarAvariasViewModel.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
+// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>ViewModel Conferencia editar avarias</summary>
+
+using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
@@ -24,6 +32,11 @@ namespace VDT2.ViewModels
         public Models.Usuario Usuario { get; set; }
 
 
+
+        /// <summary>
+        /// Metodo usado para extrair informações par ao log
+        /// </summary>
+        /// <returns>String contendo todas informações da classe</returns>
         public string TextoLog()
         {
             StringBuilder sbLog = new StringBuilder("Action acionada: SalvarAvaria - Parametros", 150);
