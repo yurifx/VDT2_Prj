@@ -142,3 +142,9 @@ function ZeraValorCusto() {
 }
 
 
+
+
+function DeletarAvaria(avaria_id) {
+    console.log("Avaria será deletada: " + avaria_id);
+    $("#formDeletarAvaria").submit();
+}

@@ -457,6 +457,50 @@ namespace VDT2.DAL
             }
         }
 
+        public static void Deletar(int InspAvaria_ID, Configuracao configuracao)
+        {
+            const string nomeStoredProcedure = "InspAvaria_Del";
+
+            try
+            {
+
+                SqlParameter parmInspAvaria_ID = new SqlParameter("@p_InspAvaria_ID", SqlDbType.Int)
+                {
+                    Value = InspAvaria_ID
+                };
+
+                SqlParameter[] parametros = new SqlParameter[] 
+                {
+                    parmInspAvaria_ID
+                };
+
+                string chamada = $"{nomeStoredProcedure} {parmInspAvaria_ID.ParameterName}";
+
+                using (var contexto = new GeralDbContext(configuracao))
+                {
+                    contexto.Database.ExecuteSqlCommand(chamada, parametros);
+                    Diag.Log.Grava(new Diag.LogItem
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"Avaria Deletada: {InspAvaria_ID}"
+                    });
+                }
+            }
+
+            
+            catch(Exception ex)
+            {
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Erro,
+                    Mensagem = $"Erro ao deletar avaria: {InspAvaria_ID}",
+                    Excecao = ex
+                });
+                throw;
+            }
+
+        }
+
 
 
     }

@@ -269,13 +269,21 @@
                     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <button type="submit" id="btnGravar-EditarAvariasConferencia" class="botoesTelaEditarAvariasConferencia btn btn-success">Gravar</button>
                         <input type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)">
+                        <button type="button" class="botoesTelaEditarAvariasConferencia btn btn-danger" onclick="DeletarAvaria(@Model.InspAvaria.InspAvaria_ID)"><span class="glyphicon glyphicon-remove"></span>  Deletar</button>
                     </div><br /><br /><br /><br /><br />
                 </div>
+
+               
+                
 
             </form>
         </div>
 
     </div>
+
+    <form hidden id='formDeletarAvaria' asp-controller="Conferencia" asp-action="DeletarAvaria" method="post">
+        <input type="text" name="avaria_ID" value="@Model.InspAvaria.InspAvaria_ID"/>
+    </form>
 
 }
 else

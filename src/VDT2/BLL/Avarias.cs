@@ -281,5 +281,34 @@ namespace VDT2.BLL
             return inspAvaria;
         }
 
+
+        /// <summary>
+        /// Deleta a avaria do banco de dados
+        /// </summary>
+        /// <param name="inspAvaria_ID"></param>
+        /// <returns></returns>
+        public static Boolean Deletar(int inspAvaria_ID, Configuracao configuracao)
+        {
+            try
+            {
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"BLL.Avarias.Deletar({inspAvaria_ID})"
+                });
+                
+                DAL.InspAvaria.Deletar(inspAvaria_ID, configuracao);
+
+                return true;
+            }
+
+            catch (Exception ex)
+            {
+                return false;
+            }
+            
+
+        }
+
     }
 }
