@@ -5,136 +5,137 @@
     Layout = "~/Views/Shared/_Layout.cshtml";
 }
 
-<script src="~/js/Inspecao/InspecaoDadosGerais.js"  asp-append-version="true"></script>
+<script src="~/js/Inspecao/InspecaoDadosGerais.js" asp-append-version="true"></script>
 
 
 @if (Model == null || Model.ListaCliente == null || Model.ListaLocalCheckPoint == null || Model.ListaLocalInspecao == null || Model.ListaTransportador == null)
 {
     <div class="alert alert-danger">
         <p><strong>Erro ao inicializar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico</strong></p>
-        <br/>
+        <br />
         <button class="btn btn-primary" onclick="history.go(-1)">Voltar</button>
     </div>
 
 }
-else { 
-<div class="container">
-    @if (ViewData["MensagemErro"] != null)
+else
+{
+    <div class="container">
+        @if (ViewData["MensagemErro"] != null)
         {
-        <div class="alert alert-danger">
-            <p>@ViewData["MensagemErro"]</p>
-        </div>
+            <div class="alert alert-danger">
+                <p>@ViewData["MensagemErro"]</p>
+            </div>
         }
-    <h4><strong>Dados da Inspeção</strong></h4><br />
+        <h4><strong>Dados da Inspeção</strong></h4><br />
 
-    <form asp-controller="Inspecao" asp-action="InserirDadosCabecalhoInspecao" method="post" onSubmit="return ValidarFormularioIndex()">
+        <form asp-controller="Inspecao" asp-action="InserirDadosCabecalhoInspecao" method="post" onSubmit="return ValidarFormularioIndex()">
 
-        <div hidden>
-            <input type="text" id="edicaoInputini" name="Edicao" value="@Model.Edicao" />
-            <input type="text" id="inspecaoIdini" name="Inspecao_ID" value="@Model.Inspecao_ID" />
-            <input type="text" id="clienteIdini" value="@Model.Cliente_ID" />
-            <input type="text" id="localInspecaoIdini" value="@Model.LocalInspecao_ID" />
-            <input type="text" id="localCheckPointIdini" value="@Model.LocalCheckPoint_ID" />
-            <input type="text" id="transportadorIdini" value="@Model.Transportador_ID" />
-            <input type="text" id="tipotransportadorini" value="@Model.TipoTransportador" />
-            <input type="text" id="frotaViagemNomeini" value="@Model.FrotaViagemNome" />
-            <input type="text" id="nomeNavioini" value="@Model.NomeNavio" />
-            <input type="text" id="idTipoini" value="@Model.IdTipo" />
-        </div>
+            <div hidden>
+                <input type="text" id="edicaoInputini" name="Edicao" value="@Model.Edicao" />
+                <input type="text" id="inspecaoIdini" name="Inspecao_ID" value="@Model.Inspecao_ID" />
+                <input type="text" id="clienteIdini" value="@Model.Cliente_ID" />
+                <input type="text" id="localInspecaoIdini" value="@Model.LocalInspecao_ID" />
+                <input type="text" id="localCheckPointIdini" value="@Model.LocalCheckPoint_ID" />
+                <input type="text" id="transportadorIdini" value="@Model.Transportador_ID" />
+                <input type="text" id="tipotransportadorini" value="@Model.TipoTransportador" />
+                <input type="text" id="frotaViagemNomeini" value="@Model.FrotaViagemNome" />
+                <input type="text" id="nomeNavioini" value="@Model.NomeNavio" />
+                <input type="text" id="idTipoini" value="@Model.IdTipo" />
+            </div>
 
-        <div class="row form-group">
-            <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                <label id="lblUsuario">Usuário: </label>
-                <span id="Usuario" class="">@ViewData["UsuarioNome"]</span>
+            <div class="row form-group">
+                <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                    <label id="lblUsuario">Usuário: </label>
+                    <span id="Usuario" class="">@ViewData["UsuarioNome"]</span>
+                </div>
             </div>
-        </div>
 
-        @*Cliente*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+            @*Cliente*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaCliente" name="Cliente_ID" class="form-control"
+                            asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
+                        <option disabled selected>Selecione Cliente</option>
+                    </select>
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <select id="ListaCliente" name="Cliente_ID" class="form-control"
-                        asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
-                    <option disabled selected>Selecione Cliente</option>
-                </select>
-            </div>
-        </div>
 
-        @*Local Inspeção*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="ListaLocalInspecao">Local Inspeção</label>
+            @*Local Inspeção*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaLocalInspecao">Local Inspeção</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
+                            asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
+                        <option disabled selected>Selecione Local</option>
+                    </select>
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
-                        asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
-                    <option disabled selected>Selecione Local</option>
-                </select>
-            </div>
-        </div>
 
-        @*Local CheckPoint*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="ListaLocalCheckPoint">Local CheckPoint</label>
+            @*Local CheckPoint*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaLocalCheckPoint">Local CheckPoint</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
+                            asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
+                        <option disabled selected>Selecione CheckPoint</option>
+                    </select>
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
-                        asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
-                    <option disabled selected>Selecione CheckPoint</option>
-                </select>
-            </div>
-        </div>
 
-        @*Transportador*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
+            @*Transportador*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaTransportador" name="IdTipo" class="form-control" onchange="TerrestreOuMaritimo()"
+                            asp-items="@(new SelectList(Model.ListaTransportador,"IdTipo","Nome"))">
+                        <option disabled selected>Selecione Transportador</option>
+                    </select>
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <select id="ListaTransportador" name="IdTipo" class="form-control" onchange="TerrestreOuMaritimo()"
-                        asp-items="@(new SelectList(Model.ListaTransportador,"IdTipo","Nome"))">
-                    <option disabled selected>Selecione Transportador</option>
-                </select>
-            </div>
-        </div>
 
-        @*Frota*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label id="lblFrotaViagem">Frota</label>
+            @*Frota*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label id="lblFrotaViagem">Frota</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <input required class="form-control" id="FrotaViagem" name="FrotaViagemNome" value="" type="text" placeholder="Digite a frota" />
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input required class="form-control" id="FrotaViagem" name="FrotaViagemNome" value="" type="text" placeholder="Digite a frota" />
-            </div>
-        </div>
 
-        @*Navio*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                <label id="lblNavio">Navio</label>
+            @*Navio*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label id="lblNavio">Navio</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <input class="form-control" id="Navio" name="NomeNavio" value="" type="text" required placeholder="Digite o Navio" />
+                </div>
             </div>
-            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input class="form-control" id="Navio" name="NomeNavio" value="" type="text" required placeholder="Digite o Navio"/>
-            </div>
-        </div>
 
-        <br/>
+            <br />
 
-        @*Enviar Formulário*@
-        <div class="row form-group">
-            <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                <button type="submit" class="botoesTelaInspecao btn btn-success btn-sm" id="botaoEnviarId" name="botaoEnviar"><span class="glyphicon glyphicon-ok">Gravar</span></button>
+            @*Enviar Formulário*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+                    <button type="submit" class="botoesTelaInspecao btn btn-success btn-sm" id="botaoEnviarId" name="botaoEnviar"><span class="glyphicon glyphicon-ok">Gravar</span></button>
+                </div>
+                <div class="divBotaoLimparTelaNovaInspecao col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+                    <button class="botoesTelaInspecao btn btn-warning btn-sm" name="botaoLimpar" onclick="form.reset()"><span class="glyphicon glyphicon-erase"></span> Limpar</button>
+                </div>
             </div>
-            <div class="divBotaoLimparTelaNovaInspecao col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                <button class="botoesTelaInspecao btn btn-warning btn-sm" name="botaoLimpar" onclick="form.reset()"><span class="glyphicon glyphicon-erase"></span> Limpar</button>
-            </div>
-        </div>
 
-    </form>
-</div>
+        </form>
+    </div>
 
 
 }

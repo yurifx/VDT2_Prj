@@ -388,23 +388,23 @@ LayoutCSS:.. Ordenação
     transition: 0.3s;
 }
 
-.btn span:after {
+    .btn span:after {
         content: '';
         position: absolute;
         opacity: 0;
         top: 0;
         right: -0px;
         transition: 0.5s;
-}
+    }
 
 .btn:hover span {
     padding-right: 4px;
 }
 
-.btn:hover span:after {
+    .btn:hover span:after {
         opacity: 1;
         right: 0;
-}
+    }
 
 
 .img-thumbnail:hover {
