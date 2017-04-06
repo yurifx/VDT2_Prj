@@ -337,16 +337,20 @@ else
                 <div>
                     @foreach (var item in Model.ImagemAvarias)
                 {
+                        <br/>
                         <div class="row" id="@item.Imagem">
-                            <div class="col-md-12">
-                                <img class="img-editar-avaria img-thumbnail" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
-                            </div>
-                            <div class="col-md-12">
-                                <button type="button" class="btn btn-sm btn-danger" hidden value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
+                            <div class="divFotoeBotaoTelaInspecaoEditarAvarias">
+                                <div class="col col-lg-12 col-md-12 col-xs-12">
+                                    <img class="img-editar-avaria img-thumbnail" src="~/Inspecao/Foto?imagem=@item.Imagem&inspAvaria_ID=@Model.InspAvaria.InspAvaria_ID" />
+                                </div><br />
+                                <div class="col col-lg-12 col-md-12 col-xs-12">
+                                    <button type="button" class="btnRemoverImagemTelaEditarAvarias btn btn-sm btn-danger" hidden value="@item.Imagem _ @Model.InspAvaria.InspAvaria_ID" onclick='removerImagemAvaria(this.value)'>Remover Imagem</button>
+                                </div>
                             </div>
                         </div>
                     }
                 </div>
             </div>
         </div>
+        <br /><br /><br />
 }

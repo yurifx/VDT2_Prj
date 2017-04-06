@@ -427,7 +427,6 @@ LayoutCSS:.. Ordenação
 }
 
 
-
 /* < View Inspecao/Veiculo > */
 .botoesTelaVeiculo {
     width: 115px;
@@ -457,10 +456,8 @@ LayoutCSS:.. Ordenação
 
 /* <View Inspecao/EditarAvarias*/
 
-.img-editar-avaria {
-    width: 30%;
-    max-width: 30%;
-}
+
+
 
 .botoesTelaEditarAvarias {
     width: 120px;
@@ -489,6 +486,7 @@ LayoutCSS:.. Ordenação
 
 #areaNumericoInput, #condicaoNumericoInput, #danoNumericoInput, #gravidadeNumericoInput, #quadranteNumericoInput, #severidadeNumericoInput {
     max-width: 30px;
+    text-align: center;
 }
 
 #areaNumericoInputLabel, #avCondicaoListaLabel, #avDanoRepositorioListaLabel, #avGravidadeLabel, #avQuadranteListaLabel, #avSeveridadeListaLabel {
@@ -536,6 +534,8 @@ LayoutCSS:.. Ordenação
 
     /* todos */
 
+
+
     .alert-success {
         max-width: 68%;
     }
@@ -549,6 +549,13 @@ LayoutCSS:.. Ordenação
         margin-top: 7px;
     }
 
+
+    /*<Inspecao / EditarAvaria*/
+
+    .img-editar-avaria {
+        width: 30%;
+        max-width: 30%;
+    }
 
 
 
@@ -631,6 +638,18 @@ LayoutCSS:.. Ordenação
     }
 
 
+
+    /*<Inspecao / EditarAvaria*/
+    .img-editar-avaria {
+        width: 100%;
+        max-width: 100%;
+    }
+
+    .btnRemoverImagemTelaEditarAvarias {
+        margin-left: 25%;
+    }
+
+
     #ListaClienteLabelID, #labelListaTransportador, #lblChassiTelaVeiculo, #ListaMarcaLabel, #ListaModeloLabel {
         margin-top: 6px;
     }
@@ -644,7 +663,7 @@ LayoutCSS:.. Ordenação
 
 
     .divBotaoLimparTelaNovaInspecao {
-        padding-left: 40px;
+        padding-left: 50px;
     }
 
 
