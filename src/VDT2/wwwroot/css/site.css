@@ -379,6 +379,46 @@ LayoutCSS:.. Ordenação
 
 
 /* < TODOS OS DISPOSTIVOS > */
+
+
+.btn span {
+    cursor: pointer;
+    display: inline-block;
+    position: relative;
+    transition: 0.3s;
+}
+
+.btn span:after {
+        content: '';
+        position: absolute;
+        opacity: 0;
+        top: 0;
+        right: -0px;
+        transition: 0.5s;
+}
+
+.btn:hover span {
+    padding-right: 4px;
+}
+
+.btn:hover span:after {
+        opacity: 1;
+        right: 0;
+}
+
+
+.img-thumbnail:hover {
+    opacity: 0.5;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+#imgpreview:hover {
+    opacity: 0.7;
+    filter: alpha(opacity=50); /* For IE8 and earlier */
+}
+
+
+
 .divVisualizarImagemTelaRegistrarAvariasBotoesRemover {
     padding-left: 80px;
 }
@@ -442,7 +482,6 @@ LayoutCSS:.. Ordenação
 
 #formPrincipal {
     padding-left: 20px;
-
 }
 
 
@@ -533,9 +572,6 @@ LayoutCSS:.. Ordenação
 @media only screen and (min-device-width:780px) {
 
     /* todos */
-
-
-
     .alert-success {
         max-width: 68%;
     }
@@ -654,8 +690,8 @@ LayoutCSS:.. Ordenação
         margin-top: 6px;
     }
 
-    
-    
+
+
     .diveiculoMarcaModeloBotaoAdicionar {
         padding-right: 0px;
         padding-left: 25px;
