@@ -52,6 +52,14 @@
 
     }
 
+    $("#lblCustoTelaEditarAvarias").hover(function () {
+        $("#lblCustoTelaEditarAvarias").click();
+    })
+
+
+
+    $('[data-toggle="popover"]').popover(); 
+
 });
 
 //Caso o usuario o número, mudar também a combobox.
@@ -146,5 +154,14 @@ function ZeraValorCusto() {
 
 function DeletarAvaria(avaria_id) {
     console.log("Avaria será deletada: " + avaria_id);
+    //var apagar = confirm('Deseja realmente excluir este registro?');
+    //if (apagar) {
+
+    //} else {
+    //event.preventDefault();
     $("#formDeletarAvaria").submit();
+    $("#myModal").hide();
 }
+
+
+

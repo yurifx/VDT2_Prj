@@ -332,6 +332,7 @@ else
         <br /> <br />
 
         @*FOTOS*@
+        @if(Model.ImagemAvarias.Count() > 0) { 
         <div id="divEditarAvarias-Fotos">
             <p><strong>Fotos</strong></p>
             <div>
@@ -351,6 +352,7 @@ else
                 }
             </div>
         </div>
+        }
     </div>
         <br /><br /><br />
 }
