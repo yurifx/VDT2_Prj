@@ -70,5 +70,21 @@
             </div>
         </div>
     }
+
+    @if (Model.Usuario.AcessaModuloConsultas)
+    {
+        <div class="row">
+            <div class="col-sm-6">
+                <div class="card">
+                    <div class="card-block" id="cblk-id3">
+                        <h3 class="card-title">Consultas</h3>
+                        <p class="card-text">Realiza as consultas de avarias</p>
+                        <button class="btnTelaIndex btn btn-primary btn-sm" value="PackingList" onclick="location.href='@Url.Action("NovaConsulta", "Conferencia")'"><span class="glyphicon glyphicon-level-up"> </span>  PackingList</button>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+    }
 }
 

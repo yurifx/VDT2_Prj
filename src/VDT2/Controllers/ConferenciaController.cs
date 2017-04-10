@@ -1071,7 +1071,7 @@ namespace VDT2.Controllers
             {
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             }
-            
+
             /*Teste Erro*/
             //listarConferenciaAvariaVM.ListaInspAvaria_Conf = null; // teste
             /*Fim Teste Erro*/
@@ -1115,5 +1115,83 @@ namespace VDT2.Controllers
             return View("NovaConferencia");
         }
 
+        /// <summary>
+        /// Realiza as consultas de avarias
+        /// </summary>
+        /// <returns>Retorna tela inicial de consultas</returns>
+        public IActionResult NovaConsulta()
+        {
+            string _mensagemErroLogin = "Erro ao receber Dados do usuário";
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+
+            #endregion
+
+
+            var clientes = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
+
+
+            return View("NovaConsulta", clientes);
+        }
+        
+        [HttpGet]
+        public IActionResult ConsultaCliente(int id)
+        {
+            string _mensagemErroLogin = "Erro ao receber Dados do usuário";
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+            #endregion
+
+            ViewModels.ConsultaViewModel consultaVM = new ViewModels.ConsultaViewModel();
+
+            consultaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
+            consultaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+            consultaVM.ListaMarca = BLL.InspecaoVeiculo.ListaMarca(id, configuracao);
+            consultaVM.ListaModelo = BLL.InspecaoVeiculo.ListaModelo(id, configuracao);
+            consultaVM.ListaArea = BLL.Avarias.ListarAreas(id, configuracao);
+            consultaVM.ListaCondicao = BLL.Avarias.ListarCondicoes(id, configuracao);
+            consultaVM.ListaDano = BLL.Avarias.ListarDanos(id, configuracao);
+            consultaVM.ListaQuadrante = BLL.Avarias.ListarQuadrantes(id, configuracao);
+            consultaVM.ListaGravidade = BLL.Avarias.ListarGravidades(id, configuracao);
+            consultaVM.ListaSeveridade = BLL.Avarias.ListarSeveridades (id, configuracao);
+            consultaVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(id, configuracao);
+
+            return View("Consulta", consultaVM);
+
+        }
     }
 }

@@ -1,0 +1,22 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model List<VDT2.Models.Cliente>
+
+@{
+    Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
+}
+<br />
+<div class="container">
+    <div class="row form-group">
+        <h1>Escolha um cliente para continuar..</h1><br />
+        @foreach (var item in Model)
+        {
+            <ul>
+                <li><a href="./ConsultaCliente/?id=@item.Cliente_ID">@item.Nome</a></li>
+            </ul>
+        }
+
+        
+
+    </div>
+</div>

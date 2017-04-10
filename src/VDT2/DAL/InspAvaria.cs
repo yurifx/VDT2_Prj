@@ -501,6 +501,163 @@ namespace VDT2.DAL
 
         }
 
+        public static List<InspAvaria_Cons> Consultar(Models.InspAvaria_Cons InspAvaria_Cons, Configuracao configuracao)
+        {
+            List<Models.InspAvaria_Cons> listaAvarias_cons = new List<Models.InspAvaria_Cons>();
+            string nomeStoredProcedure = "InspAvaria_Cons";
+            try
+            {
+                SqlParameter parmChassi = new SqlParameter("@p_Chassi", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Chassi
+                };
+
+                SqlParameter parmLocalInspecao = new SqlParameter("@p_LocalInspecao", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.LocalInspecao
+                };
+
+                SqlParameter parmLocalCheckPoint = new SqlParameter("@p_LocalCheckPoint", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.LocalCheckPoint
+                };
+
+                SqlParameter parmMarca = new SqlParameter("@p_Marca", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Marca
+                };
+
+                SqlParameter parmModelo = new SqlParameter("@p_Modelo", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Modelo
+                };
+
+                SqlParameter parmArea = new SqlParameter("@p_Area", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Area
+                };
+
+                SqlParameter parmCondicao = new SqlParameter("@p_Condicao", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Condicao
+                };
+
+                SqlParameter parmDano = new SqlParameter("@p_Dano", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Dano
+                };
+
+                SqlParameter parmQuadrante = new SqlParameter("@p_Quadrante", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Quadrante
+                };
+
+                SqlParameter parmGravidade = new SqlParameter("@p_Gravidade", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Gravidade
+                };
+
+                SqlParameter parmSeveridade = new SqlParameter("@p_Severidade", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Severidade
+                };
+
+                SqlParameter parmTipoDefeito = new SqlParameter("@p_TipoDefeito", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.TipoDefeito
+                };
+
+                SqlParameter parmDanoOrigem = new SqlParameter("@p_DanoOrigem", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.DanoOrigem
+                };
+
+
+                SqlParameter parmTransportadorTipo = new SqlParameter("@p_TransportadorTipo", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.TransportadorTipo
+                };
+
+                SqlParameter parmFrotaViagem = new SqlParameter("@p_FrotaViagem", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.FrotaViagem
+                };
+
+
+                SqlParameter parmNavio = new SqlParameter("@p_Navio", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Navio
+                };
+
+                
+                SqlParameter parmDataInicio = new SqlParameter("@p_DataInicio", SqlDbType.DateTime2)
+                {
+                    Value = InspAvaria_Cons.DataInicio
+                };
+
+                SqlParameter parmDataFinal = new SqlParameter("@p_DataFinal", SqlDbType.DateTime2)
+                {
+                    Value = InspAvaria_Cons.DataFinal
+                };
+
+                SqlParameter[] parametros = new SqlParameter[]
+                    {
+                        parmChassi,
+                        parmLocalInspecao,
+                        parmLocalCheckPoint,
+                        parmMarca,
+                        parmModelo,
+                        parmArea,
+                        parmCondicao,
+                        parmDano,
+                        parmQuadrante,
+                        parmGravidade,
+                        parmSeveridade,
+                        parmTipoDefeito,
+                        parmDanoOrigem,
+                        parmTransportadorTipo,
+                        parmFrotaViagem,
+                        parmNavio,
+                        parmDataInicio,
+                        parmDataFinal
+                    };
+
+                string chamada = $"{nomeStoredProcedure} {parmChassi.ParameterName}, {parmLocalInspecao.ParameterName}, {parmLocalCheckPoint.ParameterName}, {parmMarca.ParameterName},  {parmModelo.ParameterName}, {parmArea.ParameterName}, {parmCondicao.ParameterName}, {parmDano.ParameterName}, {parmQuadrante.ParameterName}, {parmGravidade.ParameterName}, {parmSeveridade.ParameterName}, {parmTipoDefeito.ParameterName}, {parmDanoOrigem.ParameterName},  {parmTransportadorTipo.ParameterName}, {parmFrotaViagem.ParameterName}, {parmNavio.ParameterName}, {parmDataInicio.ParameterName},  {parmDataFinal.ParameterName}";
+
+                using (var contexto = new GeralDbContext(configuracao))
+
+                {
+                    listaAvarias_cons = contexto.InspAvaria_Cons.FromSql(chamada, parametros).ToList();
+
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"InspAvaria.InspAvariaCons realizado com sucesso - Registros encontrados {listaAvarias_cons.Count()}"
+                        });
+                    #endregion
+
+                    return listaAvarias_cons;
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
+                        Excecao = ex
+                    });
+                throw;
+                #endregion
+            }
+        }
+
+
 
 
     }

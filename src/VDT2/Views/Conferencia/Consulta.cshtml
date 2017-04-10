@@ -1,0 +1,192 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model VDT2.ViewModels.ConsultaViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
+}
+<br />
+
+@*Chassi*@
+<div class="form-group" id="divChassi">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+            <label asp-for="VIN_6" id="lblChassiTelaVeiculo">Chassi</label>
+        </div>
+
+        <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
+            <div class="input-group">
+                <input asp-for="VIN_6" id="chassiInput" data-toggle="tooltip" title="Insira o Chassi do Veículo!" placeholder="" value="@Model.VIN_6" maxlength="6" required pattern=".{6,6}" class="form-control" autocomplete="off" onchange="ValidarChassi()" /><span id="chassiSuccess" class="glyphicon glyphicon-remove form-control-feedback"></span>
+            </div>
+        </div>
+    </div>
+</div>
+
+@*Local Inspeção*@
+<div class="row form-group">
+    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+        <label for="ListaLocalInspecao">Local Inspeção</label>
+    </div>
+    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+        <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
+                asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
+            <option disabled selected>Selecione Local</option>
+        </select>
+    </div>
+</div>
+
+@*Local CheckPoint*@
+<div class="row form-group">
+    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+        <label for="ListaLocalCheckPoint">Local CheckPoint</label>
+    </div>
+    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+        <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
+                asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
+            <option disabled selected>Selecione CheckPoint</option>
+        </select>
+    </div>
+</div>
+
+@*Transportador*@
+<div class="row form-group">
+    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+        <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
+    </div>
+    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+        <select id="ListaTransportador" name="IdTipo" class="form-control" onchange="TerrestreOuMaritimo()"
+                asp-items="@(new SelectList(Model.ListaTransportador,"IdTipo","Nome"))">
+            <option disabled selected>Selecione Transportador</option>
+        </select>
+    </div>
+</div>
+
+
+
+@*Marca*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+            <label for="ListaMarca" id="ListaMarcaLabel">Marca</label>
+        </div>
+        <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
+            <select id="ListaMarca" name="Marca_ID" class="form-control" required value="@Model.Marca_ID"
+                    asp-items="@Model.ListaMarca"></select>
+        </div>
+        <input type="text" id="MarcaLabelHidden" value="@Model.Marca_ID" hidden />
+    </div>
+</div>
+
+@*Modelo*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
+            <label for="ListaModelo" id="ListaModeloLabel">Modelo</label>
+        </div>
+        <div class="col col-lg-3 col-md-3 col-sm-8 col-xs-5">
+            <select id="ListaModelo" name="Modelo_ID" class="form-control" required
+                    asp-items="@Model.ListaModelo" value="@Model.Modelo_ID">
+                @*<option> Selecione um Modelo</option>*@
+            </select>
+            <input type="text" id="ModeloLabelHidden" value="@Model.Modelo_ID" hidden />
+        </div>
+    </div>
+</div>
+
+@*AREA*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+            <label for="areaNumericoInput" id="areaNumericoInputLabel">Área</label>
+            <input type="text" id="areaNumericoInput" onchange="areaNumericoInputFunc()" required pattern="[0-9]+$" />
+        </div>
+        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+            <select id="avAreaLista" name="Area_ID" class="form-control" onchange="areaDropDownInputFunc()"
+                    asp-items="@(new SelectList(Model.ListaArea, "AvArea_ID", "Nome_Pt"))">
+                <option disabled selected>Área</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+@*CONDICAO*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
+            <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
+        </div>
+
+        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+            <select id="avCondicaoLista" name="Condicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
+                    asp-items="@(new SelectList(Model.ListaCondicao, "AvCondicao_ID", "Nome_Pt"))">
+                <option disabled selected>Condição</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+@*DANO*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+            <label for="avDanoRepositorioLista" id="avDanoRepositorioListaLabel">Dano</label>
+            <input type="text" id="danoNumericoInput" onchange="danoNumericoInputFunc()" required pattern="[0-9]+$" />
+        </div>
+        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+            <select id="avDanoRepositorioLista" name="Dano_ID" class="form-control" onchange="danoDropDownInputFunc()"
+                    asp-items="@(new SelectList(Model.ListaDano, "AvDano_ID", "Nome_Pt"))">
+                <option disabled selected>Dano</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+@*GRAVIDADE*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+            <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
+            <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+        </div>
+        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+            <select id="avGravidadeLista" name="Gravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
+                    asp-items="@(new SelectList(Model.ListaGravidade, "AvGravidade_ID", "Nome_Pt"))">
+                <option disabled selected>Gravidade</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+@*QUADRANTE*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+            <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
+            <input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />
+        </div>
+
+        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+            <select id="avQuadranteLista" name="Quadrante_ID" class="form-control" onchange="quadranteDropDownInputFunc()"
+                    asp-items="@(new SelectList(Model.ListaQuadrante, "AvQuadrante_ID", "Nome_Pt"))">
+                <option disabled selected>Quadrante</option>
+            </select>
+        </div>
+    </div>
+</div>
+
+@*SERVERIDADE*@
+<div class="form-group">
+    <div class="row">
+        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+            <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
+            <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+        </div>
+        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+            <select id="avSeveridadeLista" name="Severidade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
+                    asp-items="@(new SelectList(Model.ListaSeveridade, "AvSeveridade_ID", "Nome_Pt"))">
+                <option disabled selected>Severidade</option>
+            </select>
+        </div>
+    </div>
+</div>

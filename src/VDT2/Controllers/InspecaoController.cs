@@ -47,6 +47,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaInspecao()
         {
+            
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
@@ -315,7 +316,7 @@ namespace VDT2.Controllers
             #endregion
 
             //Recebe os dados da View
-            
+
             VeiculoViewModel.InspVeiculo = new Models.InspVeiculo
             {
                 Inspecao_ID = VeiculoViewModel.Inspecao_ID,
@@ -331,7 +332,7 @@ namespace VDT2.Controllers
 
 
 
-        VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.Inspecao_ID, configuracao);
+            VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.Inspecao_ID, configuracao);
             #region EM_ERRO
             if (VeiculoViewModel.Inspecao.Erro == true)
             {
@@ -1563,5 +1564,6 @@ namespace VDT2.Controllers
 
             return Json(listaLocalCheckpoint);
         }
+
     }
 }

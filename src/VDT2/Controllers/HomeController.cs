@@ -49,6 +49,8 @@ namespace VDT2.Controllers
 
         {
 
+
+
             // Testes - INICIO
             if (this.HttpContext.User == null)
             {
