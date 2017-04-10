@@ -23,8 +23,27 @@ namespace VDT2.ViewModels
         public List<Models.Transportador> ListaTransportador { get; set; }
 
         public string VIN_6 { get; set; }
-        public int Marca_ID { get; set; }
-        public int Modelo_ID { get; set; }
-        
+        public List<int> Marca_ID { get; set; }
+        public List<int> Modelo_ID { get; set; }
+        public List<int> LocalInspecao_ID { get; set; }
+        public List<int> LocalCheckPoint_ID { get; set; }
+        public List<string> IdTipo { get; set; }
+        public List<int> Area_ID { get; set; }
+        public List<int> Condicao_ID { get; set; }
+        public List<int> Dano_ID { get; set; }
+        public List<int> Quadrante_ID { get; set; }
+        public List<int> Gravidade_ID { get; set; }
+        public List<int> Severidade_ID { get; set; }
+        public string Fabrica { get; set; } = "";
+        public string Transporte { get; set; } = "";
+        public string DanoOrigem { get; set; } = "";
+        public string TransportadorMaritimo { get; set; } = ""; 
+        public string TransportadorTerrestre { get; set; } = "";
+        public string FrotaViagem { get; set; } = "";
+        public string NavioNome { get; set; } = "";
+
+        public DateTime DataInicial {get;set;}
+        public DateTime DataFinal { get; set; }
+
     }
 }

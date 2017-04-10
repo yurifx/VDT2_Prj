@@ -16,39 +16,57 @@ namespace VDT2.Models
         //Dados a serem enviados.
         [NotMapped]
         public string LocalInspecao { get; set; }
+
         [NotMapped]
         public string LocalCheckPoint { get; set; }
+
+        [NotMapped]
+        public string Transportador { get; set; }
+
         [NotMapped]
         public string Marca { get; set; }
+
         [NotMapped]
         public string Modelo { get; set; }
+
         [NotMapped]
         public string Area { get; set; }
+
         [NotMapped]
         public string Condicao { get; set; }
+
         [NotMapped]
         public string Dano { get; set; }
+
         [NotMapped]
         public string Quadrante { get; set; }
+
         [NotMapped]
         public string Gravidade { get; set; }
+
         [NotMapped]
         public string Severidade { get; set; }
+
         [NotMapped]
         public string TipoDefeito { get; set; }
+
         [NotMapped]
         public string DanoOrigem { get; set; }
+
         [NotMapped]
         public string TransportadorTipo { get; set; }
+
         [NotMapped]
         public string FrotaViagem { get; set; }
+
         [NotMapped]
         public string Navio { get; set; }
+
         [NotMapped]
         public DateTime DataInicio { get; set; }
+
         [NotMapped]
         public DateTime DataFinal { get; set; }
-
 
         //Dados a serem recebidos: Resultado da procedure
         public DateTime Data { get; set; }
@@ -68,7 +86,7 @@ namespace VDT2.Models
 
         public string FrotaViagemNome { get; set; }
 
-        public int Navio_ID { get; set; }
+        public int? Navio_ID { get; set; }
 
         public string NavioNome { get; set; }
 
@@ -86,27 +104,27 @@ namespace VDT2.Models
 
         public string ModeloNome { get; set; }
 
-        public int AreaCodigo { get; set; }
+        public int? AreaCodigo { get; set; }
 
         public string Area_Pt { get; set; }
 
-        public int CondicaoCodigo { get; set; }
+        public int? CondicaoCodigo { get; set; }
 
         public string Condicao_Pt { get; set; }
 
-        public int DanoCodigo { get; set; }
+        public int? DanoCodigo { get; set; }
 
         public string Dano_Pt { get; set; }
 
-        public int GravidadeCodigo { get; set; }
+        public int? GravidadeCodigo { get; set; }
 
         public string Gravidade_Pt { get; set; }
 
-        public int QuadranteCodigo { get; set; }
+        public int? QuadranteCodigo { get; set; }
 
         public string Quadrante_Pt { get; set; }
 
-        public int SeveridadeCodigo { get; set; }
+        public int? SeveridadeCodigo { get; set; }
 
         public string Severidade_Pt { get; set; }
     }

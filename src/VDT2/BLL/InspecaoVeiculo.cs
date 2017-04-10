@@ -133,12 +133,7 @@ namespace VDT2.BLL
 
 
             var selectListMarca = new List<SelectListItem>(marcaList.Count + 1);
-            selectListMarca.Add(new SelectListItem
-            {
-                Text = "Selecione a Marca",
-                Value = 0.ToString()
-            });
-
+            
             foreach (var item in marcaList)
             {
                 selectListMarca.Add(
@@ -177,12 +172,6 @@ namespace VDT2.BLL
 
             //Inicializa a lista de  Modelos, já inserindo o primeiro registro default
             var modeloSelectList = new List<SelectListItem>(modeloList.Count + 1);
-            modeloSelectList.Add(new SelectListItem
-            {
-                Text = "Selecione o Modelo",
-                Value = 0.ToString()
-            });
-
             foreach (var item in modeloList)
             {
                 modeloSelectList.Add(

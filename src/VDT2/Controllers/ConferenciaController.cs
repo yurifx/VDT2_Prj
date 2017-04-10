@@ -1193,5 +1193,12 @@ namespace VDT2.Controllers
             return View("Consulta", consultaVM);
 
         }
+
+        public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
+        {
+
+            BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
+            return View("ListaDeVeiculosConsulta");
+        }
     }
 }
