@@ -1178,6 +1178,9 @@ namespace VDT2.Controllers
 
             ViewModels.ConsultaViewModel consultaVM = new ViewModels.ConsultaViewModel();
 
+            //Não é necessário pois não vou informar o nome do cliente. Apenas o ID / Caso precise informar na tela, pegar abaixo:
+            //consultaVM.Cliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao).Where(p => p.Cliente_ID == id).FirstOrDefault();
+            consultaVM.Cliente = new Models.Cliente { Cliente_ID = id };
             consultaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
             consultaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
             consultaVM.ListaMarca = BLL.InspecaoVeiculo.ListaMarca(id, configuracao);
@@ -1196,6 +1199,7 @@ namespace VDT2.Controllers
 
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
         {
+            //Receber Cliente ID
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
             consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
 

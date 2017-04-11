@@ -25,12 +25,10 @@ Create Procedure dbo.InspAvaria_Cons
     @p_Quadrante              varchar(100),
     @p_Gravidade              varchar(100),
     @p_Severidade             varchar(100),
-  --@p_Extensoes              varchar(100),
-    @p_TipoDefeito            varchar(100), --Transporte/Fábrica/Todos
-    @p_DanoOrigem             varchar(100), -- Sim/Não/Todos
-    @p_TipoTransportador      varchar(100), -- Marítimo/Terrestre/Todos
-    @p_FrotaViagem            varchar(100), -- Nome da frotaviagem
-  --@p_Lote                   varchar(100),
+    @p_TipoDefeito            varchar(100),  --Transporte/Fábrica/Todos
+    @p_DanoOrigem             varchar(100),  -- Sim/Não/Todos
+    @p_TransportadorTipo      varchar(100),  -- Marítimo/Terrestre/Todos
+    @p_FrotaViagem            varchar(100),  -- Nome da frotaviagem
     @p_Navio                  varchar(100),
     @p_DataInicio             Date,
     @p_DataFinal              Date
@@ -40,7 +38,12 @@ AS
 
 SET NOCOUNT ON
 
-Select i.Data, 
+Select 
+
+       
+       iv.InspVeiculo_ID*100 + ISNULL(ia.InspAvaria_ID, 0) as RowID, --Primary key
+
+       i.Data, 
        i.Inspecao_ID,
 	   
 	   li.LocalInspecao_ID         as  LocalCodigo,
@@ -92,16 +95,17 @@ Select i.Data,
                                       
 From InspVeiculo iv             
 
-Inner Join Inspecao           i    on   iv.Inspecao_ID          =      i.Inspecao_ID
-Inner Join LocalInspecao     li    on   li.LocalInspecao_ID     =      i.LocalInspecao_ID
-Inner Join LocalCheckPoint   lc    on   lc.LocalCheckPoint_ID   =      i.LocalCheckPoint_ID
-Inner Join Transportador      t    on    t.Transportador_ID     =      i.Transportador_ID
-Inner Join FrotaViagem       fv    on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
+Inner Join Inspecao           i     on   iv.Inspecao_ID          =      i.Inspecao_ID
+Inner Join LocalInspecao     li     on   li.LocalInspecao_ID     =      i.LocalInspecao_ID
+Inner Join LocalCheckPoint   lc     on   lc.LocalCheckPoint_ID   =      i.LocalCheckPoint_ID
+Inner Join Transportador      t     on    t.Transportador_ID     =      i.Transportador_ID
+Inner Join FrotaViagem       fv     on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
+Inner Join Marca              ma    on   iv.Marca_ID             =     ma.Marca_ID
+Inner Join Modelo             mo    on   iv.Modelo_ID            =     mo.Modelo_ID
 
-Left Join Navio               n    on    n.Navio_ID             =      i.Navio_ID 
-Left Join InspAvaria         ia    on   iv.InspVeiculo_ID       =     ia.InspVeiculo_ID
-Left Join Marca              ma    on   iv.Marca_ID             =     ma.Marca_ID
-Left Join Modelo             mo    on   iv.Modelo_ID            =     mo.Modelo_ID
+Left Join Navio               n     on    n.Navio_ID             =      i.Navio_ID 
+Left Join InspAvaria         ia     on   iv.InspVeiculo_ID       =     ia.InspVeiculo_ID
+
 Left Join avArea              a    on    a.AvArea_ID            =     ia.AvArea_ID
 Left Join AvCondicao          c    on    c.AvCondicao_ID        =     ia.AvCondicao_ID
 Left Join AvDano              d    on    d.AvDano_ID            =     ia.AvDano_ID
@@ -154,8 +158,8 @@ and (@p_TipoDefeito = '*'
 and (@p_DanoOrigem = '*'
         or CharIndex( '|'+ Cast(ia.DanoOrigem as Varchar) +'|', @p_DanoOrigem) > 0 )
 
-and (@p_TipoTransportador = '*'
-        or CharIndex( '|'+ Cast(t.Tipo as Varchar) +'|', @p_TipoTransportador) > 0 )
+and (@p_TransportadorTipo = '*'
+        or CharIndex( '|'+ Cast(t.Tipo as Varchar) +'|', @p_TransportadorTipo) > 0 )
 
 and (@p_FrotaViagem is null
         or fv.Nome like '%' + @p_FrotaViagem + '%')
@@ -165,34 +169,36 @@ and (@p_Navio is null
 
 and i.Data between @p_DataInicio and @p_DataFinal
 
-
+order by i.data desc, iv.VIN asc
 
 /*
-Declare @p_Chassi                 varchar(100),
-        @p_LocalInspecao          varchar(100),
+Declare @p_Chassi                 varchar(100),                                             
+        @p_LocalInspecao          varchar(100),                                             
         @p_LocalCheckPoint        varchar(100),
-        @p_Marca                  varchar(100),
-        @p_Modelo                 varchar(100),
-        @p_Area                   varchar(100),
-        @p_Condicao               varchar(100),
-        @p_Dano                   varchar(100),
-        @p_Quadrante              varchar(100),
-        @p_Gravidade              varchar(100),
-        @p_Severidade             varchar(100),
-      --@p_Extensoes              varchar(100),
-        @p_TipoDefeito            varchar(100), --Transporte/Fábrica/Todos
-        @p_DanoOrigem             varchar(100), -- Sim/Não/Todos
-        @p_TipoTransportador      varchar(100), -- Marítimo/Terrestre/Todos
-        @p_FrotaViagem            varchar(100),
-      --@p_Lote                   varchar(100),
-        @p_Navio                  varchar(100),
-        @p_DataInicio             Date,
-        @p_DataFinal              Date
-
+        @p_Transportador          varchar(100),                                             
+        @p_Marca                  varchar(100),                                             
+        @p_Modelo                 varchar(100),                                             
+        @p_Area                   varchar(100),                                             
+        @p_Condicao               varchar(100),                                             
+        @p_Dano                   varchar(100),                                             
+        @p_Quadrante              varchar(100),                                             
+        @p_Gravidade              varchar(100),                                             
+        @p_Severidade             varchar(100),                                             
+      --@p_Extensoes              varchar(100),                                             
+        @p_TipoDefeito            varchar(100), --Transporte/Fábrica/Todos                  
+        @p_DanoOrigem             varchar(100), -- Sim/Não/Todos                            
+        @p_TipoTransportador      varchar(100), -- Marítimo/Terrestre/Todos                 
+        @p_FrotaViagem            varchar(100),                                             
+      --@p_Lote                   varchar(100),                                             
+        @p_Navio                  varchar(100),                                             
+        @p_DataInicio             Date,                                                     
+        @p_DataFinal              Date                                                      
+                                                                                            
 
 set      @p_Chassi                 = '*'
 set      @p_LocalInspecao          = '*'
 set      @p_LocalCheckPoint        = '*'
+set      @p_Transportador          = '*'
 set      @p_Marca                  = '*'
 set      @p_Modelo                 = '*'
 set      @p_Area                   = '*'
@@ -204,17 +210,18 @@ set      @p_Severidade             = '*'
 set      @p_TipoDefeito            = '*'  --|T|F|
 set      @p_DanoOrigem             = '*'  --|0|1|
 set      @p_TipoTransportador      = '*'  --|T|M|
-set      @p_FrotaViagem            = '*'
+set      @p_FrotaViagem            = null
 --set    @p_Lote                   = '*'
-set      @p_Navio                  = '*'
-set      @p_DataInicio             = '2001/01/01'
-set      @p_DataFinal              = '2017/03/23'
+set      @p_Navio                  = null
+set      @p_DataInicio             = '2017/04/11'
+set      @p_DataFinal              = '2017/04/11'
 
 
 exec InspAvaria_Cons 
     @p_Chassi             ,
     @p_LocalInspecao      ,
     @p_LocalCheckPoint    ,   
+    @p_Transportador      ,
     @p_Marca              ,  
     @p_Modelo             ,  
     @p_Area               ,  

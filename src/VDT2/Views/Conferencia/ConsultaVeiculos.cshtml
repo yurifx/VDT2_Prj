@@ -31,6 +31,9 @@
         <table id="example" class="table table-striped table-bordered table-hover">
             <thead class="thead">
                 <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
+                    <th class="">InspecaoID</th>
+                    <th class="">VeiculoID</th>
+                    <th class="">AvariaID</th>
                     <th class="">Data</th>
                     <th class="">Chassi</th>
                     <th class="">Local</th>
@@ -53,6 +56,9 @@
             @foreach (var item in Model.ListaInspAvaria_Cons)
             {
                 <tr class="tabConferenciaListaVeiculo">
+                    <td>@item.Inspecao_ID</td>
+                    <td>@item.InspVeiculo_ID</td>
+                    <td>@item.InspAvaria_ID</td>
                     <td>@item.Data.Day/@item.Data.Month/@item.Data.Year</td>
                     <td>@item.Chassi</td>
                     <td>@item.LocalNome</td>

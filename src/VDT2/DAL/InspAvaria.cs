@@ -532,50 +532,56 @@ namespace VDT2.DAL
                     Value = InspAvaria_Cons.LocalCheckPoint
                 };
 
-                //Local Transportador
+                //Transportador
                 SqlParameter parmTransportador = new SqlParameter("@p_Transportador", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Transportador
                 };
 
-                //Local Marca
+                //Marca
                 SqlParameter parmMarca = new SqlParameter("@p_Marca", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Marca
                 };
 
 
-                //Local Modelo
+                //Modelo
                 SqlParameter parmModelo = new SqlParameter("@p_Modelo", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Modelo
                 };
 
+                //Area
                 SqlParameter parmArea = new SqlParameter("@p_Area", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Area
                 };
 
+                //Condicao
                 SqlParameter parmCondicao = new SqlParameter("@p_Condicao", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Condicao
                 };
 
+                //Dano
                 SqlParameter parmDano = new SqlParameter("@p_Dano", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Dano
                 };
 
+                //Quadrante
                 SqlParameter parmQuadrante = new SqlParameter("@p_Quadrante", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Quadrante
                 };
 
+                //Gravidade
                 SqlParameter parmGravidade = new SqlParameter("@p_Gravidade", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Gravidade
                 };
 
+                //Severidade
                 SqlParameter parmSeveridade = new SqlParameter("@p_Severidade", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.Severidade
@@ -587,19 +593,21 @@ namespace VDT2.DAL
                     Value = InspAvaria_Cons.FabricaTransporte
                 };
 
-
+                //Dano de Origem? |0| |1|
                 SqlParameter parmDanoOrigem = new SqlParameter("@p_DanoOrigem", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.DanoOrigem
                 };
 
 
+                //Tipo de Transportador
                 SqlParameter parmTransportadorTipo = new SqlParameter("@p_TransportadorTipo", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.TransportadorTipo
                 };
 
 
+                //FrotaViagem
                 SqlParameter parmFrotaViagem = new SqlParameter("@p_FrotaViagem", SqlDbType.VarChar)
                 {
                     Value = DBNull.Value
@@ -610,7 +618,7 @@ namespace VDT2.DAL
                     parmFrotaViagem.Value = InspAvaria_Cons.FrotaViagem;
                 }
 
-
+                //Nome Navio
                 SqlParameter parmNavio = new SqlParameter("@p_Navio", SqlDbType.VarChar)
                 {
                     Value = DBNull.Value
@@ -621,12 +629,12 @@ namespace VDT2.DAL
                     parmNavio.Value = InspAvaria_Cons.Navio;
                 }                                                                 
 
-                SqlParameter parmDataInicio = new SqlParameter("@p_DataInicio", SqlDbType.DateTime2)
+                SqlParameter parmDataInicio = new SqlParameter("@p_DataInicio", SqlDbType.Date)
                 {
                     Value = InspAvaria_Cons.DataInicio
                 };
 
-                SqlParameter parmDataFinal = new SqlParameter("@p_DataFinal", SqlDbType.DateTime2)
+                SqlParameter parmDataFinal = new SqlParameter("@p_DataFinal", SqlDbType.Date)
                 {
                     Value = InspAvaria_Cons.DataFinal
                 };
@@ -654,7 +662,26 @@ namespace VDT2.DAL
                         parmDataFinal
                     };
 
-                string chamada = $"{nomeStoredProcedure} {parmChassi.ParameterName}, {parmLocalInspecao.ParameterName}, {parmLocalCheckPoint.ParameterName}, {parmTransportador.ParameterName}, {parmMarca.ParameterName},  {parmModelo.ParameterName}, {parmArea.ParameterName}, {parmCondicao.ParameterName}, {parmDano.ParameterName}, {parmQuadrante.ParameterName}, {parmGravidade.ParameterName}, {parmSeveridade.ParameterName}, {parmTipoDefeito.ParameterName}, {parmDanoOrigem.ParameterName},  {parmTransportadorTipo.ParameterName}, {parmFrotaViagem.ParameterName}, {parmNavio.ParameterName}, {parmDataInicio.ParameterName},  {parmDataFinal.ParameterName}";
+                string chamada = $"{nomeStoredProcedure} " +
+                    $"{parmChassi.ParameterName}, " +
+                    $"{parmLocalInspecao.ParameterName}," +
+                    $"{parmLocalCheckPoint.ParameterName}, " +
+                    $"{parmTransportador.ParameterName}, " +
+                    $"{parmMarca.ParameterName}, " +
+                    $"{parmModelo.ParameterName}, " +
+                    $"{parmArea.ParameterName}, " +
+                    $"{parmCondicao.ParameterName}," +
+                    $"{parmDano.ParameterName}," +
+                    $"{parmQuadrante.ParameterName}, " +
+                    $"{parmGravidade.ParameterName}," +
+                    $"{parmSeveridade.ParameterName}," +
+                    $"{parmTipoDefeito.ParameterName}," +
+                    $"{parmDanoOrigem.ParameterName}," +
+                    $"{parmTransportadorTipo.ParameterName}," +
+                    $"{parmFrotaViagem.ParameterName}," +
+                    $"{parmNavio.ParameterName}," +
+                    $"{parmDataInicio.ParameterName}," +
+                    $"{parmDataFinal.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
 

@@ -9,11 +9,12 @@ namespace VDT2.Models
 {
     public class InspAvaria_Cons
     {
-        [Key]
-        public string Chassi { get; set; }
 
 
         //Dados a serem enviados.
+
+        public string Chassi { get; set; }
+
         [NotMapped]
         public string LocalInspecao { get; set; }
 
@@ -68,10 +69,16 @@ namespace VDT2.Models
         [NotMapped]
         public DateTime DataFinal { get; set; }
 
+
         //Dados a serem recebidos: Resultado da procedure
+        [Key]
+        public int RowID { get; set; }
+
         public DateTime Data { get; set; }
 
         public int Inspecao_ID { get; set; }
+
+        public int? InspAvaria_ID { get; set; }
 
         public int LocalCodigo { get; set; }
 

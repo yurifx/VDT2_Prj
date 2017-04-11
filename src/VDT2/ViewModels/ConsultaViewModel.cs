@@ -19,6 +19,7 @@ namespace VDT2.ViewModels
         public List<Models.AvQuadrante> ListaQuadrante { get; set; }
         public List<Models.AvGravidade> ListaGravidade { get; set; }
         public List<Models.AvSeveridade> ListaSeveridade { get; set; }
+        public Models.Cliente Cliente { get; set; }
 
         public List<Models.Transportador> ListaTransportador { get; set; }
 
