@@ -13,54 +13,51 @@
 <link href="~/lib/multiple-select/multiple-select.css" rel="stylesheet" />
 
 <form asp-controller="Conferencia" asp-action="ListarConsulta" method="post" id="ListarConsultaForm">
-    @*Chassi*@
-    <div class="form-group" id="divChassi">
-        <div class="row">
-            <div class="col col-lg-2 col-md-2 col-sm-3 col-xs-4">
-                <label asp-for="VIN_6" id="lblChassiTelaVeiculo">Chassi</label>
-            </div>
 
-            <div class="col col-lg-10 col-md-10 col-sm-9 col-xs-8">
-                <div class="input-group">
-                    <input asp-for="VIN_6" id="chassiInput" data-toggle="tooltip" title="Insira o Chassi do Veículo!" placeholder="" value="@Model.VIN_6" maxlength="6" pattern=".{6,6}" class="form-control" autocomplete="off" />
-                </div>
-            </div>
+    <div class="row">
+        @*Chassi*@
+        <div class="col col-lg-2 col-md-2 col-sm-6 col-xs-6">
+            <label asp-for="VIN_6" id="">Chassi</label>
         </div>
-    </div>
+        <div class="col col-lg-2 col-md-2 col-sm-6 col-xs-6">
+            <input asp-for="VIN_6" id="" data-toggle="tooltip" title="Insira o Chassi do Veículo!" placeholder="" value="@Model.VIN_6" maxlength="6" pattern=".{6,6}" class="form-control" autocomplete="off" />
+        </div>
 
-    @*Local Inspeção*@
-    <div class="row form-group">
-        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+
+        @*Local Inspeção*@
+        <div class="col col-lg-1 col-md-2 col-sm-6 col-xs-6">
             <label for="ListaLocalInspecao">Local Inspeção</label>
         </div>
-        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+        <div class="col col-lg-2 col-md-2 col-sm-6 col-xs-6">
             <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" multiple="multiple" onchange="PreencheListaCheckPoint()"
                     asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))"></select>
         </div>
     </div>
 
-    @*Local CheckPoint*@
-    <div class="row form-group">
-        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+    <br/>
+    <div class="row">
+        @*Local CheckPoint*@
+        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <label for="ListaLocalCheckPoint">Local CheckPoint</label>
         </div>
-        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2">
             <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control" multiple="multiple"
                     asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))"></select>
         </div>
-    </div>
 
-    @*Transportador*@
-    <div class="row form-group">
-        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-            <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
-        </div>
-        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-            <select id="ListaTransportador" name="IdTipo" class="form-control" onchange="" multiple="multiple"
-                    asp-items="@(new SelectList(Model.ListaTransportador,"IdTipo","Nome"))"></select>
+
+
+        @*Transportador*@
+        <div class="row form-group">
+            <div class="col col-lg-1 col-md-2 col-sm-2 col-xs-3">
+                <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
+            </div>
+            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                <select id="ListaTransportador" name="IdTipo" class="form-control" onchange="" multiple="multiple"
+                        asp-items="@(new SelectList(Model.ListaTransportador,"IdTipo","Nome"))"></select>
+            </div>
         </div>
     </div>
-
 
 
     @*Marca*@
