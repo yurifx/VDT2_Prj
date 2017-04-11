@@ -14,6 +14,9 @@ namespace VDT2.BLL
             List<InspAvaria_Cons> listacons = new List<InspAvaria_Cons>();
             Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
 
+            //Cliente
+            inspAvaria_Cons.Cliente_ID = consultaVM.Cliente.Cliente_ID;
+
             //Chassi
             inspAvaria_Cons.Chassi = consultaVM.VIN_6;
 

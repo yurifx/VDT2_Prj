@@ -507,6 +507,12 @@ namespace VDT2.DAL
             string nomeStoredProcedure = "InspAvaria_Cons";
             try
             {
+                //Cliente
+                SqlParameter parmClienteID = new SqlParameter("@p_Cliente_ID", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Cliente_ID
+                };
+
                 //Chassi
                 SqlParameter parmChassi = new SqlParameter("@p_Chassi", SqlDbType.VarChar)
                 {
@@ -641,6 +647,7 @@ namespace VDT2.DAL
 
                 SqlParameter[] parametros = new SqlParameter[]
                     {
+                        parmClienteID,
                         parmChassi,
                         parmLocalInspecao,
                         parmLocalCheckPoint,
@@ -662,7 +669,9 @@ namespace VDT2.DAL
                         parmDataFinal
                     };
 
-                string chamada = $"{nomeStoredProcedure} " +
+                string chamada = 
+                    $"{nomeStoredProcedure} " +
+                    $"{parmClienteID.ParameterName}, " +
                     $"{parmChassi.ParameterName}, " +
                     $"{parmLocalInspecao.ParameterName}," +
                     $"{parmLocalCheckPoint.ParameterName}, " +

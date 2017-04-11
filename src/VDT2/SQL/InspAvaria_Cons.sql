@@ -13,23 +13,24 @@ Create Procedure dbo.InspAvaria_Cons
 -- Consulta os dados de uma avaria
 ----------------------------------------------------------------------------------------------------
 (
-    @p_Chassi                 varchar(100),
-    @p_LocalInspecao          varchar(100),
-    @p_LocalCheckPoint        varchar(100),
-    @p_Transportador          varchar(100),
-    @p_Marca                  varchar(100),
-    @p_Modelo                 varchar(100),
-    @p_Area                   varchar(100),
-    @p_Condicao               varchar(100),
-    @p_Dano                   varchar(100),
-    @p_Quadrante              varchar(100),
-    @p_Gravidade              varchar(100),
-    @p_Severidade             varchar(100),
-    @p_TipoDefeito            varchar(100),  --Transporte/Fábrica/Todos
-    @p_DanoOrigem             varchar(100),  -- Sim/Não/Todos
-    @p_TransportadorTipo      varchar(100),  -- Marítimo/Terrestre/Todos
-    @p_FrotaViagem            varchar(100),  -- Nome da frotaviagem
-    @p_Navio                  varchar(100),
+    @p_Cliente_ID             Int,
+    @p_Chassi                 Varchar(100),
+    @p_LocalInspecao          Varchar(100),
+    @p_LocalCheckPoint        Varchar(100),
+    @p_Transportador          Varchar(100),
+    @p_Marca                  Varchar(100),
+    @p_Modelo                 Varchar(100),
+    @p_Area                   Varchar(100),
+    @p_Condicao               Varchar(100),
+    @p_Dano                   Varchar(100),
+    @p_Quadrante              Varchar(100),
+    @p_Gravidade              Varchar(100),
+    @p_Severidade             Varchar(100),
+    @p_TipoDefeito            Varchar(100),  --Transporte/Fábrica/Todos
+    @p_DanoOrigem             Varchar(100),  -- Sim/Não/Todos
+    @p_TransportadorTipo      Varchar(100),  -- Marítimo/Terrestre/Todos
+    @p_FrotaViagem            Varchar(100),  -- Nome da frotaviagem
+    @p_Navio                  Varchar(100),
     @p_DataInicio             Date,
     @p_DataFinal              Date
 )
@@ -45,7 +46,8 @@ Select
 
        i.Data, 
        i.Inspecao_ID,
-	   
+	   i.Cliente_ID,
+
 	   li.LocalInspecao_ID         as  LocalCodigo,
 	   li.Nome                     as  LocalNome,
                                        
@@ -116,7 +118,9 @@ Left Join AvSeveridade        s    on    s.AvSeveridade_ID      =     ia.AvSever
 
 Where 
 
-(@p_Chassi is null
+@p_Cliente_ID = i.Cliente_ID
+
+and (@p_Chassi is null
         or iv.VIN_6  like '%' + @p_Chassi + '%')
         
 and (@p_LocalInspecao = '*'
