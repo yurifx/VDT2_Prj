@@ -109,9 +109,7 @@
         <div class="row">
             <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
                 <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
-
             </div>
-
             <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
                 <select id="avCondicaoLista" name="Condicao_ID" class="form-control" multiple="multiple"
                         asp-items="@(new SelectList(Model.ListaCondicao, "AvCondicao_ID", "Nome_Pt"))"></select>

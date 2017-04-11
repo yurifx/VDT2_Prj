@@ -19,7 +19,7 @@
 else
 {
     <div class="container">
-        <h4><strong>Editar Avarias</strong></h4><br />
+        
         @if (ViewData["MensagemErro"] != null)
         {
             <div class="alert alert-danger">
@@ -42,6 +42,7 @@ else
 
     <div class="container">
         <form asp-controller="Inspecao" asp-action="SalvarAvaria" id="formPrincipal" method="post" onsubmit="return ValidarFormularioInspecaoEditarAvarias()" enctype="multipart/form-data">
+            <h4><strong>Editar Avarias</strong></h4><br />
             @*AREA*@
             <div class="form-group">
                 <div class="row">

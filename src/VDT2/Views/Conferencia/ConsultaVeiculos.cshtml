@@ -1,0 +1,155 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model VDT2.ViewModels.ConferenciaConsultaVeiculosViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
+}
+
+
+<script src="https://cdn.datatables.net/1.10.13/js/jquery.dataTables.min.js"></script>
+<script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
+
+<link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
+<link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
+
+
+<div class="container">
+    <div class="row">
+        <div>
+            <p>Quantidade Inspecionada: @Model.QuantidadeInspecionada</p>
+            <p>Quantidade Com Avaria: @Model.VeiculosComAvaria  - @Model.PercentualAvariado %</p>
+            <p>Quantidade Sem Avaria: @Model.VeiculosSemAvaria  - @Model.PercentualSemAvaria %</p>
+        </div>
+
+    </div>
+</div>
+<br /><br /><br />
+
+<div class="container">
+    <div class="row">
+        <table id="example" class="table table-striped table-bordered table-hover">
+            <thead class="thead">
+                <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
+                    <th class="">Data</th>
+                    <th class="">Chassi</th>
+                    <th class="">Local</th>
+                    <th class="">CheckPoint</th>
+                    <th class="">Transportador</th>
+                    <th class="">FrotaViagem</th>
+                    <th class="">Navio</th>
+                    <th class="">Marca</th>
+                    <th class="">Modelo</th>
+                    <th class="">Area</th>
+                    <th class="">Condicao</th>
+                    <th class="">Dano</th>
+                    <th class="">Gravidade</th>
+                    <th class="">Quadrante</th>
+                    <th class="">Severidade</th>
+                    <th class="">Custo</th>
+
+                </tr>
+            </thead>
+            @foreach (var item in Model.ListaInspAvaria_Cons)
+            {
+                <tr class="tabConferenciaListaVeiculo">
+                    <td>@item.Data.Day/@item.Data.Month/@item.Data.Year</td>
+                    <td>@item.Chassi</td>
+                    <td>@item.LocalNome</td>
+                    <td>@item.CheckPointNome</td>
+                    <td>@item.TransportadorNome</td>
+                    <td>@item.FrotaViagemNome</td>
+                    <td>@item.NavioNome</td>
+                    <td>@item.MarcaNome</td>
+                    <td>@item.ModeloNome</td>
+                    <td>@item.Area_Pt</td>
+                    <td>@item.Condicao_Pt</td>
+                    <td>@item.Dano_Pt</td>
+                    <td>@item.Gravidade_Pt</td>
+                    <td>@item.Quadrante_Pt</td>
+                    <td>@item.Severidade_Pt</td>
+                    <td>@item.Custo</td>
+                </tr>
+
+            }
+        </table>
+    </div>
+</div>
+
+<br /><br /><br />
+<button type="button" class="btn btn-group-sm btn-default" onclick="window.print()">Imprimir</button>
+<button type="button" class="btn btn-group-sm btn-primary" onclick="history.go(-1)">Voltar</button>
+<button id="btnExport" onclick="fnExcelReport();"> EXPORT </button>
+<br /><br /><br />
+
+
+<script>
+    $(document).ready(function () {
+        $('#example').DataTable({
+
+            buttons: [
+                {
+                    extend: 'copyHtml5',
+                    exportOptions: {
+                        columns: ':contains("Office")'
+                    }
+                },
+                'excelHtml5',
+                'csvHtml5',
+                'pdfHtml5'
+            ],
+
+            "scrollX": true,
+
+            "language": {
+                "lengthMenu": "Mostrar _MENU_ registros por página",
+                "zeroRecords": "Sem registros encontrados",
+                "info": "Exibindo página _PAGE_ de _PAGES_",
+                "infoEmpty": "Sem registros encontrados",
+                "infoFiltered": "(filtrados de _MAX_ todos os registros)",
+                "search": "Procurar",
+                "paginate": {
+                    "first": "Primeira",
+                    "last": "Última",
+                    "next": "Próxima",
+                    "previous": "Anterior"
+                }
+            }
+
+        });
+    });
+</script>
+
+<script>
+    function fnExcelReport() {
+        var tab_text = "<table border='2px'><tr bgcolor='#87AFC6'>";
+        var textRange; var j = 0;
+        tab = document.getElementById('example'); // id of table
+
+        for (j = 0; j < tab.rows.length; j++) {
+            tab_text = tab_text + tab.rows[j].innerHTML + "</tr>";
+            //tab_text=tab_text+"</tr>";
+        }
+
+        tab_text = tab_text + "</table>";
+        tab_text = tab_text.replace(/<A[^>]*>|<\/A>/g, "");//remove if u want links in your table
+        tab_text = tab_text.replace(/<img[^>]*>/gi, ""); // remove if u want images in your table
+        tab_text = tab_text.replace(/<input[^>]*>|<\/input>/gi, ""); // reomves input params
+
+        var ua = window.navigator.userAgent;
+        var msie = ua.indexOf("MSIE ");
+
+        if (msie > 0 || !!navigator.userAgent.match(/Trident.*rv\:11\./))      // If Internet Explorer
+        {
+            txtArea1.document.open("txt/html", "replace");
+            txtArea1.document.write(tab_text);
+            txtArea1.document.close();
+            txtArea1.focus();
+            sa = txtArea1.document.execCommand("SaveAs", true, "Say Thanks to Sumit.xls");
+        }
+        else                 //other browser not tested on IE 11
+            sa = window.open('data:application/vnd.ms-excel,' + encodeURIComponent(tab_text));
+
+        return (sa);
+    }
+</script>

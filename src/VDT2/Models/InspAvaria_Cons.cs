@@ -79,9 +79,10 @@ namespace VDT2.Models
 
         public int CheckPointCodigo { get; set; }
 
+        public string CheckPointNome { get; set; }
+
         public string TransportadorNome { get; set; }
-
-
+        
         public int FrotaViagem_ID { get; set; }
 
         public string FrotaViagemNome { get; set; }

@@ -1150,7 +1150,7 @@ namespace VDT2.Controllers
 
             return View("NovaConsulta", clientes);
         }
-        
+
         [HttpGet]
         public IActionResult ConsultaCliente(int id)
         {
@@ -1187,7 +1187,7 @@ namespace VDT2.Controllers
             consultaVM.ListaDano = BLL.Avarias.ListarDanos(id, configuracao);
             consultaVM.ListaQuadrante = BLL.Avarias.ListarQuadrantes(id, configuracao);
             consultaVM.ListaGravidade = BLL.Avarias.ListarGravidades(id, configuracao);
-            consultaVM.ListaSeveridade = BLL.Avarias.ListarSeveridades (id, configuracao);
+            consultaVM.ListaSeveridade = BLL.Avarias.ListarSeveridades(id, configuracao);
             consultaVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(id, configuracao);
 
             return View("Consulta", consultaVM);
@@ -1196,9 +1196,21 @@ namespace VDT2.Controllers
 
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
         {
+            ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
+            consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
 
-            BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
-            return View("ListaDeVeiculosConsulta");
+            consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Cons.Count();
+            consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Cons.Where(p => String.IsNullOrEmpty(p.Area_Pt)).Count();
+            consultaVeiculosVM.VeiculosComAvaria = consultaVeiculosVM.QuantidadeInspecionada - consultaVeiculosVM.VeiculosSemAvaria;
+
+            if (consultaVeiculosVM.QuantidadeInspecionada != 0)
+            {
+                string PercentualComAvaria = ((decimal)(consultaVeiculosVM.VeiculosComAvaria) / (decimal)(consultaVeiculosVM.QuantidadeInspecionada) * 100).ToString("N2");
+                consultaVeiculosVM.PercentualAvariado = Convert.ToDecimal(PercentualComAvaria);
+                consultaVeiculosVM.PercentualSemAvaria = 100 - consultaVeiculosVM.PercentualAvariado;
+            }
+            return View("ConsultaVeiculos", consultaVeiculosVM);
         }
     }
 }
+

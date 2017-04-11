@@ -43,52 +43,52 @@ SET NOCOUNT ON
 Select i.Data, 
        i.Inspecao_ID,
 	   
-	   li.LocalInspecao_ID       as  LocalCodigo,
-	   li.Nome                   as  LocalNome,
-                                     
-	   lc.LocalCheckPoint_ID     as  CheckPointCodigo,
-	   lc.Nome_Pt                as  CheckPointNome,
-                                     
-       t.Tipo                    as  TransportadorTipo, --TransportadorTipo
-       t.Nome                    as  TransportadorNome, --TransportadorNome
-
-       fv.FrotaViagem_ID,
-       fv.Nome                   as  FrotaViagemNome,
-
-       n.Navio_ID,
-       n.Nome                    as  NavioNome,
-
-	   iv.InspVeiculo_ID         as  InspVeiculo_ID, 
-       iv.VIN_6                  as  Chassi,
-                                     
-	   ia.InspAvaria_ID,             
-	   ia.FabricaTransporte,         
+	   li.LocalInspecao_ID         as  LocalCodigo,
+	   li.Nome                     as  LocalNome,
+                                       
+	   lc.LocalCheckPoint_ID       as  CheckPointCodigo,
+	   lc.Nome_Pt                  as  CheckPointNome,
+                                       
+       t.Tipo                      as  TransportadorTipo, --TransportadorTipo
+       t.Nome                      as  TransportadorNome, --TransportadorNome
+                               
+       fv.FrotaViagem_ID,      
+       fv.Nome                     as  FrotaViagemNome,
+                               
+       n.Navio_ID,             
+       n.Nome                      as  NavioNome,
+                               
+	   iv.InspVeiculo_ID           as  InspVeiculo_ID, 
+       iv.VIN_6                    as  Chassi,
+                                       
+	   ia.InspAvaria_ID,               
+	   ia.FabricaTransporte,
 	   ia.DanoOrigem,
-       ia.Custo,                
-                                     
-	   ma.Marca_ID               as  MarcaCodigo,
-	   ma.Nome                   as  MarcaNome, 
-                                     
-	   mo.Modelo_ID              as  ModeloCodigo,
-	   mo.Nome                   as  ModeloNome,
-                                     
-       a.AvArea_ID               as  AreaCodigo,
-	   a.Nome_Pt                 as  Area_Pt,
-                                     
-	   c.AvCondicao_ID           as  CondicaoCodigo,
-	   c.Nome_Pt                 as  Condicao_Pt,
-                                     
-	   d.AvDano_ID               as  DanoCodigo,
-	   d.Nome_Pt                 as  Dano_Pt,
-                                     
-	   g.AvGravidade_ID          as  GravidadeCodigo,
-	   g.Nome_Pt                 as  Gravidade_Pt,
-                                
-	   q.AvQuadrante_ID          as  QuadranteCodigo,
-	   q.Nome_Pt                 as  Quadrante_Pt,
-                                     
-       s.AvSeveridade_ID         as  SeveridadeCodigo,
-	   s.Nome_Pt                 as  Severidade_Pt
+       ia.Custo,                  
+                                       
+	   ma.Marca_ID                 as  MarcaCodigo,
+	   ma.Nome                     as  MarcaNome, 
+                                       
+	   mo.Modelo_ID                as  ModeloCodigo,
+	   mo.Nome                     as  ModeloNome,
+                                       
+       a.AvArea_ID                 as  AreaCodigo,
+	   a.Nome_Pt                   as  Area_Pt,
+                                       
+	   c.AvCondicao_ID             as  CondicaoCodigo,
+	   c.Nome_Pt                   as  Condicao_Pt,
+                                       
+	   d.AvDano_ID                 as  DanoCodigo,
+	   d.Nome_Pt                   as  Dano_Pt,
+                                       
+	   g.AvGravidade_ID            as  GravidadeCodigo,
+	   g.Nome_Pt                   as  Gravidade_Pt,
+                                  
+	   q.AvQuadrante_ID            as  QuadranteCodigo,
+	   q.Nome_Pt                   as  Quadrante_Pt,
+                                       
+       s.AvSeveridade_ID           as  SeveridadeCodigo,
+	   s.Nome_Pt                   as  Severidade_Pt
                                       
 From InspVeiculo iv             
 
@@ -113,7 +113,7 @@ Left Join AvSeveridade        s    on    s.AvSeveridade_ID      =     ia.AvSever
 Where 
 
 (@p_Chassi is null
-        or iv.VIN like '%' + @p_Chassi + '%')
+        or iv.VIN_6  like '%' + @p_Chassi + '%')
         
 and (@p_LocalInspecao = '*'
         or CharIndex( '|'+ Cast(i.LocalInspecao_ID as Varchar) +'|', @p_LocalInspecao) > 0 )
