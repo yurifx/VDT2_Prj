@@ -8,6 +8,8 @@
 <br />
 
 
+<script src="~/js/Conferencia/ConferenciaNovaConsulta.js" asp-append-version="true"></script>
+
 @if (Model.Count() > 0)
 {
     <script>
@@ -29,15 +31,7 @@
 
     <div hidden>
         <form id="formPrincipal" asp-action="ConsultaCliente" asp-controller="Conferencia" method="post">
-            <input type="text" id="inputCliente" />
-
+            <input type="text" name="Cliente_ID" id="inputCliente" />
         </form>
     </div>
-
-    <script>
-        function EnviarForm(cliente_id) {
-            $("#inputCliente").val(cliente_id);
-            $("#formPrincipal").submit();
-        }
-    </script>
 </div>

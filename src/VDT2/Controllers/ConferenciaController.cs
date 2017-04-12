@@ -1146,18 +1146,28 @@ namespace VDT2.Controllers
 
             var clientes = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
 
+            TempData["Erro"] = "Erro ao listar Clientes";
+            return RedirectToRoute("Home/Index");
+
             if (clientes.Count() > 1)
             {
                 return View("NovaConsulta", clientes);
             }
+            else if (clientes.Count() == 0)
+            {
+                {
+                    return ConsultaCliente(clientes.FirstOrDefault().Cliente_ID);
+                }
+            }
             else
             {
-               return RedirectToAction("ConsultaCliente", clientes.FirstOrDefault().Cliente_ID);
+                TempData["Erro"] = "Erro ao listar Clientes";
+                return RedirectToRoute("Home/Index");
             }
         }
 
         [HttpPost]
-        public IActionResult ConsultaCliente(int id)
+        public IActionResult ConsultaCliente(int Cliente_ID)
         {
             string _mensagemErroLogin = "Erro ao receber Dados do usuário";
 
@@ -1185,18 +1195,18 @@ namespace VDT2.Controllers
 
             //Não é necessário pois não vou informar o nome do cliente. Apenas o ID / Caso precise informar na tela, pegar abaixo:
             //consultaVM.Cliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao).Where(p => p.Cliente_ID == id).FirstOrDefault();
-            consultaVM.Cliente = new Models.Cliente { Cliente_ID = id };
+            consultaVM.Cliente = new Models.Cliente { Cliente_ID = Cliente_ID };
             consultaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
             consultaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-            consultaVM.ListaMarca = BLL.InspecaoVeiculo.ListaMarca(id, configuracao);
-            consultaVM.ListaModelo = BLL.InspecaoVeiculo.ListaModelo(id, configuracao);
-            consultaVM.ListaArea = BLL.Avarias.ListarAreas(id, configuracao);
-            consultaVM.ListaCondicao = BLL.Avarias.ListarCondicoes(id, configuracao);
-            consultaVM.ListaDano = BLL.Avarias.ListarDanos(id, configuracao);
-            consultaVM.ListaQuadrante = BLL.Avarias.ListarQuadrantes(id, configuracao);
-            consultaVM.ListaGravidade = BLL.Avarias.ListarGravidades(id, configuracao);
-            consultaVM.ListaSeveridade = BLL.Avarias.ListarSeveridades(id, configuracao);
-            consultaVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(id, configuracao);
+            consultaVM.ListaMarca = BLL.InspecaoVeiculo.ListaMarca(Cliente_ID, configuracao);
+            consultaVM.ListaModelo = BLL.InspecaoVeiculo.ListaModelo(Cliente_ID, configuracao);
+            consultaVM.ListaArea = BLL.Avarias.ListarAreas(Cliente_ID, configuracao);
+            consultaVM.ListaCondicao = BLL.Avarias.ListarCondicoes(Cliente_ID, configuracao);
+            consultaVM.ListaDano = BLL.Avarias.ListarDanos(Cliente_ID, configuracao);
+            consultaVM.ListaQuadrante = BLL.Avarias.ListarQuadrantes(Cliente_ID, configuracao);
+            consultaVM.ListaGravidade = BLL.Avarias.ListarGravidades(Cliente_ID, configuracao);
+            consultaVM.ListaSeveridade = BLL.Avarias.ListarSeveridades(Cliente_ID, configuracao);
+            consultaVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(Cliente_ID, configuracao);
 
             return View("Consulta", consultaVM);
 
