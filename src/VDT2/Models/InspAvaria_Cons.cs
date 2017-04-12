@@ -3,6 +3,7 @@ using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace VDT2.Models
@@ -137,6 +138,34 @@ namespace VDT2.Models
         public int? SeveridadeCodigo { get; set; }
 
         public string Severidade_Pt { get; set; }
+
+
+        public string TextoLog()
+        {
+            StringBuilder sb = new StringBuilder();
+            sb.Append($" | Cliente: {this.Cliente_ID}");
+            sb.Append($" | Data Início: {this.DataInicio}");
+            sb.Append($" | Data Final: {this.DataFinal}");
+            sb.Append($" | Chassi: {this.Chassi}");
+            sb.Append($" | Local: {this.LocalInspecao}");
+            sb.Append($" | CheckPoint: {this.LocalCheckPoint}");
+            sb.Append($" | Transportador: {this.Transportador}");
+            sb.Append($" | Marca: {this.Marca}");
+            sb.Append($" | Modelo: {this.Modelo}");
+            sb.Append($" | Area: {this.Area}");
+            sb.Append($" | Condição: {this.Condicao}");
+            sb.Append($" | Dano: {this.Dano}");
+            sb.Append($" | Gravidade: {this.Gravidade}");
+            sb.Append($" | Quadrante: {this.Quadrante}");
+            sb.Append($" | Severidade: {this.Severidade}");
+            sb.Append($" | FabricaTransporte: {this.FabricaTransporte}");
+            sb.Append($" | DanoOrigem: {this.FabricaTransporte}");
+            sb.Append($" | Tipo Transportador: {this.TransportadorTipo}");
+            sb.Append($" | Frota/Viagem: {this.FrotaViagem}");
+            sb.Append($" | Navio: {this.FrotaViagem}");
+            return sb.ToString();
+
+        }
     }
 }
 

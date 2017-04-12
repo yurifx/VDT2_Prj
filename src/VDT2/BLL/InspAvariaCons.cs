@@ -48,14 +48,14 @@ namespace VDT2.BLL
 
             //Local Checkpoint
             if (consultaVM.LocalCheckPoint_ID != null)
-            { 
-            if (consultaVM.LocalCheckPoint_ID.Count() > 0)
             {
-                inspAvaria_Cons.LocalCheckPoint = "|";
-                foreach (var item in consultaVM.LocalCheckPoint_ID)
+                if (consultaVM.LocalCheckPoint_ID.Count() > 0)
                 {
-                    inspAvaria_Cons.LocalCheckPoint += Convert.ToString(item) + "|";
-                }
+                    inspAvaria_Cons.LocalCheckPoint = "|";
+                    foreach (var item in consultaVM.LocalCheckPoint_ID)
+                    {
+                        inspAvaria_Cons.LocalCheckPoint += Convert.ToString(item) + "|";
+                    }
                 }
                 else
                 {
@@ -263,13 +263,13 @@ namespace VDT2.BLL
                 inspAvaria_Cons.Severidade = "*";
             }
 
-            //TipoDano
+            //TipoDano (Fábrica ou Transporte?) //Se enviou nulo, pega todos
             if (consultaVM.Fabrica == "" && consultaVM.Transporte == "")
             {
                 inspAvaria_Cons.FabricaTransporte = "*";
             }
 
-            if (consultaVM.Fabrica == "on" && consultaVM.Transporte == "on")
+            else if (consultaVM.Fabrica == "on" && consultaVM.Transporte == "on")
             {
                 inspAvaria_Cons.FabricaTransporte = "*";
             }
@@ -293,7 +293,7 @@ namespace VDT2.BLL
                 inspAvaria_Cons.DanoOrigem = "*";
             }
 
-            //Tipo Transportador
+            //Tipo Transportador | M | ou | T |  -> Marítimo ou Terrestre
             if (consultaVM.TransportadorMaritimo == "" && consultaVM.TransportadorTerrestre == "")
             {
                 inspAvaria_Cons.TransportadorTipo = "*";
@@ -304,7 +304,7 @@ namespace VDT2.BLL
             }
             else if (consultaVM.TransportadorMaritimo == "")
             {
-                inspAvaria_Cons.TransportadorTipo = "|F|";
+                inspAvaria_Cons.TransportadorTipo = "|T|";
             }
             else
             {
@@ -327,26 +327,12 @@ namespace VDT2.BLL
             inspAvaria_Cons.Navio = consultaVM.NavioNome;
 
 
-            StringBuilder sb = new StringBuilder();
-            sb.Append($"| Cliente: {inspAvaria_Cons.Cliente_ID}");
-            sb.Append($"| Chassi: {inspAvaria_Cons.Chassi}");
-            sb.Append($"| Local: {inspAvaria_Cons.LocalInspecao}");
-            sb.Append($"| CheckPoint: {inspAvaria_Cons.LocalCheckPoint}");
-            sb.Append($"| Transportador: {inspAvaria_Cons.Transportador}");
-            sb.Append($"| Marca: {inspAvaria_Cons.Marca}");
-            sb.Append($"| Modelo: {inspAvaria_Cons.Modelo}");
-            sb.Append($"| Area: {inspAvaria_Cons.Area}");
-            sb.Append($"| Condição: {inspAvaria_Cons.Condicao}");
-            sb.Append($"| Dano: {inspAvaria_Cons.Dano}");
-            sb.Append($"| Gravidade: {inspAvaria_Cons.Gravidade}");
-            sb.Append($"| Quadrante: {inspAvaria_Cons.Quadrante}");
-            sb.Append($"| Severidade: {inspAvaria_Cons.Severidade}");
-
+            string a = inspAvaria_Cons.TextoLog();
 
             Diag.Log.Grava(new Diag.LogItem
             {
                 Nivel = Diag.Nivel.Informacao,
-                Mensagem = sb.ToString()
+                Mensagem = inspAvaria_Cons.TextoLog()
             });
 
 

@@ -15,7 +15,7 @@
     padding: 0;
     overflow: hidden;
     cursor: pointer;
-    border: 1px solid #aaa;
+    border: 0px solid #fff;
     text-align: left;
     white-space: nowrap;
     line-height: 26px;
@@ -184,6 +184,7 @@
 
 .ms-drop input[type="checkbox"] {
     vertical-align: middle;
+    margin: 0px 4px;
 }
 
 .ms-drop .ms-no-results {

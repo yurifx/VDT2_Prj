@@ -10,7 +10,7 @@
 
 
 <script src="~/lib/multiple-select/multiple-select.js"></script>
-<link href="~/lib/multiple-select/multiple-select.css" rel="stylesheet" />
+<link href="~/lib/multiple-select/multiple-select.css" rel="stylesheet" asp-append-version="true" />
 
 <form asp-controller="Conferencia" asp-action="ListarConsulta" method="post" id="ListarConsultaForm">
 
@@ -286,21 +286,25 @@
 <script>
     $('#ListaMarca').multipleSelect(
         {
+            filter: true,
             placeholder: "Selecione Marca"
         });
     $('#ListaModelo').multipleSelect(
         {
+            filter: true,
             placeholder: "Selecione Modelo"
         }
     );
     $("#avAreaLista").multipleSelect(
         {
+            filter: true,
             placeholder: "Selecione Área"
         });
     $("#avCondicaoLista").multipleSelect({
         placeholder: "Selecione Condicao"
     });
     $("#avDanoRepositorioLista").multipleSelect({
+        filter: true,
         placeholder: "Selecione Dano"
     });
     $("#avGravidadeLista").multipleSelect(
@@ -317,6 +321,7 @@
         });
     $('#ListaTransportador').multipleSelect(
         {
+            filter: true,
             placeholder: "Selecione Transportador"
         });
     $('#ListaLocalCheckPoint').multipleSelect(
