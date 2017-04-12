@@ -6,17 +6,38 @@
     Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
 }
 <br />
+
+
+@if (Model.Count() > 0)
+{
+    <script>
+
+    </script>
+}
+
+
 <div class="container">
     <div class="row form-group">
         <h1>Escolha um cliente para continuar..</h1><br />
         @foreach (var item in Model)
         {
             <ul>
-                <li><a href="./ConsultaCliente/?id=@item.Cliente_ID">@item.Nome</a></li>
+                <li><a id="@item.Cliente_ID" onclick="EnviarForm(@item.Cliente_ID)">@item.Nome</a></li>
             </ul>
         }
-
-        
-
     </div>
+
+    <div hidden>
+        <form id="formPrincipal" asp-action="ConsultaCliente" asp-controller="Conferencia" method="post">
+            <input type="text" id="inputCliente" />
+
+        </form>
+    </div>
+
+    <script>
+        function EnviarForm(cliente_id) {
+            $("#inputCliente").val(cliente_id);
+            $("#formPrincipal").submit();
+        }
+    </script>
 </div>

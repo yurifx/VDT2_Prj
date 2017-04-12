@@ -20,6 +20,7 @@
 
   <ItemGroup>
     <Content Include="wwwroot\js\Conferencia\ConferenciaEditarFotos.js" />
+    <Content Include="wwwroot\js\Conferencia\ConferenciaNovaConsulta.js" />
     <Content Include="wwwroot\js\Inspecao\InspecaoEditarAvarias.js" />
   </ItemGroup>
 

@@ -1144,14 +1144,19 @@ namespace VDT2.Controllers
 
             #endregion
 
-
             var clientes = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
 
-
-            return View("NovaConsulta", clientes);
+            if (clientes.Count() > 1)
+            {
+                return View("NovaConsulta", clientes);
+            }
+            else
+            {
+               return RedirectToAction("ConsultaCliente", clientes.FirstOrDefault().Cliente_ID);
+            }
         }
 
-        [HttpGet]
+        [HttpPost]
         public IActionResult ConsultaCliente(int id)
         {
             string _mensagemErroLogin = "Erro ao receber Dados do usuário";
