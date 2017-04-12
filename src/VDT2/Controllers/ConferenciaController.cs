@@ -4,7 +4,7 @@
 // <author>Amauri Rodrigues & Yuri Vasconcelos</author>
 // <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
-// <summary>Controllers de Conferencia</summary>
+// <summary>Controllers de Conferência</summary>
 
 using System;
 using System.Collections.Generic;
@@ -1121,6 +1121,13 @@ namespace VDT2.Controllers
         /// <returns>Retorna tela inicial de consultas</returns>
         public IActionResult NovaConsulta()
         {
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = "",
+                
+            });
+
             string _mensagemErroLogin = "Erro ao receber Dados do usuário";
 
             #region recebeDadosUsuario
@@ -1146,9 +1153,6 @@ namespace VDT2.Controllers
 
             var clientes = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
 
-            TempData["Erro"] = "Erro ao listar Clientes";
-            return RedirectToRoute("Home/Index");
-
             if (clientes.Count() > 1)
             {
                 return View("NovaConsulta", clientes);
@@ -1161,14 +1165,35 @@ namespace VDT2.Controllers
             }
             else
             {
-                TempData["Erro"] = "Erro ao listar Clientes";
-                return RedirectToRoute("Home/Index");
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Mensagem = "Erro ao listar clientes - Action NovaConsulta / Controller Conferência",
+                    Nivel = Diag.Nivel.Erro
+                });
+
+                TempData["MensagemErro"] = "Erro ao listar Clientes";
+                return RedirectToAction("Index", "Home");
+
             }
         }
 
+
+        /// <summary>
+        /// Verifica os dados do cliente e exibe a próxima view (Consulta) contendo informações pertinentes a este cliente
+        /// </summary>
+        /// <param name="Cliente_ID"></param>
+        /// <returns></returns>
         [HttpPost]
         public IActionResult ConsultaCliente(int Cliente_ID)
         {
+
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: ConsultaCliente | Parametros {Cliente_ID}"
+            });
+            
+
             string _mensagemErroLogin = "Erro ao receber Dados do usuário";
 
             #region recebeDadosUsuario
@@ -1195,6 +1220,7 @@ namespace VDT2.Controllers
 
             //Não é necessário pois não vou informar o nome do cliente. Apenas o ID / Caso precise informar na tela, pegar abaixo:
             //consultaVM.Cliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao).Where(p => p.Cliente_ID == id).FirstOrDefault();
+
             consultaVM.Cliente = new Models.Cliente { Cliente_ID = Cliente_ID };
             consultaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
             consultaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
@@ -1212,10 +1238,22 @@ namespace VDT2.Controllers
 
         }
 
+
+        /// <summary>
+        /// Realiza a listagem de dados referente aos parametros informados pelo usuário
+        /// </summary>
+        /// <param name="consultaVM"></param>
+        /// <returns></returns>
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
         {
-            //Receber Cliente ID
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: ListarConsulta"
+            });
+
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
+
             consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
 
             consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Cons.Count();

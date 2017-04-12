@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 using VDT2.Models;
 using VDT2.ViewModels;
@@ -324,6 +325,29 @@ namespace VDT2.BLL
 
             //NAVIO
             inspAvaria_Cons.Navio = consultaVM.NavioNome;
+
+
+            StringBuilder sb = new StringBuilder();
+            sb.Append($"| Cliente: {inspAvaria_Cons.Cliente_ID}");
+            sb.Append($"| Chassi: {inspAvaria_Cons.Chassi}");
+            sb.Append($"| Local: {inspAvaria_Cons.LocalInspecao}");
+            sb.Append($"| CheckPoint: {inspAvaria_Cons.LocalCheckPoint}");
+            sb.Append($"| Transportador: {inspAvaria_Cons.Transportador}");
+            sb.Append($"| Marca: {inspAvaria_Cons.Marca}");
+            sb.Append($"| Modelo: {inspAvaria_Cons.Modelo}");
+            sb.Append($"| Area: {inspAvaria_Cons.Area}");
+            sb.Append($"| Condição: {inspAvaria_Cons.Condicao}");
+            sb.Append($"| Dano: {inspAvaria_Cons.Dano}");
+            sb.Append($"| Gravidade: {inspAvaria_Cons.Gravidade}");
+            sb.Append($"| Quadrante: {inspAvaria_Cons.Quadrante}");
+            sb.Append($"| Severidade: {inspAvaria_Cons.Severidade}");
+
+
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = sb.ToString()
+            });
 
 
             listacons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);

@@ -1,7 +1,4 @@
 ﻿$(function () {
-   
-
-
 })
 
 function EnviarForm(cliente_id) {

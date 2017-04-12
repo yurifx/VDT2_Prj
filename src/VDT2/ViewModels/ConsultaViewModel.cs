@@ -1,6 +1,7 @@
 ﻿using System;
 using System.Collections.Generic;
 using System.Linq;
+using System.Text;
 using System.Threading.Tasks;
 
 namespace VDT2.ViewModels
@@ -45,6 +46,7 @@ namespace VDT2.ViewModels
 
         public DateTime DataInicial {get;set;}
         public DateTime DataFinal { get; set; }
+
 
     }
 }
