@@ -10,11 +10,12 @@
 
 
 <script src="~/lib/multiple-select/multiple-select.js"></script>
+<script src="~/js/Conferencia/ConferenciaConsulta.js" asp-append-version="true"></script>
 <link href="~/lib/multiple-select/multiple-select.css" rel="stylesheet" asp-append-version="true" />
 
 <form asp-controller="Conferencia" asp-action="ListarConsulta" method="post" id="ListarConsultaForm">
 
-    <div>
+    <div hidden>
         <input type="text" value="@Model.Cliente.Cliente_ID" name="Cliente.Cliente_ID" />
         @*@Html.TextBoxFor(model => model.Cliente.Cliente_ID)*@ 
     </div>
@@ -30,25 +31,25 @@
         </ul>
 
         <div class="tab-content">
-            <div id="home" class="tab-pane fade in active">
-                <div class="form-group">
+            <div id="home" class="painelTelaConsulta tab-pane fade in active">
+                <div class="">
                     <br />
 
                     <!--Primeira coluna de Datas-->
                     <div class="row">
                         @*DATA INICIO*@
-                        <div class="col col-lg-1 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col col-lg-1 col-md-2 col-sm-2 col-xs-12">
                             <label>Data Inicial</label>
                         </div>
-                        <div class="colcol-lg-2 col-md-2 col-sm-10 col-xs-10">
+                        <div class="colcol-lg-2 col-md-2 col-sm-10 col-xs-12">
                             <input type="date" name="DataInicial" class="inputsTelaConferenciaConsulta form-control" />
                         </div>
 
                         @*DATA FINAL*@
-                        <div class="col col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-2 col-xs-12">
                             <label>Data Final</label>
                         </div>
-                        <div class="col col-lg-6 col-md-6 col-sm-10 col-xs-10">
+                        <div class="col col-lg-6 col-md-5 col-sm-10 col-xs-12">
                             <input type="date" name="DataFinal" class="inputsTelaConferenciaConsulta form-control" />
                         </div>
                     </div>
@@ -63,7 +64,7 @@
                         </div>
 
                         <div class="col-lg-2 col-md-2 col-sm-10 col-xs-10">
-                            <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="inputsTelaConferenciaConsulta form-control" multiple="multiple" onchange="PreencheListaCheckPoint()"
+                            <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="inputsTelaConferenciaConsulta form-control" multiple="multiple"
                                     asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))"></select>
                         </div>
                         @*Local CheckPoint*@
@@ -94,7 +95,7 @@
                             <label>Navio</label>
                         </div>
                         <div class="col-lg-6 col-md-2 col-sm-2 col-xs-2">
-                            <input name="NavioNome" type="text" class="inputsTelaConferenciaConsulta form-control" />
+                            <input name="NavioNome" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos"/>
                         </div>
                     </div>
 
@@ -129,14 +130,14 @@
                             <label>Frota ou Viagem</label>
                         </div>
                         <div class="col-lg-10 col-md-2 col-sm-10 col-xs-10">
-                            <input name="FrotaViagem" type="text" class="inputsTelaConferenciaConsulta form-control" />
+                            <input name="FrotaViagem" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos"/>
                         </div>
 
                     </div>
                 </div>
             </div>
 
-            <div id="menu1" class="tab-pane fade">
+            <div id="menu1" class="painelTelaConsulta tab-pane fade">
                 <br />
 
 
@@ -147,7 +148,7 @@
                     </div>
                     <div class="col col-lg-11 col-md-11 col-sm-10 col-xs-10">
                         <input asp-for="VIN_6" id="" data-toggle="tooltip"
-                               title="Insira o Chassi do Veículo!" placeholder=""
+                               title="Insira o Chassi do Veículo!" placeholder="Todos"
                                value="@Model.VIN_6" maxlength="6" pattern=".{6,6}"
                                class="inputsTelaConferenciaConsulta form-control" autocomplete="off" />
                     </div>
@@ -180,7 +181,7 @@
                 </div>
             </div>
 
-            <div id="menu2" class="tab-pane fade">
+            <div id="menu2" class="painelTelaConsulta tab-pane fade">
                 <br />
 
                 <!--Primeiro row - Menu2 [Avarias]-->
@@ -258,15 +259,16 @@
 
                 <br/>
                 @*DEFEITO FABRICA*@
-                <label>Defeito de Fábrica</label>
-                <input name="Fabrica" type="checkbox" />
+                <label>Tipo Defeito:</label>
+                
+                Fábrica <input name="Fabrica" type="checkbox" />
 
                 @*DEFEITO TRANSPORTE*@
-                <label>Defeito de Transporte</label>
-                <input name="Transporte" type="checkbox" />
+                Transporte <input name="Transporte" type="checkbox" />
 
+                <br/>
 
-
+                <!--Mudar essa forma de pegar o dano origem-->
                 @*DANO ORIGEM*@
                 <label>Dano Origem</label>
                 <input name="DanoOrigem" type="checkbox" />
@@ -276,7 +278,7 @@
 
 
 
-    <div class="form-group">
+    <div class="botaoTelaConsulta">
         <br /><br />
         <button type="submit" class="btn btn-primary">Consultar</button>
         <br /><br />
@@ -287,50 +289,51 @@
     $('#ListaMarca').multipleSelect(
         {
             filter: true,
-            placeholder: "Selecione Marca"
+            placeholder: "Todas Marcas"
         });
     $('#ListaModelo').multipleSelect(
         {
             filter: true,
-            placeholder: "Selecione Modelo"
+            placeholder: "Todos Modelos"
         }
     );
     $("#avAreaLista").multipleSelect(
         {
             filter: true,
-            placeholder: "Selecione Área"
+            placeholder: "Todas Áreas"
         });
     $("#avCondicaoLista").multipleSelect({
-        placeholder: "Selecione Condicao"
+        placeholder: "Todas Condicões"
     });
     $("#avDanoRepositorioLista").multipleSelect({
         filter: true,
-        placeholder: "Selecione Dano"
+        placeholder: "Todos Danos"
     });
     $("#avGravidadeLista").multipleSelect(
         {
-            placeholder: "Selecione Gravidade"
+            placeholder: "Todas Gravidades"
         });
     $("#avQuadranteLista").multipleSelect(
         {
-            placeholder: "Selecione Quadrante"
+            placeholder: "Todos Quadrantes"
         });
     $('#avSeveridadeLista').multipleSelect(
         {
-            placeholder: "Selecione Severidade"
+            placeholder: "Todas Severidades"
         });
     $('#ListaTransportador').multipleSelect(
         {
             filter: true,
-            placeholder: "Selecione Transportador"
+            placeholder: "Todos Transportadores"
         });
     $('#ListaLocalCheckPoint').multipleSelect(
         {
-            placeholder: "Selecione LocalCheckPoint"
+            filter: true,
+            placeholder: "Todos CheckPoints"
         });
     $('#ListaLocalInspecao').multipleSelect(
         {
-            placeholder: "Selecione LocalInspecao"
+            placeholder: "Todos Locais"
         });
 </script>
 

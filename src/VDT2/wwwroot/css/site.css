@@ -385,6 +385,7 @@ min-height: 36px;
 
 }
 
+
 .inputsTelaConferenciaConsulta {
     min-width: 200px;
     min-height: 35px;
@@ -577,10 +578,23 @@ min-height: 36px;
 }
 
 
+
+/* < View Conferencia / Consulta> */
+.painelTelaConsulta{
+    padding-left: 2%;
+    padding-top: 2%;
+    margin-bottom: 3%;
+}
+
+.botaoTelaConsulta{
+ padding-left: 30px;
+
+
+}
+
+
 /* < DISPOSITIVOS COM TELAS GRANDES SUPERIOR A 780px >*/
-
 @media only screen and (min-device-width:780px) {
-
     /* todos */
     .alert-success {
         max-width: 68%;
