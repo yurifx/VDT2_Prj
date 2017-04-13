@@ -20,6 +20,8 @@ namespace VDT2.Models
         
         public string VIN_6 { get; set; }
 
+        public string VIN { get; set; }
+
         public int LocalCodigo { get; set; }
 
         public string LocalNome { get; set; }

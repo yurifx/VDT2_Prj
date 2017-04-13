@@ -205,13 +205,20 @@ function EsconderBotoesRemover() {
     $("#btnRemoverFoto10").hide(0);
 }
 
-//Esconde a foto no banco de daods
+//Esconde a foto e depois remove no banco de dados
 function RemoverFoto(i) {
     $("#btnRemoverFoto" + i).hide(0);
     $("#" + "inputFileImgAvaria" + i).val('');
     $('#imgpreview').hide(0);
     $('#visualizar' + i).hide(0);
-    $("#spanFoto" + i).css('background-color', 'white');
+    $("#spanFoto" + i).css('background-color', 'rgba(0, 0, 0, 0)');
+
+
+
+    var textoInputQtdFotosSelecionadas = $("#qtdFotosSelecionadas").val();
+    var qtdFotosSelecionadas = parseInt(textoInputQtdFotosSelecionadas, 10);
+    $("#qtdFotosSelecionadas").val(qtdFotosSelecionadas - 1);
+
 }
 
 
@@ -221,7 +228,7 @@ function MostrarFotosSelecionadas(i) {
     var qtdSelecionada = arquivosSelecionados.length;
     $('#spanFoto' + i).removeClass('glyphicon glyphicon-plus');
     $('#spanFoto' + i).addClass('glyphicon glyphicon-camera');
-
+      
 
     var count = i + 1;
     $("#spanFoto" + count).show(0);
@@ -239,6 +246,11 @@ function MostrarFotosSelecionadas(i) {
     $("#imgpreview").hide(0);
     var input = $("#" + "inputFileImgAvaria" + i);
     readURL(input[0]);
+
+    var textoInputQtdFotosSelecionadas = $("#qtdFotosSelecionadas").val();
+    var qtdFotosSelecionadas = parseInt(textoInputQtdFotosSelecionadas, 10);
+    $("#qtdFotosSelecionadas").val(qtdFotosSelecionadas + 1);
+
 }
 
 
@@ -328,6 +340,16 @@ function severidadeDropDownInputFunc() {
 //Realiza a validação front-end do formulário
 function ValidarFormularioInserirAvaria() {
 
+
+    FotosValidadas = ValidarFotos();
+
+    if (!FotosValidadas){
+        alert('Por favor selecione uma foto');
+        $("#btnGravarAvarias").prop("disabled", false);
+        return false;
+    };
+
+
     var areaSelecionado = $("#avAreaLista").val();
     var condicaoSelecionado = $("#avCondicaoLista").val();
     var danoSelecionado = $("#avDanoRepositorioLista").val();
@@ -396,6 +418,68 @@ function ValidarFormularioInserirAvaria() {
     }
 }
 
+function ValidarFotos() {
+
+    //Neste caso validamos via cor. 
+    //Caso o layout mude, necessário mudar esta lógica também;
+    var qtdFotosSelecionadas = 0;
+
+    if ($("#spanFoto1").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto2").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto3").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto4").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto6").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto7").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto8").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto9").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto10").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if (qtdFotosSelecionadas > 0) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
 function VisualizarAvarias_BtnClick() {
     $("#visualizarAvariasForm").submit();
 }
@@ -426,5 +510,4 @@ function EnviarFormularioDesabilitarBotao(e) {
     //e = botão acionado
     $(e).prop("disabled", true);
     $("#formPrincipal").submit();
-
 }

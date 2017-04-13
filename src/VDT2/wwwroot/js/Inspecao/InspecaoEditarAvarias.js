@@ -357,6 +357,15 @@ function severidadeDropDownInputFunc() {
 
 function ValidarFormularioInserirAvaria() {
 
+    FotosValidadas = ValidarFotos();
+
+    if (!FotosValidadas) {
+        alert('Por favor selecione uma foto');
+        $("#btnGravarAvarias").prop("disabled", false);
+        return false;
+    };
+
+
     var areaSelecionado = $("#avAreaLista").val();
     var condicaoSelecionado = $("#avCondicaoLista").val();
     var danoSelecionado = $("#avDanoRepositorioLista").val();
@@ -419,6 +428,70 @@ function ValidarFormularioInserirAvaria() {
     }
 }
 
+function ValidarFotos() {
+
+    //Neste caso validamos via cor. 
+    //Caso o layout mude, necessário mudar esta lógica também;
+    var qtdFotosSelecionadas = 0;
+
+    if ($("#spanFoto1").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto2").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto3").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto4").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto6").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto7").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto8").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+
+    if ($("#spanFoto9").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if ($("#spanFoto10").css('background-color') == 'rgb(255, 219, 65)') {
+        qtdFotosSelecionadas += 1;
+    }
+
+    if (qtdFotosSelecionadas > 0) {
+        return true;
+    } else {
+        return false;
+    }
+
+}
+
+
+
 function VisualizarAvarias_BtnClick() {
     $("#visualizarAvariasForm").submit();
 }
@@ -476,6 +549,15 @@ function EnviarFormularioDesabilitarBotao(e) {
 }
 
 function ValidarFormularioInspecaoEditarAvarias() {
+
+    FotosValidadas = ValidarFotos();
+
+    if (!FotosValidadas) {
+        alert('Por favor selecione uma foto');
+        $("#btnGravar").prop("disabled", false);
+        return false;
+    };
+
 
     var Fabrica = $("#inputFabrica").is(":checked");
     var Transporte = $("#inputTransporte").is(":checked");

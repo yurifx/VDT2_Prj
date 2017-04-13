@@ -37,8 +37,7 @@ else
         </div>
 
         <div class="container">
-            
-
+       
             <form asp-controller="Inspecao" id="formPrincipal" asp-action="InserirAvaria" method="post" enctype="multipart/form-data" onsubmit="return ValidarFormularioInserirAvaria()">
                 <h4><strong>Dados da Avaria</strong></h4><br/>
                 <div class="form-group">
@@ -205,8 +204,7 @@ else
                         <p id="qtdFotosSelecionadas1"></p>
                         <a id="visualizar1">Foto</a>
                         <div hidden>
-                            <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(1)" />
-
+                            <input type="file" id="inputFileImgAvaria1" class="success" name="files" multiple accept="image/*" onchange="MostrarFotosSelecionadas(1)" required/>
                         </div>
                     </div>
 
