@@ -133,7 +133,7 @@ namespace VDT2.BLL
 
 
             var selectListMarca = new List<SelectListItem>(marcaList.Count + 1);
-            
+
             foreach (var item in marcaList)
             {
                 selectListMarca.Add(
@@ -193,16 +193,17 @@ namespace VDT2.BLL
         /// <param name="LocalInspecao_ID"></param>
         /// <param name="configuracao"></param>
         /// <returns>Verdadeiro ou falso, caso tenha integrado corretamente</returns>
-        public static bool IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, Configuracao configuracao)
+        public static List<Pendencia> IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, int LocalCheckPoint_ID, DateTime DataInspecao, Configuracao configuracao)
         {
+            List<Pendencia> pendencias = new List<Pendencia>();
             try
             {
-                DAL.InspVeiculo.IntegrarVIN(Cliente_ID, LocalInspecao_ID, configuracao);
-                return true;
+                pendencias = DAL.InspVeiculo.IntegrarVIN(Cliente_ID, LocalInspecao_ID, LocalCheckPoint_ID, DataInspecao, configuracao);
+                return pendencias;
             }
-            catch (Exception)
+            catch (Exception ex)
             {
-                return false;
+                return pendencias;
             }
         }
 

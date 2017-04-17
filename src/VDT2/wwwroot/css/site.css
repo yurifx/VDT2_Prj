@@ -385,6 +385,11 @@ min-height: 36px;
 
 }
 
+#btnPendencias {
+float: right;
+margin: 10px;
+}
+
 
 .inputsTelaConferenciaConsulta {
     min-width: 200px;
@@ -588,10 +593,8 @@ min-height: 36px;
 
 .botaoTelaConsulta{
  padding-left: 30px;
-
-
+ 
 }
-
 
 /* < DISPOSITIVOS COM TELAS GRANDES SUPERIOR A 780px >*/
 @media only screen and (min-device-width:780px) {

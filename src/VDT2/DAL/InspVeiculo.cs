@@ -366,9 +366,11 @@ namespace VDT2.DAL
         /// <param name="LocalInspecao_ID"></param>
         /// <param name="configuracao"></param>
         /// <returns>retorna verdadeiro ou falso, caso tenha integrado</returns>
-        public static bool IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, Configuracao configuracao)
+        public static List<Pendencia> IntegrarVIN(int Cliente_ID, int LocalInspecao_ID, int LocalCheckPoint_ID, DateTime DataInspecao, Configuracao configuracao)
         {
             string nomeStoredProcedure = "IntegraVinVeiculos";
+            List<Pendencia> pendencias = new List<Pendencia>();
+
 
             try
             {
@@ -382,17 +384,30 @@ namespace VDT2.DAL
                     Value = LocalInspecao_ID
                 };
 
+                SqlParameter parmLocalCheckPoint_ID = new SqlParameter("@p_LocalCheckPoint_ID", SqlDbType.Int)
+                {
+                    Value = LocalCheckPoint_ID
+                };
+
+                SqlParameter parmDataInspecao = new SqlParameter("@p_DataInspecao", SqlDbType.DateTime)
+                {
+                    Value = DataInspecao
+                };
+
+
                 SqlParameter[] parametros = new SqlParameter[]
                 {
                     parmCliente_ID,
-                    parmLocalInspecao_ID
+                    parmLocalInspecao_ID,
+                    parmLocalCheckPoint_ID,
+                    parmDataInspecao
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmCliente_ID.ParameterName}, { parmLocalInspecao_ID.ParameterName}";
+                string chamada = $"{nomeStoredProcedure} {parmCliente_ID.ParameterName}, { parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPoint_ID.ParameterName}, {parmDataInspecao.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
-                    contexto.Database.ExecuteSqlCommand(chamada, parametros);
+                    pendencias = contexto.Pendencia.FromSql(chamada, parametros).ToList();
 
                     #region gravalogInformacao
                     Diag.Log.Grava(
@@ -403,7 +418,7 @@ namespace VDT2.DAL
                         });
                     #endregion
 
-                    return true;
+                    return pendencias;
                 }
             }
             catch (Exception ex)
@@ -416,7 +431,7 @@ namespace VDT2.DAL
                         Mensagem = $"BLL.InspVeiculo.ReceberVin Não realizado, Erro: {ex}"
                     });
                 #endregion
-                return false;
+                return pendencias;
             }
 
         }

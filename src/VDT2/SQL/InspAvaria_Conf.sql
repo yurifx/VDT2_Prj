@@ -14,6 +14,8 @@ Create Procedure dbo.InspAvaria_Conf
 -- 23/03/2017 - Adicionar filtro Cliente_ID
 -- 30/03/2017 - Adicionar campo: Custo
 -- 13/04/2017 - Adicionar o campo: VIN
+-- 17/04/2017 - LeftJoins na Avaria
+-- 17/04/2017 - Adicionar RowId
 ----------------------------------------------------------------------------------------------------
 (
 @p_Cliente_ID Int,
@@ -24,7 +26,9 @@ Create Procedure dbo.InspAvaria_Conf
 AS
 
 SET NOCOUNT ON
-Select i.Data, 
+Select 
+       iv.InspVeiculo_ID*100 + ISNULL(ia.InspAvaria_ID, 0) as RowID, --Primary key
+       i.Data, 
        i.Inspecao_ID,
 	   
 	   li.LocalInspecao_ID       as  LocalCodigo,
@@ -63,23 +67,27 @@ Select i.Data,
 	   q.AvQuadrante_ID          as  QuadranteCodigo,
 	   q.Nome_Pt                 as  Quadrante_Pt,
                                      
-     s.AvSeveridade_ID         as  SeveridadeCodigo,
+       s.AvSeveridade_ID         as  SeveridadeCodigo,
 	   s.Nome_Pt                 as  Severidade_Pt
                                       
 From InspVeiculo iv             
 
 Inner Join Inspecao         i    on  iv.Inspecao_ID         =    i.Inspecao_ID
-Inner Join InspAvaria       ia   on  iv.InspVeiculo_ID      =   ia.InspVeiculo_ID
-Inner Join Marca            ma   on  iv.Marca_ID            =   ma.Marca_ID
-Inner Join Modelo           mo   on  iv.Modelo_ID           =   mo.Modelo_ID
-Inner Join avArea           a    on   a.AvArea_ID           =   ia.AvArea_ID
-Inner Join AvCondicao       c    on   c.AvCondicao_ID       =   ia.AvCondicao_ID
-Inner Join AvDano           d    on   d.AvDano_ID           =   ia.AvDano_ID
-Inner Join AvGravidade      g    on   g.AvGravidade_ID      =   ia.AvGravidade_ID
-Inner Join AvQuadrante      q    on   q.AvQuadrante_ID      =   ia.AvQuadrante_ID
-Inner Join AvSeveridade     s    on   s.AvSeveridade_ID     =   ia.AvSeveridade_ID
 Inner Join LocalInspecao    li   on  li.LocalInspecao_ID    =    i.LocalInspecao_ID
 Inner Join LocalCheckPoint  lc   on  lc.LocalCheckPoint_ID  =    i.LocalCheckPoint_ID
+
+Inner Join Marca            ma   on  iv.Marca_ID            =   ma.Marca_ID
+Inner Join Modelo           mo   on  iv.Modelo_ID           =   mo.Modelo_ID
+
+--Testes Yuri 17/04/2017
+Left  Join InspAvaria       ia   on  iv.InspVeiculo_ID      =   ia.InspVeiculo_ID
+Left  Join avArea           a    on   a.AvArea_ID           =   ia.AvArea_ID
+Left  Join AvCondicao       c    on   c.AvCondicao_ID       =   ia.AvCondicao_ID
+Left  Join AvDano           d    on   d.AvDano_ID           =   ia.AvDano_ID
+Left  Join AvGravidade      g    on   g.AvGravidade_ID      =   ia.AvGravidade_ID
+Left  Join AvQuadrante      q    on   q.AvQuadrante_ID      =   ia.AvQuadrante_ID
+Left  Join AvSeveridade     s    on   s.AvSeveridade_ID     =   ia.AvSeveridade_ID
+
 
 Where  i.Data               =    @p_Data
  and   i.LocalInspecao_ID   =    @p_LocalInspecao_ID
@@ -87,7 +95,7 @@ Where  i.Data               =    @p_Data
  and   i.Cliente_ID         =    @p_Cliente_ID
 
 /*
-EXEC InspAvaria_Conf 1, 1, '03/30/2017'
+EXEC InspAvaria_Conf 1, 2, 5, '2017-04-17'
 */
 
 -- FIM

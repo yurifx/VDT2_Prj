@@ -45,7 +45,8 @@ namespace VDT2.DAL
         public DbSet<Models.ListaVeiculos> ListaVeiculos { get; set; }
         public DbSet<Models.ListaVeiculosVin> ListaVeiculosVin { get; set; }
         public DbSet<Models.InspAvaria_Cons> InspAvaria_Cons { get; set; }
-        
+        public DbSet<Models.Pendencia> Pendencia { get; set; }
+
         /// <summary>
         /// Construtor da classe
         /// </summary>

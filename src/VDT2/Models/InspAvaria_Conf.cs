@@ -12,7 +12,9 @@ namespace VDT2.Models
         public DateTime Data { get; set; }
 
         [Key]
-        public int InspAvaria_ID { get; set; }
+        public int RowID { get; set; }
+
+        public int? InspAvaria_ID { get; set; }
 
         public int Inspecao_ID { get; set; }
 
@@ -38,33 +40,33 @@ namespace VDT2.Models
 
         public string ModeloNome { get; set; }
 
-        public int AreaCodigo { get; set; }
+        public int? AreaCodigo { get; set; }
 
         public string Area_Pt { get; set; }
 
-        public int CondicaoCodigo { get; set; }
+        public int? CondicaoCodigo { get; set; }
 
         public string Condicao_Pt { get; set; }
 
-        public int DanoCodigo { get; set; }
+        public int? DanoCodigo { get; set; }
 
         public string Dano_Pt { get; set; }
 
-        public int GravidadeCodigo { get; set; }
+        public int? GravidadeCodigo { get; set; }
 
         public string Gravidade_Pt { get; set; }
 
-        public int QuadranteCodigo { get; set; }
+        public int? QuadranteCodigo { get; set; }
 
         public string Quadrante_Pt { get; set; }
 
-        public int SeveridadeCodigo { get; set; }
+        public int? SeveridadeCodigo { get; set; }
 
         public string Severidade_Pt { get; set; }
 
         public string FabricaTransporte { get; set; }
 
-        public bool DanoOrigem { get; set; }
+        public bool? DanoOrigem { get; set; }
 
         public decimal? Custo { get; set; }
         }

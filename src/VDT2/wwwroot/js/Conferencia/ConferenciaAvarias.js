@@ -9,7 +9,13 @@
 
 
 function Btn_Click_EditarAvaria(valor) {
-    $("#avariaIdFormSubmit").val(valor);
+
+    var veiculo_avaria = valor.split(';');
+    var veiculo = veiculo_avaria[0];
+    var avaria = veiculo_avaria[1];
+
+    $("#inputVeiculoIdFormSubmit").val(veiculo);
+    $("#inputAvariaIdFormSubmit").val(avaria);
     $("#editarAvariaForm").submit();
 }
 

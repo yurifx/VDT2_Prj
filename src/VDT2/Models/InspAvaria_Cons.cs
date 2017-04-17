@@ -15,7 +15,6 @@ namespace VDT2.Models
         //Dados a serem enviados.
         public int Cliente_ID { get; set; }
 
-
         public string Chassi { get; set; }
 
         [NotMapped]

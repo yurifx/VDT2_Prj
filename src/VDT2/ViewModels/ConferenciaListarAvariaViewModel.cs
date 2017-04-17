@@ -10,6 +10,7 @@ using System;
 using System.Collections.Generic;
 using System.Linq;
 using System.Threading.Tasks;
+using VDT2.Models;
 
 namespace VDT2.ViewModels
     {
@@ -22,6 +23,7 @@ namespace VDT2.ViewModels
         public string LocalInspecao { get; set; }
         public string LocalCheckPoint { get; set; }
         public Models.Usuario Usuario { get; set; }
+        public List<Pendencia> Pendencias { get; set; }
 
         }
     }
