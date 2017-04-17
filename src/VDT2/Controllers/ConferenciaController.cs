@@ -1288,9 +1288,7 @@ namespace VDT2.Controllers
             consultaVM.ListaTransportador = BLL.Inspecao.ListarTransportadores(Cliente_ID, configuracao);
 
             return View("Consulta", consultaVM);
-
         }
-
 
         /// <summary>
         /// Realiza a listagem de dados referente aos parametros informados pelo usuário

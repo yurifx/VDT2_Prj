@@ -34,7 +34,8 @@ While @Posicao > 0 Begin
     Set @Inspecao = LEFT(@InspecaoAux, @Posicao-1)
 
     --Aqui realiza a atualizacao
-    Update Inspecao set Publicado = 1, PublicadoPor = @p_Usuario_ID, PublicacaoData = SYSDATETIME()
+    Update Inspecao 
+    set Publicado = 1, PublicadoPor = @p_Usuario_ID, PublicacaoData = SYSDATETIME()
     Where Inspecao_Id = @Inspecao
 
 
@@ -43,11 +44,13 @@ While @Posicao > 0 Begin
 
     --Verifica se existe mais algum ponto e virgula, caso não exista sai do loop
     Set @Posicao =  CharIndex(';', @InspecaoAux)
-
 End
 
 
 /*
-exec publicar 1, '11;3;5'
+declare @p_inspecoes varchar(40)
+set @p_inspecoes = '0005;23;33;'
+exec publicar 1, @p_inspecoes
+select * from Inspecao where inspecao_id in (5,13,23,33)
 */
 
