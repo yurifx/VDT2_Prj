@@ -171,6 +171,28 @@ namespace VDT2.Controllers
 
                         //Lista todas as avarias dos referentes ao cliente/localInspecao e LocalCheckPoint informados
                         listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
+
+
+                        //Realiza a concatenação de inspeções para mandar p/ View
+                        StringBuilder sbInspecao = new StringBuilder();
+                        int auxInspecao = 0;
+                        int inspecaoAtual = 0;
+                        if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
+                        {
+                            foreach (var item in listarConferenciaAvariaVM.ListaInspAvaria_Conf)
+                            { 
+                                //Lógica utilizada para não receber valores duplicados
+                                auxInspecao = item.Inspecao_ID;
+                                if (auxInspecao != inspecaoAtual)
+                                {
+                                    sbInspecao.Append($"{item.Inspecao_ID};");
+                                    inspecaoAtual = item.Inspecao_ID;
+                                }
+                            }
+                        }
+
+                        listarConferenciaAvariaVM.ConcatInspecoes = sbInspecao.ToString();
+
                         if (listarConferenciaAvariaVM.ListaInspAvaria_Conf == null)
                         {
                             ViewData["MensagemErro"] = _mensagemErro;
@@ -666,7 +688,7 @@ namespace VDT2.Controllers
                 conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
                 conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
                 conferenciaLoadingListVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
-                
+
                 #region EM_ERRO
                 if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
                 {
@@ -772,7 +794,7 @@ namespace VDT2.Controllers
                 {
                     ViewData["MensagemErro"] = conferenciaPackingListVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
                 }
-                
+
                 return View("PackingListInicio", conferenciaPackingListVM);
             }
 
@@ -858,6 +880,13 @@ namespace VDT2.Controllers
                     ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
                 }
 
+
+                conferenciaLoadingListVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+                if (conferenciaLoadingListVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                }
+
                 //Verifica o arquivo enviado. 
                 if (files.Count() > 0)
                 {
@@ -868,6 +897,7 @@ namespace VDT2.Controllers
                             Cliente_ID = conferenciaLoadingListVM.Cliente_ID,
                             DataHoraInclusao = DateTime.Now,
                             LocalInspecao_ID = conferenciaLoadingListVM.LocalInspecao_ID,
+                            LocalCheckPoint_ID = conferenciaLoadingListVM.LocalCheckPoint_ID,
                             NomeArquivo = files.FirstOrDefault().FileName,
                             Tipo = 'L',
                             Usuario_ID = dadosUsuario.UsuarioId
@@ -1293,6 +1323,47 @@ namespace VDT2.Controllers
                 consultaVeiculosVM.PercentualSemAvaria = 100 - consultaVeiculosVM.PercentualAvariado;
             }
             return View("ConsultaVeiculos", consultaVeiculosVM);
+        }
+
+        /// <summary>
+        /// Publicar Veículos
+        /// </summary>
+        /// <param name="teste"></param>
+        /// <returns></returns>
+        public IActionResult Publicar(string concatInspecoes)
+        {
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: ConsultaCliente | Parametros {Cliente_ID}"
+            });
+
+
+            string _mensagemErroLogin = "Erro ao receber Dados do usuário";
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+            #endregion
+
+            var publicou = BLL.Inspecao.Publicar(dadosUsuario.UsuarioId, concatInspecoes, configuracao);
+
+            return View();
         }
     }
 }

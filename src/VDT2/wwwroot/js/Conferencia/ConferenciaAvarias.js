@@ -29,3 +29,12 @@ function EnviarFormularioDesabilitarBotao(e) {
     $(e).prop("disabled", "true");
     $("#formPrincipal").submit();
 }
+
+function Voltar() {
+    $("#frmVoltar").submit();
+}
+
+
+function Publicar() {
+    $("#frmPublicar").submit();
+}

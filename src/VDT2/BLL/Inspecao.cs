@@ -633,5 +633,12 @@ namespace VDT2.BLL
                 return listaTransportadores;
             }
         }
+
+
+        public static bool Publicar(int UsuarioId, string Inspecoes, Configuracao configuracao)
+        {
+            bool publicou = DAL.Inspecao.Publicar(UsuarioId, Inspecoes, configuracao);
+            return true;    
+        }
     }
 }

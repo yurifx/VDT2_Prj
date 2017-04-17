@@ -36,26 +36,26 @@ Where i.Cliente_ID = @p_Cliente_ID
  and   v.VIN_6 = lvv.VIN_6
  and   v.VIN is null
 
-
-
+ 
+--Recebe a lista de Veículos encontrados na tabela ListaVeículosVin, porém não há registro de Inspeção
 Select 'L' as Tipo, lvv.VIN_6
 From ListaVeiculosVin lvv
 
-inner join ListaVeiculos lv on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
-left  join ( select iv.InspVeiculo_ID, iv.vin_6 from InspVeiculo iv 
-                   inner join Inspecao i      on iv.Inspecao_ID = i.Inspecao_ID 
-                   where i.LocalInspecao_ID   = @p_LocalInspecao_ID
-                    and  i.LocalCheckPoint_ID = @p_LocalCheckPoint_ID
-                    and  i.Data = @p_DataInspecao) as Veiculos
+Inner Join ListaVeiculos lv on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
+Left  Join ( Select iv.InspVeiculo_ID, iv.vin_6 from InspVeiculo iv 
+                   inner join Inspecao i        on iv.Inspecao_ID = i.Inspecao_ID 
+                   Where i.LocalInspecao_ID   = @p_LocalInspecao_ID
+                    and  i.LocalCheckPoint_ID = @p_LocalCheckPoint_ID) as Veiculos
 
-      on lvv.VIN_6 = Veiculos.VIN_6
-      where lv.LocalInspecao_ID = @p_LocalInspecao_ID
-       and  lv.LocalCheckPoint_ID = @p_LocalCheckPoint_ID
-       and  Veiculos.InspVeiculo_ID is null
+                on lvv.VIN_6 = Veiculos.VIN_6
 
-union 
+        Where lv.LocalInspecao_ID = @p_LocalInspecao_ID
+         and  lv.LocalCheckPoint_ID = @p_LocalCheckPoint_ID
+         and  Veiculos.InspVeiculo_ID is null
+Union 
 
-select 'V' as Tipo, iv.VIN_6 from InspVeiculo iv
+--Recebe a lista de veículos encontrados que não estão em nenhuma Lista, Ou seja, Não tem VIN;
+Select 'V' as Tipo, iv.VIN_6 from InspVeiculo iv
 
 inner join Inspecao i on i.Inspecao_ID = iv.Inspecao_ID
     where iv.VIN is null

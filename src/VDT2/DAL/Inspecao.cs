@@ -305,5 +305,15 @@ namespace VDT2.DAL
             }
 
         }
+
+
+
+        public static bool Publicar(int UsuarioId, string Inspecoes, Configuracao configuracao)
+        {
+
+
+
+            return true;
+        }
     }
 }

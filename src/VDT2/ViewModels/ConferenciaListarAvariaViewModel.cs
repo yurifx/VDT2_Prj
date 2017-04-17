@@ -24,6 +24,6 @@ namespace VDT2.ViewModels
         public string LocalCheckPoint { get; set; }
         public Models.Usuario Usuario { get; set; }
         public List<Pendencia> Pendencias { get; set; }
-
+        public string ConcatInspecoes { get; set; }
         }
     }
