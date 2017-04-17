@@ -21,6 +21,8 @@ namespace VDT2.Models
 
         public int LocalInspecao_ID { get; set; }
 
+        public int LocalCheckPoint_ID { get; set; }
+
         public char Tipo { get; set; }
 
         public ListaVeiculos()

@@ -133,33 +133,39 @@
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
                                 <h4 class="modal-title">Visualizar Pendências</h4>
                             </div>
+                            
                             <div class="modal-body">
-                                @if(Model.Pendencias.Count() > 0) { 
-                                <h4><strong>Veículo Inspecionado sem Lista </strong></h4>
-                                <ul>
-                                    @foreach (var item in Model.Pendencias)
+                                <div class="divListarConferenciaAvariasPendencias">
+                                    @if (Model.Pendencias.Count() > 0)
                                     {
-                                        if (item.Tipo == "V")
-                                        {
-                                            <li>@item.VIN_6</li>
-                                        }
+                                        <h4><strong>Veículo Inspecionado sem Lista </strong></h4>
+                                        <ul>
+                                            @foreach (var item in Model.Pendencias)
+                                            {
+                                                if (item.Tipo == "V")
+                                                {
+                                                    <li>@item.VIN_6</li>
+                                                }
+                                            }
+                                        </ul>
                                     }
-                                </ul>
-                                }
+                                </div>
                             </div>
 
                             <div class="modal-body">
-                                <h4><strong>Lista sem Veículo Inspecionado</strong></h4>
-                                <ul>
-                                    @foreach (var item in Model.Pendencias)
-                                    {
-                                        if (item.Tipo == "L")
+                                <div class="divListarConferenciaAvariasPendencias">
+                                    <h4><strong>Lista sem Veículo Inspecionado</strong></h4>
+                                    <ul>
+                                        @foreach (var item in Model.Pendencias)
                                         {
-                                            <li>@item.VIN_6</li>
+                                            if (item.Tipo == "L")
+                                            {
+                                                <li>@item.VIN_6</li>
+                                            }
                                         }
-                                    }
-                                </ul>
-                            </div>
+                                    </ul>
+                                    </div>
+                                </div>
 
                             <div class="modal-footer">
                                 <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>

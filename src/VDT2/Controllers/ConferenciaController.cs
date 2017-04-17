@@ -452,6 +452,7 @@ namespace VDT2.Controllers
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+                listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
 
                 if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                 {
@@ -664,6 +665,8 @@ namespace VDT2.Controllers
                 ConferenciaLoadingListViewModel conferenciaLoadingListVM = new ConferenciaLoadingListViewModel();
                 conferenciaLoadingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
                 conferenciaLoadingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
+                conferenciaLoadingListVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+                
                 #region EM_ERRO
                 if (conferenciaLoadingListVM.ListaCliente.FirstOrDefault().Erro == true)
                 {
@@ -673,7 +676,14 @@ namespace VDT2.Controllers
                 {
                     ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
                 }
+
+                if (conferenciaLoadingListVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = conferenciaLoadingListVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                }
+
                 #endregion
+
 
                 return View("LoadingListInicio", conferenciaLoadingListVM);
             }
@@ -756,6 +766,13 @@ namespace VDT2.Controllers
                     ViewData["MensagemErro"] = conferenciaPackingListVM.ListaLocalInspecao.FirstOrDefault().MensagemErro;
                 }
 
+                conferenciaPackingListVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
+
+                if (conferenciaPackingListVM.ListaLocalCheckPoint.FirstOrDefault().Erro == true)
+                {
+                    ViewData["MensagemErro"] = conferenciaPackingListVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
+                }
+                
                 return View("PackingListInicio", conferenciaPackingListVM);
             }
 
@@ -826,9 +843,6 @@ namespace VDT2.Controllers
             ViewData["UsuarioNome"] = dadosUsuario.Nome;
             ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
             #endregion
-
-
-
 
             try
             {
@@ -965,6 +979,7 @@ namespace VDT2.Controllers
 
                 conferenciaPackingListVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
                 conferenciaPackingListVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
+                conferenciaPackingListVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
 
                 if (files.Count() > 0)
                 {
@@ -973,11 +988,12 @@ namespace VDT2.Controllers
                         Models.ListaVeiculos listaVeiculos = new ListaVeiculos
                         {
                             Cliente_ID = conferenciaPackingListVM.Cliente_ID,
+                            Usuario_ID = dadosUsuario.UsuarioId,
                             DataHoraInclusao = DateTime.Now,
                             LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
+                            LocalCheckPoint_ID = conferenciaPackingListVM.LocalCheckPoint_ID,
                             NomeArquivo = files.FirstOrDefault().FileName,
-                            Tipo = 'P',
-                            Usuario_ID = dadosUsuario.UsuarioId
+                            Tipo = 'P'
                         };
 
                         listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);

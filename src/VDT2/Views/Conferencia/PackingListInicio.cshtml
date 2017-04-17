@@ -6,6 +6,7 @@
         Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
     }
 
+<script src="~/js/Conferencia/ConferenciaPackingList.js" asp-append-version="true"></script>
 
     <form asp-controller="Conferencia" asp-action="PackingListSalvar" method="post" enctype="multipart/form-data">
 
@@ -54,6 +55,21 @@
                     </select>
                 </div>
             </div>
+
+
+            @*Local CheckPoint*@
+            <div class="row form-group">
+                <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                    <label for="ListaLocalCheckPoint">Local CheckPoint</label>
+                </div>
+                <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                    <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
+                            asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
+                        <option disabled selected>Selecione CheckPoint</option>
+                    </select>
+                </div>
+            </div>
+
 
             @*ARQUIVO*@
             <div class="row form-group">

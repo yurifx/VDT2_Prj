@@ -385,9 +385,18 @@ min-height: 36px;
 
 }
 
+.divListarConferenciaAvariasPendencias {
+
+    max-height: 600px;
+    min-height: 150px;
+    overflow-y:auto;
+}
+
+
+
 #btnPendencias {
-float: right;
-margin: 10px;
+    float: right;
+    margin: 10px;
 }
 
 

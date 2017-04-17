@@ -57,6 +57,11 @@ namespace VDT2.DAL
                     Value = listaVeiculos.LocalInspecao_ID
                 };
 
+                SqlParameter parmLocalCheckPointID = new SqlParameter("@p_LocalCheckPoint_ID", SqlDbType.Int)
+                {
+                    Value = listaVeiculos.LocalCheckPoint_ID
+                };
+
                 SqlParameter parmTipo = new SqlParameter("@p_Tipo", SqlDbType.Char)
                 {
                     Value = listaVeiculos.Tipo
@@ -75,11 +80,12 @@ namespace VDT2.DAL
                     parmUsuarioID,
                     parmNomeArquivo,
                     parmLocalInspecaoID,
+                    parmLocalCheckPointID,
                     parmTipo,
                     parmListaVeiculo_ID
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmTipo.ParameterName}, {parmListaVeiculo_ID.ParameterName} out";
+                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmListaVeiculo_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
