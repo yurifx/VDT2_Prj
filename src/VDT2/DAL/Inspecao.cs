@@ -307,13 +307,67 @@ namespace VDT2.DAL
         }
 
 
-
+        /// <summary>
+        /// Camada de acesso aos dados Publicar
+        /// </summary>
+        /// <param name="UsuarioId">Usuario que está publicando</param>
+        /// <param name="Inspecoes">String concatenada contendo as inspeções delimitadas por ponto e virgula</param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
         public static bool Publicar(int UsuarioId, string Inspecoes, Configuracao configuracao)
         {
+            string nomeStoredProcedure = "Publicar";
+            try
+            {
+                SqlParameter parmUsuarioID = new SqlParameter("@p_Usuario_ID", SqlDbType.Int)
+                {
+                    Value = UsuarioId
+                };
+
+                SqlParameter parmInspecoes = new SqlParameter("@p_Inspecoes", SqlDbType.VarChar)
+                {
+                    Value = Inspecoes
+                };
+
+                SqlParameter[] parametros = new SqlParameter[]
+               {
+                    parmUsuarioID,
+                    parmInspecoes
+               };
+
+                string chamada = $"{nomeStoredProcedure} {parmUsuarioID.ParameterName}, {parmInspecoes.ParameterName}";
+
+                using (var contexto = new GeralDbContext(configuracao))
+                {
+                    contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"Inspecao.Publicar realizado com sucesso:  Dados atualizados"
+                        });
+                    #endregion
+                    return true;
+                }
+
+            }
+            catch (Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
+                        Excecao = ex
+                    });
+                #endregion
+                throw;
+            }
 
 
-
-            return true;
         }
     }
 }

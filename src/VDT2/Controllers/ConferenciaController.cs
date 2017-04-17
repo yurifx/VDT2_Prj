@@ -829,8 +829,6 @@ namespace VDT2.Controllers
                     Nivel = Diag.Nivel.Informacao,
                     Mensagem = $"Action acionada: LoadingListSalvar | Parametros {conferenciaLoadingListVM.TextoLog()}"
                 });
-
-
             #endregion
 
             bool salvou = false;
@@ -1122,7 +1120,6 @@ namespace VDT2.Controllers
                 ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
             }
 
-
             if (!conferenciaEditarAvariasVM.InspAvaria.Erro)
             {
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
@@ -1335,7 +1332,7 @@ namespace VDT2.Controllers
             Diag.Log.Grava(new Diag.LogItem
             {
                 Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: ConsultaCliente | Parametros {Cliente_ID}"
+                Mensagem = $"Action acionada: Publicar | Parametros: ConcatInspecoes: {concatInspecoes}"
             });
 
 
@@ -1362,6 +1359,8 @@ namespace VDT2.Controllers
             #endregion
 
             var publicou = BLL.Inspecao.Publicar(dadosUsuario.UsuarioId, concatInspecoes, configuracao);
+
+            ViewData["MensagemSucesso"] = "Publicação realizada com sucesso.";
 
             return View();
         }

@@ -405,18 +405,18 @@ namespace VDT2.BLL
                 inspecao.MensagemErro = _mensagemErro;
 
                 #region gravalogerro
-                    Diag.Log.Grava(
-                        new Diag.LogItem()
-                        {
-                            Nivel = Diag.Nivel.Erro,
-                            Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Update | Erro: {ex}",
-                            Excecao = ex
-                        });
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Update | Erro: {ex}",
+                        Excecao = ex
+                    });
                 #endregion  
 
                 return inspecao;
-                }
             }
+        }
 
 
         /// <summary>
@@ -438,7 +438,7 @@ namespace VDT2.BLL
             {
                 inspecao.Erro = true;
                 inspecao.MensagemErro = _mensagemErro;
-                
+
                 #region gravalogerro
                 Diag.Log.Grava(
                     new Diag.LogItem()
@@ -637,8 +637,16 @@ namespace VDT2.BLL
 
         public static bool Publicar(int UsuarioId, string Inspecoes, Configuracao configuracao)
         {
-            bool publicou = DAL.Inspecao.Publicar(UsuarioId, Inspecoes, configuracao);
-            return true;    
+            try
+            {
+               return DAL.Inspecao.Publicar(UsuarioId, Inspecoes, configuracao);
+               
+            }
+            catch (Exception ex)
+            {
+                return false;
+            }
+
         }
     }
 }
