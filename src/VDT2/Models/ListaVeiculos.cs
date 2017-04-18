@@ -25,6 +25,8 @@ namespace VDT2.Models
 
         public char Tipo { get; set; }
 
+        public string Lote { get; set; } = "";
+
         public ListaVeiculos()
         {
             NomeArquivo = "";

@@ -67,6 +67,12 @@ namespace VDT2.DAL
                     Value = listaVeiculos.Tipo
                 };
 
+                SqlParameter parmLote = new SqlParameter("@p_Lote", SqlDbType.Char)
+                {
+                    Value = listaVeiculos.Lote
+                };
+
+
                 SqlParameter parmListaVeiculo_ID = new SqlParameter("@p_ListaVeiculo_ID", SqlDbType.Int)
                 {
                     Value = 1,
@@ -82,10 +88,11 @@ namespace VDT2.DAL
                     parmLocalInspecaoID,
                     parmLocalCheckPointID,
                     parmTipo,
+                    parmLote,
                     parmListaVeiculo_ID
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmListaVeiculo_ID.ParameterName} out";
+                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmLote.ParameterName}, {parmListaVeiculo_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {

@@ -897,6 +897,7 @@ namespace VDT2.Controllers
                             LocalCheckPoint_ID = conferenciaLoadingListVM.LocalCheckPoint_ID,
                             NomeArquivo = files.FirstOrDefault().FileName,
                             Tipo = 'L',
+                            Lote = conferenciaLoadingListVM.Lote,
                             Usuario_ID = dadosUsuario.UsuarioId
                         };
 
@@ -1020,7 +1021,8 @@ namespace VDT2.Controllers
                             LocalInspecao_ID = conferenciaPackingListVM.LocalInspecao_ID,
                             LocalCheckPoint_ID = conferenciaPackingListVM.LocalCheckPoint_ID,
                             NomeArquivo = files.FirstOrDefault().FileName,
-                            Tipo = 'P'
+                            Tipo = 'P',
+                            Lote = conferenciaPackingListVM.Lote
                         };
 
                         listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);

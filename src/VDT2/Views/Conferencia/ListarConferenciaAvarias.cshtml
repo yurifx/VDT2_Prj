@@ -169,7 +169,7 @@
                                 </div>
 
                             <div class="modal-footer">
-                                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="LiberarPublicacao()"> Liberar Publicação Com Pendências</button>
+                                <button type="button" class="btn btn-warning"  data-dismiss="modal" data-toggle="modal" data-target="#publicarModalConfirmacao"> Liberar Publicação Com Pendências</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
                             </div>
                         </div>
@@ -204,6 +204,30 @@
                 <input type="text" name="concatInspecoes" value="@Model.ConcatInspecoes"/>
             </form>
            }
+
+        </div>
+    </div>
+
+
+
+    <!-- Modal -->
+    <div id="publicarModalConfirmacao" class="modal fade" role="dialog">
+        <div class="modal-dialog">
+
+            <!-- Modal content-->
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal">&times;</button>
+                    <h4 class="modal-title">Confirmação</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Confirmar liberação?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal"> Não</button>
+                    <button type="button" class="btn btn-danger"  data-dismiss="modal" onclick="LiberarPublicacao()"> Sim</button>
+                </div>
+            </div>
 
         </div>
     </div>

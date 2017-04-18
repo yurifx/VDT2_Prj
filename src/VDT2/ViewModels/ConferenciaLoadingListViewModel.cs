@@ -22,6 +22,7 @@ namespace VDT2.ViewModels
         public int Cliente_ID { get; set; }
         public int LocalInspecao_ID { get; set; }
         public int LocalCheckPoint_ID { get; set; }
+        public string Lote { get; set; }
 
 
         public string TextoLog()

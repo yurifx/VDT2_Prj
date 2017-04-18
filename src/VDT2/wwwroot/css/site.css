@@ -399,7 +399,10 @@ min-height: 36px;
     margin: 10px;
 }
 
+.inputLoteTelaListas {
+min-width: 200px;
 
+}
 .inputsTelaConferenciaConsulta {
     min-width: 200px;
     min-height: 35px;
@@ -423,7 +426,7 @@ min-height: 36px;
     }
 
 .btn:hover span {
-    padding-right: 4px;
+    padding-right: 7px;
 }
 
     .btn:hover span:after {
@@ -584,7 +587,7 @@ min-height: 36px;
 }
 
 .btnNovaConferencia {
-    padding-left: 2%;
+    padding-left: 15px;
 }
 
 .custoConferencia {
@@ -594,8 +597,8 @@ min-height: 36px;
 
 
 /* < View Conferencia / Consulta> */
-.painelTelaConsulta{
-    padding-left: 2%;
+.painelTelaConsulta {
+    padding-left: 15px;
     padding-top: 2%;
     margin-bottom: 3%;
 }
@@ -694,7 +697,7 @@ min-height: 36px;
     }
 
     .DivDadosVeiculoInterno_TelaEditarAvarias {
-        padding-left: 2%;
+        padding-left: 15px;
         padding-top: 2%;
         max-width: 100%;
     }

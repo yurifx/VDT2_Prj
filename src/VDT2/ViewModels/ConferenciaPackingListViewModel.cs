@@ -22,13 +22,15 @@ namespace VDT2.ViewModels
         public int Cliente_ID { get; set; }
         public int LocalInspecao_ID { get; set; }
         public int LocalCheckPoint_ID { get; set; }
-
+        public string Lote { get; set; }
 
         public string TextoLog()
         {
             StringBuilder sbLog = new StringBuilder("Action acionada: LoadingListSalvar | Parametros ");
             sbLog.Append($"  | Cliente_ID {this.Cliente_ID}");
             sbLog.Append($"  | LocalInspecao_ID {this.LocalInspecao_ID}");
+            sbLog.Append($"  | LocalCheckPoint_ID {this.LocalCheckPoint_ID}");
+            sbLog.Append($"  | Lote {this.Lote}");
 
             return sbLog.ToString();
         }
