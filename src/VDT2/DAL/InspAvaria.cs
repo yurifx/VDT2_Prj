@@ -544,6 +544,19 @@ namespace VDT2.DAL
                     Value = InspAvaria_Cons.Transportador
                 };
 
+
+                //Lote
+                SqlParameter parmLote = new SqlParameter("@p_Lote", SqlDbType.VarChar)
+                {
+                    Value = DBNull.Value
+                };
+
+                if (!String.IsNullOrEmpty(InspAvaria_Cons.Lote))
+                {
+                    parmLote.Value = InspAvaria_Cons.Lote;
+                }
+
+
                 //Marca
                 SqlParameter parmMarca = new SqlParameter("@p_Marca", SqlDbType.VarChar)
                 {
@@ -652,6 +665,7 @@ namespace VDT2.DAL
                         parmLocalInspecao,
                         parmLocalCheckPoint,
                         parmTransportador,
+                        parmLote,
                         parmMarca,
                         parmModelo,
                         parmArea,
@@ -676,6 +690,7 @@ namespace VDT2.DAL
                     $"{parmLocalInspecao.ParameterName}," +
                     $"{parmLocalCheckPoint.ParameterName}, " +
                     $"{parmTransportador.ParameterName}, " +
+                    $"{parmLote.ParameterName}, " +
                     $"{parmMarca.ParameterName}, " +
                     $"{parmModelo.ParameterName}, " +
                     $"{parmArea.ParameterName}, " +

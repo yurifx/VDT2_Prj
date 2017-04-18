@@ -9,5 +9,5 @@ GO
 
 ALTER TABLE ListaVeiculos
   Add  LocalCheckPoint_ID   Int         NOT NULL,
-       Lote                 Varchar(50) NOT NULL default ""
+       Lote_ID              Int         NOT NULL
 GO

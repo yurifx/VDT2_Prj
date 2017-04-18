@@ -27,6 +27,8 @@ namespace VDT2.Models
 
         public string Lote { get; set; } = "";
 
+        public int Lote_ID { get; set; }
+
         public ListaVeiculos()
         {
             NomeArquivo = "";

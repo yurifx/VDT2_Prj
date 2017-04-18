@@ -18,6 +18,7 @@ Create Procedure dbo.InspAvaria_Cons
     @p_LocalInspecao          Varchar(100),
     @p_LocalCheckPoint        Varchar(100),
     @p_Transportador          Varchar(100),
+	@p_Lote                   Varchar(50),
     @p_Marca                  Varchar(100),
     @p_Modelo                 Varchar(100),
     @p_Area                   Varchar(100),
@@ -41,7 +42,6 @@ SET NOCOUNT ON
 
 Select 
 
-       
        iv.InspVeiculo_ID*100 + ISNULL(ia.InspAvaria_ID, 0) as RowID, --Primary key
 
        i.Data, 

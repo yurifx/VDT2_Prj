@@ -426,7 +426,7 @@ min-width: 200px;
     }
 
 .btn:hover span {
-    padding-right: 7px;
+    /*padding-right: 0.5%;*/
 }
 
     .btn:hover span:after {

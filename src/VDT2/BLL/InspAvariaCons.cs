@@ -90,6 +90,11 @@ namespace VDT2.BLL
                 inspAvaria_Cons.Transportador = "*";
             }
 
+
+            //Lote
+            inspAvaria_Cons.Lote = consultaVM.Lote;
+
+
             //Marcas
             if (consultaVM.Marca_ID != null)
             {

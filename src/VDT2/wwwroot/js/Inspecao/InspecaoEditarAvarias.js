@@ -552,13 +552,6 @@ function ValidarFormularioInspecaoEditarAvarias() {
 
     FotosValidadas = ValidarFotos();
 
-    if (!FotosValidadas) {
-        alert('Por favor selecione uma foto');
-        $("#btnGravar").prop("disabled", false);
-        return false;
-    };
-
-
     var Fabrica = $("#inputFabrica").is(":checked");
     var Transporte = $("#inputTransporte").is(":checked");
 

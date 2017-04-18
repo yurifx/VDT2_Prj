@@ -43,10 +43,9 @@ namespace VDT2.ViewModels
         public string TransportadorTerrestre { get; set; } = "";
         public string FrotaViagem { get; set; } = "";
         public string NavioNome { get; set; } = "";
+        public string Lote { get; set; } = "";
 
         public DateTime DataInicial {get;set;}
         public DateTime DataFinal { get; set; }
-
-
     }
 }

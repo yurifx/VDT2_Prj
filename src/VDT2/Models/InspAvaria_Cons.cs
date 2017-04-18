@@ -27,6 +27,9 @@ namespace VDT2.Models
         public string Transportador { get; set; }
 
         [NotMapped]
+        public string Lote { get; set; } 
+
+        [NotMapped]
         public string Marca { get; set; }
 
         [NotMapped]

@@ -79,6 +79,12 @@ namespace VDT2.DAL
                     Direction = ParameterDirection.Output
                 };
 
+                SqlParameter parmLoteID = new SqlParameter("@p_Lote_ID", SqlDbType.Int)
+                {
+                    Value = 1,
+                    Direction = ParameterDirection.Output
+                };
+
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
@@ -89,16 +95,18 @@ namespace VDT2.DAL
                     parmLocalCheckPointID,
                     parmTipo,
                     parmLote,
-                    parmListaVeiculo_ID
+                    parmListaVeiculo_ID,
+                    parmLoteID
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmLote.ParameterName}, {parmListaVeiculo_ID.ParameterName} out";
+                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmLote.ParameterName}, {parmListaVeiculo_ID.ParameterName} out, {parmLoteID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
 
                     listaVeiculos.ListaVeiculo_ID = (int)parmListaVeiculo_ID.Value;
+                    listaVeiculos.Lote_ID = (int)parmLoteID.Value;
 
                     #region gravalogInformacao
                     Diag.Log.Grava(
