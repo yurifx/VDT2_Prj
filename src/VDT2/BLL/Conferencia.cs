@@ -57,7 +57,7 @@ namespace VDT2.BLL
         /// <param name="files">Arquivo enviado</param>
         /// <param name="configuracao"></param>
         /// <returns></returns>
-        public static bool IntegrarArquivoLoadingPackingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+        public static bool IntegrarArquivoLoadingPackingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, int lote_ID, Configuracao configuracao)
         {
             try
             {
@@ -83,7 +83,7 @@ namespace VDT2.BLL
                     if (linha.Length == 17)
                     {
                         Models.ListaVeiculosVin VeiculoVin = new Models.ListaVeiculosVin { ListaVeiculos_ID = ListaVeiculo_ID, VIN = linha };
-                        DAL.ListaVeiculosVin.Inserir(VeiculoVin, configuracao);
+                        DAL.ListaVeiculosVin.Inserir(VeiculoVin, lote_ID, configuracao);
                     }
                 }
 
