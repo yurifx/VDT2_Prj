@@ -1,8 +1,8 @@
 ﻿// <copyright file="ConferenciaController.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Yuri Vasconcelos</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Controllers de Conferência</summary>
 
@@ -175,19 +175,18 @@ namespace VDT2.Controllers
 
                         //Realiza a concatenação de inspeções para mandar p/ View
                         StringBuilder sbInspecao = new StringBuilder();
-                        int auxInspecao = 0;
-                        int inspecaoAtual = 0;
                         if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                         {
+                            HashSet<int> controle = new HashSet<int>();
+                            
                             foreach (var item in listarConferenciaAvariaVM.ListaInspAvaria_Conf)
                             { 
                                 //Lógica utilizada para não receber valores duplicados
-                                auxInspecao = item.Inspecao_ID;
-                                if (auxInspecao != inspecaoAtual)
-                                {
+                                if (!controle.Contains(item.Inspecao_ID)) {
                                     sbInspecao.Append($"{item.Inspecao_ID};");
-                                    inspecaoAtual = item.Inspecao_ID;
+                                    controle.Add(item.Inspecao_ID);
                                 }
+                    
                             }
                         }
 
@@ -1292,7 +1291,7 @@ namespace VDT2.Controllers
 
         /// <summary>
         /// Realiza a listagem de dados referente aos parametros informados pelo usuário
-        /// </summary>
+            /// </summary>
         /// <param name="consultaVM"></param>
         /// <returns></returns>
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)

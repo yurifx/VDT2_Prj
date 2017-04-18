@@ -35,7 +35,7 @@ While @Posicao > 0 Begin
 
     --Aqui realiza a atualizacao
     Update Inspecao 
-    set Publicado = 1, PublicadoPor = @p_Usuario_ID, PublicacaoData = SYSDATETIME()
+    Set Publicado = 1, PublicadoPor = @p_Usuario_ID, PublicacaoData = SYSDATETIME()
     Where Inspecao_Id = @Inspecao
 
 
@@ -50,7 +50,7 @@ End
 /*
 declare @p_inspecoes varchar(40)
 set @p_inspecoes = '0005;23;33;'
-exec publicar 1, @p_inspecoes
+exec publicar 6, @p_inspecoes
 select * from Inspecao where inspecao_id in (5,13,23,33)
 */
 

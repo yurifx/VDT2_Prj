@@ -5,6 +5,18 @@
             $(this).text("Visualizar");
         });
     }
+
+
+    var qtdPendencias = $("#inputQtdPendencias").val();
+    qtdPendencias = parseInt(qtdPendencias);
+    
+    if (qtdPendencias > 0) {
+        $("#btnPublicar").prop("disabled", true);
+    }
+    else {
+        $("#btnPublicar").prop("disabled", false);
+    }
+
 });
 
 
@@ -37,4 +49,8 @@ function Voltar() {
 
 function Publicar() {
     $("#frmPublicar").submit();
+}
+
+function LiberarPublicacao() {
+    $("#btnPublicar").prop("disabled", false);
 }

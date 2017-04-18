@@ -11,7 +11,7 @@
 <div class="hidden">
     @if (Model.Usuario != null)
     {
-        <p>Altera Inifecao? </p><input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao " />
+        <p>Altera Inspeção? </p><input type="text" id="hiddenAlteraInspecao" value="@Model.Usuario.AlteraInspecao " />
     }
 </div>
 
@@ -40,6 +40,7 @@
     @if (Model.Pendencias != null)
     {
         <button id='btnPendencias' data-toggle="modal" data-target="#pendenciasModal" class="btn btn-sm btn-danger"> Pendências <span class="badge">@Model.Pendencias.Count()</span></button>
+        <input type="text" id="inputQtdPendencias" value="@Model.Pendencias.Count()" hidden/>
     }
     <div class="container">
         <div class="row">
@@ -131,14 +132,14 @@
                         <div class="modal-content">
                             <div class="modal-header">
                                 <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Visualizar Pendências</h4>
+                                <h4 class="modal-title">Pendências</h4>
                             </div>
                             
                             <div class="modal-body">
                                 <div class="divListarConferenciaAvariasPendencias">
                                     @if (Model.Pendencias.Count() > 0)
                                     {
-                                        <h4><strong>Veículo Inspecionado sem Lista </strong></h4>
+                                        <h4><strong>Veículos inspecionados não encontrados nas listas </strong></h4>
                                         <ul>
                                             @foreach (var item in Model.Pendencias)
                                             {
@@ -154,7 +155,7 @@
 
                             <div class="modal-body">
                                 <div class="divListarConferenciaAvariasPendencias">
-                                    <h4><strong>Lista sem Veículo Inspecionado</strong></h4>
+                                    <h4><strong>Veículos sem registro de inspeção</strong></h4>
                                     <ul>
                                         @foreach (var item in Model.Pendencias)
                                         {
@@ -168,6 +169,7 @@
                                 </div>
 
                             <div class="modal-footer">
+                                <button type="button" class="btn btn-warning" data-dismiss="modal" onclick="LiberarPublicacao()"> Liberar Publicação Com Pendências</button>
                                 <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
                             </div>
                         </div>
@@ -190,7 +192,7 @@
             </form>
 
             <input type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" value="Voltar" onClick="Voltar()">
-            <input type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()">
+            <input type="button" id="btnPublicar" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()">
             <br /><br /><br />
 
             <form id="frmVoltar" asp-controller="Home" asp-action="Index" method="post">
