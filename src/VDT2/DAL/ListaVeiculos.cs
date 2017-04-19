@@ -119,7 +119,6 @@ namespace VDT2.DAL
 
                     return listaVeiculos;
                 }
-
             }
 
             catch (Exception ex)

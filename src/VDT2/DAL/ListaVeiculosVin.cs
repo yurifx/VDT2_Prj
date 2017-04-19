@@ -30,7 +30,7 @@ namespace VDT2.DAL
         /// <param name="VeiculoVIN"></param>
         /// <param name="configuracao"></param>
         /// <returns></returns>
-        public static Models.ListaVeiculosVin Inserir(Models.ListaVeiculosVin VeiculoVIN, int Lote_ID, Configuracao configuracao)
+        public static Models.ListaVeiculosVin Inserir(Models.ListaVeiculosVin VeiculoVIN, Configuracao configuracao)
         {
             string nomeStoredProcedure = "ListaVeiculosVin_Ins";
             try
@@ -45,11 +45,11 @@ namespace VDT2.DAL
                     Value = VeiculoVIN.VIN
                 };
 
-
-                SqlParameter parmLoteID = new SqlParameter("@p_Lote_ID", SqlDbType.Char)
-                {
-                    Value = Lote_ID
-                };
+                ////Não estamos mais utilizando
+                //SqlParameter parmLoteID = new SqlParameter("@p_Lote_ID", SqlDbType.Char)
+                //{
+                //    Value = Lote_ID
+                //};
 
                 SqlParameter parmListaVeiculosVin_ID = new SqlParameter("@p_ListaVeiculosVin_ID", SqlDbType.Int)
                 {
@@ -61,7 +61,7 @@ namespace VDT2.DAL
                 {
                     parmListaVeiculos_ID,
                     parmVIN,
-                    parmLoteID,
+                    //parmLoteID,
                     parmListaVeiculosVin_ID
                 };
 
