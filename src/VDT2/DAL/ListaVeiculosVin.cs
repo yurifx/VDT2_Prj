@@ -65,7 +65,7 @@ namespace VDT2.DAL
                     parmListaVeiculosVin_ID
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmListaVeiculos_ID.ParameterName}, {parmVIN.ParameterName}, {parmLoteID.ParameterName}, {parmListaVeiculosVin_ID.ParameterName} out";
+                string chamada = $"{nomeStoredProcedure} {parmListaVeiculos_ID.ParameterName}, {parmVIN.ParameterName}, {parmListaVeiculosVin_ID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
