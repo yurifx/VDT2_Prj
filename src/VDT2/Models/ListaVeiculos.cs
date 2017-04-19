@@ -23,7 +23,7 @@ namespace VDT2.Models
 
         public int LocalCheckPoint_ID { get; set; }
 
-        public char Tipo { get; set; }
+        public string TipoLista { get; set; } //P - Packing, L- Loading, D- Discharging
 
         public string Lote { get; set; } = "";
 

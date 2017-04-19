@@ -90,7 +90,7 @@
                     <div class="row">
                         <div class="btnNovaConferencia col col-lg-12 col-md-12 col-sm-12 col-xs-12">
                             <button type="submit" class="btnTelaNovaConferencia btn btn-sm btn-success">Listar</button>
-                            <input type="button" class="btnTelaNovaConferencia btn btn-sm btn-primary" value="Voltar" onClick="history.go(-1)"><br /><br />
+                            <input type="button" class="btnTelaNovaConferencia btn btn-sm btn-primary" value="Voltar" onClick="Voltar()"><br /><br />
                         </div>
                     </div>
                 
@@ -100,3 +100,11 @@
 
     </div>
 </div>
+
+<script>
+    function Voltar() {
+        $("#frmVoltar").submit();
+    }
+</script>
+
+<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>

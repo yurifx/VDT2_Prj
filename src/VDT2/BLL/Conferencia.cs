@@ -53,11 +53,11 @@ namespace VDT2.BLL
         /// Realiza integração do arquivo de Loading ou PackingList
         /// </summary>
         /// <param name="ListaVeiculo_ID"></param>
-        /// <param name="tipo">Tipo: "P" = Packing, "L" = Loading</param>
+        /// <param name="Tipo">Tipo: "P" = Packing, "L" = Loading</param>
         /// <param name="files">Arquivo enviado</param>
         /// <param name="configuracao"></param>
         /// <returns></returns>
-        public static bool IntegrarArquivoLoadingPackingList(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+        public static bool IntegrarArquivoLista(int ListaVeiculo_ID, string Tipo, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
             {
@@ -67,11 +67,17 @@ namespace VDT2.BLL
                 string mesdia = DateTime.Now.ToString("MMdd");
                 string ano = DateTime.Now.ToString("yyyy");
 
-                if (tipo == 'P')
+                if (Tipo == "P")
                 {
                     path = Path.Combine(serverpath, "Arquivos", "PackingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
-                else
+
+                else if (Tipo == "L")
+                {
+                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
+                }
+
+                else if (Tipo == "D")
                 {
                     path = Path.Combine(serverpath, "Arquivos", "LoadingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }

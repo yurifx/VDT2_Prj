@@ -11,6 +11,7 @@ Create Procedure dbo.IntegraVinVeiculos
 ----------------------------------------------------------------------------------------------------
 -- Realiza update do VIN na tabela InspVeiculo recebendo os dados da Tabela ListaVeiculos 
 -- 17/04/2017 Alterações para mostrar pendências após update
+-- 19/04/2017 Alterações para registrar o lote
 ----------------------------------------------------------------------------------------------------
 (
 @p_Cliente_ID  Int,
@@ -23,13 +24,14 @@ AS
 SET NOCOUNT ON
 
 Update InspVeiculo  
-   Set VIN = lvv.VIN
-
+   Set VIN     = lvv.VIN, 
+       Lote_ID = lv.Lote_ID
+   
 From InspVeiculo v
 
-Inner Join Inspecao           i on i.Inspecao_ID       = v.Inspecao_ID
-Inner Join ListaVeiculos     lv on i.Cliente_ID        = lv.Cliente_ID and lv.LocalInspecao_ID = i.LocalInspecao_ID
-Inner Join ListaVeiculosVin lvv on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
+Inner Join Inspecao           i  on i.Inspecao_ID       =   v.Inspecao_ID
+Inner Join ListaVeiculos     lv  on i.Cliente_ID        =  lv.Cliente_ID and lv.LocalInspecao_ID = i.LocalInspecao_ID
+Inner Join ListaVeiculosVin lvv  on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
 
 Where i.Cliente_ID = @p_Cliente_ID
  and   i.LocalInspecao_ID = @p_LocalInspecao_ID

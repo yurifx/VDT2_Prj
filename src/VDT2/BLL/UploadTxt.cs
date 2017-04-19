@@ -28,11 +28,11 @@ namespace VDT2.BLL
 /// Salva o arquivo que o usuário enviou no input
 /// </summary>
 /// <param name="ListaVeiculo_ID">Após a inserção do cabeçalho no banco de dados, enviar o seu ID</param>
-/// <param name="tipo">Tipo: "P" - PackingList,  "L" - LoadingList</param>
+/// <param name="tipolista">Tipo: "P" - PackingList,  "L" - LoadingList</param>
 /// <param name="files">arquivo do usuário</param>
 /// <param name="configuracao">configurações do appsettings</param>
 /// <returns></returns>
-        public static bool SalvarArquivo(int ListaVeiculo_ID, char tipo, ICollection<IFormFile> files, Configuracao configuracao)
+        public static bool SalvarArquivo(int ListaVeiculo_ID, string tipolista, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try
             {
@@ -42,13 +42,17 @@ namespace VDT2.BLL
                 string mesdia = DateTime.Now.ToString("MMdd");
                 string ano = DateTime.Now.ToString("yyyy");
 
-                if (tipo == 'P')
+                if (tipolista == "P")
                 {
                     path = Path.Combine(serverpath, "Arquivos", "PackingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID));
                 }
-                else
+                else if (tipolista == "L")
                 {
                     path = Path.Combine(serverpath, "Arquivos", "LoadingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID));
+                }
+                else
+                {
+                    path = Path.Combine(serverpath, "Arquivos", "DischargingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID));
                 }
 
 

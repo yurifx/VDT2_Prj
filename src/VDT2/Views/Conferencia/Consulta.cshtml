@@ -17,7 +17,7 @@
 
     <div hidden>
         <input type="text" value="@Model.Cliente.Cliente_ID" name="Cliente.Cliente_ID" />
-        @*@Html.TextBoxFor(model => model.Cliente.Cliente_ID)*@ 
+        @*@Html.TextBoxFor(model => model.Cliente.Cliente_ID)*@
     </div>
 
 
@@ -95,12 +95,12 @@
                             <label>Navio</label>
                         </div>
                         <div class="col-lg-6 col-md-2 col-sm-2 col-xs-2">
-                            <input name="NavioNome" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos"/>
+                            <input name="NavioNome" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
                     </div>
 
                     <br />
-          
+
 
 
                     <!--Quarta Coluna Frota ou Viagem-->
@@ -112,7 +112,7 @@
                         </div>
 
                         <div class="col-lg-2 col-md-2 col-sm-10 col-xs-9">
-                            <input name="FrotaViagem" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos"/>
+                            <input name="FrotaViagem" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
 
                         @*LOTE*@
@@ -126,6 +126,8 @@
 
                     </div>
 
+                    <br />
+
                     <!--Quinta Coluna Tipos Transportador-->
                     <div class="row">
                         @*TRANSPORTE MARITIMO*@
@@ -133,7 +135,9 @@
                             <label>Transportadores Marítimos</label>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-10 col-xs-9">
-                            <input name="TransportadorMaritimo" type="checkbox" class="checkboxTelaConsulta" />
+                            <div class="checkboxTelaConsulta">
+                                <input name="TransportadorMaritimo" type="checkbox" class="checkboxTelaConsulta" />
+                            </div>
                         </div>
 
 
@@ -242,7 +246,7 @@
                                 asp-items="@(new SelectList(Model.ListaGravidade, "AvGravidade_ID", "Nome_Pt"))"></select>
                     </div>
 
-                
+
                 </div>
 
                 <br />
@@ -269,16 +273,16 @@
                     </div>
                 </div>
 
-                <br/>
+                <br />
                 @*DEFEITO FABRICA*@
                 <label>Tipo Defeito:</label>
-                
+
                 Fábrica <input name="Fabrica" type="checkbox" />
 
                 @*DEFEITO TRANSPORTE*@
                 Transporte <input name="Transporte" type="checkbox" />
 
-                <br/>
+                <br />
 
                 <!--Mudar essa forma de pegar o dano origem-->
                 @*DANO ORIGEM*@
@@ -292,11 +296,21 @@
 
     <div class="botaoTelaConsulta">
         <br /><br />
-        <button type="submit" class="btn btn-primary">Consultar</button>
+        <button type="submit" class="btn btn-success">Consultar</button>
+        <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
+        @*Poderia fazer via Actionlink*@
+        @*@Html.ActionLink("Voltar", "Index", "Home")*@
         <br /><br />
     </div>
 
 </form>
+<script>
+    function Voltar() {
+        $("#frmVoltar").submit();
+    }
+</script>
+
+<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>
 <script>
     $('#ListaMarca').multipleSelect(
         {

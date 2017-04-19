@@ -64,7 +64,7 @@ namespace VDT2.DAL
 
                 SqlParameter parmTipo = new SqlParameter("@p_Tipo", SqlDbType.Char)
                 {
-                    Value = listaVeiculos.Tipo
+                    Value = listaVeiculos.TipoLista
                 };
 
                 SqlParameter parmLote = new SqlParameter("@p_Lote", SqlDbType.Char)

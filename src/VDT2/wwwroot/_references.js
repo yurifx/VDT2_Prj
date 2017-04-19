@@ -3,7 +3,6 @@
 /// <reference path="js/conferencia/conferenciatelainicial.js" />
 /// <reference path="js/conferencia/editarconferencia.js" />
 /// <reference path="js/home.js" />
-/// <reference path="js/inspecao/editaravarias.js" />
 /// <reference path="js/inspecao/inspecaodadosgerais.js" />
 /// <reference path="js/inspecao/inspecaoregistraravarias.js" />
 /// <reference path="js/inspecao/inspecaoveiculo.js" />

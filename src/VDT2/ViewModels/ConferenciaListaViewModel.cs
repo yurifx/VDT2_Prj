@@ -14,7 +14,7 @@ using System.Threading.Tasks;
 
 namespace VDT2.ViewModels
 {
-    public class ConferenciaPackingListViewModel
+    public class ConferenciaListaViewModel
     {
         public List<Models.Cliente> ListaCliente { get; set; }
         public List<Models.LocalInspecao> ListaLocalInspecao { get; set; }
@@ -22,6 +22,7 @@ namespace VDT2.ViewModels
         public int Cliente_ID { get; set; }
         public int LocalInspecao_ID { get; set; }
         public int LocalCheckPoint_ID { get; set; }
+        public string TipoLista { get; set; }
         public string Lote { get; set; }
 
         public string TextoLog()
@@ -31,6 +32,7 @@ namespace VDT2.ViewModels
             sbLog.Append($"  | LocalInspecao_ID {this.LocalInspecao_ID}");
             sbLog.Append($"  | LocalCheckPoint_ID {this.LocalCheckPoint_ID}");
             sbLog.Append($"  | Lote {this.Lote}");
+            sbLog.Append($"  | Tipo Lista {this.TipoLista}");
 
             return sbLog.ToString();
         }

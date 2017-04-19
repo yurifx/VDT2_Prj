@@ -42,11 +42,6 @@ function EnviarFormularioDesabilitarBotao(e) {
     $("#formPrincipal").submit();
 }
 
-function Voltar() {
-    $("#frmVoltar").submit();
-}
-
-
 function Publicar() {
     $("#frmPublicar").submit();
 }

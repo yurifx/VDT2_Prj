@@ -23,7 +23,7 @@
     <Content Include="wwwroot\js\Conferencia\ConferenciaEditarFotos.js" />
     <Content Include="wwwroot\js\Conferencia\ConferenciaLoadingList.js" />
     <Content Include="wwwroot\js\Conferencia\ConferenciaNovaConsulta.js" />
-    <Content Include="wwwroot\js\Conferencia\ConferenciaPackingList.js" />
+    <Content Include="wwwroot\js\Conferencia\ConferenciaLista.js" />
     <Content Include="wwwroot\js\Conferencia\ConsultaVeiculos.js" />
     <Content Include="wwwroot\js\Inspecao\InspecaoEditarAvarias.js" />
     <Content Include="wwwroot\lib\ExportExcel\jquery-table2excel.js" />

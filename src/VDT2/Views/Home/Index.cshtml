@@ -46,46 +46,33 @@
         }
     </div><br /><br />
 
-    @if (Model.Usuario.ImportaListas)
-    {
-        <div class="row">
+    <div class="row">
+        @if (Model.Usuario.ImportaListas)
+        {
             <div class="col-sm-6">
                 <div class="card">
                     <div class="card-block" id="cblk-id3">
-                        <h3 class="card-title">Packing List</h3>
-                        <p class="card-text">Upload de arquivos referentes ao Packing List</p>
-                        <button class="btnTelaIndex btn btn-primary btn-sm" value="PackingList" onclick="location.href='@Url.Action("PackingListInicio", "Conferencia")'"><span class="glyphicon glyphicon-level-up"> </span>  PackingList</button>
+                        <h3 class="card-title">Enviar listas</h3>
+                        <p class="card-text">Packing, Loading e Discharging List</p>
+                        <button class="btnTelaIndex btn btn-primary btn-sm" value="" onclick="location.href='@Url.Action("SalvarListaInicio", "Conferencia")'"><span class="glyphicon glyphicon-level-up"> </span>  Upload</button>
                     </div>
                 </div>
             </div>
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-block">
-                        <h3 class="card-title">Loading List</h3>
-                        <p class="card-text">Upload de arquivos referentes ao Loading List..</p>
-                        <button class="btnTelaIndex btn btn-danger btn-sm" value="LoadingList" onclick="location.href='@Url.Action("LoadingListInicio", "Conferencia")'"><span class="glyphicon glyphicon-level-up"> </span>  LoadingList</button>
+        }
 
+        @if (Model.Usuario.AcessaModuloConsultas)
+        {
+                <div class="col-sm-6">
+                    <div class="card">
+                        <div class="card-block" id="cblk-id3">
+                            <h3 class="card-title">Consultas</h3>
+                            <p class="card-text">Realiza as consultas de avarias</p>
+                            <button class="btnTelaIndex btn btn-primary btn-sm" value="Consultas" onclick="location.href='@Url.Action("NovaConsulta", "Conferencia")'"><span class="glyphicon glyphicon-level-up"> </span>  Consultas</button>
+                        </div>
                     </div>
                 </div>
-            </div>
-        </div>
-    }
 
-    @if (Model.Usuario.AcessaModuloConsultas)
-    {
-        <br/><br />
-        <div class="row">
-            <div class="col-sm-6">
-                <div class="card">
-                    <div class="card-block" id="cblk-id3">
-                        <h3 class="card-title">Consultas</h3>
-                        <p class="card-text">Realiza as consultas de avarias</p>
-                        <button class="btnTelaIndex btn btn-primary btn-sm" value="Consultas" onclick="location.href='@Url.Action("NovaConsulta", "Conferencia")'"><span class="glyphicon glyphicon-level-up"> </span>  Consultas</button>
-                    </div>
-                </div>
-            </div>
-        </div>
-        
-    }
+        }
+    </div>
 }
 
