@@ -65,7 +65,10 @@ Select
                                
 	   iv.InspVeiculo_ID           as  InspVeiculo_ID, 
        iv.VIN_6                    as  Chassi,
-                                       
+       
+       l.Lote_ID,
+       l.Lote,                                   
+
 	   ia.InspAvaria_ID,               
 	   ia.FabricaTransporte,
 	   ia.DanoOrigem,
@@ -97,16 +100,17 @@ Select
                                       
 From InspVeiculo iv             
 
-Inner Join Inspecao           i     on   iv.Inspecao_ID          =      i.Inspecao_ID
-Inner Join LocalInspecao     li     on   li.LocalInspecao_ID     =      i.LocalInspecao_ID
-Inner Join LocalCheckPoint   lc     on   lc.LocalCheckPoint_ID   =      i.LocalCheckPoint_ID
-Inner Join Transportador      t     on    t.Transportador_ID     =      i.Transportador_ID
-Inner Join FrotaViagem       fv     on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
-Inner Join Marca              ma    on   iv.Marca_ID             =     ma.Marca_ID
-Inner Join Modelo             mo    on   iv.Modelo_ID            =     mo.Modelo_ID
+Inner Join Inspecao         i      on   iv.Inspecao_ID          =      i.Inspecao_ID
+Inner Join LocalInspecao    li     on   li.LocalInspecao_ID     =      i.LocalInspecao_ID
+Inner Join LocalCheckPoint  lc     on   lc.LocalCheckPoint_ID   =      i.LocalCheckPoint_ID
+Inner Join Transportador    t      on    t.Transportador_ID     =      i.Transportador_ID
+Inner Join FrotaViagem      fv     on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
+Inner Join Marca            ma     on   iv.Marca_ID             =     ma.Marca_ID
+Inner Join Modelo           mo     on   iv.Modelo_ID            =     mo.Modelo_ID
 
-Left Join Navio               n     on    n.Navio_ID             =      i.Navio_ID 
-Left Join InspAvaria         ia     on   iv.InspVeiculo_ID       =     ia.InspVeiculo_ID
+Left Join Lote                l    on   iv.Lote_ID              =      l.Lote_ID
+Left Join Navio               n    on    n.Navio_ID             =      i.Navio_ID 
+Left Join InspAvaria         ia    on   iv.InspVeiculo_ID       =     ia.InspVeiculo_ID
 
 Left Join avArea              a    on    a.AvArea_ID            =     ia.AvArea_ID
 Left Join AvCondicao          c    on    c.AvCondicao_ID        =     ia.AvCondicao_ID
@@ -171,15 +175,20 @@ and (@p_FrotaViagem is null
 and (@p_Navio is null
         or n.Nome like '%' + @p_Navio + '%')
 
+and (@p_Lote is null
+        or l.Lote  like '%' + @p_Lote + '%')
+
 and i.Data between @p_DataInicio and @p_DataFinal
 
 order by i.data desc, iv.VIN asc
 
 /*
-Declare @p_Chassi                 varchar(100),                                             
+Declare @p_Cliente_ID             Int,
+        @p_Chassi                 varchar(100),                                             
         @p_LocalInspecao          varchar(100),                                             
         @p_LocalCheckPoint        varchar(100),
-        @p_Transportador          varchar(100),                                             
+        @p_Transportador          varchar(100),
+        @p_Lote                   Varchar(50),                                             
         @p_Marca                  varchar(100),                                             
         @p_Modelo                 varchar(100),                                             
         @p_Area                   varchar(100),                                             
@@ -192,17 +201,17 @@ Declare @p_Chassi                 varchar(100),
         @p_TipoDefeito            varchar(100), --Transporte/Fábrica/Todos                  
         @p_DanoOrigem             varchar(100), -- Sim/Não/Todos                            
         @p_TipoTransportador      varchar(100), -- Marítimo/Terrestre/Todos                 
-        @p_FrotaViagem            varchar(100),                                             
-      --@p_Lote                   varchar(100),                                             
+        @p_FrotaViagem            varchar(100),                                                                                    
         @p_Navio                  varchar(100),                                             
         @p_DataInicio             Date,                                                     
         @p_DataFinal              Date                                                      
                                                                                             
-
-set      @p_Chassi                 = '*'
+set      @p_Cliente_ID             = 1
+set      @p_Chassi                 = null
 set      @p_LocalInspecao          = '*'
 set      @p_LocalCheckPoint        = '*'
 set      @p_Transportador          = '*'
+set      @p_Lote                   = null
 set      @p_Marca                  = '*'
 set      @p_Modelo                 = '*'
 set      @p_Area                   = '*'
@@ -215,17 +224,18 @@ set      @p_TipoDefeito            = '*'  --|T|F|
 set      @p_DanoOrigem             = '*'  --|0|1|
 set      @p_TipoTransportador      = '*'  --|T|M|
 set      @p_FrotaViagem            = null
---set    @p_Lote                   = '*'
 set      @p_Navio                  = null
-set      @p_DataInicio             = '2017/04/11'
-set      @p_DataFinal              = '2017/04/11'
+set      @p_DataInicio             = '2017-01-01'
+set      @p_DataFinal              = '2017-04-25'
 
 
 exec InspAvaria_Cons 
+    @p_Cliente_ID         ,
     @p_Chassi             ,
     @p_LocalInspecao      ,
     @p_LocalCheckPoint    ,   
     @p_Transportador      ,
+    @p_Lote               ,
     @p_Marca              ,  
     @p_Modelo             ,  
     @p_Area               ,  
