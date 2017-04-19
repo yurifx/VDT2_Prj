@@ -203,6 +203,7 @@ namespace VDT2.BLL
             }
             catch (Exception ex)
             {
+                //todo: GravarErros
                 return pendencias;
             }
         }

@@ -8,7 +8,7 @@
 
 <script src="~/js/Conferencia/ConferenciaLista.js" asp-append-version="true"></script>
 
-<form asp-controller="Conferencia" asp-action="SalvarLista" method="post" enctype="multipart/form-data">
+<form id="frmEnviarLista" asp-controller="Conferencia" asp-action="SalvarLista" method="post" enctype="multipart/form-data">
 
     <div class="container">
         @if (ViewData["MensagemErro"] != null)
@@ -74,9 +74,9 @@
                 <label>Tipo de Lista</label>
             </div>
             <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input type="radio" name="TipoLista" value="L" checked/> Loading <br/>
-                <input type="radio" name="TipoLista" value="P"/> Packing<br />
-                <input type="radio" name="TipoLista" value="D"/> Discharging<br />
+                <input type="radio" name="TipoLista" value="L" checked /> Loading <br />
+                <input type="radio" name="TipoLista" value="P" /> Packing<br />
+                <input type="radio" name="TipoLista" value="D" /> Discharging<br />
             </div>
 
 
@@ -90,7 +90,7 @@
                 <label>Lote</label>
             </div>
             <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input type="text" class="form-control" name="lote" value="" required />
+                <input type="text" class="form-control" name="lote" id="inputLote" value="" required />
             </div>
         </div>
 
@@ -102,21 +102,85 @@
             </div>
 
             <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input type="file" name="files" accept=".txt" class="inputTelaPacking-e-LoadingList" />
+                <input type="file" name="files" id='inputFilesEnviarLista' accept=".txt" class="inputTelaPacking-e-LoadingList" />
             </div>
         </div>
 
 
         <div class="row form-group">
             <div class="col col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
-                <button type="submit" class="btn btnTelaPackingListInicio btn btn-success">Upload</button>
-                <button type="button" class="btn btnTelaPackingListInicio btn btn-primary" onclick="Voltar()">Voltar</button>
+                <button type="button" class="btn btnTelaEnviarLista btn btn-success" id="btnUpload" data-toggle="modal" data-target="#enviarListaModal">Upload</button>
+                <button type="button" class="btn btnTelaEnviarLista btn btn-primary" onclick="Voltar()">Voltar</button>
             </div>
         </div>
     </div>
 
 </form>
 
+
+<!-- Modal -->
+<div id="enviarListaModal" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Deseja realmente enviar a lista?</h4>
+            </div>
+            <div class="modal-body">
+                <p id="lblConfirmacaoLote">Confirmação de lote:  </p>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal" onclick="Enviar()"> Enviar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
+
+<script>
+    function Enviar() {
+
+        var qtdArquivos = document.getElementById('inputFilesEnviarLista').files.length;
+        var Cliente = $("#ListaCliente").val();
+        var LocalInspecao = $("#ListaLocalInspecao").val();
+        var LocalCheckPoint = $("#ListaLocalCheckPoint").val();
+        var Lote = $("#inputLote").val();
+
+        if (Cliente == 0 || Cliente == null) {
+            alert("Por favor informe um Cliente");
+            return false;
+        } 
+
+        if (LocalInspecao == 0 || LocalInspecao == null) {
+            alert("Por favor informe um Local de Inspeção");
+            return false;
+        } 
+
+        if (LocalCheckPoint == 0 || LocalCheckPoint == null) {
+            alert("Por favor informe um Local de CheckPoint");
+            return false;
+        } 
+
+        if (Lote == "") {
+            alert("Por favor informe um Lote");
+            return false;
+        }
+
+        if (qtdArquivos == 0) {
+            alert("Por favor informe um Arquivo");
+            return false;
+        }
+
+
+
+
+
+        
+    }
+</script>
 
 <script>
     function Voltar() {

@@ -658,15 +658,9 @@ min-width: 200px;
         width: 40%;
     }
 
-    /* < View Conferencia/LoadingListInicio > */
 
-    .btnTelaLoadingListInicio {
-        width: 8%;
-    }
-
-
-    /* < View Conferencia/PackingListInicio > */
-    .btnTelaPackingListInicio {
+    /* < View Conferencia/EnviarLista > */
+    .btnTelaEnviarLista {
         width: 8%;
     }
 

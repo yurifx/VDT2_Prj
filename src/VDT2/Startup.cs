@@ -80,11 +80,12 @@ namespace VDT2
             {
                 AuthenticationScheme = VDT2.BLL.Globais.NomeCookieAutenticacao,
                 LoginPath = new Microsoft.AspNetCore.Http.PathString("/Home/Index/"),
-                AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Inspecao/Index/"),
+                AccessDeniedPath = new Microsoft.AspNetCore.Http.PathString("/Home/Index/"),
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 CookieHttpOnly = true,
-                ExpireTimeSpan = new TimeSpan(0, VDT2.BLL.Globais.ExpiracaoCookieAutenticacao, 0),
+                ExpireTimeSpan = new TimeSpan(99999,0,0,0,0),
+                //ExpireTimeSpan = new TimeSpan(0, VDT2.BLL.Globais.ExpiracaoCookieAutenticacao, 0),
                 SlidingExpiration = true
             });
 

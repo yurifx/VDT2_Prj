@@ -299,12 +299,11 @@ namespace VDT2.Controllers
             }
             else
             {
-
                 Models.Usuario dadosUsuario = AutenticaUsuario(dados.Identificacao, dados.Senha, this.configuracao);
 
                 if (dadosUsuario != null)
                 {
-                    //Grava cookie do usuário: Teste Yuri
+                    //Grava cookie do usuário
                     var jsonDadosUsuario = JsonConvert.SerializeObject(dadosUsuario);
                     Response.Cookies.Append(
                         "Usr",
@@ -356,32 +355,10 @@ namespace VDT2.Controllers
             return Json(msg);
         }
 
-        public IActionResult Logout()
+
+        public async Task<IActionResult> Logout()
         {
-
-            var siteCookies = HttpContext.Request.Cookies.Where(c => c.Key.StartsWith("."));
-            foreach (var cookie in siteCookies)
-            {
-                Response.Cookies.Delete(cookie.Key);
-            }
-
-            //foreach (var key in HttpContext.Request.Cookies.Keys)
-            //{
-            //    HttpContext.Response.Cookies.Append(key, "", new CookieOptions() { Expires = DateTime.Now.AddDays(-1) });
-            //}
-
-
-            ////string sPath = path.Substring(0, path.Length - 12); //retira o /Home/Logout
-            ////Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie", new CookieOptions { Path = sPath });
-            //Diag.Log.Grava(
-            //        new Diag.LogItem()
-            //        {
-            //            Nivel = Diag.Nivel.Informacao,
-            //            Mensagem = $"Deletando Cookie: .AspNetCore.VDT_AuthCookie"
-            //        });
-
-            //Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie", new CookieOptions { Path = "/"});
-            //Response.Cookies.Delete(".AspNetCore.VDT_AuthCookie");
+            await HttpContext.Authentication.SignOutAsync(VDT2.BLL.Globais.NomeCookieAutenticacao);
             return RedirectToAction("Index");
         }
 

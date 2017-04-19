@@ -707,7 +707,7 @@ namespace VDT2.Controllers
                     ViewData["MensagemErro"] = conferenciaListaVM.ListaLocalCheckPoint.FirstOrDefault().MensagemErro;
                 }
 
-                return View("PackingListInicio", conferenciaListaVM);
+                return View("EnviarLista", conferenciaListaVM);
             }
 
             catch (Exception ex)
@@ -831,9 +831,7 @@ namespace VDT2.Controllers
                 {
                     ViewData["MensagemErro"] = "Nenhum arquivo selecionado, por favor tente novamente mais tarde";
                 }
-
-
-                return View("PackingListInicio", conferenciaListaVM);
+                return View("EnviarLista", conferenciaListaVM);
             }
             catch (Exception ex)
             {

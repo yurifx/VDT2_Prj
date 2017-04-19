@@ -1,5 +1,12 @@
 ﻿$(function () {  // $(document).ready()
     console.log("Inicializou jquery ok - Conferência PackingList");
+
+    $("#btnUpload").click(function () {
+        $("#lblConfirmacaoLote").append($("#inputLote").val());
+        $("#lblConfirmacaoLote").css('font-weight', 'bold');
+
+    })
+
 })
 
 
@@ -26,5 +33,5 @@ function PreencheListaCheckPoint() {
                     .appendTo(LocalCheckPoint);
             });
         });
-
 }
+
