@@ -79,7 +79,7 @@ namespace VDT2.BLL
 
                 else if (Tipo == "D")
                 {
-                    path = Path.Combine(serverpath, "Arquivos", "LoadingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
+                    path = Path.Combine(serverpath, "Arquivos", "DischargingList", ano, mesdia, Convert.ToString(ListaVeiculo_ID), file.FileName);
                 }
 
                 string[] linhas = System.IO.File.ReadAllLines(path);
