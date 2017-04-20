@@ -1,4 +1,12 @@
-﻿using System;
+﻿// <copyright file="InspAvaria_Cons.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Yuri Vasconcelos</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>Models de Consulta</summary>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -27,7 +35,7 @@ namespace VDT2.Models
         public string Transportador { get; set; }
 
         [NotMapped]
-        public string Lote { get; set; } 
+        public string Lote { get; set; }
 
         [NotMapped]
         public string Marca { get; set; }
@@ -94,7 +102,7 @@ namespace VDT2.Models
         public string CheckPointNome { get; set; }
 
         public string TransportadorNome { get; set; }
-        
+
         public int FrotaViagem_ID { get; set; }
 
         public string FrotaViagemNome { get; set; }

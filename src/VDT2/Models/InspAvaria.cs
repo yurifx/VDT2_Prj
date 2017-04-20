@@ -1,4 +1,12 @@
-﻿using System;
+﻿// <copyright file="InspAvaria.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Yuri Vasconcelos</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>Models de Inspecao</summary>
+
+using System;
 using System.Collections.Generic;
 using System.ComponentModel.DataAnnotations;
 using System.ComponentModel.DataAnnotations.Schema;
@@ -28,7 +36,7 @@ namespace VDT2.Models
 
         public string FabricaTransporte { get; set; }
 
-        public Boolean DanoOrigem { get; set; } 
+        public Boolean DanoOrigem { get; set; }
         //Novo Campo - versão 0.0.3
 
         public decimal? Custo { get; set; }
@@ -40,15 +48,15 @@ namespace VDT2.Models
         public int Cliente_ID { get; set; }
 
         public string Area_Pt { get; set; }
-        
+
         public string Dano_Pt { get; set; }
-        
+
         public string Severidade_Pt { get; set; }
-        
+
         public string Gravidade_Pt { get; set; }
-        
+
         public string Quadrante_Pt { get; set; }
-        
+
         public string Condicao_Pt { get; set; }
 
         [NotMapped]
@@ -69,6 +77,6 @@ namespace VDT2.Models
         }
 
 
-        }
     }
+}
 
