@@ -10,6 +10,7 @@ namespace VDT2.ViewModels
     {
 
         public List<Models.InspAvaria_Cons> ListaInspAvaria_Cons { get; set; }
+        public List<Models.InspAvaria_Cons_Summary> ListaInspAvaria_Cons_Summary { get; set; }
         public int QuantidadeInspecionada { get; set; }
         public int VeiculosSemAvaria { get; set; }
         public int VeiculosComAvaria { get; set; }

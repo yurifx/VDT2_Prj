@@ -177,15 +177,16 @@ namespace VDT2.Controllers
                         if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                         {
                             HashSet<int> controle = new HashSet<int>();
-                            
+
                             foreach (var item in listarConferenciaAvariaVM.ListaInspAvaria_Conf)
-                            { 
+                            {
                                 //Lógica utilizada para não receber valores duplicados
-                                if (!controle.Contains(item.Inspecao_ID)) {
+                                if (!controle.Contains(item.Inspecao_ID))
+                                {
                                     sbInspecao.Append($"{item.Inspecao_ID};");
                                     controle.Add(item.Inspecao_ID);
                                 }
-                    
+
                             }
                         }
 
@@ -637,7 +638,7 @@ namespace VDT2.Controllers
                 return RedirectToAction("NovaConferencia");
             }
         }
-       
+
         /// <summary>
         /// Clique do usuário no botão packinglist
         /// </summary>
@@ -1067,7 +1068,7 @@ namespace VDT2.Controllers
 
         /// <summary>
         /// Realiza a listagem de dados referente aos parametros informados pelo usuário
-            /// </summary>
+        /// </summary>
         /// <param name="consultaVM"></param>
         /// <returns></returns>
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
@@ -1081,6 +1082,7 @@ namespace VDT2.Controllers
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
 
             consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
+            consultaVeiculosVM.ListaInspAvaria_Cons_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
 
             consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Cons.Count();
             consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Cons.Where(p => String.IsNullOrEmpty(p.Area_Pt)).Count();
