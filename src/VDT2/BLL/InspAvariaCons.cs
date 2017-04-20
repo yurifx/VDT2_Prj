@@ -346,5 +346,12 @@ namespace VDT2.BLL
             return listacons;
 
         }
+
+        public static List<InspAvaria_Cons_Summary> ConsultarSumario(ConsultaViewModel consultaVM, Configuracao configuracao)
+        {
+            List<Models.InspAvaria_Cons_Summary> ListaSummary = new List<Models.InspAvaria_Cons_Summary>();
+            ListaSummary = DAL.InspAvaria.ConsultarSummary(consultaVM, configuracao);
+            return ListaSummary;
+        }
     }
 }

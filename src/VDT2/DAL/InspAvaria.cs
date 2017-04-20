@@ -16,6 +16,7 @@ using System.Data.SqlClient;
 using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
+using VDT2.ViewModels;
 
 /// <summary>
 /// Camada de acesso aos dados do banco de dados - InspAvaria
@@ -740,8 +741,11 @@ namespace VDT2.DAL
             }
         }
 
-
-
+        public static List<InspAvaria_Cons_Summary> ConsultarSummary(ConsultaViewModel consultaVM, Configuracao configuracao)
+        {
+            List<Models.InspAvaria_Cons_Summary> ListaSummary = new List<Models.InspAvaria_Cons_Summary>();
+            return ListaSummary;
+        }
 
     }
 }
