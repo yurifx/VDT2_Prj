@@ -612,7 +612,7 @@ namespace VDT2.DAL
                     Value = InspAvaria_Cons.FabricaTransporte
                 };
 
-                //Dano de Origem? |0| |1|
+                //Dano de Origem? |0| |1| |*|
                 SqlParameter parmDanoOrigem = new SqlParameter("@p_DanoOrigem", SqlDbType.VarChar)
                 {
                     Value = InspAvaria_Cons.DanoOrigem

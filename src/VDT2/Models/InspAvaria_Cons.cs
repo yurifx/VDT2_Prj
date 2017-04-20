@@ -109,6 +109,8 @@ namespace VDT2.Models
 
         public Decimal? Custo { get; set; }
 
+        public Decimal? HorasReparo { get; set; }
+
         public int MarcaCodigo { get; set; }
 
         public string MarcaNome { get; set; }

@@ -19,6 +19,8 @@ namespace VDT2.Models
 
         public string Nome_Es { get; set; }
 
+        public string Operacao { get; set; }
+
         [NotMapped]
         public bool Erro { get; set; }
 

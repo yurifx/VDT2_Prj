@@ -34,53 +34,70 @@
     </div>
 
     <h3><strong>Conferência de avarias</strong></h3><br />
-    <h5><strong>Data da Inspeção: </strong> @Model.InspAvaria_Conf.Data.ToString("dd/MM/yyyy") | <strong>Local Inspecao:</strong> @Model.InspAvaria_Conf.LocalNome  | <strong>Local CheckPoint:</strong>  @Model.InspAvaria_Conf.CheckPointNome</p></h5>
+    <h5>
+        <strong>Data da Inspeção: </strong> @Model.InspAvaria_Conf.Data.ToString("dd/MM/yyyy")  -
+        <strong>Local Inspecao:</strong> @Model.InspAvaria_Conf.LocalNome  -
+        <strong>Local CheckPoint:</strong>  @Model.InspAvaria_Conf.CheckPointNome  -
+        <strong>Operação:</strong> @Model.InspAvaria_Conf.Operacao
+    </h5>
 
-
-    @if (Model.Pendencias != null)
-    {
-        @if (Model.Pendencias.Count() > 0)
+    <br/>
+    <div class="row">
+        @if (Model.Pendencias != null)
         {
-            <button id='btnPendencias' data-toggle="modal" data-target="#pendenciasModal" class="btn btn-sm btn-danger"> Pendências <span class="badge">@Model.Pendencias.Count()</span></button>
-            <input type="text" id="inputQtdPendencias" value="@Model.Pendencias.Count()" hidden />
+            @if (Model.Pendencias.Count() > 0)
+            {
+                <button id='btnPendencias' data-toggle="modal" data-target="#pendenciasModal" class="btn btn-sm btn-danger"> Pendências <span class="badge">@Model.Pendencias.Count()</span></button><br />
+                <input type="text" id="inputQtdPendencias" value="@Model.Pendencias.Count()" hidden />
+            }
         }
-    }
+    </div>
     <div class="container">
         <div class="row">
-            <table class="table table-striped table-bordered table-hover">
-                <thead class="thead">
-                    <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
-                        <th class="tabConferenciaListaVeiculoHeader">Editar</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Inspecao_ID</th><!--Tirar para produção-->
-                        <th class="tabConferenciaListaVeiculoHeader">Veículo_ID</th><!--Tirar para produção-->
-                        <th class="tabConferenciaListaVeiculoHeader">VIN</th>
-                        <th class="tabConferenciaListaVeiculoHeader">VIN_6</th><!--Tirar para produção-->
-                        <th class="tabConferenciaListaVeiculoHeader">Marca</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Modelo</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Área</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Condição</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Dano</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Gravidade</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Quadrante</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Severidade</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Tipo</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Custo</th>
-                        <th class="tabConferenciaListaVeiculoHeader">Fotos</th>
-                    </tr>
-                </thead>
+            <div id="divTabelaListarConferenciaAvarias">
+                <table class="table table-striped table-bordered table-hover">
+                    <thead class="thead">
+                        <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
+                            <th class="tabConferenciaListaVeiculoHeader">Editar</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Inspecao_ID</th><!--Tirar para produção-->
+                            <th class="tabConferenciaListaVeiculoHeader">Veículo_ID</th><!--Tirar para produção-->
+                            <th class="tabConferenciaListaVeiculoHeader">VIN</th>
+                            <th class="tabConferenciaListaVeiculoHeader">VIN_6</th><!--Tirar para produção-->
+                            <th class="tabConferenciaListaVeiculoHeader">Marca</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Modelo</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Frota/Viagem</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Navio</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Área</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Condição</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Dano</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Gravidade</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Quadrante</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Severidade</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Tipo</th>
+                            @*Só apresenta o custo caso seja Emportação*@
+                            @if (Model.InspAvaria_Conf.Operacao == "E")
+                            {
+                                <th class="tabConferenciaListaVeiculoHeader">HorasReparo</th>
+                                <th class="tabConferenciaListaVeiculoHeader">Custo</th>
+                            }
+                            <th class="tabConferenciaListaVeiculoHeader">Fotos</th>
+                        </tr>
+                    </thead>
 
-                @if (Model.ListaInspAvaria_Conf != null)
-                {
-                    @foreach (var item in Model.ListaInspAvaria_Conf)
+                    @if (Model.ListaInspAvaria_Conf != null)
                     {
-                        <tr class="tabConferenciaListaVeiculo">
-                            <td><button type="button" class="btnEditarEditarListarConferenciaAvarias btn btn-sm btn-default" value="@item.InspVeiculo_ID;@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
-                            <td>@item.Inspecao_ID</td><!--Tirar para produção-->
-                            <td>@item.InspVeiculo_ID</td><!--Tirar para produção-->
-                            <td>@item.VIN</td>
-                            <td>@item.VIN_6</td> <!--Tirar para produção-->
-                            <td>@item.MarcaNome</td>
-                            <td>@item.ModeloNome</td>
+                        @foreach (var item in Model.ListaInspAvaria_Conf)
+                        {
+                            <tr class="tabConferenciaListaVeiculo">
+                                <td><button type="button" class="btnEditarEditarListarConferenciaAvarias btn btn-sm btn-default" value="@item.InspVeiculo_ID;@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+                                <td>@item.Inspecao_ID</td><!--Tirar para produção-->
+                                <td>@item.InspVeiculo_ID</td><!--Tirar para produção-->
+                                <td>@item.VIN</td>
+                                <td>@item.VIN_6</td> <!--Tirar para produção-->
+                                <td>@item.MarcaNome</td>
+                                <td>@item.ModeloNome</td>
+                                <td>@item.FrotaViagemNome</td>
+                                <td>@item.NavioNome</td>
                             <td>@item.Area_Pt</td>
                             <td>@item.Condicao_Pt</td>
                             <td>@item.Dano_Pt</td>
@@ -100,13 +117,18 @@
                                 <td></td>
 
                             }
+                            @*Só apresenta o custo caso seja exportação*@
+                            @if (Model.InspAvaria_Conf.Operacao == "E")
+                            {
+                                <td>@item.HorasReparo</td>
 
-                            @if (@item.Custo == null)
-                            {
-                                <td class="custoConferencia">0</td>}
-                            else
-                            {
-                                <td class="custoConferencia">@item.Custo</td>
+                                @if (@item.Custo == null)
+                                {
+                                    <td class="custoConferencia">0</td>}
+                                else
+                                {
+                                    <td class="custoConferencia">@item.Custo</td>
+                                }
                             }
                             @if (@item.InspAvaria_ID != null)
                             {
@@ -118,12 +140,12 @@
 
                             }
                         </tr>
+                        }
                     }
-                }
 
-            </table>
-
-
+                </table>
+                <br/>
+            </div>
             @if (Model.Pendencias != null)
             {
 
@@ -193,12 +215,12 @@
                     <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
                 </div>
             </form>
-
+            <br /><br /><br />
             <input type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" value="Voltar" onClick="Voltar()">
             <input type="button" id="btnPublicar" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()">
             <br /><br /><br />
 
-        
+
 
             @if (Model.ConcatInspecoes != null && Model.ConcatInspecoes != "")
             {

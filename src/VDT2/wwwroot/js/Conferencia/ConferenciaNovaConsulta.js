@@ -3,7 +3,7 @@
 
     $('li a').each(function (i, e) {
         $(e).css("cursor", "pointer");
-        $(e).css("font-size", "42px");
+        $(e).css("font-size", "22px");
         console.log($(e));
     })
        

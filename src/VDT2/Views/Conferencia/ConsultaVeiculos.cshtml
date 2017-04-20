@@ -17,6 +17,7 @@
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
 
 
+
 <div class="container">
     <div class="row">
         <div>
@@ -27,7 +28,6 @@
 
     </div>
 </div>
-<br /><br /><br />
 
 <div class="container">
     <div class="row">
@@ -44,6 +44,7 @@
                     <th class="">Transportador</th>
                     <th class="">FrotaViagem</th>
                     <th class="">Navio</th>
+                    <th class="">Lote</th>
                     <th class="">Marca</th>
                     <th class="">Modelo</th>
                     <th class="">Area</th>
@@ -52,13 +53,14 @@
                     <th class="">Gravidade</th>
                     <th class="">Quadrante</th>
                     <th class="">Severidade</th>
+                    <th class="">Horas Reparo</th>
                     <th class="">Custo</th>
 
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.ListaInspAvaria_Cons)
-            {
+                {
                     <tr class="tabConferenciaListaVeiculo">
                         <td>@item.Inspecao_ID</td>
                         <td>@item.InspVeiculo_ID</td>
@@ -70,6 +72,7 @@
                         <td>@item.TransportadorNome</td>
                         <td>@item.FrotaViagemNome</td>
                         <td>@item.NavioNome</td>
+                        <td>@item.Lote</td>
                         <td>@item.MarcaNome</td>
                         <td>@item.ModeloNome</td>
                         <td>@item.Area_Pt</td>
@@ -78,6 +81,7 @@
                         <td>@item.Gravidade_Pt</td>
                         <td>@item.Quadrante_Pt</td>
                         <td>@item.Severidade_Pt</td>
+                        <td>@item.HorasReparo</td>
                         <td>@item.Custo</td>
                     </tr>
 
@@ -86,7 +90,6 @@
         </table>
     </div>
 </div>
-
 <br /><br /><br />
 <button type="button" class="btn btn-group-sm btn-default" onclick="window.print()">Imprimir</button>
 <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>

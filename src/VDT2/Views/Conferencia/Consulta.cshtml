@@ -7,8 +7,6 @@
 }
 <br />
 
-
-
 <script src="~/lib/multiple-select/multiple-select.js"></script>
 <script src="~/js/Conferencia/ConferenciaConsulta.js" asp-append-version="true"></script>
 <link href="~/lib/multiple-select/multiple-select.css" rel="stylesheet" asp-append-version="true" />
@@ -59,19 +57,19 @@
                     <div class="row">
 
                         @*Local Inspeção*@
-                        <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-1 col-md-2 col-sm-12 col-xs-12">
                             <label for="ListaLocalInspecao">Local</label>
                         </div>
 
-                        <div class="col-lg-2 col-md-2 col-sm-10 col-xs-10">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="inputsTelaConferenciaConsulta form-control" multiple="multiple"
                                     asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))"></select>
                         </div>
                         @*Local CheckPoint*@
-                        <div class="col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label for="ListaLocalCheckPoint">CheckPoint</label>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="inputsTelaConferenciaConsulta form-control" multiple="multiple"
                                     asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))"></select>
                         </div>
@@ -82,45 +80,44 @@
                     <br />
                     <div class="row">
                         @*Transportador*@
-                        <div class="col-lg-1 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-1 col-md-2 col-sm-12 col-xs-12">
                             <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-10 col-xs-10">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <select id="ListaTransportador" name="IdTipo" class="inputsTelaConferenciaConsulta form-control" onchange="" multiple="multiple"
                                     asp-items="@(new SelectList(Model.ListaTransportador,"IdTipo","Nome"))"></select>
                         </div>
 
                         @*NAVIO*@
-                        <div class="col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label>Navio</label>
                         </div>
-                        <div class="col-lg-6 col-md-2 col-sm-2 col-xs-2">
+                        <div class="col-lg-6 col-md-2 col-sm-12 col-xs-12">
                             <input name="NavioNome" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
                     </div>
 
                     <br />
 
-
-
                     <!--Quarta Coluna Frota ou Viagem-->
                     <div class="row">
 
                         @*FROTA OU VIAGEM*@
-                        <div class="col-lg-1 col-md-2 col-sm-2 col-xs-3">
+                        <div class="col col-lg-1 col-md-2 col-sm-12 col-xs-12">
                             <label>Frota ou Viagem</label>
                         </div>
 
-                        <div class="col-lg-2 col-md-2 col-sm-10 col-xs-9">
+                        <div class="col col-lg-2  col-md-2 col-sm-12 col-xs-12">
                             <input name="FrotaViagem" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
 
+
                         @*LOTE*@
-                        <div class="col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <div class="col col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label>Lote</label>
                         </div>
 
-                        <div class="col-lg-6 col-md-6 col-sm-10 col-xs-9">
+                        <div class="col col-lg-6 col-md-5 col-sm-12 col-xs-12">
                             <input name="Lote" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
 
@@ -275,35 +272,50 @@
 
                 <br />
                 @*DEFEITO FABRICA*@
-                <label>Tipo Defeito:</label>
+                <div class="row">
+                    <div class="col col-lg-1 col-md-1 col-sm-2 col-xs-2">
+                        <label>Tipo Defeito:</label>
+                    </div>
 
-                Fábrica <input name="Fabrica" type="checkbox" />
+                    <div class="col col-lg-11 col-md-11 col-sm-10 col-xs-10">
+                        <label>Fábrica</label> <input name="Fabrica" type="checkbox" />
 
-                @*DEFEITO TRANSPORTE*@
-                Transporte <input name="Transporte" type="checkbox" />
-
+                        @*DEFEITO TRANSPORTE*@
+                        <label class="lblTransporteTelaConsulta">Transporte</label> <input name="Transporte" type="checkbox" />
+                    </div>
+                </div>
+                <br />
                 <br />
 
                 <!--Mudar essa forma de pegar o dano origem-->
                 @*DANO ORIGEM*@
-                <label>Dano Origem</label>
-                <input name="DanoOrigem" type="checkbox" />
+                <div class="row">
+                    <div class="col col-lg-1 col-md-1 col-sm-1 col-xs-3">
+                        <label>Dano Origem</label>
+                    </div>
+                    <div class="col col-lg-11 col-md-11 col-sm-11 col-xs-9">
+                        <input name="DanoOrigem" type="radio" value="1" /> <label class="lblRadioDanoOrigem"> Sim <span> </span></label>
+                        <input name="DanoOrigem" type="radio" value="0" /> <label class="lblRadioDanoOrigem"> Não <span> </span></label>
+                        <input name="DanoOrigem" type="radio" value="*" checked /> <label class="lblRadioDanoOrigem"> Todos </label>
+                    </div>
+                </div>
             </div>
         </div>
+
+
+
+        <div class="botaoTelaConsulta">
+            <br /><br />
+            <button type="submit" class="btn btn-success">Consultar</button>
+            <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
+            @*Poderia fazer via Actionlink*@
+            @*@Html.ActionLink("Voltar", "Index", "Home")*@
+            <br /><br />
+        </div>
     </div>
-
-
-
-    <div class="botaoTelaConsulta">
-        <br /><br />
-        <button type="submit" class="btn btn-success">Consultar</button>
-        <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
-        @*Poderia fazer via Actionlink*@
-        @*@Html.ActionLink("Voltar", "Index", "Home")*@
-        <br /><br />
-    </div>
-
 </form>
+
+
 <script>
     function Voltar() {
         $("#frmVoltar").submit();

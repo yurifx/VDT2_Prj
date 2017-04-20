@@ -1,0 +1,103 @@
+﻿@addTagHelper *, Microsoft.AspNetCore.Mvc.TagHelpers
+
+@model VDT2.ViewModels.ConferenciaLoadingListViewModel
+
+@{
+    Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
+}
+
+<script src="~/js/Conferencia/ConferenciaLoadingList.js" asp-append-version="true"></script>
+
+<br />
+<form asp-controller="Conferencia" asp-action="LoadingListSalvar" method="post" enctype="multipart/form-data">
+    
+    <div class="container">
+        @if (ViewData["MensagemErro"] != null)
+        {
+            <div class="alert alert-danger">
+                <p>@ViewData["MensagemErro"]</p>
+            </div>
+        }
+    </div>
+    <div class="container">
+        @if (ViewData["MensagemSucesso"] != null)
+        {
+            <div class="alert alert-success">
+                <p>@ViewData["MensagemSucesso"]</p>
+            </div>
+        }
+    </div>
+
+    <div class="container">
+
+        <h3>Loading List</h3><br/>
+        @*Cliente*@
+        <div class="row form-group">
+            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+            </div>
+            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                <select id="ListaCliente" name="Cliente_ID" class="form-control"
+                        asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
+                    <option disabled selected>Selecione Cliente</option>
+                </select>
+            </div>
+        </div>
+
+        @*Local Inspeção*@
+        <div class="row form-group">
+            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                <label for="ListaLocalInspecao">Local Inspecao</label>
+            </div>
+            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
+                        asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
+                    <option disabled selected>Selecione Local</option>
+                </select>
+            </div>
+        </div>
+
+        @*Local CheckPoint*@
+        <div class="row form-group">
+            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                <label for="ListaLocalCheckPoint">Local CheckPoint</label>
+            </div>
+            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
+                        asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
+                    <option disabled selected>Selecione CheckPoint</option>
+                </select>
+            </div>
+        </div>
+
+        @*Lote*@
+        <div class="row form-group">
+            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                <label>Lote</label>
+            </div>
+            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                <input type="text" name="lote" class="form-control" value="" required/>
+            </div>
+        </div>
+
+        @*ARQUIVO*@
+        <div class="row form-group">
+            <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                <label for="Arquivo">Arquivo</label>
+            </div>
+
+            <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                <input type="file" name="files" accept=".txt" class="inputTelaPacking-e-LoadingList" />
+            </div>
+        </div><br /><br />
+
+        <div class="row form-group">
+            <div class="col col-lg-offset-2 col-lg-12 col-md-12 col-xs-12 col-sm-12">
+                <button type="submit" class="btnTelaLoadingListInicio btn btn btn-success">Upload</button>
+                <input type="button" class="btnTelaLoadingListInicio btn btn-primary" value="Voltar" onClick="history.go(-1)">
+            </div>
+        </div>
+    </div>
+
+</form>
+

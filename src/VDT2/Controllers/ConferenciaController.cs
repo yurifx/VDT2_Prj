@@ -137,7 +137,6 @@ namespace VDT2.Controllers
                 const string _mensagemErro = "Não foi possível listar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
                 ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
-
                 #region recebeDadosUsuario
                 var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
                 if (dadosUsuario == null)
@@ -200,8 +199,10 @@ namespace VDT2.Controllers
                         //preenche dados do cabecalho da proxima view
                         listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
                         listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
-                        listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault().Nome_Pt;
 
+                        var dadosCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault();
+                        listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.Nome_Pt;
+                        listarConferenciaAvariaVM.InspAvaria_Conf.Operacao = dadosCheckPoint.Operacao;
                     }
                     else
                     {
@@ -479,7 +480,9 @@ namespace VDT2.Controllers
                 {
                     listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
                     listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
-                    listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
+                    var dadosCheckPoint = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault();
+                    listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.LocalNome;
+                    listarConferenciaAvariaVM.InspAvaria_Conf.Operacao = dadosCheckPoint.Operacao;
                 }
                 else
                 {

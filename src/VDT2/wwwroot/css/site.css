@@ -382,14 +382,25 @@ LayoutCSS:.. Ordenação
 
 .checkboxTelaConsulta {
 min-height: 36px;
-
 }
 
-.divListarConferenciaAvariasPendencias {
+.lblRadioDanoOrigem {
+    margin-right: 10px;
+}
 
+#divTabelaListarConferenciaAvarias{
+    overflow-x:scroll;
+}
+
+
+.lblTransporteTelaConsulta {
+padding-left: 30px;
+
+}
+.divListarConferenciaAvariasPendencias {
     max-height: 600px;
     min-height: 150px;
-    overflow-y:auto;
+    overflow-y: auto;
 }
 
 

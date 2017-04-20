@@ -72,7 +72,9 @@ Select
 	   ia.InspAvaria_ID,               
 	   ia.FabricaTransporte,
 	   ia.DanoOrigem,
-       ia.Custo,                  
+       ia.Custo,   
+
+       cr.HorasReparo,	   
                                        
 	   ma.Marca_ID                 as  MarcaCodigo,
 	   ma.Nome                     as  MarcaNome, 
@@ -118,11 +120,14 @@ Left Join AvDano              d    on    d.AvDano_ID            =     ia.AvDano_
 Left Join AvGravidade         g    on    g.AvGravidade_ID       =     ia.AvGravidade_ID
 Left Join AvQuadrante         q    on    q.AvQuadrante_ID       =     ia.AvQuadrante_ID
 Left Join AvSeveridade        s    on    s.AvSeveridade_ID      =     ia.AvSeveridade_ID
-
+Left Join Custoreparo        cr    on   cr.AvArea_ID            =     ia.AvArea_ID  
+                                  and   ia.AvGravidade_ID       =     cr.AvGravidade_ID
 
 Where 
 
-@p_Cliente_ID = i.Cliente_ID
+i.Publicado = 1
+
+and  @p_Cliente_ID = i.Cliente_ID
 
 and (@p_Chassi is null
         or iv.VIN_6  like '%' + @p_Chassi + '%')

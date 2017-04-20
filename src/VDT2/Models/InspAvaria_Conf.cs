@@ -32,6 +32,16 @@ namespace VDT2.Models
 
         public string CheckPointNome { get; set; }
 
+        public int FrotaViagem_ID { get; set; }
+
+        public string FrotaViagemNome { get; set; }
+
+        public int? Navio_ID { get; set; }
+
+        public string NavioNome { get; set; }
+
+        public string Operacao { get; set; }
+
         public int MarcaCodigo { get; set; }
 
         public string MarcaNome { get; set; }
@@ -69,5 +79,7 @@ namespace VDT2.Models
         public bool? DanoOrigem { get; set; }
 
         public decimal? Custo { get; set; }
-        }
+
+        public decimal? HorasReparo { get; set; }
+    }
     }
