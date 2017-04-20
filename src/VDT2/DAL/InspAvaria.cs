@@ -1,8 +1,8 @@
 ﻿// <copyright file="InspAvaria.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Yuri Vasconcelos</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de acesso aos dados - InspAvaria</summary>
 
@@ -646,7 +646,7 @@ namespace VDT2.DAL
                 if (!String.IsNullOrEmpty(InspAvaria_Cons.Navio))
                 {
                     parmNavio.Value = InspAvaria_Cons.Navio;
-                }                                                                 
+                }
 
                 SqlParameter parmDataInicio = new SqlParameter("@p_DataInicio", SqlDbType.Date)
                 {
@@ -683,7 +683,7 @@ namespace VDT2.DAL
                         parmDataFinal
                     };
 
-                string chamada = 
+                string chamada =
                     $"{nomeStoredProcedure} " +
                     $"{parmClienteID.ParameterName}, " +
                     $"{parmChassi.ParameterName}, " +
