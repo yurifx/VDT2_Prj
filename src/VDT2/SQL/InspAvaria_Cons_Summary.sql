@@ -8,6 +8,11 @@ If  Exists (Select Name
 GO
 
 Create Procedure InspAvaria_Cons_Summary 
+
+-------------------------------------------------------------------
+-- 20/04 Criação da procedure e Inicio testes Yuri
+-------------------------------------------------------------------
+
 (  
     @p_Cliente_ID             Int,
     @p_Chassi                 Varchar(100),
