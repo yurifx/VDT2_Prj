@@ -1,8 +1,8 @@
 ﻿// <copyright file="UploadExcel.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de negócios - UploadExcel</summary>
 
@@ -39,10 +39,11 @@ namespace VDT2.BLL
 
                 if (tipo == 'F')
                 {
-                     path = Path.Combine(serverpath, "Arquivos", "PackingList");
+                    path = Path.Combine(serverpath, "Arquivos", "PackingList");
                 }
-                else {
-                     path = Path.Combine(serverpath, "Arquivos", "LoadingList");
+                else
+                {
+                    path = Path.Combine(serverpath, "Arquivos", "LoadingList");
                 }
 
 

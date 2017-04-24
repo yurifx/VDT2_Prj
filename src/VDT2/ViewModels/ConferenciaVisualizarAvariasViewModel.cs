@@ -1,8 +1,8 @@
 ﻿// <copyright file="ConferenciaVisualizarAvariasViewModel.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>ViewModel Conferencia Visualizar Avarias</summary>
 
@@ -14,8 +14,8 @@ using System.Threading.Tasks;
 namespace VDT2.ViewModels
 {
     public class ConferenciaVisualizarAvariasViewModel
-        {
-        public Models.Inspecao Inspecao {get;set;}
+    {
+        public Models.Inspecao Inspecao { get; set; }
         public Models.InspVeiculo InspVeiculo { get; set; }
         public Models.InspAvaria InspAvaria { get; set; }
         public List<Models.ImagemAvaria> ListaImagemAvarias { get; set; }

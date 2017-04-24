@@ -1,8 +1,8 @@
 ﻿// <copyright file="Avarias.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Camada de negócios referentes a Avarias</summary>
 
@@ -181,7 +181,7 @@ namespace VDT2.BLL
 
                 if (listaGravidades.Count() == 0)
                 {
-                    listaGravidades.Add(new AvGravidade { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas",  AvGravidade_ID= 0 });
+                    listaGravidades.Add(new AvGravidade { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvGravidade_ID = 0 });
                 }
 
                 return listaGravidades;
@@ -210,7 +210,7 @@ namespace VDT2.BLL
                 {
                     listaQuadrantes.Add(new AvQuadrante { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvQuadrante_ID = 0 });
                 }
-                
+
                 return listaQuadrantes;
             }
             catch
@@ -296,7 +296,7 @@ namespace VDT2.BLL
                     Nivel = Diag.Nivel.Informacao,
                     Mensagem = $"BLL.Avarias.Deletar({inspAvaria_ID})"
                 });
-                
+
                 DAL.InspAvaria.Deletar(inspAvaria_ID, configuracao);
 
                 return true;
@@ -306,7 +306,7 @@ namespace VDT2.BLL
             {
                 return false;
             }
-            
+
 
         }
 

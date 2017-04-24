@@ -1,8 +1,8 @@
 ﻿// <copyright file="UploadTxt.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <emailyuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de negócios - UploadTxt</summary>
 
@@ -24,14 +24,14 @@ namespace VDT2.BLL
     public class UploadTxt
     {
 
-/// <summary>
-/// Salva o arquivo que o usuário enviou no input
-/// </summary>
-/// <param name="ListaVeiculo_ID">Após a inserção do cabeçalho no banco de dados, enviar o seu ID</param>
-/// <param name="tipolista">Tipo: "P" - PackingList,  "L" - LoadingList</param>
-/// <param name="files">arquivo do usuário</param>
-/// <param name="configuracao">configurações do appsettings</param>
-/// <returns></returns>
+        /// <summary>
+        /// Salva o arquivo que o usuário enviou no input
+        /// </summary>
+        /// <param name="ListaVeiculo_ID">Após a inserção do cabeçalho no banco de dados, enviar o seu ID</param>
+        /// <param name="tipolista">Tipo: "P" - PackingList,  "L" - LoadingList</param>
+        /// <param name="files">arquivo do usuário</param>
+        /// <param name="configuracao">configurações do appsettings</param>
+        /// <returns></returns>
         public static bool SalvarArquivo(int ListaVeiculo_ID, string tipolista, ICollection<IFormFile> files, Configuracao configuracao)
         {
             try

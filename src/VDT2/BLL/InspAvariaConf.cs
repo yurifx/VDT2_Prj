@@ -1,8 +1,8 @@
 ﻿// <copyright file="InspAvariaConf.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>GrupoAsserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de negócios - InspAvariaConf</summary>
 
@@ -33,7 +33,7 @@ namespace VDT2.BLL
             List<Models.InspAvaria_Conf> listaInspAvaria_Conf = new List<Models.InspAvaria_Conf>();
 
             try
-            { 
+            {
                 listaInspAvaria_Conf = DAL.InspAvaria.InspAvariaConf(Cliente_ID, LocalInspecao_ID, LocalCheckPoint_ID, Data, configuracao);
                 return listaInspAvaria_Conf;
             }

@@ -1,8 +1,8 @@
 ﻿// <copyright file="UploadImagens.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de negócios - UploadImagens</summary>
 
@@ -80,7 +80,7 @@ namespace VDT2.BLL
                     Nivel = Diag.Nivel.Informacao,
                     Mensagem = $"Arquivos encontrados na pasta informada: {arquivos.Count()}"
                 });
-                
+
 
                 int arquivoMaiorNumeracao = 0;
                 foreach (var arquivo in arquivos)
@@ -141,7 +141,7 @@ namespace VDT2.BLL
                                 Nivel = Diag.Nivel.Informacao,
                                 Mensagem = $"Imagem copiada com sucesso: {file.Name}"
                             });
-                            
+
                         }
                     }
                 }

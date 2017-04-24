@@ -1,8 +1,8 @@
 ﻿// <copyright file="Cliente.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>Classe referente a camada de acesso aos dados - Cliente</summary>
 
@@ -26,12 +26,12 @@ namespace VDT2.DAL
     public class Cliente
     {
 
-/// <summary>
-/// Realiza a listagem de clientes no banco de dados
-/// </summary>
-/// <param name="usuarioID"></param>
-/// <param name="configuracao"></param>
-/// <returns>Retorna a lista de clientes encontradas no bdd</returns>
+        /// <summary>
+        /// Realiza a listagem de clientes no banco de dados
+        /// </summary>
+        /// <param name="usuarioID"></param>
+        /// <param name="configuracao"></param>
+        /// <returns>Retorna a lista de clientes encontradas no bdd</returns>
         public static List<Models.Cliente> Listar(int usuarioID, VDT2.Models.Configuracao configuracao)
         {
             string nomeStoredProcedure = "Cliente_Lst";
