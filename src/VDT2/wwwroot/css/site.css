@@ -379,6 +379,11 @@ LayoutCSS:.. Ordenação
 
 
 /* < TODOS OS DISPOSTIVOS > */
+.alertaTelaNovaConferencia{
+    max-width: 600px;
+    width: 600px;
+}
+
 
 .checkboxTelaConsulta {
 min-height: 36px;
@@ -402,7 +407,6 @@ padding-left: 30px;
     min-height: 150px;
     overflow-y: auto;
 }
-
 
 
 #btnPendencias {

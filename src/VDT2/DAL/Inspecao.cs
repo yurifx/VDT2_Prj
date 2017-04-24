@@ -364,7 +364,7 @@ namespace VDT2.DAL
                         Excecao = ex
                     });
                 #endregion
-                throw;
+                return false;
             }
 
 

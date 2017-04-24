@@ -3,14 +3,14 @@ GO
 
 If  Exists (Select Name
             From   sysobjects
-            Where  Name = 'InspAvaria_Cons_Summary' and type = 'P')
-    Drop Procedure dbo.InspAvaria_Cons_Summary
+            Where  Name = 'InspAvaria_Summary' and type = 'P')
+    Drop Procedure dbo.InspAvaria_Summary
 GO
 
-Create Procedure InspAvaria_Cons_Summary 
+Create Procedure InspAvaria_Summary 
 
 -------------------------------------------------------------------
--- 20/04 Criação da procedure e Inicio testes Yuri
+-- 20/04 Criação da procedure
 -------------------------------------------------------------------
 
 (  
@@ -45,10 +45,10 @@ Insert into @IDs (InspVeiculo_ID, VIN)
 select iv.InspVeiculo_ID, IsNull(VIN, VIN_6)From InspVeiculo iv
 Inner Join  Inspecao           i      on   iv.Inspecao_ID          =      i.Inspecao_ID
 Inner Join  Transportador      t      on    t.Transportador_ID     =      i.Transportador_ID
-Inner Join  FrotaViagem        fv     on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
-Left Join   Lote                l     on   iv.Lote_ID              =      l.Lote_ID
-Left Join   Navio               n     on    n.Navio_ID             =      i.Navio_ID 
-Left Join   InspAvaria         ia     on   iv.InspVeiculo_ID       =     ia.InspVeiculo_ID
+Inner Join  FrotaViagem       fv      on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
+Left  Join  Lote               l      on   iv.Lote_ID              =      l.Lote_ID
+Left  Join  Navio              n      on    n.Navio_ID             =      i.Navio_ID 
+Left  Join  InspAvaria        ia      on   iv.InspVeiculo_ID       =     ia.InspVeiculo_ID
 
 
 Where 
@@ -130,7 +130,6 @@ select 'VeiculosSemAvaria' as Tipo, count(distinct iv.InspVeiculo_ID) Total from
 inner join @IDs tmp on iv.InspVeiculo_ID = tmp.InspVeiculo_ID
 where not exists (select 1 from inspAvaria ia where ia.InspVeiculo_ID = iv.InspVeiculo_ID)
 
-
 union 
 
 select 'QuantidadeAvarias' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
@@ -152,6 +151,7 @@ where ia.FabricaTransporte = 'F'
 
 
 /*
+USE VDT2
 Declare @p_Cliente_ID             Int,
         @p_Chassi                 varchar(100),                                             
         @p_LocalInspecao          varchar(100),                                             
@@ -167,9 +167,9 @@ Declare @p_Cliente_ID             Int,
         @p_Gravidade              varchar(100),                                             
         @p_Severidade             varchar(100),                                             
       --@p_Extensoes              varchar(100),                                             
-        @p_TipoDefeito            varchar(100), --Transporte/Fábrica/Todos                  
-        @p_DanoOrigem             varchar(100), -- Sim/Não/Todos                            
-        @p_TipoTransportador      varchar(100), -- Marítimo/Terrestre/Todos                 
+        @p_TipoDefeito            varchar(100),   --Transporte/Fábrica/Todos                  
+        @p_DanoOrigem             varchar(100),   -- Sim/Não/Todos                            
+        @p_TipoTransportador      varchar(100),   -- Marítimo/Terrestre/Todos                 
         @p_FrotaViagem            varchar(100),                                                                                    
         @p_Navio                  varchar(100),                                             
         @p_DataInicio             Date,                                                     

@@ -42,10 +42,12 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult NovaConferencia()
         {
+
             if (TempData.Count() > 0)
             {
-                ViewData["MensagemErro"] = TempData["Erro"];
+                ViewData["Mensagem"] = TempData["Mensagem"];
             }
+
             #region gravalogInformacao
             Diag.Log.Grava(
             new Diag.LogItem()
@@ -54,6 +56,7 @@ namespace VDT2.Controllers
                 Mensagem = $"Action acionada: NovaConferencia | Sem Parametros",
             });
             #endregion
+
 
             const string _mensagemLogin = "Usuário não identificado, faça login novamente";
             ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
@@ -105,8 +108,6 @@ namespace VDT2.Controllers
                 ViewData["MensagemErro"] = _mensagemLogin;
                 return RedirectToAction("Index", "Home");
             }
-
-
 
             return View("NovaConferencia", conferenciaVM);
         }
@@ -474,8 +475,9 @@ namespace VDT2.Controllers
                 ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
-                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
                 listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+
 
                 if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                 {
@@ -1104,47 +1106,59 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult Publicar(string concatInspecoes)
         {
-            Diag.Log.Grava(new Diag.LogItem
+            try
             {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: Publicar | Parametros: ConcatInspecoes: {concatInspecoes}"
-            });
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = $"Action acionada: Publicar | Parametros: ConcatInspecoes: {concatInspecoes}"
+                });
 
 
-            string _mensagemErroLogin = "Erro ao receber Dados do usuário";
+                string _mensagemErroLogin = "Erro ao receber Dados do usuário";
 
-            #region recebeDadosUsuario
-            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
-            if (dadosUsuario == null)
-            {
-                ViewData["MensagemErro"] = _mensagemErroLogin;
-                return RedirectToAction("Index", "Home");
+                #region recebeDadosUsuario
+                var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+                if (dadosUsuario == null)
+                {
+                    ViewData["MensagemErro"] = _mensagemErroLogin;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var identificacao = this.Request.Cookies["Usr"];
+
+                if (identificacao == null)
+                {
+                    ViewData["MensagemErro"] = _mensagemErroLogin;
+                    return RedirectToAction("Index", "Home");
+                }
+
+                var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+                dadosUsuario.Usuario = objUsuario;
+                #endregion
+
+                var publicou = BLL.Inspecao.Publicar(dadosUsuario.UsuarioId, concatInspecoes, configuracao);
+
+                if (publicou)
+                {
+                    TempData["Mensagem"] = "Publicação realizada com sucesso.";
+                }
+                else
+                {
+                    TempData["Mensagem"] = "Não foi possível realizar publicação, tente novamente mais tarde";
+                }
+                return RedirectToAction("NovaConferencia");
             }
-
-            var identificacao = this.Request.Cookies["Usr"];
-
-            if (identificacao == null)
+            catch (Exception ex)
             {
-                ViewData["MensagemErro"] = _mensagemErroLogin;
-                return RedirectToAction("Index", "Home");
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Mensagem = $"Erro ao Publicar Inspeção - Conferência Controller - Action Publicar  Erro: {ex}",
+                    Nivel = Diag.Nivel.Erro
+                });
+
+                return RedirectToAction("NovaConferencia");
             }
-
-            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
-            dadosUsuario.Usuario = objUsuario;
-            #endregion
-
-            var publicou = BLL.Inspecao.Publicar(dadosUsuario.UsuarioId, concatInspecoes, configuracao);
-
-            if (publicou == true)
-            {
-                ViewData["MensagemSucesso"] = "Publicação realizada com sucesso.";
-            }
-            else
-            {
-                ViewData["MensagemErro"] = "Não foi possível realizar publicação, tente novamente mais tarde";
-            }
-            return RedirectToAction("NovaConferencia");
-
         }
     }
 }

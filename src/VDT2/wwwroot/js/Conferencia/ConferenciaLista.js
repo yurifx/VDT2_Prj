@@ -2,11 +2,32 @@
     console.log("Inicializou jquery ok - Conferência PackingList");
 
     $("#btnUpload").click(function () {
-        $("#lblConfirmacaoLote").append($("#inputLote").val());
-        $("#lblConfirmacaoLote").css('font-weight', 'bold');
 
+        if (!$("#radioPacking").is(':checked')){
+            $("#lblConfirmacaoLote").append($("#inputLote").val());
+            $("#lblConfirmacaoLote").css('font-weight', 'bold');
+        }
+        else {
+            $("#lblConfirmacaoLote").text("Deseja confirmar?");
+            $("#lblConfirmacaoLote").css('font-weight', 'bold');
+        }
+        
     })
 
+
+    $("#radioPacking").on('click', function () {
+        $("#divLote").hide();
+        $("#inputLote").val("");
+    });
+
+    $("#radioLoading").on('click', function () {
+        $("#divLote").show();
+    });
+
+    $("#radioDischarging").on('click', function () {
+        $("#divLote").show();
+    });
+    
 })
 
 
@@ -35,3 +56,43 @@ function PreencheListaCheckPoint() {
         });
 }
 
+
+
+function Enviar() {
+
+    var qtdArquivos = document.getElementById('inputFilesEnviarLista').files.length;
+    var Cliente = $("#ListaCliente").val();
+    var LocalInspecao = $("#ListaLocalInspecao").val();
+    var LocalCheckPoint = $("#ListaLocalCheckPoint").val();
+    var Lote = $("#inputLote").val();
+
+    if (Cliente == 0 || Cliente == null) {
+        alert("Por favor informe um Cliente");
+        return false;
+    }
+
+    if (LocalInspecao == 0 || LocalInspecao == null) {
+        alert("Por favor informe um Local de Inspeção");
+        return false;
+    }
+
+    if (LocalCheckPoint == 0 || LocalCheckPoint == null) {
+        alert("Por favor informe um Local de CheckPoint");
+        return false;
+    }
+    
+    if (!$("#radioPacking").is(":checked")){
+    if (Lote == "") {
+        alert("Por favor informe um Lote");
+        return false;
+        }
+    }
+
+    if (qtdArquivos == 0) {
+        alert("Por favor informe um Arquivo");
+        return false;
+    }
+
+    $("#frmEnviarLista").submit();
+
+}

@@ -10,18 +10,10 @@
 <script src="~/js/Conferencia/ConferenciaTelaInicial.js" asp-append-version="true"></script>
 <div class="container">
     <div class="container" id="EM_ERRO">
-        @if (ViewData["MensagemErro"] != null)
+        @if (ViewData["Mensagem"] != null)
             {
-            <div class="alert alert-danger">
-                <p>@ViewData["MensagemErro"]</p>
-            </div>
-        }
-    </div>
-    <div class="container" id="EM_SUCESSO">
-        @if (ViewData["MensagemSucesso"] != null)
-            {
-            <div class="alert alert-success">
-                <p>@ViewData["MensagemSucesso"]</p>
+            <div class="alertaTelaNovaConferencia alert alert-danger">
+                <p>@ViewData["Mensagem"]</p>
             </div>
         }
     </div>
@@ -93,7 +85,7 @@
                             <input type="button" class="btnTelaNovaConferencia btn btn-sm btn-primary" value="Voltar" onClick="Voltar()"><br /><br />
                         </div>
                     </div>
-                
+
                 </div>
             </form>
         </div>

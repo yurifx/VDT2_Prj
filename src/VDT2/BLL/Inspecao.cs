@@ -634,19 +634,9 @@ namespace VDT2.BLL
             }
         }
 
-
         public static bool Publicar(int UsuarioId, string Inspecoes, Configuracao configuracao)
         {
-            try
-            {
-                return DAL.Inspecao.Publicar(UsuarioId, Inspecoes, configuracao);
-
-            }
-            catch (Exception ex)
-            {
-                return false;
-            }
-
+            return DAL.Inspecao.Publicar(UsuarioId, Inspecoes, configuracao);
         }
     }
 }

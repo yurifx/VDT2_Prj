@@ -69,8 +69,13 @@ namespace VDT2.DAL
 
                 SqlParameter parmLote = new SqlParameter("@p_Lote", SqlDbType.Char)
                 {
-                    Value = listaVeiculos.Lote
+                    Value = DBNull.Value
                 };
+
+                if (!String.IsNullOrEmpty(listaVeiculos.Lote))
+                {
+                    parmLote.Value = listaVeiculos.Lote;
+                }
 
 
                 SqlParameter parmListaVeiculo_ID = new SqlParameter("@p_ListaVeiculo_ID", SqlDbType.Int)
@@ -106,8 +111,11 @@ namespace VDT2.DAL
                     contexto.Database.ExecuteSqlCommand(chamada, parametros);
 
                     listaVeiculos.ListaVeiculo_ID = (int)parmListaVeiculo_ID.Value;
-                    listaVeiculos.Lote_ID = (int)parmLoteID.Value;
 
+                    if (listaVeiculos.TipoLista != "P")
+                    {
+                        listaVeiculos.Lote_ID = (int)parmLoteID.Value;
+                    }
                     #region gravalogInformacao
                     Diag.Log.Grava(
                     new Diag.LogItem()
