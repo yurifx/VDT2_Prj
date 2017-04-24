@@ -741,13 +741,244 @@ namespace VDT2.DAL
             }
         }
 
-        public static List<InspAvaria_Cons_Summary> ConsultarSummary(ConsultaViewModel consultaVM, Configuracao configuracao)
+        public static List<InspAvaria_Summary> ConsultarSummary(InspAvaria_Cons InspAvaria_Cons, Configuracao configuracao)
         {
-
-
             //TODO: Fazer lógica para SQL parameters
-            List<Models.InspAvaria_Cons_Summary> ListaSummary = new List<Models.InspAvaria_Cons_Summary>();
-            return ListaSummary;
+            List<Models.InspAvaria_Summary> ListaSummary = new List<Models.InspAvaria_Summary>();
+            string nomeStoredProcedure = "InspAvaria_Summary";
+            try
+            {
+                //Cliente
+                SqlParameter parmClienteID = new SqlParameter("@p_Cliente_ID", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Cliente_ID
+                };
+
+                //Chassi
+                SqlParameter parmChassi = new SqlParameter("@p_Chassi", SqlDbType.VarChar)
+                {
+                    Value = DBNull.Value
+                };
+
+                if (!String.IsNullOrEmpty(InspAvaria_Cons.Chassi))
+                {
+                    parmChassi.Value = InspAvaria_Cons.Chassi;
+                }
+
+
+                //Local Inspeção
+                SqlParameter parmLocalInspecao = new SqlParameter("@p_LocalInspecao", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.LocalInspecao
+                };
+
+
+                //Local CheckPoint
+                SqlParameter parmLocalCheckPoint = new SqlParameter("@p_LocalCheckPoint", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.LocalCheckPoint
+                };
+
+                //Transportador
+                SqlParameter parmTransportador = new SqlParameter("@p_Transportador", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Transportador
+                };
+
+
+                //Lote
+                SqlParameter parmLote = new SqlParameter("@p_Lote", SqlDbType.VarChar)
+                {
+                    Value = DBNull.Value
+                };
+
+                if (!String.IsNullOrEmpty(InspAvaria_Cons.Lote))
+                {
+                    parmLote.Value = InspAvaria_Cons.Lote;
+                }
+
+
+                //Marca
+                SqlParameter parmMarca = new SqlParameter("@p_Marca", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Marca
+                };
+
+
+                //Modelo
+                SqlParameter parmModelo = new SqlParameter("@p_Modelo", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Modelo
+                };
+
+                //Área
+                SqlParameter parmArea = new SqlParameter("@p_Area", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Area
+                };
+
+                //Condicao
+                SqlParameter parmCondicao = new SqlParameter("@p_Condicao", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Condicao
+                };
+
+                //Dano
+                SqlParameter parmDano = new SqlParameter("@p_Dano", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Dano
+                };
+
+                //Quadrante
+                SqlParameter parmQuadrante = new SqlParameter("@p_Quadrante", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Quadrante
+                };
+
+                //Gravidade
+                SqlParameter parmGravidade = new SqlParameter("@p_Gravidade", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Gravidade
+                };
+
+                //Severidade
+                SqlParameter parmSeveridade = new SqlParameter("@p_Severidade", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.Severidade
+                };
+
+                //Fábrica ou Transporte? Qual tipo de defeito |F| |T| ou *
+                SqlParameter parmTipoDefeito = new SqlParameter("@p_TipoDefeito", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.FabricaTransporte
+                };
+
+                //Dano de Origem? |0| |1| |*|
+                SqlParameter parmDanoOrigem = new SqlParameter("@p_DanoOrigem", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.DanoOrigem
+                };
+
+
+                //Tipo de Transportador
+                SqlParameter parmTransportadorTipo = new SqlParameter("@p_TransportadorTipo", SqlDbType.VarChar)
+                {
+                    Value = InspAvaria_Cons.TransportadorTipo
+                };
+
+
+                //FrotaViagem
+                SqlParameter parmFrotaViagem = new SqlParameter("@p_FrotaViagem", SqlDbType.VarChar)
+                {
+                    Value = DBNull.Value
+                };
+
+                if (!String.IsNullOrEmpty(InspAvaria_Cons.FrotaViagem))
+                {
+                    parmFrotaViagem.Value = InspAvaria_Cons.FrotaViagem;
+                }
+
+                //Nome Navio
+                SqlParameter parmNavio = new SqlParameter("@p_Navio", SqlDbType.VarChar)
+                {
+                    Value = DBNull.Value
+                };
+
+                if (!String.IsNullOrEmpty(InspAvaria_Cons.Navio))
+                {
+                    parmNavio.Value = InspAvaria_Cons.Navio;
+                }
+
+                SqlParameter parmDataInicio = new SqlParameter("@p_DataInicio", SqlDbType.Date)
+                {
+                    Value = InspAvaria_Cons.DataInicio
+                };
+
+                SqlParameter parmDataFinal = new SqlParameter("@p_DataFinal", SqlDbType.Date)
+                {
+                    Value = InspAvaria_Cons.DataFinal
+                };
+
+                SqlParameter[] parametros = new SqlParameter[]
+                    {
+                        parmClienteID,
+                        parmChassi,
+                        parmLocalInspecao,
+                        parmLocalCheckPoint,
+                        parmTransportador,
+                        parmLote,
+                        parmMarca,
+                        parmModelo,
+                        parmArea,
+                        parmCondicao,
+                        parmDano,
+                        parmQuadrante,
+                        parmGravidade,
+                        parmSeveridade,
+                        parmTipoDefeito,
+                        parmDanoOrigem,
+                        parmTransportadorTipo,
+                        parmFrotaViagem,
+                        parmNavio,
+                        parmDataInicio,
+                        parmDataFinal
+                    };
+
+                string chamada =
+                    $"{nomeStoredProcedure} " +
+                    $"{parmClienteID.ParameterName}, " +
+                    $"{parmChassi.ParameterName}, " +
+                    $"{parmLocalInspecao.ParameterName}," +
+                    $"{parmLocalCheckPoint.ParameterName}, " +
+                    $"{parmTransportador.ParameterName}, " +
+                    $"{parmLote.ParameterName}, " +
+                    $"{parmMarca.ParameterName}, " +
+                    $"{parmModelo.ParameterName}, " +
+                    $"{parmArea.ParameterName}, " +
+                    $"{parmCondicao.ParameterName}," +
+                    $"{parmDano.ParameterName}," +
+                    $"{parmQuadrante.ParameterName}, " +
+                    $"{parmGravidade.ParameterName}," +
+                    $"{parmSeveridade.ParameterName}," +
+                    $"{parmTipoDefeito.ParameterName}," +
+                    $"{parmDanoOrigem.ParameterName}," +
+                    $"{parmTransportadorTipo.ParameterName}," +
+                    $"{parmFrotaViagem.ParameterName}," +
+                    $"{parmNavio.ParameterName}," +
+                    $"{parmDataInicio.ParameterName}," +
+                    $"{parmDataFinal.ParameterName}";
+
+                using (var contexto = new GeralDbContext(configuracao))
+
+                {
+                    ListaSummary = contexto.InspAvaria_Summary.FromSql(chamada, parametros).ToList();
+
+                    #region gravalogInformacao
+                    Diag.Log.Grava(
+                        new Diag.LogItem()
+                        {
+                            Nivel = Diag.Nivel.Informacao,
+                            Mensagem = $"InspAvaria.ConsultarSummary realizado com sucesso - Registros encontrados {ListaSummary.Count()}"
+                        });
+                    #endregion
+                    return ListaSummary;
+                }
+
+            }
+            catch (System.Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
+                        Excecao = ex
+                    });
+                throw;
+                #endregion
+            }
+
 
         }
 

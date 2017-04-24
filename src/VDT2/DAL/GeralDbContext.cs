@@ -46,13 +46,15 @@ namespace VDT2.DAL
         public DbSet<Models.ListaVeiculosVin> ListaVeiculosVin { get; set; }
         public DbSet<Models.InspAvaria_Cons> InspAvaria_Cons { get; set; }
         public DbSet<Models.Pendencia> Pendencia { get; set; }
+        public DbSet<Models.InspAvaria_Summary> InspAvaria_Summary { get; set; }
 
         /// <summary>
         /// Construtor da classe
         /// </summary>
         /// <param name="configuracao">Configuração geral do aplicativo (para extrair a string de conexão)</param>
         public GeralDbContext(VDT2.Models.Configuracao configuracao)
-            : base() {
+            : base()
+        {
 
             this.connectionString = configuracao.ConnectionStringVDT;
         }
@@ -61,7 +63,8 @@ namespace VDT2.DAL
         /// Associa a string de conexão ao objeto
         /// </summary>
         /// <param name="optionsBuilder"></param>
-        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder) {
+        protected override void OnConfiguring(DbContextOptionsBuilder optionsBuilder)
+        {
 
             // Para evitar este erro quando tenta executar "contexto.Database.ExecuteSqlCommand(chamada, parametros);":
             // Unable to resolve service for type 'Microsoft.EntityFrameworkCore.Storage.IRawSqlCommandBuilder'. 

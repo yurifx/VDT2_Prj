@@ -1078,17 +1078,20 @@ namespace VDT2.Controllers
             Diag.Log.Grava(new Diag.LogItem
             {
                 Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: ListarConsulta"
+                Mensagem = $"Action acionada: ListarConsulta - Controller: ConferenciaController"
             });
 
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
 
             consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
-            consultaVeiculosVM.ListaInspAvaria_Cons_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
+            consultaVeiculosVM.ListaInspAvaria_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
 
-            consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Cons.Count();
-            consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Cons.Where(p => String.IsNullOrEmpty(p.Area_Pt)).Count();
-            consultaVeiculosVM.VeiculosComAvaria = consultaVeiculosVM.QuantidadeInspecionada - consultaVeiculosVM.VeiculosSemAvaria;
+            consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 1).FirstOrDefault().Total;
+            consultaVeiculosVM.VeiculosComAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 2).FirstOrDefault().Total;
+            consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 3).FirstOrDefault().Total;
+            consultaVeiculosVM.QuantidadeAvarias = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 4).FirstOrDefault().Total;
+            consultaVeiculosVM.QuantidadeAvariasTransporte = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 5).FirstOrDefault().Total;
+            consultaVeiculosVM.QuantidadeAvariasFabrica = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 6).FirstOrDefault().Total;
 
             if (consultaVeiculosVM.QuantidadeInspecionada != 0)
             {

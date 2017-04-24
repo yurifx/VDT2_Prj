@@ -14,6 +14,35 @@ namespace VDT2.BLL
         {
             List<InspAvaria_Cons> listacons = new List<InspAvaria_Cons>();
             Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
+            inspAvaria_Cons = RecebeDadosUsuario(consultaVM);
+            listacons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
+            return listacons;
+
+        }
+
+        public static List<InspAvaria_Summary> ConsultarSumario(ConsultaViewModel consultaVM, Configuracao configuracao)
+        {
+            List<Models.InspAvaria_Summary> ListaSummary = new List<Models.InspAvaria_Summary>();
+            try
+            {
+                Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
+                inspAvaria_Cons = RecebeDadosUsuario(consultaVM);
+                ListaSummary = DAL.InspAvaria.ConsultarSummary(inspAvaria_Cons, configuracao);
+                return ListaSummary;
+            }
+            catch
+            {
+                return ListaSummary;
+            }
+
+        }
+
+
+        public static InspAvaria_Cons RecebeDadosUsuario(ConsultaViewModel consultaVM)
+        {
+
+            List<InspAvaria_Cons> listacons = new List<InspAvaria_Cons>();
+            Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
 
             //Cliente
             inspAvaria_Cons.Cliente_ID = consultaVM.Cliente.Cliente_ID;
@@ -329,35 +358,7 @@ namespace VDT2.BLL
             //NAVIO
             inspAvaria_Cons.Navio = consultaVM.NavioNome;
 
-
-            string a = inspAvaria_Cons.TextoLog();
-
-            Diag.Log.Grava(new Diag.LogItem
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = inspAvaria_Cons.TextoLog()
-            });
-
-
-            listacons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
-
-            return listacons;
-
-        }
-
-        public static List<InspAvaria_Cons_Summary> ConsultarSumario(ConsultaViewModel consultaVM, Configuracao configuracao)
-        {
-            List<Models.InspAvaria_Cons_Summary> ListaSummary = new List<Models.InspAvaria_Cons_Summary>();
-            try
-            {
-                ListaSummary = DAL.InspAvaria.ConsultarSummary(consultaVM, configuracao);
-                return ListaSummary;
-            }
-            catch
-            {
-                return ListaSummary;
-            }
-
+            return inspAvaria_Cons;
         }
     }
 }

@@ -64,10 +64,11 @@ Select
        n.Nome                      as  NavioNome,
                                
 	   iv.InspVeiculo_ID           as  InspVeiculo_ID, 
-       iv.VIN_6                    as  Chassi,
+       iv.VIN_6                    as  VIN_6,
+       iv.VIN                      as  VIN,
        
-       l.Lote_ID,
-       l.Lote,                                   
+       l.Lote_ID                   as Lote_ID,
+       l.Lote                      as LoteNome,                                   
 
 	   ia.InspAvaria_ID,               
 	   ia.FabricaTransporte,
@@ -230,8 +231,8 @@ set      @p_DanoOrigem             = '*'  --|0|1|
 set      @p_TipoTransportador      = '*'  --|T|M|
 set      @p_FrotaViagem            = null
 set      @p_Navio                  = null
-set      @p_DataInicio             = '2017-01-01'
-set      @p_DataFinal              = '2017-04-25'
+set      @p_DataInicio             = '2017-04-24'
+set      @p_DataFinal              = '2017-04-24'
 
 
 exec InspAvaria_Cons 

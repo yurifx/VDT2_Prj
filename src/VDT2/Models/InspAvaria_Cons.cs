@@ -19,10 +19,10 @@ namespace VDT2.Models
     public class InspAvaria_Cons
     {
 
-
         //Dados a serem enviados.
         public int Cliente_ID { get; set; }
 
+        [NotMapped]
         public string Chassi { get; set; }
 
         [NotMapped]
@@ -112,6 +112,14 @@ namespace VDT2.Models
         public string NavioNome { get; set; }
 
         public int InspVeiculo_ID { get; set; }
+
+        public string VIN_6 { get; set; }
+
+        public string VIN { get; set; }
+
+        //        public int? Lote_ID { get; set; }
+
+        public string LoteNome { get; set; }
 
         public string FabricaTransporte { get; set; }
 

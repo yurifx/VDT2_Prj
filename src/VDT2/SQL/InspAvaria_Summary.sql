@@ -115,37 +115,37 @@ and i.Data between @p_DataInicio and @p_DataFinal
 
 
 
-select 'TodosVeiculos' as Tipo, count(distinct VIN) Total 
+select 1 as ID, 'TodosVeiculos' as Tipo, count(distinct VIN) Total 
 from @IDs
 
 union
 
-select 'VeiculosComAvarias' as Tipo, count(distinct iv.InspVeiculo_ID) Total from inspVeiculo iv
+select 2 ID, 'VeiculosComAvarias' as Tipo, count(distinct iv.InspVeiculo_ID) Total from inspVeiculo iv
 inner join @IDs tmp on iv.InspVeiculo_ID = tmp.InspVeiculo_ID
 inner join InspAvaria ia on iv.InspVeiculo_ID = ia.InspVeiculo_ID
 
 union
 
-select 'VeiculosSemAvaria' as Tipo, count(distinct iv.InspVeiculo_ID) Total from inspVeiculo iv
+select 3 as ID, 'VeiculosSemAvaria' as Tipo, count(distinct iv.InspVeiculo_ID) Total from inspVeiculo iv
 inner join @IDs tmp on iv.InspVeiculo_ID = tmp.InspVeiculo_ID
 where not exists (select 1 from inspAvaria ia where ia.InspVeiculo_ID = iv.InspVeiculo_ID)
 
 union 
 
-select 'QuantidadeAvarias' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
+select 4 as ID, 'QuantidadeAvarias' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
 inner join @IDs tmp on ia.InspVeiculo_ID = tmp.InspVeiculo_ID
 
 
 union 
 
-select 'QuantidadeAvariasTransporte' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
+select 5 as ID, 'QuantidadeAvariasTransporte' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
 inner join @IDs tmp on ia.InspVeiculo_ID = tmp.InspVeiculo_ID
 where ia.FabricaTransporte = 'T'
 
 
 union
 
-select 'QuantidadeAvariasFabrica' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
+select 6 as ID, 'QuantidadeAvariasFabrica' as Tipo, count(inspAvaria_id) Total from InspAvaria ia
 inner join @IDs tmp on ia.InspVeiculo_ID = tmp.InspVeiculo_ID
 where ia.FabricaTransporte = 'F'
 
