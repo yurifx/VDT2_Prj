@@ -44,6 +44,7 @@ function EnviarFormularioDesabilitarBotao(e) {
 
 function Publicar() {
     $("#frmPublicar").submit();
+    alert('Inspeções publicadas')
 }
 
 function LiberarPublicacao() {

@@ -1135,9 +1135,16 @@ namespace VDT2.Controllers
 
             var publicou = BLL.Inspecao.Publicar(dadosUsuario.UsuarioId, concatInspecoes, configuracao);
 
-            ViewData["MensagemSucesso"] = "Publicação realizada com sucesso.";
+            if (publicou == true)
+            {
+                ViewData["MensagemSucesso"] = "Publicação realizada com sucesso.";
+            }
+            else
+            {
+                ViewData["MensagemErro"] = "Não foi possível realizar publicação, tente novamente mais tarde";
+            }
+            return RedirectToAction("NovaConferencia");
 
-            return View();
         }
     }
 }
