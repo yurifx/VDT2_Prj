@@ -744,9 +744,11 @@ namespace VDT2.DAL
         public static List<InspAvaria_Cons_Summary> ConsultarSummary(ConsultaViewModel consultaVM, Configuracao configuracao)
         {
 
+
             //TODO: Fazer lógica para SQL parameters
             List<Models.InspAvaria_Cons_Summary> ListaSummary = new List<Models.InspAvaria_Cons_Summary>();
             return ListaSummary;
+
         }
 
     }

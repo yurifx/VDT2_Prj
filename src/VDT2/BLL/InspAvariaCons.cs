@@ -44,8 +44,6 @@ namespace VDT2.BLL
                 inspAvaria_Cons.LocalInspecao = "*";
             }
 
-
-
             //Local Checkpoint
             if (consultaVM.LocalCheckPoint_ID != null)
             {
