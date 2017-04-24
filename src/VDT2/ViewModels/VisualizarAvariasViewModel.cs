@@ -1,8 +1,8 @@
 ﻿// <copyright file="VisualizarAvariasViewModel.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary>ViewModel VisualizarAvariasViewModel</summary>
 
@@ -22,6 +22,6 @@ namespace VDT2.ViewModels
         public List<InspAvaria> Avarias { get; set; }
 
         public string VIN_6 { get; set; }
-        
-        }
+
+    }
 }

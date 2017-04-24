@@ -1,8 +1,8 @@
 ﻿// <copyright file="InspecaoVeiculoRegistrarAvarias.cs" company="Bureau Veritas">
 // Copyright (c) 2017 All Right Reserved
 // </copyright>
-// <author>Amauri Rodrigues & Yuri Vasconcelos</author>
-// <email>amauri.rodrigues@grupoasserth.com.br | yuri.vasconcelos@grupoasserth.com.br</email>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
 // <date>2017-03-28</date>
 // <summary> Inspecao Veiculo Registrar Avarias View Model</summary>
 
@@ -13,13 +13,13 @@ using System.Threading.Tasks;
 using VDT2.Models;
 
 namespace VDT2.ViewModels
-    {
+{
     public class InspecaoVeiculoRegistrarAvariasVM
-        {
+    {
         public LoginViewModel dadosUsuario;
         public Inspecao Inspecao;
         public InspVeiculo InspVeiculo;
-        
+
 
         //Lista de dados da avaria
         public List<AvArea> avAreaLista;
@@ -52,5 +52,5 @@ namespace VDT2.ViewModels
             Fabricatransporte = "";
             VIN_6 = "";
         }
-        }
     }
+}
