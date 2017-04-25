@@ -1198,27 +1198,24 @@ namespace VDT2.Controllers
         public FileResult ExportarExcel(string dados)
         {
             //TODO - GRAVAR LOG
-
             #region recebeDadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
             {
-                //todo algo
+                return null;
             }
 
             var identificacao = this.Request.Cookies["Usr"];
 
             if (identificacao == null)
             {
+                return null;
 
-                //todo algo
             }
 
             var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
             dadosUsuario.Usuario = objUsuario;
             #endregion
-
-
 
             InspAvaria_Cons inspAvaria_Cons = new InspAvaria_Cons();
             inspAvaria_Cons = JsonConvert.DeserializeObject<Models.InspAvaria_Cons>(dados);
@@ -1232,7 +1229,6 @@ namespace VDT2.Controllers
 
             var path = Path.Combine(System.IO.Path.GetTempPath(), $"{dadosUsuario.Nome}_RelatorioConsulta.xlsx");
 
-
             using (var fs = new FileStream(path, FileMode.Open))
             {
                 //Conversão para Byte
@@ -1241,10 +1237,6 @@ namespace VDT2.Controllers
                 var Arquivo = new FileContentResult(arquivoEmBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
                 return Arquivo;
             }
-
-
-
-
 
         }
     }
