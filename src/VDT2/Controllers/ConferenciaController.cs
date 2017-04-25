@@ -17,6 +17,7 @@ using VDT2.Models;
 using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Text;
+using VDT2.BLL;
 
 namespace VDT2.Controllers
 {
@@ -1081,6 +1082,28 @@ namespace VDT2.Controllers
                 Mensagem = $"Action acionada: ListarConsulta - Controller: ConferenciaController"
             });
 
+            string _mensagemErroLogin = "Erro ao ListarConsulta";
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+                ViewData["MensagemErro"] = _mensagemErroLogin;
+                return RedirectToAction("Index", "Home");
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+            #endregion
+
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
 
             consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
@@ -1092,6 +1115,11 @@ namespace VDT2.Controllers
             consultaVeiculosVM.QuantidadeAvarias = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 4).FirstOrDefault().Total;
             consultaVeiculosVM.QuantidadeAvariasTransporte = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 5).FirstOrDefault().Total;
             consultaVeiculosVM.QuantidadeAvariasFabrica = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 6).FirstOrDefault().Total;
+
+
+            GerarExcelConsultas ge = new GerarExcelConsultas();
+            ge.GerarExcel(dadosUsuario.Nome, consultaVeiculosVM.ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
+
 
             if (consultaVeiculosVM.QuantidadeInspecionada != 0)
             {

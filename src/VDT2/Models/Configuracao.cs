@@ -23,6 +23,12 @@ namespace VDT2.Models
         /// </summary>
         public string ConnectionStringVDT { get; set; }
 
+
+        //Pasta contendo arquivos de fotos do sistema
         public string PastaFotos { get; set; }
+
+
+        //Paste temporária para geração de arquivos Excel
+        public string PastaExcel { get; set; }
     }
 }
