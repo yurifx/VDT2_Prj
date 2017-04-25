@@ -28,21 +28,22 @@ namespace VDT2.BLL
             {
                 try
                 {
-                    string sWebRootFolder = configuracao.PastaExcel;
+                    string caminhoServidor = System.IO.Path.GetTempPath();
 
-                    if (!Directory.Exists(sWebRootFolder))
-                    {
-                        Directory.CreateDirectory(sWebRootFolder);
-                    }
+                    //if (!Directory.Exists(caminhoServidor))
+                    //{
+                    //    Directory.CreateDirectory(caminhoServidor);
+                    //}
 
                     string sFileName = $"{NomeUsuario}_RelatorioConsulta.xlsx";
 
                     string URL = $"{Scheme}/{Host}/{sFileName}";
-                    FileInfo file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+
+                    FileInfo file = new FileInfo(Path.Combine(caminhoServidor, sFileName));
                     if (file.Exists)
                     {
                         file.Delete();
-                        file = new FileInfo(Path.Combine(sWebRootFolder, sFileName));
+                        file = new FileInfo(Path.Combine(caminhoServidor, sFileName));
                     }
                     using (ExcelPackage package = new ExcelPackage(file))
                     {
