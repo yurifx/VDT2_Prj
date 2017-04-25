@@ -68,8 +68,9 @@ namespace VDT2.BLL
                         worksheet.Cells[1, 15].Value = "Gravidade";
                         worksheet.Cells[1, 16].Value = "Quadrante";
                         worksheet.Cells[1, 17].Value = "Severidade";
-                        worksheet.Cells[1, 18].Value = "HorasReparo";
-                        worksheet.Cells[1, 19].Value = "Custo";
+                        worksheet.Cells[1, 18].Value = "TipoAvaria";
+                        worksheet.Cells[1, 19].Value = "HorasReparo";
+                        worksheet.Cells[1, 20].Value = "Custo";
 
 
                         //Muda o estilo do header
@@ -98,8 +99,9 @@ namespace VDT2.BLL
                             worksheet.Cells[i + 2, 15].Value = DadosConsulta[i].Gravidade_Pt;
                             worksheet.Cells[i + 2, 16].Value = DadosConsulta[i].Quadrante_Pt;
                             worksheet.Cells[i + 2, 17].Value = DadosConsulta[i].Severidade_Pt;
-                            worksheet.Cells[i + 2, 18].Value = DadosConsulta[i].HorasReparo;
-                            worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].Custo;
+                            worksheet.Cells[i + 2, 18].Value = DadosConsulta[i].FabricaTransporte;
+                            worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].HorasReparo;
+                            worksheet.Cells[i + 2, 20].Value = DadosConsulta[i].Custo;
                         }
 
                         //Salvar

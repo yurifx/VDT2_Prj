@@ -62,6 +62,7 @@
                     <th class="">Gravidade</th>
                     <th class="">Quadrante</th>
                     <th class="">Severidade</th>
+                    <th class="">TipoAvaria</th>
                     <th class="">Horas Reparo</th>
                     <th class="">Custo</th>
 
@@ -91,6 +92,20 @@
                         <td>@item.Gravidade_Pt</td>
                         <td>@item.Quadrante_Pt</td>
                         <td>@item.Severidade_Pt</td>
+
+                        @if (item.FabricaTransporte == "F")
+                        {
+                            <td>Fábrica</td>}
+                        else if (item.FabricaTransporte == "T")
+                        {
+                            <td>Transporte</td>
+                        }
+                        else
+                        {
+                            <td></td>
+
+                        }
+
                         <td>@item.HorasReparo</td>
                         <td>@item.Custo</td>
                     </tr>
