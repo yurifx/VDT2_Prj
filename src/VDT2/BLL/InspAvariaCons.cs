@@ -20,6 +20,7 @@ namespace VDT2.BLL
 
         }
 
+
         public static List<InspAvaria_Summary> ConsultarSumario(ConsultaViewModel consultaVM, Configuracao configuracao)
         {
             List<Models.InspAvaria_Summary> ListaSummary = new List<Models.InspAvaria_Summary>();
@@ -360,5 +361,6 @@ namespace VDT2.BLL
 
             return inspAvaria_Cons;
         }
+
     }
 }

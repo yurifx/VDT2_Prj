@@ -24,11 +24,21 @@
         .container()
         .appendTo('#botoes');
 
-    $('#BotaoExcel').click(function () {
-        $("#tabela1").table2excel({
-            name: "ArquivoConsulta",
-            filename: "ArquivoConsulta",
-            fileext: ".xls",
-        });
-    });
 })
+
+
+function ExportarExcel() {
+
+    var dados = $("#inputFiltrosUtilizados").val();
+
+    $.post(
+        "./ExportarExcel",
+        { "dados": dados},
+        function (e) {
+            alert(e);
+        }
+
+    )
+
+
+}

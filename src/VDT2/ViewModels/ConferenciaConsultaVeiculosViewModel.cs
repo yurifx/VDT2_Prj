@@ -21,6 +21,9 @@ namespace VDT2.ViewModels
 
         public decimal PercentualAvariado { get; set; }
         public decimal PercentualSemAvaria { get; set; }
+
+
+        public string FiltroRealizado { get; set; } //Valores dos filtros utilizados pelo usuário, em formato JSON (serializado)
     }
 }
 

@@ -11,7 +11,7 @@
 <script src="https://cdn.datatables.net/buttons/1.2.4/js/dataTables.buttons.min.js"></script>
 <script src="~/lib/ExportExcel/jquery-table2excel.js"></script>
 
-<script src="~/js/Conferencia/ConsultaVeiculos.js"></script>
+<script src="~/js/Conferencia/ConsultaVeiculos.js" asp-append-version="true"></script>
 
 <link rel="stylesheet" href="https://cdn.datatables.net/1.10.13/css/jquery.dataTables.min.css" />
 <link rel="stylesheet" href="https://cdn.datatables.net/buttons/1.2.4/css/buttons.dataTables.min.css">
@@ -35,6 +35,7 @@
 
 </div>
 
+
 <br />
 <div class="container">
     <div class="row">
@@ -55,8 +56,8 @@
                     <th class="">Lote</th>
                     <th class="">Marca</th>
                     <th class="">Modelo</th>
-                    <th class="">Area</th>
-                    <th class="">Condicao</th>
+                    <th class="">Área</th>
+                    <th class="">Condição</th>
                     <th class="">Dano</th>
                     <th class="">Gravidade</th>
                     <th class="">Quadrante</th>
@@ -102,8 +103,13 @@
 <br /><br /><br />
 @*<button type="button" class="btn btn-group-sm btn-default" onclick="window.print()">Imprimir</button>*@
 <button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
-<button type="button" class="btn btn-success" id="BotaoExcel">Exportar Excel</button>
+<button type="button" class="btn btn-success" id="BotaoExcel" onclick="location.href='./ExportarExcel/?dados=@Model.FiltroRealizado'">Exportar Excel</button>
 <br /><br /><br />
+
+
+<form hidden>
+    <input type="text" id="inputFiltrosUtilizados" value="@Model.FiltroRealizado" />
+</form>
 
 <script>
     function Voltar() {

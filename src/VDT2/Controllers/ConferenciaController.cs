@@ -18,6 +18,7 @@ using Microsoft.AspNetCore.Http;
 using Newtonsoft.Json;
 using System.Text;
 using VDT2.BLL;
+using System.IO;
 
 namespace VDT2.Controllers
 {
@@ -1109,16 +1110,19 @@ namespace VDT2.Controllers
             consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
             consultaVeiculosVM.ListaInspAvaria_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
 
+
+            var dados = BLL.InspAvariaCons.RecebeDadosUsuario(consultaVM);
+
+            //Objeto serializado para enviar a view
+            consultaVeiculosVM.FiltroRealizado = JsonConvert.SerializeObject(dados);
+
+
             consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 1).FirstOrDefault().Total;
             consultaVeiculosVM.VeiculosComAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 2).FirstOrDefault().Total;
             consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 3).FirstOrDefault().Total;
             consultaVeiculosVM.QuantidadeAvarias = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 4).FirstOrDefault().Total;
             consultaVeiculosVM.QuantidadeAvariasTransporte = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 5).FirstOrDefault().Total;
             consultaVeiculosVM.QuantidadeAvariasFabrica = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 6).FirstOrDefault().Total;
-
-
-            GerarExcelConsultas ge = new GerarExcelConsultas();
-            ge.GerarExcel(dadosUsuario.Nome, consultaVeiculosVM.ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
 
 
             if (consultaVeiculosVM.QuantidadeInspecionada != 0)
@@ -1145,8 +1149,7 @@ namespace VDT2.Controllers
                     Mensagem = $"Action acionada: Publicar | Parametros: ConcatInspecoes: {concatInspecoes}"
                 });
 
-
-                string _mensagemErroLogin = "Erro ao receber Dados do usuário";
+                const string _mensagemErroLogin = "Erro ao identificar usuário tente novamente mais tarde.";
 
                 #region recebeDadosUsuario
                 var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
@@ -1190,6 +1193,59 @@ namespace VDT2.Controllers
 
                 return RedirectToAction("NovaConferencia");
             }
+        }
+
+        public FileResult ExportarExcel(string dados)
+        {
+            //TODO - GRAVAR LOG
+
+            #region recebeDadosUsuario
+            var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+            if (dadosUsuario == null)
+            {
+                //todo algo
+            }
+
+            var identificacao = this.Request.Cookies["Usr"];
+
+            if (identificacao == null)
+            {
+
+                //todo algo
+            }
+
+            var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
+            dadosUsuario.Usuario = objUsuario;
+            #endregion
+
+
+
+            InspAvaria_Cons inspAvaria_Cons = new InspAvaria_Cons();
+            inspAvaria_Cons = JsonConvert.DeserializeObject<Models.InspAvaria_Cons>(dados);
+
+            var ListaInspAvaria_Cons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
+
+            //List<InspAvaria_Cons> ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
+
+            GerarExcelConsultas ge = new GerarExcelConsultas();
+            ge.GerarExcel(dadosUsuario.Nome, ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
+
+            var path = Path.Combine(System.IO.Path.GetTempPath(), $"{dadosUsuario.Nome}_RelatorioConsulta.xlsx");
+
+
+            using (var fs = new FileStream(path, FileMode.Open))
+            {
+                //Conversão para Byte
+                byte[] arquivoEmBytes = new byte[fs.Length];
+                fs.Read(arquivoEmBytes, 0, arquivoEmBytes.Length);
+                var Arquivo = new FileContentResult(arquivoEmBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                return Arquivo;
+            }
+
+
+
+
+
         }
     }
 }
