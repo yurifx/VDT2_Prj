@@ -1222,10 +1222,8 @@ namespace VDT2.Controllers
 
             var ListaInspAvaria_Cons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
 
-            //List<InspAvaria_Cons> ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
-
-            GerarExcelConsultas ge = new GerarExcelConsultas();
-            ge.GerarExcel(dadosUsuario.Nome, ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
+            GerarExcelConsultas gerarExcel = new GerarExcelConsultas();
+            gerarExcel.GerarExcelInspecao(dadosUsuario.Nome, ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
 
             var path = Path.Combine(System.IO.Path.GetTempPath(), $"{dadosUsuario.Nome}_RelatorioConsulta.xlsx");
 
@@ -1234,7 +1232,8 @@ namespace VDT2.Controllers
                 //Conversão para Byte
                 byte[] arquivoEmBytes = new byte[fs.Length];
                 fs.Read(arquivoEmBytes, 0, arquivoEmBytes.Length);
-                var Arquivo = new FileContentResult(arquivoEmBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                FileContentResult Arquivo = new FileContentResult(arquivoEmBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                Arquivo.FileDownloadName = $"{dadosUsuario.Nome}_RelatorioConsulta_{System.DateTime.Now.ToString("ddMMyyy")}.xlsx";
                 return Arquivo;
             }
 

@@ -1,4 +1,12 @@
-﻿using OfficeOpenXml;
+﻿// <copyright file="ConferenciaController.cs" company="Bureau Veritas">
+// Copyright (c) 2017 All Right Reserved
+// </copyright>
+// <author>Grupo Asserth</author>
+// <email>yuri.vasconcelos@grupoasserth.com.br</email>
+// <date>2017-03-28</date>
+// <summary>Controllers de Conferência</summary>
+
+using OfficeOpenXml;
 using OfficeOpenXml.Style;
 using System;
 using System.Collections.Generic;
@@ -8,12 +16,13 @@ using System.Threading.Tasks;
 using VDT2.Models;
 
 
-
+/// <summary>
+/// Classe responsável por gerar Excel
+/// </summary>
 namespace VDT2.BLL
 {
     public class GerarExcelConsultas
     {
-
         /// <summary>
         /// Gerar excel referente as consultas
         /// </summary>
@@ -23,7 +32,7 @@ namespace VDT2.BLL
         /// <param name="Scheme">Request.Scheme</param>
         /// <param name="Host">Request.Host</param>
         /// <returns>URL contendo o diretório do arquivo excel</returns>
-        public string GerarExcel(string NomeUsuario, List<InspAvaria_Cons> DadosConsulta, Configuracao configuracao, string Scheme, Microsoft.AspNetCore.Http.HostString Host)
+        public string GerarExcelInspecao(string NomeUsuario, List<InspAvaria_Cons> DadosConsulta, Configuracao configuracao, string Scheme, Microsoft.AspNetCore.Http.HostString Host)
         {
             {
                 try
@@ -74,9 +83,10 @@ namespace VDT2.BLL
 
 
                         //Muda o estilo do header
-                        for (int i = 1; i < 20; i++)
+                        for (int i = 1; i < 21; i++)
                         {
                             worksheet.Cells[1, i].Style.Font.Bold = true;
+                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.CadetBlue);
                         }
 
                         //Adicionar os valores nos campos;
@@ -112,7 +122,13 @@ namespace VDT2.BLL
                 }
                 catch (Exception ex)
                 {
-                    //TODO Gravar no log excessão;
+
+                    Diag.Log.Grava(new Diag.LogItem
+                    {
+                        Mensagem = $"Erro ao Gerar Arquivo Excel - {ex}",
+                        Nivel = Diag.Nivel.Erro
+                    });
+
                     return ex.Message.ToString();
                 }
 
