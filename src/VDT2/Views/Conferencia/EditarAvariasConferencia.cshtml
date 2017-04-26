@@ -253,17 +253,67 @@
                                         </div>
                                     </div>
 
+                                    @*Horas Reparo*@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
-                                                <label id='lblCustoTelaEditarAvarias' data-toggle="popover" title="" data-placement="right" data-content="Se valor for zero o sistema irá calcular o custo automaticamente">Custo: </label>
+                                                <label id='lblCustoTelaEditarAvarias'>Horas Reparo: </label>
                                             </div>
                                             <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.Custo" type="text" />
+                                                <input asp-for="@Model.InspAvaria.HorasReparo" type="text" />
                                             </div>
                                         </div>
-
                                     </div>
+
+                                    @*Custo Reparo*@
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                <label id='lblCustoTelaEditarAvarias' data-toggle="popover" title="" data-placement="right" data-content="Se valor for zero o sistema irá calcular o custo automaticamente">Custo Reparo: </label>
+                                            </div>
+                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                <input asp-for="@Model.InspAvaria.CustoReparo" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*Substituição Peça*@
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                <label id='lblCustoTelaEditarAvarias'>Substituição de Peça: </label>
+                                            </div>
+                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                <input asp-for="@Model.InspAvaria.SubstituicaoPeca" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*Substituição Peça*@
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                <label id='lblCustoTelaEditarAvarias'>Valor da Peça: </label>
+                                            </div>
+                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                <input asp-for="@Model.InspAvaria.ValorPeca" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*Custo Total*@
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                <label id='lblCustoTelaEditarAvarias'>Custo Total: </label>
+                                            </div>
+                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                <input asp-for="@Model.InspAvaria.CustoTotal" type="text" />
+                                            </div>
+                                        </div>
+                                    </div>
+
+
 
                                 </div>
                             </div>
@@ -275,8 +325,8 @@
                         @if (Model.InspAvaria != null)
                         {
                             <div>
-                                Avaria ID: <input type = "text" name = "InspAvaria.InspAvaria_ID" value = "@Model.InspAvaria.InspAvaria_ID" />< br />
-                            </div>       
+                                Avaria ID: <input type="text" name="InspAvaria.InspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />< br />
+                            </div>
                         }
                         Veículo ID<input type="text" name="InspVeiculo.InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
                         Inspecao ID<input type="text" name="Inspecao.Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" /><br />
@@ -292,9 +342,10 @@
                     <div class="col col-lg-12 col-md-12 col-sm-12 col-xs-12">
                         <button type="submit" id="btnGravar-EditarAvariasConferencia" class="botoesTelaEditarAvariasConferencia btn btn-success"><span class="glyphicon glyphicon-ok"> </span>  Gravar</button>
                         <button type="button" class="botoesTelaEditarAvariasConferencia btn btn-primary" value="Voltar" onClick="history.go(-1)"><span class="glyphicon glyphicon-chevron-left"></span>  Voltar</button>
-                    @if (Model.InspAvaria != null) {
-                        <button type="button" class="botoesTelaEditarAvariasConferencia btn btn-danger" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span>  Deletar</button>
-                    }
+                        @if (Model.InspAvaria != null)
+                        {
+                            <button type="button" class="botoesTelaEditarAvariasConferencia btn btn-danger" data-toggle="modal" data-target="#myModal"><span class="glyphicon glyphicon-remove"></span>  Deletar</button>
+                        }
                     </div><br /><br /><br /><br /><br />
                 </div>
 
@@ -306,10 +357,11 @@
 
     </div>
 
-    @if (Model.InspAvaria != null) { 
-    <form hidden id='formDeletarAvaria' asp-controller="Conferencia" asp-action="DeletarAvaria" method="post">
-        <input type="text" name="avaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />
-    </form>
+    @if (Model.InspAvaria != null)
+    {
+        <form hidden id='formDeletarAvaria' asp-controller="Conferencia" asp-action="DeletarAvaria" method="post">
+            <input type="text" name="avaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />
+        </form>
     }
 
 }
@@ -337,8 +389,9 @@ else
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
 
-                @if (Model.InspAvaria != null) { 
-                <button type="button" class="btn btn-danger" onclick="DeletarAvaria(@Model.InspAvaria.InspAvaria_ID)"> Excluir</button>
+                @if (Model.InspAvaria != null)
+                {
+                    <button type="button" class="btn btn-danger" onclick="DeletarAvaria(@Model.InspAvaria.InspAvaria_ID)"> Excluir</button>
                 }
             </div>
         </div>

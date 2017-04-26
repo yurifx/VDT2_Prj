@@ -36,11 +36,17 @@ namespace VDT2.Models
 
         public string FabricaTransporte { get; set; }
 
-        public Boolean DanoOrigem { get; set; }
-        //Novo Campo - versão 0.0.3
+        public bool DanoOrigem { get; set; }
 
-        public decimal? Custo { get; set; }
-        //Novo Campo - versão 0.0.4
+        public int HorasReparo { get; set; } = 0;
+
+        public decimal? CustoReparo { get; set; } = 0;
+
+        public bool SubstituicaoPeca { get; set; }
+
+        public decimal? ValorPeca { get; set; } = 0;
+
+        public decimal? CustoTotal { get; set; } = 0;
 
         public int Inspecao_ID { get; set; }
 

@@ -321,19 +321,42 @@ namespace VDT2.DAL
                     Value = inspAvaria.DanoOrigem
                 };
 
-                SqlParameter parmCusto = new SqlParameter("@p_Custo", SqlDbType.Decimal)
+
+                SqlParameter parmHorasReparo = new SqlParameter("@p_HorasReparo", SqlDbType.Int)
+                {
+                    Value = inspAvaria.HorasReparo
+                };
+
+
+                SqlParameter parmCustoReparo = new SqlParameter("@p_CustoReparo", SqlDbType.Decimal)
                 {
                     Value = DBNull.Value
                 };
 
-                if (inspAvaria.Custo != 0 && inspAvaria.Custo != null)
+                if (inspAvaria.CustoReparo != 0 && inspAvaria.CustoReparo != null)
                 {
-                    parmCusto.Value = inspAvaria.Custo;
+                    parmCustoReparo.Value = inspAvaria.CustoReparo;
                 }
                 else
                 {
-                    parmCusto.Value = DBNull.Value;
+                    parmCustoReparo.Value = DBNull.Value;
                 }
+
+                SqlParameter parmSubstituicaoPeca = new SqlParameter("@p_SubstituicaoPeca", SqlDbType.Bit)
+                {
+                    Value = inspAvaria.SubstituicaoPeca
+                };
+
+
+                SqlParameter parmValorPeca = new SqlParameter("@p_ValorPeca", SqlDbType.Decimal)
+                {
+                    Value = inspAvaria.ValorPeca
+                };
+
+                SqlParameter parmCustoTotal = new SqlParameter("@p_CustoTotal", SqlDbType.Decimal)
+                {
+                    Value = inspAvaria.CustoTotal
+                };
 
                 SqlParameter[] parametros = new SqlParameter[]
                 {
@@ -346,10 +369,28 @@ namespace VDT2.DAL
                     parmAvCondicao_ID,
                     parmFabricaTransporte,
                     parmDanoOrigem,
-                    parmCusto
+                    parmHorasReparo,
+                    parmCustoReparo,
+                    parmSubstituicaoPeca,
+                    parmValorPeca,
+                    parmCustoTotal
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmInspAvaria_ID.ParameterName}, {parmAvArea_ID.ParameterName}, {parmAvDano_ID.ParameterName}, {parmAvSeveridade_ID.ParameterName}, {parmAvQuadrante_ID.ParameterName}, {parmAvGravidade_ID.ParameterName}, {parmAvCondicao_ID.ParameterName}, {parmFabricaTransporte.ParameterName}, {parmDanoOrigem.ParameterName}, {parmCusto.ParameterName}";
+                string chamada = $"{nomeStoredProcedure} " +
+                                 $"{parmInspAvaria_ID.ParameterName}, " +
+                                 $"{parmAvArea_ID.ParameterName}, " +
+                                 $"{parmAvDano_ID.ParameterName}, " +
+                                 $"{parmAvSeveridade_ID.ParameterName}, " +
+                                 $"{parmAvQuadrante_ID.ParameterName}," +
+                                 $"{parmAvGravidade_ID.ParameterName}, " +
+                                 $"{parmAvCondicao_ID.ParameterName}, " +
+                                 $"{parmFabricaTransporte.ParameterName}, " +
+                                 $"{parmDanoOrigem.ParameterName}, " +
+                                 $"{parmHorasReparo.ParameterName}, " +
+                                 $"{parmCustoReparo.ParameterName}, " +
+                                 $"{parmSubstituicaoPeca.ParameterName}, " +
+                                 $"{parmValorPeca.ParameterName}, " +
+                                 $"{parmCustoTotal.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
@@ -428,6 +469,7 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
 
                 {
+                    var a = contexto.InspAvaria_Conf.FromSql(chamada, parametros);
                     listaAvarias_conf = contexto.InspAvaria_Conf.FromSql(chamada, parametros).ToList();
 
                     #region gravalogInformacao

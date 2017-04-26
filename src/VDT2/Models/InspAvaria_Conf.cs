@@ -17,10 +17,12 @@ namespace VDT2.Models
     public class InspAvaria_Conf
     {
 
-        public DateTime Data { get; set; }
+        
 
         [Key]
         public int RowID { get; set; }
+
+        public DateTime Data { get; set; }
 
         public int? InspAvaria_ID { get; set; }
 
@@ -86,8 +88,14 @@ namespace VDT2.Models
 
         public bool? DanoOrigem { get; set; }
 
-        public decimal? Custo { get; set; }
+        public int? HorasReparo { get; set; }
 
-        public decimal? HorasReparo { get; set; }
+        public decimal? CustoReparo { get; set; }
+
+        public bool? SubstituicaoPeca { get; set; }
+
+        public decimal? ValorPeca { get; set; }
+
+        public decimal? CustoTotal { get; set; }
     }
 }
