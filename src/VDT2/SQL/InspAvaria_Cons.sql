@@ -73,10 +73,12 @@ Select
 	   ia.InspAvaria_ID,               
 	   ia.FabricaTransporte,
 	   ia.DanoOrigem,
-       ia.Custo,   
-
-       cr.HorasReparo,	   
-                                       
+       ia.HorasReparo,
+       ia.CustoReparo,
+       ia.SubstituicaoPeca,
+       ia.ValorPeca,
+       ia.CustoTotal,
+                       
 	   ma.Marca_ID                 as  MarcaCodigo,
 	   ma.Nome                     as  MarcaNome, 
                                        

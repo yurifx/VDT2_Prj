@@ -168,7 +168,7 @@ namespace VDT2.BLL
                             worksheet.Cells[i + 2, 17].Value = DadosConsulta[i].Severidade_Pt;
                             worksheet.Cells[i + 2, 18].Value = DadosConsulta[i].FabricaTransporte;
                             worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].HorasReparo;
-                            worksheet.Cells[i + 2, 20].Value = DadosConsulta[i].Custo;
+                            worksheet.Cells[i + 2, 20].Value = DadosConsulta[i].CustoReparo;
                         }
 
                         //Salvar
