@@ -64,8 +64,10 @@
                     <th class="">Severidade</th>
                     <th class="">TipoAvaria</th>
                     <th class="">Horas Reparo</th>
-                    <th class="">Custo</th>
-
+                    <th class="">Custo Reparo</th>
+                    <th class="">Substituição de Peça</th>
+                    <th class="">Valor da Peça</th>
+                    <th class="">Valor Total</th>
                 </tr>
             </thead>
             <tbody>
@@ -107,7 +109,27 @@
                         }
 
                         <td>@item.HorasReparo</td>
-                        <td>@item.CustoReparo</td>
+                        
+                        @if (@item.CustoReparo == null)
+                        {
+                            <td class="custoConferencia">0</td>}
+                        else
+                        {
+                            <td class="custoConferencia">@item.CustoReparo</td>
+                        }
+
+
+                        @if (item.SubstituicaoPeca == true)
+                        {
+                            <td>Sim</td>
+                        }
+                        else
+                        {
+                            <td> Não </td>
+                        }
+                        <td>@item.ValorPeca</td>
+                        <td>@item.CustoTotal</td>
+
                     </tr>
 
                 }
