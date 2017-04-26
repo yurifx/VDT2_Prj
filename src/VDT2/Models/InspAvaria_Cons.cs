@@ -117,15 +117,21 @@ namespace VDT2.Models
 
         public string VIN { get; set; }
 
-        //        public int? Lote_ID { get; set; }
+        //public int? Lote_ID { get; set; }
 
         public string LoteNome { get; set; }
 
         public string FabricaTransporte { get; set; }
 
-        public Decimal? Custo { get; set; }
+        public int? HorasReparo { get; set; }
 
-        public Decimal? HorasReparo { get; set; }
+        public decimal? CustoReparo { get; set; }
+
+        public bool? SubstituicaoPeca { get; set; }
+
+        public decimal? ValorPeca { get; set; }
+
+        public decimal? CustoTotal { get; set; }
 
         public int MarcaCodigo { get; set; }
 
