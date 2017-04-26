@@ -248,76 +248,76 @@
                                                 <label>Dano na Origem:</label>
                                             </div>
                                             <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.DanoOrigem" type="checkbox" />
+                                                <input asp-for="@Model.InspAvaria.DanoOrigem" id="" type="checkbox" />
                                             </div>
                                         </div>
                                     </div>
 
-                                    @*Horas Reparo*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
-                                                <label id='lblCustoTelaEditarAvarias'>Horas Reparo: </label>
-                                            </div>
-                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.HorasReparo" type="text" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    @*Custo Reparo*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
-                                                <label id='lblCustoTelaEditarAvarias' data-toggle="popover" title="" data-placement="right" data-content="Se valor for zero o sistema irá calcular o custo automaticamente">Custo Reparo: </label>
-                                            </div>
-                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.CustoReparo" type="text" />
+                                    <div>
+                                        @*Horas Reparo*@
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                    <label id='lblCustoTelaEditarAvarias'>Horas Reparo: </label>
+                                                </div>
+                                                <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                    <input asp-for="@Model.InspAvaria.HorasReparo" id="inputHorasReparo" type="text" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    @*Substituição Peça*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
-                                                <label id='lblCustoTelaEditarAvarias'>Substituição de Peça: </label>
-                                            </div>
-                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.SubstituicaoPeca" type="text" />
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    @*Substituição Peça*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
-                                                <label id='lblCustoTelaEditarAvarias'>Valor da Peça: </label>
-                                            </div>
-                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.ValorPeca" type="text" />
+                                        @*Custo Reparo*@
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                    <label id='lblCustoTelaEditarAvarias' data-toggle="popover" title="" data-placement="right" data-content="Se valor for zero o sistema irá calcular o custo automaticamente">Custo Reparo: </label>
+                                                </div>
+                                                <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                    <input asp-for="@Model.InspAvaria.CustoReparo" id="inputCustoReparo" type="text" />
+                                                </div>
                                             </div>
                                         </div>
-                                    </div>
 
-                                    @*Custo Total*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
-                                                <label id='lblCustoTelaEditarAvarias'>Custo Total: </label>
-                                            </div>
-                                            <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.CustoTotal" type="text" />
+                                        @*Substituição Peça*@
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                    <label id='lblCustoTelaEditarAvarias'>Substituição de Peça: </label>
+                                                </div>
+                                                <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                    <input asp-for="@Model.InspAvaria.SubstituicaoPeca" onclick="VerificaSubstituicao()" id="inputSubstituicaoPeca" type="checkbox" />
+                                                </div>
                                             </div>
                                         </div>
+
+                                        @*Substituição Peça*@
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                    <label id='lblCustoTelaEditarAvarias'>Valor da Peça: </label>
+                                                </div>
+                                                <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                    <input asp-for="@Model.InspAvaria.ValorPeca" id="inputValorPeca" type="text" />
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                        @*Custo Total*@
+                                        <div class="form-group">
+                                            <div class="row">
+                                                <div class="col col-lg-3 col-md-3 col-sm-4 col-xs-6 ladoesquerdo">
+                                                    <label id='lblCustoTelaEditarAvarias'>Custo Total: </label>
+                                                </div>
+                                                <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
+                                                    <input asp-for="@Model.InspAvaria.CustoTotal" id="inputCustoTotal" type="text" />
+                                                </div>
+                                            </div>
+                                            <br/>
+                                            <p id="pMensagemCusto"></p>
+                                        </div>
                                     </div>
-
-
-
                                 </div>
                             </div>
-
                         </div>
                     }
 

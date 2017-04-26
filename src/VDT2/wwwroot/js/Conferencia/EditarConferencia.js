@@ -57,9 +57,25 @@
     })
 
 
-
     $('[data-toggle="popover"]').popover(); 
 
+    ValidarValores();
+
+
+    $("#inputHorasReparo").focusout(function () {
+        qtdHoras = parseInt($("#inputHorasReparo").val(), 10);
+        var valorTotalReparo = qtdHoras * 89
+        $("#inputCustoReparo").val(valorTotalReparo);
+    });
+
+
+    $("input").focusout(function () {
+
+        ValidarValores()
+    })
+
+
+    VerificaSubstituicao()
 });
 
 //Caso o usuario o número, mudar também a combobox.
@@ -149,9 +165,6 @@ function ZeraValorCusto() {
 
 }
 
-
-
-
 function DeletarAvaria(avaria_id) {
     console.log("Avaria será deletada: " + avaria_id);
     //var apagar = confirm('Deseja realmente excluir este registro?');
@@ -164,4 +177,58 @@ function DeletarAvaria(avaria_id) {
 }
 
 
+function ValidarValores() {
+    var horasReparo = $("#inputHorasReparo").val();
+    var custoReparo = $("#inputCustoReparo").val();
+    var valorPeca = $("#inputValorPeca").val();
+    var custoTotal = $("#inputCustoTotal").val();
 
+    var horasReparoInt = parseInt(horasReparo, 10);
+    var custoReparoInt = parseInt(custoReparo, 10);
+    var valorPecaInt = parseInt(valorPeca, 10);
+    var custoTotal = parseInt(custoTotal, 10);
+    var custoTotalCalculado = custoReparoInt + valorPecaInt;
+
+
+    //Primeira verificação, se valores TOTAIS = somatória dos valores.
+    if (custoTotalCalculado != custoTotal)
+    {
+        $("#pMensagemCusto").html("");
+        $("#pMensagemCusto").append("<br/><strong> Valor total difere da soma dos valores parciais </strong><br/>")
+        $("#pMensagemCusto").append(" <a id='Calcular' onclick='CalcularValor()'>Calcular</a>");
+        $("#pMensagemCusto").css("color", "red");
+        $("#pMensagemCusto").css("font-size", "16px");
+    }
+    else {
+        $("#pMensagemCusto").html("");
+    }
+}
+
+
+function VerificaSubstituicao() {
+    var substituicaoPeca = $("#inputSubstituicaoPeca").is(":checked");
+    if (substituicaoPeca == false) {
+        $("#inputValorPeca").prop("disabled", true);
+        $("#inputValorPeca").val(0);
+    }
+    else {
+        $("#inputValorPeca").prop("disabled", false);
+    }
+}
+
+
+function CalcularValor() {
+    var horasReparo = $("#inputHorasReparo").val();
+    var custoReparo = $("#inputCustoReparo").val();
+    var valorPeca = $("#inputValorPeca").val();
+    var custoTotal = $("#inputCustoTotal").val();
+
+    var horasReparoInt = parseInt(horasReparo, 10);
+    var custoReparoInt = parseInt(custoReparo, 10);
+    var valorPecaInt = parseInt(valorPeca, 10);
+    var custoTotal = parseInt(custoTotal, 10);
+    var custoTotalCalculado = custoReparoInt + valorPecaInt;
+    $("#inputCustoTotal").val(custoTotalCalculado);
+    $("#pMensagemCusto").html("");
+    $("#pMensagemCusto").prepend("<p>Novo valor calculado</p>");
+}
