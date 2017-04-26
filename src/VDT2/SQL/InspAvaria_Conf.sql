@@ -51,10 +51,12 @@ Select
 	   ia.InspAvaria_ID,             
 	   ia.FabricaTransporte,         
 	   ia.DanoOrigem,
-       ia.Custo,                
+       ia.HorasReparo,
+       ia.CustoReparo,
+       ia.SubstituicaoPeca,
+       ia.ValorPeca,
+       ia.CustoTotal,
 
-       cr.HorasReparo,
-                                     
 	   ma.Marca_ID               as  MarcaCodigo,
 	   ma.Nome                   as  MarcaNome, 
                                      
@@ -107,7 +109,7 @@ Where  i.Data               =    @p_Data
  and   i.Cliente_ID         =    @p_Cliente_ID
 
 /*
-EXEC InspAvaria_Conf 1, 2, 5, '2017-04-17'
+EXEC InspAvaria_Conf 1, 2, 5, '2017-04-26'
 */
 
 -- FIM
