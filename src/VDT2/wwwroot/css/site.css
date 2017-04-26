@@ -688,7 +688,6 @@ min-width: 200px;
         width: 12%;
     }
 
-
     /* < View Conferencia/EditarAvariasConferencia > */
     .DivDadosVeiculo_TelaEditarAvarias {
         border-style: solid;
@@ -713,12 +712,20 @@ min-width: 200px;
         max-width: 100%;
     }
 
-    /* < View Conferencia / Consulta> */
-    .btnTelaConsultaVeiculos{
+    /* < View Conferência / Consulta */
+    .btnTelaConsulta {
         width: 150px;
         min-width: 150px;
     }
 
+    /* < View Conferencia / ConsultaVeículos> */
+    .btnTelaConsultaVeiculos {
+        width: 150px;
+        min-width: 150px;
+    }
+
+
+    
 
 }
 

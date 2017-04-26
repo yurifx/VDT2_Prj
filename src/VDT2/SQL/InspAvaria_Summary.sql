@@ -42,7 +42,7 @@ AS
 DECLARE @IDs table (InspVeiculo_ID int, VIN varchar(17))
 
 Insert into @IDs (InspVeiculo_ID, VIN) 
-select iv.InspVeiculo_ID, IsNull(VIN, VIN_6)From InspVeiculo iv
+select distinct iv.InspVeiculo_ID, IsNull(VIN, VIN_6)From InspVeiculo iv
 Inner Join  Inspecao           i      on   iv.Inspecao_ID          =      i.Inspecao_ID
 Inner Join  Transportador      t      on    t.Transportador_ID     =      i.Transportador_ID
 Inner Join  FrotaViagem       fv      on   fv.FrotaViagem_ID       =      i.FrotaViagem_ID
@@ -194,11 +194,11 @@ set      @p_DanoOrigem             = '*'  --|0|1|
 set      @p_TransportadorTipo      = '*'  --|T|M|
 set      @p_FrotaViagem            = null
 set      @p_Navio                  = null
-set      @p_DataInicio             = '2017-01-01'
-set      @p_DataFinal              = '2017-04-25'
+set      @p_DataInicio             = '2017-04-26'
+set      @p_DataFinal              = '2017-04-26'
 
 
-exec InspAvaria_Cons_Summary
+exec InspAvaria_Summary
     @p_Cliente_ID         ,
     @p_Chassi             ,
     @p_LocalInspecao      ,
