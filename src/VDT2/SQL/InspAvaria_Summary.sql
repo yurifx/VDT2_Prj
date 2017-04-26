@@ -169,7 +169,7 @@ Declare @p_Cliente_ID             Int,
       --@p_Extensoes              varchar(100),                                             
         @p_TipoDefeito            varchar(100),   --Transporte/Fábrica/Todos                  
         @p_DanoOrigem             varchar(100),   -- Sim/Não/Todos                            
-        @p_TipoTransportador      varchar(100),   -- Marítimo/Terrestre/Todos                 
+        @p_TransportadorTipo      varchar(100),   -- Marítimo/Terrestre/Todos                 
         @p_FrotaViagem            varchar(100),                                                                                    
         @p_Navio                  varchar(100),                                             
         @p_DataInicio             Date,                                                     
@@ -191,7 +191,7 @@ set      @p_Gravidade              = '*'
 set      @p_Severidade             = '*'
 set      @p_TipoDefeito            = '*'  --|T|F|
 set      @p_DanoOrigem             = '*'  --|0|1|
-set      @p_TipoTransportador      = '*'  --|T|M|
+set      @p_TransportadorTipo      = '*'  --|T|M|
 set      @p_FrotaViagem            = null
 set      @p_Navio                  = null
 set      @p_DataInicio             = '2017-01-01'
@@ -215,7 +215,7 @@ exec InspAvaria_Cons_Summary
     @p_Severidade         ,  
     @p_TipoDefeito        ,  
     @p_DanoOrigem         ,  
-    @p_TipoTransportador  ,
+    @p_TransportadorTipo  ,
     @p_FrotaViagem        , 
     @p_Navio              , 
     @p_DataInicio         , 

@@ -110,7 +110,7 @@
         <div class="row form-group">
             <div class="col col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
                 <button type="button" class="btn btnTelaEnviarLista btn btn-success" id="btnUpload" data-toggle="modal" data-target="#enviarListaModal">Upload</button>
-                <button type="button" class="btn btnTelaEnviarLista btn btn-primary" onclick="Voltar()">Voltar</button>
+                <button type="button" class="btn btnTelaEnviarLista btn btn-primary" onclick="location.href='../Home/Index'">Voltar</button>
             </div>
         </div>
     </div>
@@ -138,11 +138,3 @@
 
     </div>
 </div>
-
-<script>
-    function Voltar() {
-        $("#frmVoltar").submit();
-    }
-</script>
-
-<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>

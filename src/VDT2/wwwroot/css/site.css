@@ -623,6 +623,8 @@ min-width: 200px;
  
 }
 
+
+
 /* < DISPOSITIVOS COM TELAS GRANDES SUPERIOR A 780px >*/
 @media only screen and (min-device-width:780px) {
     /* todos */
@@ -710,6 +712,14 @@ min-width: 200px;
         padding-top: 2%;
         max-width: 100%;
     }
+
+    /* < View Conferencia / Consulta> */
+    .btnTelaConsultaVeiculos{
+        width: 150px;
+        min-width: 150px;
+    }
+
+
 }
 
 

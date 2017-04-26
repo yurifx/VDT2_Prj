@@ -217,7 +217,7 @@
                 </div>
             </form>
             <br /><br /><br />
-            <input type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" value="Voltar" onClick="Voltar()">
+            <button type="button" class="btnVoltarTelaConferenciaAvarais btn btn-primary" onclick="location.href='../Home/Index'">Voltar</button>
             <input type="button" id="btnPublicar" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()">
             <br /><br /><br />
 
@@ -233,7 +233,7 @@
         </div>
     </div>
 
-
+    
 
     <!-- Modal -->
     <div id="publicarModalConfirmacao" class="modal fade" role="dialog">
@@ -257,13 +257,3 @@
         </div>
     </div>
 </div>
-
-<form id="frmVoltar" asp-controller="Home" asp-action="Index" method="post">
-    <input type="text" name="View" value="ListarConferenciaAvarias" hidden />
-</form>
-
-<script>
-    function Voltar() {
-        $("#frmVoltar").submit();
-    }
-</script>

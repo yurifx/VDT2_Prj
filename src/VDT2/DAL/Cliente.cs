@@ -35,6 +35,7 @@ namespace VDT2.DAL
         public static List<Models.Cliente> Listar(int usuarioID, VDT2.Models.Configuracao configuracao)
         {
             string nomeStoredProcedure = "Cliente_Lst";
+
             List<Models.Cliente> listaCliente = new List<Models.Cliente>();
             try
             {

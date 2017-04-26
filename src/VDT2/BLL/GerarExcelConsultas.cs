@@ -54,10 +54,10 @@ namespace VDT2.BLL
                         file.Delete();
                         file = new FileInfo(Path.Combine(caminhoServidor, sFileName));
                     }
-                    using (ExcelPackage package = new ExcelPackage(file))
+                    using (ExcelPackage arquivoExcel = new ExcelPackage(file))
                     {
                         // Adiciona um novo worksheet (planilha) no excel
-                        ExcelWorksheet worksheet = package.Workbook.Worksheets.Add("DadosConsulta");
+                        ExcelWorksheet worksheet = arquivoExcel.Workbook.Worksheets.Add("DadosConsulta");
 
                         //Cabeçalhos
                         worksheet.Cells[1, 1].Value = "Data";
@@ -85,9 +85,66 @@ namespace VDT2.BLL
                         //Muda o estilo do header
                         for (int i = 1; i < 21; i++)
                         {
+                            //Setando peso do texto
                             worksheet.Cells[1, i].Style.Font.Bold = true;
-                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.CadetBlue);
+
+                            //setando tamanho
+                            worksheet.Cells[1, i].Style.Font.Size = 12;
+
+                            //setando cor do texto
+                            worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.White);
+
+                            //Setando bordas
+                            //worksheet.Cells[1, i].Style.Border.Right.Style =
+                            //    worksheet.Cells[1, i].Style.Border.Bottom.Style =
+                            //    worksheet.Cells[1, i].Style.Border.Left.Style = 
+                            //    worksheet.Cells[1, i].Style.Border.Top.Style =  ExcelBorderStyle.Thick;
+
+                            //Setando background-color
+                            worksheet.Cells[1, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                            worksheet.Cells[1, i].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkBlue);
                         }
+
+                        //Altura da primeira linha
+                        worksheet.Row(1).Height = 26;
+
+                        //Alinhamento horizontal da primeira linha
+                        worksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+
+
+                        //Alinhamento Vertical da primeira linha
+                        worksheet.Row(1).Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
+
+                        //Alinhamento vertical e horizontal de todas as linhas
+                        for (int j = 0; j < DadosConsulta.Count + 2; j++)
+                        {
+                            worksheet.Row(j + 1).Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+                            worksheet.Row(j + 1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                        }
+
+
+                        //largura das colunas
+                        worksheet.Column(1).Width = 11; //Data
+                        worksheet.Column(2).Width = 18; //VIN
+                        worksheet.Column(3).Width = 10; //VIN_6
+                        worksheet.Column(5).Width = 22; //CheckPoint
+                        worksheet.Column(6).Width = 24; //Transportador
+                        worksheet.Column(7).Width = 16; //FrotaViagem
+                        worksheet.Column(8).Width = 12; //Navio
+                        worksheet.Column(9).Width = 12; //Lote
+                        worksheet.Column(10).Width = 12; //Marca
+                        worksheet.Column(11).Width = 12; //Modelo
+                        worksheet.Column(12).Width = 28; //Área
+                        worksheet.Column(13).Width = 22; //Condição
+                        worksheet.Column(14).Width = 16; //Dano
+                        worksheet.Column(15).Width = 12; //Gravidade
+                        worksheet.Column(16).Width = 16; //Quadrante
+                        worksheet.Column(17).Width = 24; //Severidade
+                        worksheet.Column(18).Width = 12; //TipoAvaria
+                        worksheet.Column(19).Width = 12; //HorasReparo
+                        worksheet.Column(20).Width = 12; //Custo
+
 
                         //Adicionar os valores nos campos;
                         for (int i = 0; i < DadosConsulta.Count; i++)
@@ -115,7 +172,7 @@ namespace VDT2.BLL
                         }
 
                         //Salvar
-                        package.Save();
+                        arquivoExcel.Save();
 
                         return URL;
                     }

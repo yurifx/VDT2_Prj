@@ -954,6 +954,7 @@ namespace VDT2.Controllers
         /// <returns>Retorna tela inicial de consultas</returns>
         public IActionResult NovaConsulta()
         {
+
             Diag.Log.Grava(new Diag.LogItem
             {
                 Nivel = Diag.Nivel.Informacao,
@@ -1216,7 +1217,7 @@ namespace VDT2.Controllers
             var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
             dadosUsuario.Usuario = objUsuario;
             #endregion
-
+            try { 
             InspAvaria_Cons inspAvaria_Cons = new InspAvaria_Cons();
             inspAvaria_Cons = JsonConvert.DeserializeObject<Models.InspAvaria_Cons>(dados);
 
@@ -1236,7 +1237,11 @@ namespace VDT2.Controllers
                 Arquivo.FileDownloadName = $"{dadosUsuario.Nome}_RelatorioConsulta_{System.DateTime.Now.ToString("ddMMyyy")}.xlsx";
                 return Arquivo;
             }
-
+            }
+            catch (Exception ex)
+            {
+                throw new Exception ("Não foi possível processar informação - Tente novamente mais tarde " , ex);
+            }
         }
     }
 }

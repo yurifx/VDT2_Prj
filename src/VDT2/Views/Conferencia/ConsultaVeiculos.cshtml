@@ -22,11 +22,11 @@
     <div class="row">
         <div class="col-lg-4 col-md-4 col-sm-6 col-xs-6">
             <p>Quantidade Inspecionada: @Model.QuantidadeInspecionada</p>
-            <p>Quantidade de Avarias:   @Model.QuantidadeAvarias</p>
-            <p>Quantidade com Avaria:   @Model.VeiculosComAvaria  - @Model.PercentualAvariado %</p>
+            <p>Quantidade de Veículos OK :   @Model.VeiculosSemAvaria  - @Model.PercentualSemAvaria %</p>
+            <p>Quantidade de Veículos Avariados:   @Model.VeiculosComAvaria  - @Model.PercentualAvariado %</p>
         </div>
         <div class="col-lg-8 col-md-8 col-sm-6 col-xs-6">
-            <p>Quantidade sem Avaria:   @Model.VeiculosSemAvaria  - @Model.PercentualSemAvaria %</p>
+            <p>Quantidade de Avarias:   @Model.QuantidadeAvarias</p>
             <p>Avarias de Transporte: @Model.QuantidadeAvariasTransporte</p>
             <p>Avarias de Fábrica: @Model.QuantidadeAvariasFabrica</p>
         </div>
@@ -117,19 +117,11 @@
 </div>
 <br /><br /><br />
 @*<button type="button" class="btn btn-group-sm btn-default" onclick="window.print()">Imprimir</button>*@
-<button type="button" class="btn btn-primary" onclick="Voltar()">Voltar</button>
-<button type="button" class="btn btn-success" id="BotaoExcel" onclick="location.href='./ExportarExcel/?dados=@Model.FiltroRealizado'">Exportar Excel</button>
+<button type="button" class="btnTelaConsultaVeiculos btn btn-primary" onclick="location.href='../Home/Index'">Voltar</button>
+<button type="button" class="btnTelaConsultaVeiculos btn btn-success" id="BotaoExcel" onclick="location.href='./ExportarExcel/?dados=@Model.FiltroRealizado'">Exportar Excel</button>
 <br /><br /><br />
 
 
 <form hidden>
     <input type="text" id="inputFiltrosUtilizados" value="@Model.FiltroRealizado" />
 </form>
-
-<script>
-    function Voltar() {
-        $("#frmVoltar").submit();
-    }
-</script>
-
-<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>

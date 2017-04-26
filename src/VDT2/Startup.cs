@@ -9,11 +9,13 @@ using Microsoft.Extensions.Configuration;
 using Microsoft.Extensions.DependencyInjection;
 using Microsoft.Extensions.Logging;
 
+
 namespace VDT2
 {
     public class Startup
     {
-        public Startup(IHostingEnvironment env) {
+        public Startup(IHostingEnvironment env)
+        {
             var builder = new ConfigurationBuilder()
                 .SetBasePath(env.ContentRootPath)
                 .AddJsonFile("appsettings.json", optional: true, reloadOnChange: true)
@@ -25,7 +27,8 @@ namespace VDT2
         public IConfigurationRoot Configuration { get; }
 
         // This method gets called by the runtime. Use this method to add services to the container.
-        public void ConfigureServices(IServiceCollection services) {
+        public void ConfigureServices(IServiceCollection services)
+        {
             // Ref: Strongly Typed Configuration Settings in ASP.NET Core
             // https://weblog.west-wind.com/posts/2016/may/23/strongly-typed-configuration-settings-in-aspnet-core
 
@@ -47,7 +50,8 @@ namespace VDT2
             services.AddSession();
 
             // https://docs.asp.net/en/latest/publishing/iis.html
-            services.Configure<IISOptions>(options => {
+            services.Configure<IISOptions>(options =>
+            {
                 options.AutomaticAuthentication = false;
             });
 
@@ -61,15 +65,20 @@ namespace VDT2
         }
 
         // This method gets called by the runtime. Use this method to configure the HTTP request pipeline.
-        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory) {
+        public void Configure(IApplicationBuilder app, IHostingEnvironment env, ILoggerFactory loggerFactory)
+        {
             loggerFactory.AddConsole(Configuration.GetSection("Logging"));
             loggerFactory.AddDebug();
 
-            if (env.IsDevelopment()) {
+
+            //não está funcionando pois tem um outro app.useDeveloperExceptionPage() após.
+            if (env.IsDevelopment())
+            {
                 app.UseDeveloperExceptionPage();
                 app.UseBrowserLink();
             }
-            else {
+            else
+            {
                 app.UseExceptionHandler("/Home/Error");
             }
 
@@ -84,7 +93,7 @@ namespace VDT2
                 AutomaticAuthenticate = true,
                 AutomaticChallenge = true,
                 CookieHttpOnly = true,
-                ExpireTimeSpan = new TimeSpan(99999,0,0,0,0),
+                ExpireTimeSpan = new TimeSpan(99, 0, 0, 0, 0),
                 //ExpireTimeSpan = new TimeSpan(0, VDT2.BLL.Globais.ExpiracaoCookieAutenticacao, 0),
                 SlidingExpiration = true
             });
@@ -96,7 +105,6 @@ namespace VDT2
 
             app.UseMvc(routes =>
             {
-                
                 // Working with MVC Areas in Asp.Net vNext (MVC 6)
                 // http://timjames.me/blog/2014/12/13/mvc-areas-with-vnext/
                 //routes.MapRoute(name: "areaRoute",

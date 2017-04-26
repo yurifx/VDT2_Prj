@@ -49,7 +49,7 @@ namespace VDT2.Controllers
 
         {
 
-
+            //throw new System.Exception("teste");
 
             // Testes - INICIO
             if (this.HttpContext.User == null)
