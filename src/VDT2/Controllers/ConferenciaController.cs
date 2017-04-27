@@ -1078,6 +1078,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
         {
+
             Diag.Log.Grava(new Diag.LogItem
             {
                 Nivel = Diag.Nivel.Informacao,
@@ -1108,29 +1109,42 @@ namespace VDT2.Controllers
 
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
 
-            consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
-            consultaVeiculosVM.ListaInspAvaria_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
 
-
-            var dados = BLL.InspAvariaCons.RecebeDadosUsuario(consultaVM);
-
-            //Objeto serializado para enviar a view
-            consultaVeiculosVM.FiltroRealizado = JsonConvert.SerializeObject(dados);
-
-
-            consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 1).FirstOrDefault().Total;
-            consultaVeiculosVM.VeiculosComAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 2).FirstOrDefault().Total;
-            consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 3).FirstOrDefault().Total;
-            consultaVeiculosVM.QuantidadeAvarias = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 4).FirstOrDefault().Total;
-            consultaVeiculosVM.QuantidadeAvariasTransporte = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 5).FirstOrDefault().Total;
-            consultaVeiculosVM.QuantidadeAvariasFabrica = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 6).FirstOrDefault().Total;
-
-
-            if (consultaVeiculosVM.QuantidadeInspecionada != 0)
+            try
             {
-                string PercentualComAvaria = ((decimal)(consultaVeiculosVM.VeiculosComAvaria) / (decimal)(consultaVeiculosVM.QuantidadeInspecionada) * 100).ToString("N2");
-                consultaVeiculosVM.PercentualAvariado = Convert.ToDecimal(PercentualComAvaria);
-                consultaVeiculosVM.PercentualSemAvaria = 100 - consultaVeiculosVM.PercentualAvariado;
+                consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
+                consultaVeiculosVM.ListaInspAvaria_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
+
+
+                var dados = BLL.InspAvariaCons.RecebeDadosUsuario(consultaVM);
+
+                //Objeto serializado para enviar a view
+                consultaVeiculosVM.FiltroRealizado = JsonConvert.SerializeObject(dados);
+
+                consultaVeiculosVM.QuantidadeInspecionada = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 1).FirstOrDefault().Total;
+                consultaVeiculosVM.VeiculosComAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 2).FirstOrDefault().Total;
+                consultaVeiculosVM.VeiculosSemAvaria = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 3).FirstOrDefault().Total;
+                consultaVeiculosVM.QuantidadeAvarias = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 4).FirstOrDefault().Total;
+                consultaVeiculosVM.QuantidadeAvariasTransporte = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 5).FirstOrDefault().Total;
+                consultaVeiculosVM.QuantidadeAvariasFabrica = consultaVeiculosVM.ListaInspAvaria_Summary.Where(p => p.ID == 6).FirstOrDefault().Total;
+
+                if (consultaVeiculosVM.QuantidadeInspecionada != 0)
+                {
+                    string PercentualComAvaria = ((decimal)(consultaVeiculosVM.VeiculosComAvaria) / (decimal)(consultaVeiculosVM.QuantidadeInspecionada) * 100).ToString("N2");
+                    consultaVeiculosVM.PercentualAvariado = Convert.ToDecimal(PercentualComAvaria);
+                    consultaVeiculosVM.PercentualSemAvaria = 100 - consultaVeiculosVM.PercentualAvariado;
+                }
+            }
+            catch (Exception ex)
+            {
+                TempData["MensagemErro"] = "Erro ao realizar consulta. Tente novamente mais tarde ou entre em contato com o ServiceDesk";
+                Diag.Log.Grava(
+                   new Diag.LogItem()
+                   {
+                       Nivel = Diag.Nivel.Erro,
+                       Mensagem = $"Erro ao consultar IActionResult -  {ex}"
+                   });
+                return RedirectToAction("Index", "Home");
             }
             return View("ConsultaVeiculos", consultaVeiculosVM);
         }
@@ -1192,13 +1206,19 @@ namespace VDT2.Controllers
                     Nivel = Diag.Nivel.Erro
                 });
 
+                TempData["MensagemErro"] = "Erro ao Publicar Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico";
                 return RedirectToAction("NovaConferencia");
             }
         }
 
         public FileResult ExportarExcel(string dados)
         {
-            //TODO - GRAVAR LOG
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: Exportar Excel | Parametros: Dados: {dados}"
+            });
+
             #region recebeDadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
             if (dadosUsuario == null)
@@ -1217,30 +1237,40 @@ namespace VDT2.Controllers
             var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
             dadosUsuario.Usuario = objUsuario;
             #endregion
-            try { 
-            InspAvaria_Cons inspAvaria_Cons = new InspAvaria_Cons();
-            inspAvaria_Cons = JsonConvert.DeserializeObject<Models.InspAvaria_Cons>(dados);
 
-            var ListaInspAvaria_Cons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
-
-            GerarExcelConsultas gerarExcel = new GerarExcelConsultas();
-            gerarExcel.GerarExcelInspecao(dadosUsuario.Nome, ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
-
-            var path = Path.Combine(System.IO.Path.GetTempPath(), $"{dadosUsuario.Nome}_RelatorioConsulta.xlsx");
-
-            using (var fs = new FileStream(path, FileMode.Open))
+            try
             {
-                //Conversão para Byte
-                byte[] arquivoEmBytes = new byte[fs.Length];
-                fs.Read(arquivoEmBytes, 0, arquivoEmBytes.Length);
-                FileContentResult Arquivo = new FileContentResult(arquivoEmBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
-                Arquivo.FileDownloadName = $"{dadosUsuario.Nome}_RelatorioConsulta_{System.DateTime.Now.ToString("ddMMyyy")}.xlsx";
-                return Arquivo;
-            }
+                InspAvaria_Cons inspAvaria_Cons = new InspAvaria_Cons();
+
+                inspAvaria_Cons = JsonConvert.DeserializeObject<Models.InspAvaria_Cons>(dados);
+
+                var ListaInspAvaria_Cons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
+
+                GerarExcelConsultas gerarExcel = new GerarExcelConsultas();
+
+                gerarExcel.GerarExcelInspecao(dadosUsuario.Nome, ListaInspAvaria_Cons, configuracao, Request.Scheme, Request.Host);
+
+                var path = Path.Combine(System.IO.Path.GetTempPath(), $"{dadosUsuario.Nome}_RelatorioConsulta.xlsx");
+
+                using (var fs = new FileStream(path, FileMode.Open))
+                {
+                    //Conversão para Byte
+                    byte[] arquivoEmBytes = new byte[fs.Length];
+                    fs.Read(arquivoEmBytes, 0, arquivoEmBytes.Length);
+                    FileContentResult Arquivo = new FileContentResult(arquivoEmBytes, "application/vnd.openxmlformats-officedocument.spreadsheetml.sheet");
+                    Arquivo.FileDownloadName = $"{dadosUsuario.Nome}_RelatorioConsulta_{System.DateTime.Now.ToString("ddMMyyy")}.xlsx";
+                    return Arquivo;
+                }
             }
             catch (Exception ex)
             {
-                throw new Exception ("Não foi possível processar informação - Tente novamente mais tarde " , ex);
+                Diag.Log.Grava(
+                   new Diag.LogItem()
+                   {
+                       Nivel = Diag.Nivel.Erro,
+                       Mensagem = $"Erro ao gerar Exportar Excel - {ex}"
+                   });
+                throw new Exception("Não foi possível processar informação - Tente novamente mais tarde ou entre em contato com o suporte técnico ", ex);
             }
         }
     }

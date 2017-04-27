@@ -379,29 +379,29 @@ LayoutCSS:.. Ordenação
 
 
 /* < TODOS OS DISPOSTIVOS > */
-.alertaTelaNovaConferencia{
+.alertaTelaNovaConferencia {
     max-width: 600px;
     width: 600px;
 }
 
 
 .checkboxTelaConsulta {
-min-height: 36px;
+    min-height: 36px;
 }
 
 .lblRadioDanoOrigem {
     margin-right: 10px;
 }
 
-#divTabelaListarConferenciaAvarias{
-    overflow-x:scroll;
+#divTabelaListarConferenciaAvarias {
+    overflow-x: scroll;
 }
 
 
 .lblTransporteTelaConsulta {
-padding-left: 30px;
-
+    padding-left: 30px;
 }
+
 .divListarConferenciaAvariasPendencias {
     max-height: 600px;
     min-height: 150px;
@@ -415,9 +415,9 @@ padding-left: 30px;
 }
 
 .inputLoteTelaListas {
-min-width: 200px;
-
+    min-width: 200px;
 }
+
 .inputsTelaConferenciaConsulta {
     min-width: 200px;
     min-height: 35px;
@@ -559,8 +559,6 @@ min-width: 200px;
 }
 
 
-
-
 .botoesTelaRegistrarAvarias {
     width: 120px;
 }
@@ -618,9 +616,23 @@ min-width: 200px;
     margin-bottom: 3%;
 }
 
-.botaoTelaConsulta{
- padding-left: 30px;
- 
+.tabsTelaFiltroConsulta {
+    font-size: 18px;
+    font-weight: bold;
+}
+
+
+
+    .tabsTelaFiltroConsulta:hover {
+        color: #8641de;
+    }
+
+
+
+
+
+.botaoTelaConsulta {
+    padding-left: 30px;
 }
 
 
@@ -723,10 +735,6 @@ min-width: 200px;
         width: 150px;
         min-width: 150px;
     }
-
-
-    
-
 }
 
 

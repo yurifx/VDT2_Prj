@@ -65,6 +65,13 @@
         TerrestreOuMaritimo();
     });
 
+    $("#ListaTransportador").on("mouseover", function () {
+        TerrestreOuMaritimo();
+    });
+
+    $("#ListaTransportador").on("mouseleave", function () {
+        TerrestreOuMaritimo();
+    });
 
 
 });
@@ -176,7 +183,7 @@ function PreencheListaCheckPoint() {
 
 
 //Recebe dados do Transportador, dependendo do local de inspeção. via AJAX
-function PreencheListaTransportador() {
+function PreencherLista() {
     var localCheckPoint_ID = $("#ListaLocalCheckPoint").val();
     var listaTransportador = $("#ListaTransportador");
 
@@ -204,4 +211,13 @@ function PreencheListaTransportador() {
                     .appendTo(listaTransportador);
             });
         });
+}
+
+
+function PreencheListaTransportador() {
+    PreencherLista(function () {
+        TerrestreOuMaritimo();
+    });
+
+
 }

@@ -12,11 +12,23 @@
     <div class="container" id="EM_ERRO">
         @if (ViewData["Mensagem"] != null)
             {
-            <div class="alertaTelaNovaConferencia alert alert-danger">
+            <div class="alertaTelaNovaConferencia alert alert-success">
                 <p>@ViewData["Mensagem"]</p>
             </div>
         }
+
+        @if (TempData["MensagemErro"] != null)
+        {
+            <div class="alertaTelaNovaConferencia alert alert-danger">
+                <p>@TempData["MensagemErro"]</p>
+            </div>
+
+        }
     </div>
+
+
+
+
 
     <div class="row">
         <h3><strong>Conferência de Inspeção</strong></h3><br />

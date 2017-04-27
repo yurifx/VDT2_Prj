@@ -46,9 +46,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         [Microsoft.AspNetCore.Authorization.AllowAnonymous]
         public IActionResult Index(string returnUrl)
-
         {
-
             //throw new System.Exception("teste");
 
             // Testes - INICIO

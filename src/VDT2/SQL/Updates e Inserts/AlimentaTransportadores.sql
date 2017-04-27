@@ -1,7 +1,7 @@
 --------------------------------------------------------------------
 -- 27/04 - Script de alimentação de transportadores
 --------------------------------------------------------------------
-
+USE VDT2
 
 /* Deleta as Foreign Key's para poder fazer o truncate */ 
 

@@ -15,6 +15,15 @@
     </div>
 }
 
+
+@if (TempData["MensagemErro"] != null)
+{
+    <div class="alert-danger">
+        <p class="alert-danger">@TempData["MensagemErro"]</p>
+    </div>
+}
+
+
 @if (Model != null && Model.Autenticado && Model.Usuario != null)
 {
     <div class="row">
