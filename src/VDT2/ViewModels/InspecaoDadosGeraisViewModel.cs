@@ -48,7 +48,6 @@ namespace VDT2.ViewModels
             IdTipo = "";
             FrotaViagemNome = "";
             NomeNavio = "";
-            TipoTransportador = "";
             MensagemErro = "";
             Inspecao = new Models.Inspecao();
             InspVeiculo = new Models.InspVeiculo();

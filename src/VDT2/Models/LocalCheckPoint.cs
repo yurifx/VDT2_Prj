@@ -29,6 +29,8 @@ namespace VDT2.Models
 
         public string Operacao { get; set; }
 
+        public string Tipo { get; set; }
+
         [NotMapped]
         public bool Erro { get; set; }
 

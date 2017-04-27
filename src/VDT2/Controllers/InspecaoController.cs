@@ -1565,5 +1565,52 @@ namespace VDT2.Controllers
             return Json(listaLocalCheckpoint);
         }
 
+
+        /// <summary>
+        /// Recebe dados do transportador dependendo do checkpoint selecionado
+        /// </summary>
+        /// <param name="localCheckPoint_ID"></param>
+        /// <returns>JSON contendo os dados </returns>
+        public JsonResult RecebeDadosTransportador(int localCheckPoint_ID)
+        {
+            var listaTransportador = new List<Models.Transportador>();
+
+            #region gravalogInformacao
+            Diag.Log.Grava(
+            new Diag.LogItem()
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Executou RecebeDadosTransportador via Ajax - Assíncrono - LocalCheckPointId {localCheckPoint_ID}",
+            });
+            #endregion
+
+            try
+            {
+                ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+
+                Models.LocalCheckPoint LocalCheckPoint = DAL.LocalCheckPoint.Listar(dadosUsuario.UsuarioId, configuracao)
+                    .Where(p => p.LocalCheckPoint_ID == localCheckPoint_ID).FirstOrDefault();
+
+                listaTransportador = DAL.Transportador.Listar(dadosUsuario.UsuarioId, configuracao)
+                    .Where(p => p.Tipo == LocalCheckPoint.Tipo).OrderBy(p => p.IdTipo).ToList();
+                
+            }
+            catch (Exception ex)
+            {
+                #region gravalogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Erro ao receber dados do Transportador conforme o LocalCheckPoint informado - {ex}"
+                    });
+                throw;
+                #endregion
+            }
+
+            return Json(listaTransportador);
+        }
+
+
     }
 }

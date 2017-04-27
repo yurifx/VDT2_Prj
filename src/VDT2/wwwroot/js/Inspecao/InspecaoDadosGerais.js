@@ -148,6 +148,7 @@ function PreencheListaCheckPoint() {
     var i = path.indexOf('EditarInspecao');
     var url = "";
 
+    //No momento não estou fazendo nenhuma lógica, mas para tests no servidor, mudar o url path do ELSE
     if (i > 0) {
         url = path + '/../RecebeDadosLocalCheckPoint';
     } else {
@@ -167,5 +168,39 @@ function PreencheListaCheckPoint() {
                     .appendTo(LocalCheckPoint);
                 });
             });
+
+}
+
+
+//Recebe dados do Transportador, dependendo do local de inspeção. via AJAX
+function PreencheListaTransportador() {
+    var localCheckPoint_ID = $("#ListaLocalCheckPoint").val();
+    var listaTransportador = $("#ListaTransportador");
+
+    var path = window.location.pathname;
+    var i = path.indexOf('EditarInspecao');
+
+    var url = "";
+
+    //No momento não estou fazendo nenhuma lógica, mas para tests no servidor, mudar o url path do ELSE
+    if (i > 0) {
+        url = path + '/../RecebeDadosTransportador';
+    } else {
+        url = path + '/../RecebeDadosTransportador'
+    }
+
+    $.getJSON(
+        url,
+        { 'localCheckPoint_ID': localCheckPoint_ID },
+        function (response) {
+            listaTransportador.empty();
+            $.each(response, function (index, item) {
+                $(document.createElement('option'))
+                    .attr('value', item.idTipo)
+                    .text(item.nome)
+                    .appendTo(listaTransportador);
+            });
+        });
+
 
 }

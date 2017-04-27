@@ -82,7 +82,7 @@ else
                     <label for="ListaLocalCheckPoint">Local CheckPoint</label>
                 </div>
                 <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                    <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
+                    <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control" onchange="PreencheListaTransportador()"
                             asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
                         <option disabled selected>Selecione CheckPoint</option>
                     </select>

@@ -42,7 +42,6 @@ namespace VDT2.Models
         public Transportador()
         {
             Nome = "";
-            Tipo = "";
             MensagemErro = "";
         }
     }

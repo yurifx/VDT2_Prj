@@ -289,7 +289,7 @@ namespace VDT2.BLL
                 List<Models.FrotaViagem> listaFrotaViagem = null;
                 try
                 {
-                    listaFrotaViagem = DAL.FrotaViagem.Listar(transportador.Tipo, transportador.Transportador_ID, configuracao);
+                    listaFrotaViagem = DAL.FrotaViagem.Listar(transportador.Tipo.ToString(), transportador.Transportador_ID, configuracao);
                 }
                 catch (System.Exception ex)
                 {

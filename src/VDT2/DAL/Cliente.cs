@@ -47,7 +47,7 @@ namespace VDT2.DAL
 
                 SqlParameter parmAtivos = new SqlParameter("@p_Ativos", SqlDbType.Bit)
                 {
-                    Value = 0
+                    Value = 1
                 };
 
                 SqlParameter[] parametros = new SqlParameter[]
