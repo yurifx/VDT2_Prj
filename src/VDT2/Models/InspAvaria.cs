@@ -38,7 +38,7 @@ namespace VDT2.Models
 
         public bool DanoOrigem { get; set; }
 
-        public int HorasReparo { get; set; } = 0;
+        public int? HorasReparo { get; set; } = 0;
 
         public decimal? CustoReparo { get; set; } = 0;
 

@@ -6,11 +6,7 @@
 USE [VDT2] 
 GO
 
-Truncate Table InspAvaria
-GO
-
 /* Verifica se existe a coluna custo, caso exista, dropa */
-
 if exists(Select COLUMN_NAME 
             From INFORMATION_SCHEMA.COLUMNS 
             Where table_name = 'InspAvaria' and COLUMN_NAME = 'Custo')
