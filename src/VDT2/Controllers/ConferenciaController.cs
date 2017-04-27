@@ -991,7 +991,7 @@ namespace VDT2.Controllers
             {
                 return View("NovaConsulta", clientes);
             }
-            else if (clientes.Count() == 0)
+            else if (clientes.Count() == 1)
             {
                 {
                     return ConsultaCliente(clientes.FirstOrDefault().Cliente_ID);

@@ -58,8 +58,13 @@
         $("#Navio").val(NavioNome);
 
     } else {
-        $("#botaoEnviarId").text("Gravar");
+              $("#botaoEnviarId").text("Gravar");
     }
+
+    $("#ListaTransportador").on("click", function () {
+        TerrestreOuMaritimo();
+    });
+
 
 
 });
@@ -68,10 +73,8 @@
 //Verifica se o transportador
 function TerrestreOuMaritimo() {
     var selecionado = $('#ListaTransportador').val();
-    console.log("Dropdownlist, transportador selecionado " + selecionado);
     var arr = selecionado.split('_');
     var tipo = arr[1];
-    console.log("Tipo é: " + tipo);
 
     if (tipo === 'M') {
         $("#lblFrotaViagem").html('Viagem');
@@ -201,6 +204,4 @@ function PreencheListaTransportador() {
                     .appendTo(listaTransportador);
             });
         });
-
-
 }
