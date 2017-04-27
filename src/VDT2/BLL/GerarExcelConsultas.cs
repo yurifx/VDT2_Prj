@@ -78,12 +78,15 @@ namespace VDT2.BLL
                         worksheet.Cells[1, 16].Value = "Quadrante";
                         worksheet.Cells[1, 17].Value = "Severidade";
                         worksheet.Cells[1, 18].Value = "TipoAvaria";
-                        worksheet.Cells[1, 19].Value = "HorasReparo";
-                        worksheet.Cells[1, 20].Value = "Custo";
+                        worksheet.Cells[1, 19].Value = "Horas Reparo";
+                        worksheet.Cells[1, 20].Value = "Custo Reparo";
+                        worksheet.Cells[1, 21].Value = "Substituição Peça";
+                        worksheet.Cells[1, 22].Value = "Valor Peça";
+                        worksheet.Cells[1, 23].Value = "Custo Total";
 
 
                         //Muda o estilo do header
-                        for (int i = 1; i < 21; i++)
+                        for (int i = 1; i < 24; i++)
                         {
                             //Setando peso do texto
                             worksheet.Cells[1, i].Style.Font.Bold = true;
@@ -142,8 +145,11 @@ namespace VDT2.BLL
                         worksheet.Column(16).Width = 16; //Quadrante
                         worksheet.Column(17).Width = 24; //Severidade
                         worksheet.Column(18).Width = 12; //TipoAvaria
-                        worksheet.Column(19).Width = 12; //HorasReparo
-                        worksheet.Column(20).Width = 12; //Custo
+                        worksheet.Column(19).Width = 16; //HorasReparo
+                        worksheet.Column(20).Width = 15; //CustoReparo
+                        worksheet.Column(21).Width = 22; //Substituição Peça
+                        worksheet.Column(22).Width = 12; //Valor Peça
+                        worksheet.Column(23).Width = 16; //Valor Total
 
 
                         //Adicionar os valores nos campos;
@@ -169,6 +175,19 @@ namespace VDT2.BLL
                             worksheet.Cells[i + 2, 18].Value = DadosConsulta[i].FabricaTransporte;
                             worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].HorasReparo;
                             worksheet.Cells[i + 2, 20].Value = DadosConsulta[i].CustoReparo;
+
+                            if (DadosConsulta[i].SubstituicaoPeca == true) {
+                                worksheet.Cells[i + 2, 21].Value = "Sim";
+                            }
+                            else
+                            {
+                                worksheet.Cells[i + 2, 21].Value = "Não";
+
+                            }
+
+                            
+                            worksheet.Cells[i + 2, 22].Value = DadosConsulta[i].ValorPeca;
+                            worksheet.Cells[i + 2, 23].Value = DadosConsulta[i].CustoTotal;
                         }
 
                         //Salvar

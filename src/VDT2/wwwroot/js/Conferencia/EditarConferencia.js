@@ -198,6 +198,7 @@ function ValidarValores() {
         $("#pMensagemCusto").append(" <a id='Calcular' onclick='CalcularValor()'>Calcular</a>");
         $("#pMensagemCusto").css("color", "red");
         $("#pMensagemCusto").css("font-size", "16px");
+        $("#Calcular").css("cursor", "pointer");
     }
     else {
         $("#pMensagemCusto").html("");

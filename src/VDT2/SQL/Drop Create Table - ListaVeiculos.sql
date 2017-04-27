@@ -18,7 +18,8 @@ Create Table ListaVeiculos (
   Usuario_ID         Int Not Null References Usuario(Usuario_ID),  -- Identificação do usuário que incluiu os dados do arquivo na base de dados
   NomeArquivo        Varchar(50)   Not Null,  -- Nome do arquivo sem as pastas
   DataHoraInclusao   SmallDateTime Not Null Default GetDate(),  -- Data e hora da inclusão do arquivo na base de dados
-  LocalInspecao_ID   Int Not Null References LocalCheckPoint(LocalCheckPoint_ID),
+  LocalInspecao_ID   Int Not Null References LocalInspecao(LocalInspecao_ID),
+  LocalCheckPoint_ID Int Not Null References LocalCheckPoint(LocalCheckPoint_ID),
   Lote_ID            Int Not Null References Lote(Lote_ID)
 )
 GO
