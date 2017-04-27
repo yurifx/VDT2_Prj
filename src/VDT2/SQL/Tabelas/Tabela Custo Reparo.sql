@@ -24,5 +24,4 @@ Create Table CustoReparo (
   Custo             Decimal (7,2)
 )
 
-
 -- Select * from CustoReparo

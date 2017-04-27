@@ -14,7 +14,7 @@ Create Procedure dbo.Publicar
 -------------------------------------------------------------------------------
 (
 @p_Usuario_ID Int,
-@p_Inspecoes Varchar(4000)  --String contendo a concatenação de inspeções delimitadas por ;  Ex: 1;2;3...100;
+@p_Inspecoes  Varchar(4000)  --String contendo a concatenação de inspeções delimitadas por ;  Ex: 1;2;3...100;
 )
 AS
 
@@ -25,32 +25,32 @@ DECLARE @Tamanho     Int,
         @Inspecao    Int,
         @InspecaoAux VarChar(4000)
 
-Set @InspecaoAux =  @p_Inspecoes
-Set @Tamanho     =  Len(@p_Inspecoes)
-Set @Posicao     =  CharIndex(';', @p_Inspecoes)
+Set     @InspecaoAux =  @p_Inspecoes
+Set     @Tamanho     =  Len(@p_Inspecoes)
+Set     @Posicao     =  CharIndex(';', @p_Inspecoes)
 
 While @Posicao > 0 Begin
 
-    Set @Inspecao = LEFT(@InspecaoAux, @Posicao-1)
+ Set @Inspecao = LEFT(@InspecaoAux, @Posicao-1)
 
-    --Aqui realiza a atualizacao
-    Update Inspecao 
-    Set Publicado = 1, PublicadoPor = @p_Usuario_ID, PublicacaoData = SYSDATETIME()
-    Where Inspecao_Id = @Inspecao
+  Update Inspecao
+  Set   Publicado = 1, 
+        PublicadoPor = @p_Usuario_ID, 
+        PublicacaoData = SYSDATETIME()
+  Where Inspecao_Id = @Inspecao
 
+  --Pega a próxima Inspeção dentro da string de concatenação
+  Set @InspecaoAux =  SUBSTRING(@InspecaoAux, @Posicao+1, Len(@InspecaoAux))
 
-    --Pega a próxima Inspeção 
-    Set @InspecaoAux =  SUBSTRING(@InspecaoAux, @Posicao+1, Len(@InspecaoAux))
-
-    --Verifica se existe mais algum ponto e virgula, caso não exista sai do loop
-    Set @Posicao =  CharIndex(';', @InspecaoAux)
+  --Verifica se existe mais algum ponto e virgula, caso não exista sai do loop
+  Set @Posicao =  CharIndex(';', @InspecaoAux)
 End
-
 
 /*
 declare @p_inspecoes varchar(40)
 set @p_inspecoes = '0005;23;33;'
 exec publicar 6, @p_inspecoes
+go
 select * from Inspecao where inspecao_id in (5,13,23,33)
 */
 

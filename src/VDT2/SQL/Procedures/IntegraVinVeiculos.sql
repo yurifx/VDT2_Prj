@@ -24,46 +24,45 @@ AS
 SET NOCOUNT ON
 
 Update InspVeiculo  
-   Set VIN     = lvv.VIN, 
+ Set   VIN     = lvv.VIN, 
        Lote_ID = lv.Lote_ID
    
 From InspVeiculo v
 
-Inner Join Inspecao           i  on i.Inspecao_ID       =   v.Inspecao_ID
-Inner Join ListaVeiculos     lv  on i.Cliente_ID        =  lv.Cliente_ID and lv.LocalInspecao_ID = i.LocalInspecao_ID
-Inner Join ListaVeiculosVin lvv  on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
+Inner Join Inspecao            i  on i.Inspecao_ID       =   v.Inspecao_ID
+Inner Join ListaVeiculos      lv  on i.Cliente_ID        =  lv.Cliente_ID 
+                                 and lv.LocalInspecao_ID =   i.LocalInspecao_ID
+Inner Join ListaVeiculosVin  lvv  on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
 
-Where i.Cliente_ID = @p_Cliente_ID
- and   i.LocalInspecao_ID = @p_LocalInspecao_ID
- and   v.VIN_6 = lvv.VIN_6
- and   v.VIN is null
+Where  i.Cliente_ID       = @p_Cliente_ID
+ And   i.LocalInspecao_ID = @p_LocalInspecao_ID
+ And   v.VIN_6            = lvv.VIN_6
+ And   v.VIN              IS NULL
 
  
---Recebe a lista de Veículos encontrados na tabela ListaVeículosVin, porém não há registro de Inspeção
+--Recebe a lista de Veículos encontrados na tabela ListaVeículosVin, porém sem registros de Inspeção
 Select 'L' as Tipo, lvv.VIN_6
 From ListaVeiculosVin lvv
-
 Inner Join ListaVeiculos lv on lv.ListaVeiculos_ID = lvv.ListaVeiculos_ID
 Left  Join ( Select iv.InspVeiculo_ID, iv.vin_6 from InspVeiculo iv 
                    inner join Inspecao i        on iv.Inspecao_ID = i.Inspecao_ID 
                    Where i.LocalInspecao_ID   = @p_LocalInspecao_ID
                     and  i.LocalCheckPoint_ID = @p_LocalCheckPoint_ID) as Veiculos
+  on lvv.VIN_6 = Veiculos.VIN_6
 
-                on lvv.VIN_6 = Veiculos.VIN_6
+  Where lv.LocalInspecao_ID       = @p_LocalInspecao_ID
+   And  lv.LocalCheckPoint_ID     = @p_LocalCheckPoint_ID
+   And  Veiculos.InspVeiculo_ID   is null
 
-        Where lv.LocalInspecao_ID = @p_LocalInspecao_ID
-         and  lv.LocalCheckPoint_ID = @p_LocalCheckPoint_ID
-         and  Veiculos.InspVeiculo_ID is null
 Union 
 
---Recebe a lista de veículos encontrados que não estão em nenhuma Lista, Ou seja, Não tem VIN;
+--Recebe a lista de veículos encontrados que não estão em nenhuma lista, ou seja, não tem VIN;
 Select 'V' as Tipo, iv.VIN_6 from InspVeiculo iv
-
-inner join Inspecao i on i.Inspecao_ID = iv.Inspecao_ID
-    where iv.VIN is null
-		  and i.LocalInspecao_ID = @p_LocalInspecao_ID
-		  and i.LocalCheckPoint_ID = @p_LocalCheckPoint_ID
-	      and i.Data = @p_DataInspecao
+Inner Join Inspecao i on i.Inspecao_ID = iv.Inspecao_ID
+    Where iv.VIN is null
+		  And i.LocalInspecao_ID    = @p_LocalInspecao_ID
+		  And i.LocalCheckPoint_ID  = @p_LocalCheckPoint_ID
+	      And i.Data                = @p_DataInspecao
 
 
 /*

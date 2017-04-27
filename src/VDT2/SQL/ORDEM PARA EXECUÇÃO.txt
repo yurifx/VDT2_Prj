@@ -1,0 +1,15 @@
+--Alterações de tabela 
+
+Create Table Lote
+Alter Table Inspecao
+Alter Table InspVeiculo
+Alter Table InspAvaria
+Alter Table LocalCheckPoint
+Drop Create Table ListaVeiculos
+
+
+-- Alimentação e UPDATE's
+AlimentaCustoReparo
+AlimentaTransportadores
+Update Cliente (Cliente Allianz)
+Update LocalCheckPoint

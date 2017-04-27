@@ -1,7 +1,7 @@
 -----------------------------------------------------------------------------------------------
 --Scripts criação dos Custos reparo referente a planilha enviada pelo Alessandro
 -- Criação: 30/03
--- Alteração: 20/04
+-- Alteração: 20/04 - Composição de 'horas reparo'
 -----------------------------------------------------------------------------------------------
 
 USE VDT2
@@ -189,8 +189,6 @@ Insert Into CustoReparo (AvArea_ID, avGravidade_id, HorasReparo, custo) Select a
 Insert Into CustoReparo (AvArea_ID, avGravidade_id, HorasReparo, custo) Select a.AvArea_Id, g.AvGravidade_ID,  1.00,   89       From   AvArea a, AvGravidade g     where a.Codigo = '112' and g.Codigo = 'Y'
 Insert Into CustoReparo (AvArea_ID, avGravidade_id, HorasReparo, custo) Select a.AvArea_Id, g.AvGravidade_ID,  2.00,   178      From   AvArea a, AvGravidade g     where a.Codigo = '112' and g.Codigo = 'Z'
                                                                                                         
-
-
 /*
 use vdt2
 

@@ -20,6 +20,7 @@ Create Table ListaVeiculos (
   DataHoraInclusao   SmallDateTime Not Null Default GetDate(),  -- Data e hora da inclusão do arquivo na base de dados
   LocalInspecao_ID   Int Not Null References LocalInspecao(LocalInspecao_ID),
   LocalCheckPoint_ID Int Not Null References LocalCheckPoint(LocalCheckPoint_ID),
+  Tipo               Char Not Null,
   Lote_ID            Int Not Null References Lote(Lote_ID)
 )
 GO

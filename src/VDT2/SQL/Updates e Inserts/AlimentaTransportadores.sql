@@ -1,10 +1,17 @@
-Declare @comando varchar(300),
-        @foreignInspecao varchar(50)
+--------------------------------------------------------------------
+-- 27/04 - Script de alimentação de transportadores
+--------------------------------------------------------------------
 
-Select @foreignInspecao = CONSTRAINT_NAME From INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_NAME LIKE '%FK__Inspecao__Transp%'
 
-SET @COMANDO = 'ALTER TABLE Inspecao DROP CONSTRAINT '+ @foreignInspecao
-EXEC(@COMANDO)
+/* Deleta as Foreign Key's para poder fazer o truncate */ 
+
+Declare @Comando varchar(300),
+        @ForeignInspecao varchar(50)
+
+Select @ForeignInspecao = CONSTRAINT_NAME From INFORMATION_SCHEMA.TABLE_CONSTRAINTS WHERE CONSTRAINT_NAME LIKE '%FK__Inspecao__Transp%'
+
+SET @Comando = 'ALTER TABLE Inspecao DROP CONSTRAINT '+ @ForeignInspecao
+EXEC(@Comando)
 
 GO
 
@@ -18,33 +25,29 @@ EXEC(@COMANDO)
 
 GO
 
+
 TRUNCATE TABLE Transportador
 GO
 
 ---Transportadores Terrestres
-BEGIN TRANSACTION
 Insert into Transportador values ('TRANSZERO', 'T', 1)
 Insert into Transportador values ('TEGMA', 'T', 1)
 Insert into Transportador values ('BRAZUL', 'T', 1)
 Insert into Transportador values ('TRANSAUTO', 'T', 1)
 Insert into Transportador values ('JULIO SIMÕES', 'T', 1)
-COMMIT TRANSACTION
+
 
 --Transportadores Marítimos
-BEGIN TRANSACTION
 Insert into Transportador values ('K-LINE', 'M', 1)
 Insert into Transportador values ('CSAV', 'M', 1)
 Insert into Transportador values ('MARUBA', 'M', 1)
 Insert into Transportador values ('GRIMALDI', 'M', 1)
 Insert into Transportador values ('NYK', 'M', 1)
-COMMIT TRANSACTION
 
 
---Retorna com as foreigns
-
+--Realiza a criação das foreigns key's que foram deletadas
 Alter Table Inspecao
 ADD Foreign Key (Transportador_ID) references Transportador(Transportador_ID)
-
 GO 
 
 Alter Table FrotaViagem
@@ -57,5 +60,6 @@ select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS
 WHERE 
 (CONSTRAINT_NAME LIKE '%FK__Inspecao__Transp%'
 or CONSTRAINT_NAME LIKE '%FK__FrotaViag__Tran%')
+--count deve ser 2
 */
 

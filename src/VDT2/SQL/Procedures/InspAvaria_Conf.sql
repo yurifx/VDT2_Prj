@@ -17,6 +17,7 @@ Create Procedure dbo.InspAvaria_Conf
 -- 17/04/2017 - LeftJoins na Avaria
 -- 17/04/2017 - Adicionar RowId
 -- 20/04/2017 - Adicionar HorasReparo - tbl CustoReparo
+-- 24/04/2017 - Adicionar Campos de custos de peça e valor total
 ----------------------------------------------------------------------------------------------------
 (
 @p_Cliente_ID Int,
@@ -83,15 +84,19 @@ Select
                                       
 From InspVeiculo iv             
 
+/* Junções referentes - Inspeção */
 Inner Join Inspecao         i    on  iv.Inspecao_ID         =    i.Inspecao_ID
 Inner Join LocalInspecao    li   on  li.LocalInspecao_ID    =    i.LocalInspecao_ID
 Inner Join LocalCheckPoint  lc   on  lc.LocalCheckPoint_ID  =    i.LocalCheckPoint_ID
-Inner Join FrotaViagem      fv     on   fv.FrotaViagem_ID   =    i.FrotaViagem_ID
+Inner Join FrotaViagem      fv   on  fv.FrotaViagem_ID      =    i.FrotaViagem_ID
+Left Join  Navio            n    on   n.Navio_ID            =    i.Navio_ID 
 
-Inner Join Marca            ma   on  iv.Marca_ID            =   ma.Marca_ID
-Inner Join Modelo           mo   on  iv.Modelo_ID           =   mo.Modelo_ID
+/* Junções referentes - Veículo */
+Inner Join Marca           ma    on  iv.Marca_ID            =   ma.Marca_ID
+Inner Join Modelo          mo    on  iv.Modelo_ID           =   mo.Modelo_ID
 
-Left Join  Navio            n    on   n.Navio_ID            =   i.Navio_ID 
+/* Junções referentes - Avaria */
+
 Left  Join InspAvaria      ia    on  iv.InspVeiculo_ID      =   ia.InspVeiculo_ID
 Left  Join avArea           a    on   a.AvArea_ID           =   ia.AvArea_ID
 Left  Join AvCondicao       c    on   c.AvCondicao_ID       =   ia.AvCondicao_ID
