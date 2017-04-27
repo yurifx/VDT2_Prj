@@ -13,3 +13,6 @@ AlimentaCustoReparo
 AlimentaTransportadores
 Update Cliente (Cliente Allianz)
 Update LocalCheckPoint
+
+
+--Todas as procedures
