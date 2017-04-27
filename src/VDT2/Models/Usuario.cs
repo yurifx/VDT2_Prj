@@ -20,7 +20,7 @@ namespace VDT2.Models
         /// Identificação do usuário
         /// </summary>
         [Key]
-        public int Usuario_ID { get; set; }
+        public int? Usuario_ID { get; set; }
         public short UsuarioPerfil_ID { get; set; }
         public string Login { get; set; }
         public string Nome { get; set; }

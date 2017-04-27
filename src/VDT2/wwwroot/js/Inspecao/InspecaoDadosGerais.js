@@ -58,7 +58,7 @@
         $("#Navio").val(NavioNome);
 
     } else {
-              $("#botaoEnviarId").text("Gravar");
+        $("#botaoEnviarId").text("Gravar");
     }
 
     $("#ListaTransportador").on("click", function () {
@@ -169,21 +169,21 @@ function PreencheListaCheckPoint() {
         //'/Inspecao/RecebeDadosLocalCheckPoint',
         url,
         { 'localInspecao_ID': localInspecao_ID },
-            function (response) {
-                LocalCheckPoint.empty();
-                $.each(response, function (index, item) {
-                    $(document.createElement('option'))
+        function (response) {
+            LocalCheckPoint.empty();
+            $.each(response, function (index, item) {
+                $(document.createElement('option'))
                     .attr('value', item.codigo)
                     .text(item.nome_Pt)
                     .appendTo(LocalCheckPoint);
-                });
             });
+        });
 
 }
 
 
 //Recebe dados do Transportador, dependendo do local de inspeção. via AJAX
-function PreencherLista() {
+function PreencheListaTransportador() {
     var localCheckPoint_ID = $("#ListaLocalCheckPoint").val();
     var listaTransportador = $("#ListaTransportador");
 
@@ -210,14 +210,7 @@ function PreencherLista() {
                     .text(item.nome)
                     .appendTo(listaTransportador);
             });
+            TerrestreOuMaritimo();
         });
-}
-
-
-function PreencheListaTransportador() {
-    PreencherLista(function () {
-        TerrestreOuMaritimo();
-    });
-
 
 }

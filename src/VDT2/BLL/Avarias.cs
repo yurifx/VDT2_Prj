@@ -304,6 +304,12 @@ namespace VDT2.BLL
 
             catch (Exception ex)
             {
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Erro ao Deletar avaria - Erro: {ex}"
+                    });
                 return false;
             }
 

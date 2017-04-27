@@ -26,6 +26,12 @@ namespace VDT2.DAL
         /// <returns></returns>
         public static Models.Usuario EfetuaLogin(string usuarioLogin, VDT2.Models.Configuracao configuracao)
         {
+            Diag.Log.Grava(
+               new Diag.LogItem()
+               {
+                   Nivel = Diag.Nivel.Informacao,
+                   Mensagem = $"DAL acionada. Efetua login, parametros informados: usuarioLogin {usuarioLogin}, ConnString {configuracao.ConnectionStringVDT}",
+               });
 
             Models.Usuario dadosUsuario = null;
 
@@ -47,16 +53,35 @@ namespace VDT2.DAL
             {
                 using (var contexto = new GeralDbContext(configuracao))
                 {
+                    Diag.Log.Grava(new Diag.LogItem
+                    {
+                        Mensagem = $"Conseguiu conectar com o bd - {chamada}",
+                        Nivel = Diag.Nivel.Informacao
+                    });
+
                     dadosUsuario = contexto.Usuario.FromSql(chamada, parametros).FirstOrDefault();
-                    
-                    #region gravalogResultado
-                    Diag.Log.Grava(
-                        new Diag.LogItem()
-                        {
-                            Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"Login.EfetuaLogin realizado com sucesso:  Login: {dadosUsuario.Login}"
-                        });
-                    #endregion
+
+                    if (dadosUsuario != null)
+                    {
+                        #region gravalogResultado
+                        Diag.Log.Grava(
+                            new Diag.LogItem()
+                            {
+                                Nivel = Diag.Nivel.Informacao,
+                                Mensagem = $"Login.EfetuaLogin realizado com sucesso:  Login: {dadosUsuario.Login}"
+                            });
+
+                        #endregion
+                    }
+                    else
+                    {
+                        Diag.Log.Grava(
+                          new Diag.LogItem()
+                          {
+                              Nivel = Diag.Nivel.Informacao,
+                              Mensagem = $"Não encontrou registros com o usuário informado {usuarioLogin}"
+                          });
+                    }
 
                 }
             }

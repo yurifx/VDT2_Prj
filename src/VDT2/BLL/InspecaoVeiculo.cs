@@ -203,7 +203,12 @@ namespace VDT2.BLL
             }
             catch (Exception ex)
             {
-                //todo: GravarErros
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"Erro ao IntegrarVin - Erro: {ex}"
+                    });
                 return pendencias;
             }
         }
