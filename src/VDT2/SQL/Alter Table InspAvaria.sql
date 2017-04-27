@@ -6,7 +6,7 @@ GO
 
 ALTER TABLE InspAvaria
 DROP COLUMN Custo
-
+GO
 
 ALTER TABLE InspAvaria
   Add  
@@ -16,6 +16,3 @@ ALTER TABLE InspAvaria
        ValorPeca decimal (7,2) default 0,
        CustoTotal decimal (7,2) default 0
 GO
-
-
-select * from InspAvaria

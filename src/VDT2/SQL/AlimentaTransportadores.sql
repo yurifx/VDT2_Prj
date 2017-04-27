@@ -49,3 +49,12 @@ GO
 
 Alter Table FrotaViagem
 ADD Foreign Key (Transportador_ID) references Transportador(Transportador_ID)
+
+
+/*
+select * from Transportador 
+select * from INFORMATION_SCHEMA.TABLE_CONSTRAINTS 
+WHERE 
+(CONSTRAINT_NAME LIKE '%FK__Inspecao__Transp%'
+or CONSTRAINT_NAME LIKE '%FK__FrotaViag__Tran%')
+*/

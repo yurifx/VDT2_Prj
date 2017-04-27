@@ -9,6 +9,6 @@ GO
 
 CREATE TABLE Lote 
 (
-    Lote_ID int identity not null,
+    Lote_ID Int Identity Not Null Primary Key,
     Lote    Varchar(500)
 )
