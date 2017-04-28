@@ -6,8 +6,11 @@
     Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
 }
 
-<script src="~/js/Conferencia/ConferenciaLista.js" asp-append-version="true"></script>
+@section Scripts{
+    <script src="testesRenderSection.js"></script>
+}
 
+<script src="~/js/Conferencia/ConferenciaLista.js" asp-append-version="true"></script>
 <form id="frmEnviarLista" asp-controller="Conferencia" asp-action="SalvarLista" method="post" enctype="multipart/form-data">
 
     <div class="container">
@@ -128,7 +131,7 @@
                 <h4 class="modal-title">Deseja realmente enviar a lista?</h4>
             </div>
             <div class="modal-body">
-                <p id="lblConfirmacaoLote">Confirmação de lote:  </p>
+                <p id="lblConfirmacaoLote"></p>
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-success" data-dismiss="modal" onclick="Enviar()"> Enviar</button>

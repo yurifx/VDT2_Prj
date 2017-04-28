@@ -178,8 +178,14 @@ function DeletarAvaria(avaria_id) {
 
 
 function ValidarValores() {
+
     var horasReparo = $("#inputHorasReparo").val();
     var custoReparo = $("#inputCustoReparo").val();
+
+    if (custoReparo == null || custoReparo == "") {
+        custoReparo = 0;
+    }
+
     var valorPeca = $("#inputValorPeca").val();
     var custoTotal = $("#inputCustoTotal").val();
 
@@ -223,6 +229,11 @@ function CalcularValor() {
     var custoReparo = $("#inputCustoReparo").val();
     var valorPeca = $("#inputValorPeca").val();
     var custoTotal = $("#inputCustoTotal").val();
+
+    if (custoReparo == null || custoReparo == "") {
+        custoReparo = 0;
+    }
+
 
     var horasReparoInt = parseInt(horasReparo, 10);
     var custoReparoInt = parseInt(custoReparo, 10);

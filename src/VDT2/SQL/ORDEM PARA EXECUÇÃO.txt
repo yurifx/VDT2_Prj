@@ -1,18 +1,3 @@
---Alterações de tabela 
-
-Create Table Lote
-Alter Table InspAvaria
-Alter Table InspVeiculo
-Alter Table Inspecao
-Alter Table LocalCheckPoint
-Drop Create Table ListaVeiculos
-
-
--- Alimentação e UPDATE's
-AlimentaCustoReparo
-AlimentaTransportadores
-Update Cliente (Cliente Allianz)
-Update LocalCheckPoint
-
-
---Todas as procedures
+1 - Tabelas
+2 - Updates e Inserts
+3 - Procedures

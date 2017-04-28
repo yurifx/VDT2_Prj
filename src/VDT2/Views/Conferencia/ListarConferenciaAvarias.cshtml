@@ -79,8 +79,8 @@
                             
                             @if (Model.InspAvaria_Conf.Operacao == "E")
                             {
-                                <th class="tabConferenciaListaVeiculoHeader">HorasReparo</th>
-                                <th class="tabConferenciaListaVeiculoHeader">CustoReparo</th>
+                                <th class="tabConferenciaListaVeiculoHeader">Horas Reparo</th>
+                                <th class="tabConferenciaListaVeiculoHeader">Custo Reparo</th>
                                 <th class="tabConferenciaListaVeiculoHeader">Substituição de Peça</th>
                                 <th class="tabConferenciaListaVeiculoHeader">Valor da Peça</th>
                                 <th class="tabConferenciaListaVeiculoHeader">Valor Total</th>
@@ -134,20 +134,21 @@
                                     {
                                         <td class="custoConferencia">@item.CustoReparo</td>
                                     }
+                                    @if (item.SubstituicaoPeca == true)
+                                    {
+                                        <td>Sim</td>
+                                    }
+                                    else
+                                    {
+                                        <td> Não </td>
+                                    }
+
+                                    <td>@item.ValorPeca</td>
+                                    <td>@item.CustoTotal</td>
+
                                 }
 
-                                @if (item.SubstituicaoPeca == true)
-                                {
-                                    <td>Sim</td>
-                                }
-                                else
-                                {
-                                    <td> Não </td>
-                                }
-
-                                <td>@item.ValorPeca</td>
-                                <td>@item.CustoTotal</td>
-
+                               
                                 @if (@item.InspAvaria_ID != null)
                                 {
                                     <td><button type="button" class="btn btn-sm btn-default" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>

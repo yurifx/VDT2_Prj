@@ -65,14 +65,6 @@
         TerrestreOuMaritimo();
     });
 
-    $("#ListaTransportador").on("mouseover", function () {
-        TerrestreOuMaritimo();
-    });
-
-    $("#ListaTransportador").on("mouseleave", function () {
-        TerrestreOuMaritimo();
-    });
-
 
 });
 

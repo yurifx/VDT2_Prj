@@ -3,8 +3,9 @@
 
     $("#btnUpload").click(function () {
 
-        if (!$("#radioPacking").is(':checked')){
-            $("#lblConfirmacaoLote").append($("#inputLote").val());
+        if (!$("#radioPacking").is(':checked')) {
+            $("#lblConfirmacaoLote").text("");
+            $("#lblConfirmacaoLote").append("Confirmação de lote: " + $("#inputLote").val());
             $("#lblConfirmacaoLote").css('font-weight', 'bold');
         }
         else {

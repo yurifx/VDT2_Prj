@@ -931,6 +931,75 @@ namespace VDT2.Controllers
         }
 
 
+        public IActionResult DeletarVeiculo(int id)
+        {
+
+            //Inicializações
+            ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
+            ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+            listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
+
+
+            //Preciso guardar os dados da avaria antes de deletar. Pois utilizarei esses dados para pegar informações do veículo e inspeção.
+            conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(id, configuracao);
+
+            ///*Teste Erro */
+            //conferenciaEditarAvariasVM.InspAvaria.Erro = true;
+            //conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID = 0;
+            ///*Fim teste Erro*/
+
+
+            //Verifica se está com erro;
+            if (!conferenciaEditarAvariasVM.InspVeiculo.Erro)
+            {
+                conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
+            }
+
+            //Deleta veículo
+            bool deletou = BLL.InspecaoVeiculo.DeletarVeiculo(id, configuracao);
+            if (deletou)
+            {
+                ViewData["MensagemSucesso"] = "Veículo deletado com sucesso";
+            }
+
+
+            //Carrega dados proxima View
+
+            if (conferenciaEditarAvariasVM.InspVeiculo.Erro == true || conferenciaEditarAvariasVM.Inspecao.Erro == true)
+            {
+                ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
+            }
+
+            listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+
+            /*Teste Erro*/
+            //listarConferenciaAvariaVM.ListaInspAvaria_Conf = null; // teste
+            /*Fim Teste Erro*/
+
+
+            if (listarConferenciaAvariaVM.ListaInspAvaria_Conf != null)
+            {
+                listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
+                listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
+                listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
+            }
+            else
+            {
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Informacao,
+                    Mensagem = "Erro ao processar informação tente novamente mais tarde, ConferenciaController | DeletarAvaria"
+                });
+                TempData["Erro"] = tempErro;
+                return RedirectToAction("NovaConferencia");
+            }
+
+            return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
+        }
+
+
+
+
         public IActionResult Voltar(string nomeView)
         {
             #region gravalogInformacao

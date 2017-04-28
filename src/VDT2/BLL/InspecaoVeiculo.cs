@@ -213,6 +213,50 @@ namespace VDT2.BLL
             }
         }
 
+        /// <summary>
+        /// Remove o veículo do banco de dados.
+        /// Este método só pode ser chamado caso não tenha avarias para o veículo
+        /// </summary>
+        /// <param name="veiculo_id"></param>
+        /// <returns></returns>
+        public static bool DeletarVeiculo(int veiculo_id, Configuracao configuracao)
+        {
+            Diag.Log.Grava(
+                   new Diag.LogItem()
+                   {
+                       Nivel = Diag.Nivel.Erro,
+                       Mensagem = $"BLL.DeletarVeículo: Parametros: {veiculo_id}"
+                   });
+
+            try
+            {
+                Models.InspVeiculo veiculo = DAL.InspVeiculo.ListarPorId(veiculo_id, configuracao);
+                if (veiculo != null)
+                {
+                    //verificar se não existe avarias para este veículo
+                    var avarias = DAL.InspAvaria.Listar(1, veiculo.VIN_6, configuracao);
+
+                    //Caso não tenha avaria, faz o delete
+                    if (avarias.Count() == 0)
+                    {
+                        return DAL.InspVeiculo.DeletarVeiculo(veiculo.InspVeiculo_ID, configuracao);
+
+                    }
+
+                }
+                return true;
+            }
+            catch (Exception ex)
+            {
+                Diag.Log.Grava(
+                  new Diag.LogItem()
+                  {
+                      Nivel = Diag.Nivel.Erro,
+                      Mensagem = $"Erro ao deletar veículo - Erro: {ex}"
+                  });
+                return false;
+            }
+        }
     }
 }
 

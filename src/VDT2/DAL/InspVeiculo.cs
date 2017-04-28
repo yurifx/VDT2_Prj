@@ -371,7 +371,6 @@ namespace VDT2.DAL
             string nomeStoredProcedure = "IntegraVinVeiculos";
             List<Pendencia> pendencias = new List<Pendencia>();
 
-
             try
             {
                 SqlParameter parmCliente_ID = new SqlParameter("@p_Cliente_ID", SqlDbType.Int)
@@ -433,6 +432,59 @@ namespace VDT2.DAL
                 #endregion
                 return pendencias;
             }
+
+        }
+
+        public static bool DeletarVeiculo(int veiculo_ID, Configuracao configuracao)
+        {
+            string nomeStoredProcedure = "InspVeiculo_Del";
+
+            SqlParameter parmVeiculoID = new SqlParameter("@p_InspVeiculo_ID", SqlDbType.Int)
+            {
+                Value = veiculo_ID
+            };
+
+            SqlParameter[] parametros = new SqlParameter[]
+            {
+                parmVeiculoID
+            };
+
+
+            string chamada = $"{nomeStoredProcedure} {parmVeiculoID.ParameterName}";
+
+            try
+            {
+                using (var contexto = new GeralDbContext(configuracao))
+                {
+                    contexto.Database.ExecuteSqlCommand(chamada, parametros);
+
+                }
+                #region gravaLogInformacao
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Informacao,
+                        Mensagem = $"BLL.InspVeiculo.DeletarVeiculo realizado com sucesso, veículo: {veiculo_ID}"
+                    });
+                #endregion
+
+
+
+            }
+            catch (Exception ex)
+            {
+                #region gravaLogErro
+                Diag.Log.Grava(
+                    new Diag.LogItem()
+                    {
+                        Nivel = Diag.Nivel.Erro,
+                        Mensagem = $"BLL.InspVeiculo.DeletarVeiculo Não realizado, Erro: {ex}"
+                    });
+                #endregion
+                return false;   
+            }
+
+            return true;
 
         }
 
