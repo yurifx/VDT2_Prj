@@ -86,22 +86,6 @@ else
                     </div>
                 </div>
 
-                @*CONDICAO*@
-                <div class="form-group">
-                    <div class="row">
-                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
-                            <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
-                        </div>
-
-                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                            <select id="avCondicaoLista" name="Condicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
-                                    asp-items="@(new SelectList(Model.avCondicaoLista, "AvCondicao_ID", "Nome_Pt"))">
-                                <option disabled selected>Condição</option>
-                            </select>
-                        </div>
-                    </div>
-                </div>
 
                 @*DANO*@
                 <div class="form-group">
@@ -119,17 +103,17 @@ else
                     </div>
                 </div>
 
-                @*GRAVIDADE*@
+                @*SERVERIDADE*@
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                            <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
-                            <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+                            <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
+                            <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
                         </div>
                         <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                            <select id="avGravidadeLista" name="Gravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
-                                    asp-items="@(new SelectList(Model.avGravidadeLista, "AvGravidade_ID", "Nome_Pt"))">
-                                <option disabled selected>Gravidade</option>
+                            <select id="avSeveridadeLista" name="Severidade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avSeveridadeLista, "AvSeveridade_ID", "Nome_Pt"))">
+                                <option disabled selected>Severidade</option>
                             </select>
                         </div>
                     </div>
@@ -152,21 +136,43 @@ else
                     </div>
                 </div>
 
-                @*SERVERIDADE*@
+
+                @*GRAVIDADE*@
                 <div class="form-group">
                     <div class="row">
                         <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                            <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
-                            <input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />
+                            <label for="avGravidadeLista" id="avGravidadeLabel">Gravidade</label>
+                            <input type="text" id="gravidadeNumericoInput" onchange="gravidadeNumericoInputFunc()" required pattern="[0-9]+$" />
                         </div>
                         <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                            <select id="avSeveridadeLista" name="Severidade_ID" class="form-control" onchange="severidadeDropDownInputFunc()"
-                                    asp-items="@(new SelectList(Model.avSeveridadeLista, "AvSeveridade_ID", "Nome_Pt"))">
-                                <option disabled selected>Severidade</option>
+                            <select id="avGravidadeLista" name="Gravidade_ID" class="form-control" onchange="gravidadeDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avGravidadeLista, "AvGravidade_ID", "Nome_Pt"))">
+                                <option disabled selected>Gravidade</option>
                             </select>
                         </div>
                     </div>
                 </div>
+
+               
+              
+
+                @*CONDICAO*@
+                <div class="form-group">
+                    <div class="row">
+                        <div class="col col-lg-2 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                            <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
+                            <input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />
+                        </div>
+
+                        <div class="col col-lg-10 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                            <select id="avCondicaoLista" name="Condicao_ID" class="form-control" onchange="condicaoDropDownInputFunc()"
+                                    asp-items="@(new SelectList(Model.avCondicaoLista, "AvCondicao_ID", "Nome_Pt"))">
+                                <option disabled selected>Condição</option>
+                            </select>
+                        </div>
+                    </div>
+                </div>
+
 
                 @*OBSERVAÇÕES*@
                 <div class="form-group" hidden>

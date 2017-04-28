@@ -126,10 +126,12 @@
                     @if (Model.InspAvaria != null)
                     {
                         <h4><strong> Dados Avaria</strong></h4>
-                        @*ÁREA*@
                         <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
                             <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
                                 <div class="DivDadosAvaria_TelaEditarAvarias form-group">
+
+
+                                    @*ÁREA*@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
@@ -146,23 +148,6 @@
                                         </div>
                                     </div>
 
-                                    @*CONDICAO*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                                <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
-                                                @*<input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />*@
-                                            </div>
-
-                                            <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                                <select id="avCondicaoLista" name="InspAvaria.AvCondicao_ID" class="form-control"
-                                                        asp-items="@(new SelectList(Model.ListaCondicoes, "AvCondicao_ID", "Nome_Pt"))">
-                                                    <option disabled selected>Condição</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
                                     @*DANO*@
                                     <div class="form-group">
                                         <div class="row">
@@ -174,6 +159,39 @@
                                                 <select id="avDanoRepositorioLista" name="InspAvaria.AvDano_ID" class="form-control"
                                                         asp-items="@(new SelectList(Model.ListaDanos, "AvDano_ID", "Nome_Pt"))">
                                                     <option disabled selected>Dano</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*SERVERIDADE*@
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                                <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
+                                                @*<input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />*@
+                                            </div>
+                                            <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                                <select id="avSeveridadeLista" name="InspAvaria.AvSeveridade_ID" class="form-control"
+                                                        asp-items="@(new SelectList(Model.ListaSeveridades, "AvSeveridade_ID", "Nome_Pt"))">
+                                                    <option disabled selected>Severidade</option>
+                                                </select>
+                                            </div>
+                                        </div>
+                                    </div>
+
+                                    @*QUADRANTE*@
+                                    <div class="form-group">
+                                        <div class="row">
+                                            <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
+                                                <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
+                                                @*<input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />*@
+                                            </div>
+
+                                            <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
+                                                <select id="avQuadranteLista" name="InspAvaria.AvQuadrante_ID" class="form-control"
+                                                        asp-items="@(new SelectList(Model.ListaQuadrantes, "AvQuadrante_ID", "Nome_Pt"))">
+                                                    <option disabled selected>Quadrante</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -195,34 +213,18 @@
                                         </div>
                                     </div>
 
-                                    @*QUADRANTE*@
+                                    @*CONDICAO*@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                                <label for="avQuadranteLista" id="avQuadranteListaLabel">Quadrante</label>
-                                                @*<input type="text" id="quadranteNumericoInput" onchange="quadranteNumericoInputFunc()" required pattern="[0-9]+$" />*@
+                                                <label for="avCondicaoLista" id="avCondicaoListaLabel">Condição</label>
+                                                @*<input type="text" id="condicaoNumericoInput" onchange="condicaoNumericoInputFunc()" required pattern="[0-9]+$" />*@
                                             </div>
 
                                             <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                                <select id="avQuadranteLista" name="InspAvaria.AvQuadrante_ID" class="form-control" 
-                                                        asp-items="@(new SelectList(Model.ListaQuadrantes, "AvQuadrante_ID", "Nome_Pt"))">
-                                                    <option disabled selected>Quadrante</option>
-                                                </select>
-                                            </div>
-                                        </div>
-                                    </div>
-
-                                    @*SERVERIDADE*@
-                                    <div class="form-group">
-                                        <div class="row">
-                                            <div class="col col-lg-3 col-md-2  col-sm-5  col-xs-6 ladoesquerdo">
-                                                <label for="avSeveridadeLista" id="avSeveridadeListaLabel">Severidade</label>
-                                                @*<input type="text" id="severidadeNumericoInput" onchange="severidadeNumericoInputFunc()" required pattern="[0-9]+$" />*@
-                                            </div>
-                                            <div class="col col-lg-9 col-md-10 col-sm-7 col-xs-6 ladodireito">
-                                                <select id="avSeveridadeLista" name="InspAvaria.AvSeveridade_ID" class="form-control" 
-                                                        asp-items="@(new SelectList(Model.ListaSeveridades, "AvSeveridade_ID", "Nome_Pt"))">
-                                                    <option disabled selected>Severidade</option>
+                                                <select id="avCondicaoLista" name="InspAvaria.AvCondicao_ID" class="form-control"
+                                                        asp-items="@(new SelectList(Model.ListaCondicoes, "AvCondicao_ID", "Nome_Pt"))">
+                                                    <option disabled selected>Condição</option>
                                                 </select>
                                             </div>
                                         </div>
@@ -260,7 +262,7 @@
                                                     <label id='lblCustoTelaEditarAvarias'>Horas Reparo: </label>
                                                 </div>
                                                 <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                    <input asp-for="@Model.InspAvaria.HorasReparo" id="inputHorasReparo" onchange="ValidarValores()"  type="text" />
+                                                    <input asp-for="@Model.InspAvaria.HorasReparo" id="inputHorasReparo" onchange="ValidarValores()" type="text" />
                                                 </div>
                                             </div>
                                         </div>
@@ -296,7 +298,7 @@
                                                     <label id='lblCustoTelaEditarAvarias'>Valor da Peça: </label>
                                                 </div>
                                                 <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                    <input asp-for="@Model.InspAvaria.ValorPeca" id="inputValorPeca" onchange="ValidarValores()"  type="text" />
+                                                    <input asp-for="@Model.InspAvaria.ValorPeca" id="inputValorPeca" onchange="ValidarValores()" type="text" />
                                                 </div>
                                             </div>
                                         </div>
@@ -308,10 +310,10 @@
                                                     <label id='lblCustoTelaEditarAvarias'>Custo Total: </label>
                                                 </div>
                                                 <div class="col col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                    <input asp-for="@Model.InspAvaria.CustoTotal" onchange="ValidarValores()"  id="inputCustoTotal" type="text" />
+                                                    <input asp-for="@Model.InspAvaria.CustoTotal" onchange="ValidarValores()" id="inputCustoTotal" type="text" />
                                                 </div>
                                             </div>
-                                            <br/>
+                                            <br />
                                             <p id="pMensagemCusto"></p>
                                         </div>
                                     </div>
@@ -327,7 +329,7 @@
                                 Avaria ID: <input type="text" name="InspAvaria.InspAvaria_ID" value="@Model.InspAvaria.InspAvaria_ID" />< br />
                             </div>
                         }
-                        
+
 
 
                         Veículo ID<input type="text" name="InspVeiculo.InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
@@ -422,7 +424,7 @@ else
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
-                    <a asp-action="DeletarVeiculo" asp-route-id="@Model.InspVeiculo.InspVeiculo_ID">Deletar Veículo</a>
+                <a asp-action="DeletarVeiculo" asp-route-id="@Model.InspVeiculo.InspVeiculo_ID">Deletar Veículo</a>
             </div>
         </div>
 

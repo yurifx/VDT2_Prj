@@ -322,6 +322,11 @@ namespace VDT2.DAL
                 };
 
 
+                if (inspAvaria.HorasReparo == null)
+                {
+                    inspAvaria.HorasReparo = 0;
+                }
+
                 SqlParameter parmHorasReparo = new SqlParameter("@p_HorasReparo", SqlDbType.Int)
                 {
                     Value = inspAvaria.HorasReparo
@@ -352,6 +357,11 @@ namespace VDT2.DAL
                 {
                     Value = inspAvaria.ValorPeca
                 };
+
+                if (inspAvaria.CustoTotal == null)
+                {
+                    inspAvaria.CustoTotal = 0;
+                }
 
                 SqlParameter parmCustoTotal = new SqlParameter("@p_CustoTotal", SqlDbType.Decimal)
                 {

@@ -44,12 +44,7 @@ namespace VDT2.DAL
                 {
                     Value = VeiculoVIN.VIN
                 };
-
-                ////Não estamos mais utilizando
-                //SqlParameter parmLoteID = new SqlParameter("@p_Lote_ID", SqlDbType.Char)
-                //{
-                //    Value = Lote_ID
-                //};
+                
 
                 SqlParameter parmListaVeiculosVin_ID = new SqlParameter("@p_ListaVeiculosVin_ID", SqlDbType.Int)
                 {
@@ -91,7 +86,7 @@ namespace VDT2.DAL
                new Diag.LogItem()
                {
                    Nivel = Diag.Nivel.Erro,
-                   Mensagem = $"Erro ao executar ListaVeiculos.Inserir: Erro:  {ex}"
+                   Mensagem = $"Erro ao executar ListaVeiculosVIN.Inserir: Erro:  {ex}"
                });
                 #endregion
                 throw;

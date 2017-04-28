@@ -740,6 +740,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarLista(ConferenciaListaViewModel conferenciaListaVM, ICollection<IFormFile> files)
         {
+            
             #region gravalogInformacao
             try
             {
@@ -862,6 +863,12 @@ namespace VDT2.Controllers
         /// <returns>Retorna a view anterior</returns>
         public IActionResult DeletarAvaria(int avaria_ID)
         {
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: DeletarAvaria - avaria_ID: {avaria_ID}"
+            });
+
 
             //Inicializações
             ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
@@ -920,7 +927,7 @@ namespace VDT2.Controllers
             {
                 Diag.Log.Grava(new Diag.LogItem
                 {
-                    Nivel = Diag.Nivel.Informacao,
+                    Nivel = Diag.Nivel.Erro,
                     Mensagem = "Erro ao processar informação tente novamente mais tarde, ConferenciaController | DeletarAvaria"
                 });
                 TempData["Erro"] = tempErro;
@@ -933,26 +940,35 @@ namespace VDT2.Controllers
 
         public IActionResult DeletarVeiculo(int id)
         {
+            Diag.Log.Grava(new Diag.LogItem
+            {
+                Nivel = Diag.Nivel.Informacao,
+                Mensagem = $"Action acionada: DeletarVeiculo - Veiculo-ID {id}"
+            });
 
             //Inicializações
-            ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
+            ConferenciaEditarAvariasViewModel conferenciaEditarVM = new ConferenciaEditarAvariasViewModel();
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
+            
+            //Preciso guardar os dados do veiculo antes de deletar. Pois utilizarei esses dados para pegar informações da inspeção.
+            conferenciaEditarVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(id, configuracao);
 
-            //Preciso guardar os dados da avaria antes de deletar. Pois utilizarei esses dados para pegar informações do veículo e inspeção.
-            conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(id, configuracao);
-
-            ///*Teste Erro */
-            //conferenciaEditarAvariasVM.InspAvaria.Erro = true;
-            //conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID = 0;
-            ///*Fim teste Erro*/
-
-
+         
             //Verifica se está com erro;
-            if (!conferenciaEditarAvariasVM.InspVeiculo.Erro)
+            if (!conferenciaEditarVM.InspVeiculo.Erro)
             {
-                conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
+                conferenciaEditarVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarVM.InspVeiculo.Inspecao_ID, configuracao);
+            }
+            else
+            {
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Erro,
+                    Mensagem = $"Não foi possível consultar dados do veículo informado: Veículo_ID {id}"
+                });
+                TempData["Erro"] = "Erro ao consultar dado do veículo tente novamente mais tarde";
             }
 
             //Deleta veículo
@@ -961,16 +977,31 @@ namespace VDT2.Controllers
             {
                 ViewData["MensagemSucesso"] = "Veículo deletado com sucesso";
             }
-
-
-            //Carrega dados proxima View
-
-            if (conferenciaEditarAvariasVM.InspVeiculo.Erro == true || conferenciaEditarAvariasVM.Inspecao.Erro == true)
+            else
+            {
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Erro,
+                    Mensagem = $"Action DeletarVeiculo - Não conseguiu deletar veículo: Veículo-ID {id}"
+                });
+            }
+                
+            
+            //Verifica se retornou erro
+            if (conferenciaEditarVM.InspVeiculo.Erro == true || conferenciaEditarVM.Inspecao.Erro == true)
             {
                 ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
+                Diag.Log.Grava(new Diag.LogItem
+                {
+                    Nivel = Diag.Nivel.Erro,
+                    Mensagem = $"Erro ao listar dados: Erro - ConferenciaEditarVM.InspVeiculo.Erro == true : Veículo-ID {id}"
+                });
             }
+            
 
-            listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+            listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarVM.Inspecao.Cliente_ID, conferenciaEditarVM.Inspecao.LocalInspecao_ID, conferenciaEditarVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarVM.Inspecao.Data, configuracao);
+            listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarVM.Inspecao.Cliente_ID, conferenciaEditarVM.Inspecao.LocalInspecao_ID, conferenciaEditarVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarVM.Inspecao.Data, configuracao);
+
 
             /*Teste Erro*/
             //listarConferenciaAvariaVM.ListaInspAvaria_Conf = null; // teste
@@ -979,7 +1010,7 @@ namespace VDT2.Controllers
 
             if (listarConferenciaAvariaVM.ListaInspAvaria_Conf != null)
             {
-                listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
+                listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarVM.Inspecao.Data;
                 listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
                 listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
             }
