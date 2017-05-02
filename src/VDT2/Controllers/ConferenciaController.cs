@@ -937,7 +937,11 @@ namespace VDT2.Controllers
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
 
-
+        /// <summary>
+        /// Action method utilizado para deletar Veículos inspecionados
+        /// </summary>
+        /// <param name="id">ID do veículo</param>
+        /// <returns></returns>
         public IActionResult DeletarVeiculo(int id)
         {
             Diag.Log.Grava(new Diag.LogItem
@@ -1027,10 +1031,12 @@ namespace VDT2.Controllers
 
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
-
-
-
-
+        
+        /// <summary>
+        /// Action method para voltar a tela anterior
+        /// </summary>
+        /// <param name="nomeView">Nome da view de retorno</param>
+        /// <returns></returns>
         public IActionResult Voltar(string nomeView)
         {
             #region gravalogInformacao
@@ -1110,8 +1116,7 @@ namespace VDT2.Controllers
 
             }
         }
-
-
+        
         /// <summary>
         /// Verifica os dados do cliente e exibe a próxima view (Consulta) contendo informações pertinentes a este cliente
         /// </summary>
@@ -1311,6 +1316,11 @@ namespace VDT2.Controllers
             }
         }
 
+        /// <summary>
+        /// Realiza a exportação do arquivo excel
+        /// </summary>
+        /// <param name="dados">string contendo os dados da consulta realizada</param>
+        /// <returns></returns>
         public FileResult ExportarExcel(string dados)
         {
             Diag.Log.Grava(new Diag.LogItem
