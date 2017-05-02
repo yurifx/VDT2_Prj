@@ -353,7 +353,10 @@ namespace VDT2.Controllers
             return Json(msg);
         }
 
-
+        /// <summary>
+        /// Realiza o logout da aplicação
+        /// </summary>
+        /// <returns>retorna a página principal da aplicação.</returns>
         public async Task<IActionResult> Logout()
         {
             await HttpContext.Authentication.SignOutAsync(VDT2.BLL.Globais.NomeCookieAutenticacao);
