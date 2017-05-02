@@ -69,11 +69,12 @@
                             <th class="tabConferenciaListaVeiculoHeader">Frota/Viagem</th>
                             <th class="tabConferenciaListaVeiculoHeader">Navio</th>
                             <th class="tabConferenciaListaVeiculoHeader">Área</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Condição</th>
                             <th class="tabConferenciaListaVeiculoHeader">Dano</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Gravidade</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Quadrante</th>
                             <th class="tabConferenciaListaVeiculoHeader">Severidade</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Quadrante</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Gravidade</th>
+                            <th class="tabConferenciaListaVeiculoHeader">Condição</th>
+                            
                             <th class="tabConferenciaListaVeiculoHeader">Tipo</th>
                             @*Só apresenta o custo caso seja Emportação*@
                             
@@ -104,12 +105,12 @@
                                 <td>@item.FrotaViagemNome</td>
                                 <td>@item.NavioNome</td>
                                 <td>@item.Area_Pt</td>
-                                <td>@item.Condicao_Pt</td>
                                 <td>@item.Dano_Pt</td>
-                                <td>@item.Gravidade_Pt</td>
-                                <td>@item.Quadrante_Pt</td>
                                 <td>@item.Severidade_Pt</td>
-
+                                <td>@item.Quadrante_Pt</td>
+                                <td>@item.Gravidade_Pt</td>
+                                <td>@item.Condicao_Pt</td>
+                                
                                 @if (@item.FabricaTransporte == "F")
                                 {
                                     <td>Fábrica</td>}
