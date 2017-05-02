@@ -309,27 +309,28 @@ namespace VDT2.BLL
                 if (veiculo != null)
                 {
                     //verificar se não existe avarias para este veículo
-                    var avarias = DAL.InspAvaria.Listar(1, veiculo.VIN_6, configuracao);
+                    //var avarias = DAL.InspAvaria.Listar(1, veiculo.VIN_6, configuracao);
 
-                    //Caso não tenha avaria, faz o delete
-                    if (avarias.Count() == 0)
-                    {
-                        Diag.Log.Grava(new Diag.LogItem
-                        {
-                            Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"Não há avarias para o veículo, realizará então o delete : VIN_6 {veiculo.VIN_6}"
-                        });
-                        return DAL.InspVeiculo.DeletarVeiculo(veiculo.InspVeiculo_ID, configuracao);
-                    }
-                    else
-                    {
-                        Diag.Log.Grava(new Diag.LogItem
-                        {
-                            Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"Não será possível realizar delete, constam {avarias.Count()} avarias para o veículo informado: {veiculo.VIN_6}, id {veiculo.InspVeiculo_ID}"
-                        });
-                        return false;
-                    }
+                    ////Caso não tenha avaria, faz o delete
+                    //if (avarias.Count() == 0)
+                    //{
+                    //    Diag.Log.Grava(new Diag.LogItem
+                    //    {
+                    //        Nivel = Diag.Nivel.Informacao,
+                    //        Mensagem = $"Não há avarias para o veículo, realizará então o delete : VIN_6 {veiculo.VIN_6}"
+                    //    });
+                    //}
+                    //else
+                    //{
+                    //    Diag.Log.Grava(new Diag.LogItem
+                    //    {
+                    //        Nivel = Diag.Nivel.Informacao,
+                    //        Mensagem = $"Não será possível realizar delete, constam {avarias.Count()} avarias para o veículo informado: {veiculo.VIN_6}, id {veiculo.InspVeiculo_ID}"
+                    //    });
+                    //    return false;
+                    //}
+
+                    return DAL.InspVeiculo.DeletarVeiculo(veiculo.InspVeiculo_ID, configuracao);
 
                 }
                 else

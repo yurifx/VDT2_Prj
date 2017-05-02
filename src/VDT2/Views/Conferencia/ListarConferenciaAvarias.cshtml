@@ -236,7 +236,7 @@
                 </div>
             </form>
             <br /><br /><br />
-            <button type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" onclick="location.href='../Home/Index'">Voltar</button>
+            <button type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" onclick="Voltar()">Voltar</button>
             <input type="button" id="btnPublicar" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()">
             <br /><br /><br />
 
@@ -276,3 +276,13 @@
         </div>
     </div>
 </div>
+
+
+
+<script>
+    function Voltar() {
+        $("#frmVoltar").submit();
+    }
+</script>
+
+<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>

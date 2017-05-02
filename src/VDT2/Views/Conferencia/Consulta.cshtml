@@ -307,7 +307,7 @@
         <div class="botaoTelaConsulta">
             <br /><br />
             <button type="submit" class="btnTelaConsulta btn btn-success">Consultar</button>
-            <button type="button" class="btnTelaConsulta btn btn-primary" onclick="location.href='../Home/Index'">Voltar</button>
+            <button type="button" class="btnTelaConsulta btn btn-primary" onclick="Voltar()">Voltar</button>
             @*Poderia fazer via Actionlink*@
             @*@Html.ActionLink("Voltar", "Index", "Home") no entanto isso gera um Anchor*@
             <br /><br />
@@ -370,3 +370,11 @@
 
 
 
+
+<script>
+    function Voltar() {
+        $("#frmVoltar").submit();
+    }
+</script>
+
+<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>

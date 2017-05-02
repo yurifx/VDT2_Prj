@@ -988,6 +988,7 @@ namespace VDT2.Controllers
                     Nivel = Diag.Nivel.Erro,
                     Mensagem = $"Action DeletarVeiculo - Não conseguiu deletar veículo: Veículo-ID {id}"
                 });
+                ViewData["MensagemSucesso"] = "Não conseguiu deletar veículo, verifique suas avarias";
             }
                 
             
