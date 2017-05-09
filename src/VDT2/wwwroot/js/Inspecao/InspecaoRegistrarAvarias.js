@@ -228,7 +228,7 @@ function MostrarFotosSelecionadas(i) {
     var qtdSelecionada = arquivosSelecionados.length;
     $('#spanFoto' + i).removeClass('glyphicon glyphicon-plus');
     $('#spanFoto' + i).addClass('glyphicon glyphicon-camera');
-      
+
 
     var count = i + 1;
     $("#spanFoto" + count).show(0);
@@ -343,7 +343,7 @@ function ValidarFormularioInserirAvaria() {
 
     FotosValidadas = ValidarFotos();
 
-    if (!FotosValidadas){
+    if (!FotosValidadas) {
         alert('Por favor selecione uma foto');
         $("#btnGravarAvarias").prop("disabled", false);
         return false;
@@ -356,6 +356,7 @@ function ValidarFormularioInserirAvaria() {
     var gravidadeSelecionado = $("#avGravidadeLista").val();
     var quadranteSelecionado = $("#avQuadranteLista").val();
     var severidadeSelecionado = $("#avSeveridadeLista").val();
+    var fabricaTransporte = $("#Fabricatransporte").val();
 
     //Area
     if (areaSelecionado == null) {
@@ -416,6 +417,31 @@ function ValidarFormularioInserirAvaria() {
     } else {
         $("#avSeveridadeLista").css("color", "black");
     }
+
+    //Fabrica Transporte
+
+    if ($("#fabricaInputRadio").is(":checked")) {
+        $("#btnGravarAvarias").prop("disabled", true);
+        return true;
+        
+    }
+
+    if ($("#transporteInputRadio").is(":checked")) {
+        $("#btnGravarAvarias").prop("disabled", true);
+        return true;
+    }
+    else {
+        $("#btnGravarAvarias").prop("disabled", false);
+        $("#radioRegistrarAvarias").css("color", "red");
+        $("#radioRegistrarAvarias").css("color", "red");
+        alert("Necessário selecionar tipo de avaria");
+        
+        console.log("Erro ao selecionar tipo de avaria");
+        return false;
+    }
+
+
+
 }
 
 function ValidarFotos() {

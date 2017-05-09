@@ -8,6 +8,7 @@
 
 using System;
 using System.Collections.Generic;
+using System.ComponentModel.DataAnnotations;
 using System.Linq;
 using System.Threading.Tasks;
 using VDT2.Models;
@@ -42,6 +43,9 @@ namespace VDT2.ViewModels
         public int Gravidade_ID { get; set; }
         public int Quadrante_ID { get; set; }
         public int Severidade_ID { get; set; }
+
+
+        //[Required]
         public string Fabricatransporte { get; set; }
         public string VIN_6 { get; set; }
         public int UltimoVeiculo_InspVeiculo_ID { get; set; }

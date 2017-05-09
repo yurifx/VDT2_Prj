@@ -398,7 +398,7 @@ namespace VDT2.Controllers
                     VeiculoViewModel.InspVeiculo = VeiculoViewModel.InspVeiculo;
                     VeiculoViewModel.InspVeiculo.Erro = true;
                     VeiculoViewModel.Marca = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
-                    VeiculoViewModel.Modelo = BLL.InspecaoVeiculo.ListaMarca(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
+                    VeiculoViewModel.Modelo = BLL.InspecaoVeiculo.ListaModelo(VeiculoViewModel.Inspecao.Cliente_ID, configuracao);
                     return View("Veiculo", VeiculoViewModel);
                 }
 
