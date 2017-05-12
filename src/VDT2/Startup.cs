@@ -38,6 +38,7 @@ namespace VDT2
             // Add our Config object so it can be injected
             services.Configure<Models.Configuracao>(Configuration.GetSection("ConfiguracaoVDT"));
 
+
             // *If* you need access to generic IConfiguration this is **required**
             services.AddSingleton<IConfiguration>(Configuration);
 
