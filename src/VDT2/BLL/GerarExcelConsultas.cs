@@ -3,7 +3,7 @@
 // </copyright>
 // <author>Grupo Asserth</author>
 // <email>yuri.vasconcelos@grupoasserth.com.br</email>
-// <date>2017-03-28</date>
+// <date>2017-05-15</date>
 // <summary>Controllers de Conferência</summary>
 
 using OfficeOpenXml;
