@@ -88,96 +88,86 @@ namespace VDT2.BLL
                     ExcelWorksheet worksheet = arquivoExcel.Workbook.Worksheets.Add("DadosConsulta");
 
                     //Cabeçalhos
-                    worksheet.Cells[1, 1].Value = "Data";
-                    worksheet.Cells[1, 2].Value = "VIN";
-                    worksheet.Cells[1, 3].Value = "VIN_6";
-                    worksheet.Cells[1, 4].Value = "Local";
-                    worksheet.Cells[1, 5].Value = "CheckPoint";
-                    worksheet.Cells[1, 6].Value = "Transportador";
-                    worksheet.Cells[1, 7].Value = "Frota|Viagem";
-                    worksheet.Cells[1, 8].Value = "Navio";
-                    worksheet.Cells[1, 9].Value = "Lote";
-                    worksheet.Cells[1, 10].Value = "Marca";
-                    worksheet.Cells[1, 11].Value = "Modelo";
-                    worksheet.Cells[1, 12].Value = "Área";
-                    worksheet.Cells[1, 13].Value = "Dano";
-                    worksheet.Cells[1, 14].Value = "Severidade";
-                    worksheet.Cells[1, 16].Value = "Quadrante";
-                    worksheet.Cells[1, 16].Value = "Gravidade";
-                    worksheet.Cells[1, 17].Value = "Condição";
-                    worksheet.Cells[1, 18].Value = "TipoAvaria";
-                    worksheet.Cells[1, 19].Value = "Horas Reparo";
-                    worksheet.Cells[1, 20].Value = "Custo Reparo";
-                    worksheet.Cells[1, 21].Value = "Substituição Peça";
-                    worksheet.Cells[1, 22].Value = "Valor Peça";
-                    worksheet.Cells[1, 23].Value = "Custo Total";
+                    worksheet.Cells["A1"].Value = "Data";
+                    worksheet.Cells["B1"].Value = "VIN";
+                    worksheet.Cells["C1"].Value = "VIN_6";
+                    worksheet.Cells["D1"].Value = "Local";
+                    worksheet.Cells["E1"].Value = "CheckPoint";
+                    worksheet.Cells["F1"].Value = "Transportador";
+                    worksheet.Cells["G1"].Value = "Navio";
+                    worksheet.Cells["H1"].Value = "Frota | Viagem";
+                    worksheet.Cells["I1"].Value = "Lote";
+                    worksheet.Cells["J1"].Value = "Marca";
+                    worksheet.Cells["K1"].Value = "Modelo";
+                    worksheet.Cells["L1"].Value = "Área";
+                    worksheet.Cells["M1"].Value = "Local";
+                    worksheet.Cells["N1"].Value = "Lado";
+                    worksheet.Cells["O1"].Value = "Dano";
+                    worksheet.Cells["P1"].Value = "Severidade";
+                    worksheet.Cells["Q1"].Value = "Quadrante";
+                    worksheet.Cells["R1"].Value = "Gravidade";
+                    worksheet.Cells["S1"].Value = "Condição";
+                    worksheet.Cells["T1"].Value = "Tipo Avaria";
+                    worksheet.Cells["U1"].Value = "Horas Reparo";
+                    worksheet.Cells["V1"].Value = "Custo Reparo";
+                    worksheet.Cells["W1"].Value = "Substituição Peça";
+                    worksheet.Cells["X1"].Value = "Valor Peça";
+                    worksheet.Cells["Y1"].Value = "Custo Total";
 
 
-                    //Muda o estilo do header
-                    for (int i = 1; i < 24; i++)
-                    {
-                        //Setando peso do texto
-                        worksheet.Cells[1, i].Style.Font.Bold = true;
+                    //Setando tipo do texto
+                    worksheet.Cells["A1:Y1"].Style.Font.Bold = true;
 
-                        //setando tamanho
-                        worksheet.Cells[1, i].Style.Font.Size = 12;
+                    //setando tamanho
+                    worksheet.Cells["A1:Y1"].Style.Font.Size = 12;
 
-                        //setando cor do texto
-                        worksheet.Cells[1, i].Style.Font.Color.SetColor(System.Drawing.Color.White);
+                    //setando cor do texto
+                    worksheet.Cells["A1:Y1"].Style.Font.Color.SetColor(System.Drawing.Color.White);
 
-                        //Setando bordas
-                        //worksheet.Cells[1, i].Style.Border.Right.Style =
-                        //    worksheet.Cells[1, i].Style.Border.Bottom.Style =
-                        //    worksheet.Cells[1, i].Style.Border.Left.Style = 
-                        //    worksheet.Cells[1, i].Style.Border.Top.Style =  ExcelBorderStyle.Thick;
+                    //Setando background-color
+                    worksheet.Cells["A1:Y1"].Style.Fill.PatternType = ExcelFillStyle.Solid;
+                    worksheet.Cells["A1:Y1"].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkBlue);
 
-                        //Setando background-color
-                        worksheet.Cells[1, i].Style.Fill.PatternType = ExcelFillStyle.Solid;
-                        worksheet.Cells[1, i].Style.Fill.BackgroundColor.SetColor(System.Drawing.Color.DarkBlue);
-                    }
+                    //Alinhamento
+                    worksheet.Cells["A1:Y300"].Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
+                    worksheet.Cells["A1:Y300"].Style.VerticalAlignment = ExcelVerticalAlignment.Center;
+
 
                     //Altura da primeira linha
                     worksheet.Row(1).Height = 26;
 
-                    //Alinhamento horizontal da primeira linha
-                    worksheet.Row(1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-
-
-                    //Alinhamento Vertical da primeira linha
-                    worksheet.Row(1).Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-
-
-                    //Alinhamento vertical e horizontal de todas as linhas
-                    for (int j = 0; j < DadosConsulta.Count + 2; j++)
-                    {
-                        worksheet.Row(j + 1).Style.VerticalAlignment = ExcelVerticalAlignment.Center;
-                        worksheet.Row(j + 1).Style.HorizontalAlignment = ExcelHorizontalAlignment.Center;
-                    }
-
 
                     //Largura das colunas
-                    worksheet.Column(1).Width = 11; //Data
-                    worksheet.Column(2).Width = 18; //VIN
-                    worksheet.Column(3).Width = 10; //VIN_6
-                    worksheet.Column(5).Width = 22; //CheckPoint
-                    worksheet.Column(6).Width = 24; //Transportador
-                    worksheet.Column(7).Width = 16; //FrotaViagem
-                    worksheet.Column(8).Width = 12; //Navio
-                    worksheet.Column(9).Width = 12; //Lote
-                    worksheet.Column(10).Width = 12; //Marca
-                    worksheet.Column(11).Width = 12; //Modelo
-                    worksheet.Column(12).Width = 28; //Área
-                    worksheet.Column(13).Width = 16; //Dano
-                    worksheet.Column(14).Width = 16; //Severidade
-                    worksheet.Column(15).Width = 16; //Quadrante
-                    worksheet.Column(16).Width = 16; //Gravidade
-                    worksheet.Column(17).Width = 26; //Condição
-                    worksheet.Column(18).Width = 12; //TipoAvaria
-                    worksheet.Column(19).Width = 16; //HorasReparo
-                    worksheet.Column(20).Width = 15; //CustoReparo
-                    worksheet.Column(21).Width = 22; //Substituição Peça
-                    worksheet.Column(22).Width = 12; //Valor Peça
-                    worksheet.Column(23).Width = 16; //Valor Total
+                    worksheet.Column(1).Width = 11; 
+                    worksheet.Column(2).Width = 20; 
+                    worksheet.Column(3).Width = 10; 
+                    worksheet.Column(4).Width = 22; 
+                    worksheet.Column(5).Width = 24; 
+                    worksheet.Column(6).Width = 16; 
+                    worksheet.Column(7).Width = 12; 
+                    worksheet.Column(8).Width = 20; 
+                    worksheet.Column(9).Width = 12; 
+                    worksheet.Column(10).Width = 16;
+                    worksheet.Column(11).Width = 28;
+                    worksheet.Column(12).Width = 16;
+                    worksheet.Column(13).Width = 16;
+                    worksheet.Column(14).Width = 16;
+                    worksheet.Column(15).Width = 16;
+                    worksheet.Column(16).Width = 26;
+                    worksheet.Column(17).Width = 20;
+                    worksheet.Column(18).Width = 18;
+                    worksheet.Column(19).Width = 18;
+                    worksheet.Column(20).Width = 22;
+                    worksheet.Column(21).Width = 18;
+                    worksheet.Column(22).Width = 16;
+                    worksheet.Column(23).Width = 20;
+                    worksheet.Column(24).Width = 18;
+                    worksheet.Column(25).Width = 18;
+
+                    worksheet.Cells["Y2:Y1000"].Style.Numberformat.Format = "R$#,##0.00";
+                    worksheet.Cells["X2:X1000"].Style.Numberformat.Format = "R$#,##0.00";
+                    worksheet.Cells["V2:V1000"].Style.Numberformat.Format = "R$#,##0.00";
+
 
 
                     //Adicionar os valores nos campos;
@@ -189,34 +179,55 @@ namespace VDT2.BLL
                         worksheet.Cells[i + 2, 4].Value = DadosConsulta[i].LocalNome;
                         worksheet.Cells[i + 2, 5].Value = DadosConsulta[i].CheckPointNome;
                         worksheet.Cells[i + 2, 6].Value = DadosConsulta[i].TransportadorNome;
-                        worksheet.Cells[i + 2, 7].Value = DadosConsulta[i].FrotaViagemNome;
-                        worksheet.Cells[i + 2, 8].Value = DadosConsulta[i].NavioNome;
+                        worksheet.Cells[i + 2, 7].Value = DadosConsulta[i].NavioNome;
+                        worksheet.Cells[i + 2, 8].Value = DadosConsulta[i].FrotaViagemNome;
                         worksheet.Cells[i + 2, 9].Value = DadosConsulta[i].LoteNome;
                         worksheet.Cells[i + 2, 10].Value = DadosConsulta[i].MarcaNome;
                         worksheet.Cells[i + 2, 11].Value = DadosConsulta[i].ModeloNome;
                         worksheet.Cells[i + 2, 12].Value = DadosConsulta[i].Area_Pt;
-                        worksheet.Cells[i + 2, 13].Value = DadosConsulta[i].Dano_Pt;
-                        worksheet.Cells[i + 2, 14].Value = DadosConsulta[i].Severidade_Pt;
-                        worksheet.Cells[i + 2, 15].Value = DadosConsulta[i].Quadrante_Pt;
-                        worksheet.Cells[i + 2, 16].Value = DadosConsulta[i].Gravidade_Pt;
-                        worksheet.Cells[i + 2, 17].Value = DadosConsulta[i].Condicao_Pt;
-                        worksheet.Cells[i + 2, 18].Value = DadosConsulta[i].FabricaTransporte;
-                        worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].HorasReparo;
-                        worksheet.Cells[i + 2, 20].Value = DadosConsulta[i].CustoReparo;
+                        worksheet.Cells[i + 2, 13].Value = DadosConsulta[i].Local_Pt;
 
-                        if (DadosConsulta[i].SubstituicaoPeca == true)
+                        if (String.IsNullOrEmpty(DadosConsulta[i].Lado_Pt))
                         {
-                            worksheet.Cells[i + 2, 21].Value = "Sim";
+                            worksheet.Cells[i + 2, 14].Value = "N/A";
                         }
                         else
                         {
-                            worksheet.Cells[i + 2, 21].Value = "Não";
+                            worksheet.Cells[i + 2, 14].Value = DadosConsulta[i].Lado_Pt;
+                        }
+
+                        worksheet.Cells[i + 2, 15].Value = DadosConsulta[i].Dano_Pt;
+                        worksheet.Cells[i + 2, 16].Value = DadosConsulta[i].Severidade_Pt;
+                        worksheet.Cells[i + 2, 17].Value = DadosConsulta[i].Quadrante_Pt;
+                        worksheet.Cells[i + 2, 18].Value = DadosConsulta[i].Gravidade_Pt;
+                        worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].Condicao_Pt;
+
+
+                        if (DadosConsulta[i].FabricaTransporte =="F")
+                        {
+                            worksheet.Cells[i + 2, 20].Value = "Fábrica";
+                        }
+                        else if (DadosConsulta[i].FabricaTransporte == "T")
+                        {
+                            worksheet.Cells[i + 2, 20].Value = "Transporte";
+                        }
+
+                        worksheet.Cells[i + 2, 21].Value = DadosConsulta[i].HorasReparo;
+                        worksheet.Cells[i + 2, 22].Value = DadosConsulta[i].CustoReparo;
+
+                        if (DadosConsulta[i].SubstituicaoPeca == true)
+                        {
+                            worksheet.Cells[i + 2, 23].Value = "Sim";
+                        }
+                        else
+                        {
+                            worksheet.Cells[i + 2, 23].Value = "Não";
 
                         }
 
 
-                        worksheet.Cells[i + 2, 22].Value = DadosConsulta[i].ValorPeca;
-                        worksheet.Cells[i + 2, 23].Value = DadosConsulta[i].CustoTotal;
+                        worksheet.Cells[i + 2, 24].Value = DadosConsulta[i].ValorPeca;
+                        worksheet.Cells[i + 2, 25].Value = DadosConsulta[i].CustoTotal;
                     }
 
                     //Salvar arquivo Excel

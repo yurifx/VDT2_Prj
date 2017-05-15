@@ -97,5 +97,18 @@ namespace VDT2.Models
         public decimal? ValorPeca { get; set; }
 
         public decimal? CustoTotal { get; set; }
+        
+        public int  TransportadorCodigo{ get; set; }
+        
+        public string TransportadorNome{ get; set; }
+        
+        public string TransportadorTipo{ get; set; }
+
+        public int? LoteCodigo { get; set; }
+        
+        public string LoteNome { get; set; }
+
+
+
     }
 }

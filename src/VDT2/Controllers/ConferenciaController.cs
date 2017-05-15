@@ -207,6 +207,7 @@ namespace VDT2.Controllers
                         var dadosCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault();
                         listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.Nome_Pt;
                         listarConferenciaAvariaVM.InspAvaria_Conf.Operacao = dadosCheckPoint.Operacao;
+                        listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = dadosCheckPoint.Tipo;
                     }
                     else
                     {
@@ -236,7 +237,6 @@ namespace VDT2.Controllers
             }
 
         }
-
 
         /// <summary>
         /// Realiza edição das avarias
@@ -394,7 +394,6 @@ namespace VDT2.Controllers
                 return RedirectToAction("NovaConferencia");
             }
         }
-
 
         /// <summary>
         /// Salva avaria no banco de dados

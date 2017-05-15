@@ -143,7 +143,13 @@ namespace VDT2.Models
 
         public int? AreaCodigo { get; set; }
 
+        public string AreaNome { get; set; }
+
         public string Area_Pt { get; set; }
+
+        public string Local_Pt { get; set; }
+
+        public string Lado_Pt { get; set; }
 
         public int? CondicaoCodigo { get; set; }
 
