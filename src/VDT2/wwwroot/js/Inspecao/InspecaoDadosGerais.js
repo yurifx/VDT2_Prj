@@ -176,9 +176,9 @@ function PreencheListaCheckPoint() {
 
 //Recebe dados do Transportador, dependendo do local de inspeção. via AJAX
 function PreencheListaTransportador() {
+
     var localCheckPoint_ID = $("#ListaLocalCheckPoint").val();
     var listaTransportador = $("#ListaTransportador");
-
     var path = window.location.pathname;
     var i = path.indexOf('EditarInspecao');
 

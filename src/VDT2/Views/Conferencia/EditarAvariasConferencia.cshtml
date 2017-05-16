@@ -25,7 +25,6 @@
             </div>
         }
 
-
         @if (ViewData["MensagemSucesso"] != null)
         {
             <div class="container" id="EM_SUCESSO">
@@ -58,9 +57,7 @@
                 </div>
             }
 
-
         </div>
-
         <div class="container">
 
             <form asp-controller="Conferencia" asp-action="SalvarAvaria" method="post" id="salvarAvariaForm">
@@ -330,13 +327,10 @@
                             </div>
                         }
 
-
-
                         Veículo ID<input type="text" name="InspVeiculo.InspVeiculo_ID" value="@Model.InspVeiculo.InspVeiculo_ID" /><br />
                         Inspecao ID<input type="text" name="Inspecao.Inspecao_ID" value="@Model.InspVeiculo.Inspecao_ID" /><br />
                         Local Inspecao<input type="text" name="Inspecao.LocalInspecao_ID" value="@Model.Inspecao.LocalInspecao_ID" /><br />
                         Local CheckPoint<input type="text" name="Inspecao.LocalCheckPoint_ID" value="@Model.Inspecao.LocalCheckPoint_ID" /><br />
-
 
                     </div>
 
