@@ -182,6 +182,7 @@ namespace VDT2.Controllers
                 {
                     if (InspecaoVeiculoVM.Inspecao.Inspecao_ID != 0)
                     {
+                        InspecaoVeiculoVM.Inspecao.Data = System.DateTime.Today;
                         InspecaoVeiculoVM.Inspecao = BLL.Inspecao.Update(InspecaoVeiculoVM.Inspecao, configuracao);
 
                         if (InspecaoVeiculoVM.Inspecao.Erro == true)

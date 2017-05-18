@@ -41,9 +41,6 @@
         <table id="tabela1" class="table table-striped table-bordered table-hover">
             <thead class="thead">
                 <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
-                    <th class="">InspecaoID</th>
-                    <th class="">VeiculoID</th>
-                    <th class="">AvariaID</th>
                     <th class="">Data</th>
                     <th class="">VIN</th>
                     <th class="">VIN_6</th>
@@ -62,20 +59,25 @@
                     <th class="">Gravidade</th>
                     <th class="">Condição</th>
                     <th class="">TipoAvaria</th>
+
+                    @*Preço*@
                     <th class="">Horas Reparo</th>
                     <th class="">Custo Reparo</th>
                     <th class="">Substituição de Peça</th>
                     <th class="">Valor da Peça</th>
                     <th class="">Valor Total</th>
+                    
+                    @*IDS*@
+                    <th class="">InspecaoID</th>
+                    <th class="">VeiculoID</th>
+                    <th class="">AvariaID</th>
                 </tr>
             </thead>
             <tbody>
                 @foreach (var item in Model.ListaInspAvaria_Cons)
                 {
                     <tr class="tabConferenciaListaVeiculo">
-                        <td>@item.Inspecao_ID</td>
-                        <td>@item.InspVeiculo_ID</td>
-                        <td>@item.InspAvaria_ID</td>
+                       
                         <td>@item.Data.ToString("dd/MM/yyyy")</td>
                         <td>@item.VIN</td>
                         <td>@item.VIN_6</td>
@@ -118,6 +120,7 @@
                         }
 
 
+                        @*PREÇO*@
                         @if (item.SubstituicaoPeca == true)
                         {
                             <td>Sim</td>
@@ -129,6 +132,10 @@
                         <td>@item.ValorPeca</td>
                         <td>@item.CustoTotal</td>
 
+                        @*IDs*@
+                        <td>@item.Inspecao_ID</td>
+                        <td>@item.InspVeiculo_ID</td>
+                        <td>@item.InspAvaria_ID</td>
                     </tr>
 
                 }

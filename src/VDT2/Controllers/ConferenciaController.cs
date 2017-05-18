@@ -189,7 +189,6 @@ namespace VDT2.Controllers
                                     sbInspecao.Append($"{item.Inspecao_ID};");
                                     controle.Add(item.Inspecao_ID);
                                 }
-
                             }
                         }
 
@@ -446,6 +445,26 @@ namespace VDT2.Controllers
             try
             {
                 //realiza updates
+
+
+                //Na versão atual, em relação à inspeção, somente alteramos a DATA, nenhum outro.
+                if (conferenciaEditarAvariasVM.Inspecao.Inspecao_ID != 0)
+                {
+                    var dataEnviada = conferenciaEditarAvariasVM.Inspecao.Data;
+                    conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID, configuracao);
+
+                    if (dataEnviada != conferenciaEditarAvariasVM.Inspecao.Data) {
+                        conferenciaEditarAvariasVM.Inspecao.Data = dataEnviada;
+                        conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.Update(conferenciaEditarAvariasVM.Inspecao, configuracao);
+
+                        if (conferenciaEditarAvariasVM.Inspecao.Erro == true) { 
+                        ViewData["MensagemErro"] = "Erro ao atualizar data da inspeção, tente novamente mais tarde ou entre em contato com o suporte";
+                        return RedirectToAction("Home", "Index");
+                        }
+                    };
+                }
+
+                //Atualiza Veículo
                 if (conferenciaEditarAvariasVM.InspVeiculo != null)
                 {
                     conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.Update(conferenciaEditarAvariasVM.InspVeiculo, configuracao);
@@ -453,6 +472,7 @@ namespace VDT2.Controllers
 
                 if (conferenciaEditarAvariasVM.InspAvaria != null)
                 {
+                    //Atualiza Avaria
                     conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.Update(conferenciaEditarAvariasVM.InspAvaria, configuracao);
                     if (conferenciaEditarAvariasVM.InspAvaria.Erro == true || conferenciaEditarAvariasVM.InspVeiculo.Erro == true)
                     {

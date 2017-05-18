@@ -244,3 +244,9 @@ function CalcularValor() {
     $("#pMensagemCusto").html("");
     $("#pMensagemCusto").prepend("<p>Novo valor calculado</p>");
 }
+
+function MensagemAlteracaoData() {
+
+   confirm("Deseja alterar a data? Isto resultará na alteração de todos os veículos relacionados a esta inspeção");
+
+}

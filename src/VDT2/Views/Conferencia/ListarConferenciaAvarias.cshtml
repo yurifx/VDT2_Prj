@@ -61,8 +61,6 @@
                     <thead class="thead">
                         <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
                             <th class="tabConferenciaListaVeiculoHeader">Editar</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Inspecao_ID</th><!--Tirar para produção-->
-                            <th class="tabConferenciaListaVeiculoHeader">Veículo_ID</th><!--Tirar para produção-->
                             <th class="tabConferenciaListaVeiculoHeader">VIN</th>
                             <th class="tabConferenciaListaVeiculoHeader">VIN_6</th><!--Tirar para produção-->
                             <th class="tabConferenciaListaVeiculoHeader">Marca</th>
@@ -73,7 +71,7 @@
                                 {
                                     <th class="tabConferenciaListaVeiculoHeader">Frota</th>
                                 }
-                                else
+                                else if(Model.InspAvaria_Conf.TransportadorTipo == "M")
                                 {
                                     <th class="tabConferenciaListaVeiculoHeader">Navio</th>
                                     <th class="tabConferenciaListaVeiculoHeader">Viagem</th>
@@ -99,6 +97,8 @@
                                 <th class="tabConferenciaListaVeiculoHeader">Valor da Peça</th>
                                 <th class="tabConferenciaListaVeiculoHeader">Valor Total</th>
                             }
+                            <th class="tabConferenciaListaVeiculoHeader">Inspecao_ID</th><!--Tirar para produção-->
+                            <th class="tabConferenciaListaVeiculoHeader">Veículo_ID</th><!--Tirar para produção-->
                             <th class="tabConferenciaListaVeiculoHeader">Fotos</th>
                         </tr>
                     </thead>
@@ -109,8 +109,7 @@
                         {
                             <tr class="tabConferenciaListaVeiculo">
                                 <td><button type="button" class="btnEditarEditarListarConferenciaAvarias btn btn-sm btn-default" value="@item.InspVeiculo_ID;@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
-                                <td>@item.Inspecao_ID</td><!--Tirar para produção-->
-                                <td>@item.InspVeiculo_ID</td><!--Tirar para produção-->
+
                                 <td>@item.VIN</td>
                                 <td>@item.VIN_6</td> <!--Tirar para produção-->
                                 <td>@item.MarcaNome</td>
@@ -169,7 +168,8 @@
                                         <td>@item.CustoTotal</td>
 
                                 }
-
+                                <td>@item.Inspecao_ID</td>
+                                <td>@item.InspVeiculo_ID</td>
 
                                 @if (@item.InspAvaria_ID != null)
                                 {

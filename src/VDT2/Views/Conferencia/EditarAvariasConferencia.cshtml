@@ -63,9 +63,25 @@
             <form asp-controller="Conferencia" asp-action="SalvarAvaria" method="post" id="salvarAvariaForm">
                 <fieldset>
                     <h4><strong> Dados Veículo</strong></h4>
-                    @*Chassi*@
+
                     <div class="DivDadosVeiculo_TelaEditarAvarias form-group">
+
                         <div class="DivDadosVeiculoInterno_TelaEditarAvarias">
+
+                            @*Data*@
+                            <div class="form-group">
+                                <div class="row">
+                                    <div class="col col-lg-3 col-md-2 col-sm-3 col-xs-4">
+                                        <label asp-for="@Model.Inspecao.Data">Data da Inspeção</label>
+                                    </div>
+                                    <div class="col col-lg-9 col-md-10 col-sm-9 col-xs-8">
+                                        <input id="dataInputID" class="inputEditarAvariasConferencia" asp-for="@Model.Inspecao.Data" value="@Model.Inspecao.Data.ToString("yyyy-MM-dd")" type="date" onchange="MensagemAlteracaoData()" contextmenu="@Model.Inspecao.Data" /><p style="display:inline; color:red; font-weight:bold; font-size:18px;"> *</p>
+                                    </div>
+                                </div>
+                            </div>
+
+
+                            @*Chassi*@
                             <div class="form-group">
                                 <div class="row">
                                     <div class="col col-lg-3 col-md-2 col-sm-3 col-xs-4">
@@ -116,8 +132,11 @@
                                     </div>
                                 </div>
                             </div>
+
                         </div>
+
                     </div>
+
                     <br />
 
                     @if (Model.InspAvaria != null)

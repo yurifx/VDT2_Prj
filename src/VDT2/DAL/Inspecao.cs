@@ -224,6 +224,11 @@ namespace VDT2.DAL
                     Value = inspecao.Cliente_ID
                 };
 
+                SqlParameter parmData = new SqlParameter("@p_Data", SqlDbType.Date)
+                {
+                    Value = inspecao.Data
+                };
+
                 SqlParameter parmLocalInspecao_ID = new SqlParameter("@p_LocalInspecao_ID", SqlDbType.Int)
                 {
                     Value = inspecao.LocalInspecao_ID
@@ -265,6 +270,7 @@ namespace VDT2.DAL
                 {
                     parmInspecao_ID,
                     parmCliente_ID,
+                    parmData,
                     parmLocalInspecao_ID,
                     parmLocalCheckPointID,
                     parmTransportador_ID,
@@ -272,7 +278,7 @@ namespace VDT2.DAL
                     parmNavio_ID
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}, {parmCliente_ID.ParameterName}, {parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTransportador_ID.ParameterName}, {parmFrotaViagem_ID.ParameterName}, {parmNavio_ID.ParameterName}";
+                string chamada = $"{nomeStoredProcedure} {parmInspecao_ID.ParameterName}, {parmCliente_ID.ParameterName}, {parmData.ParameterName}, {parmLocalInspecao_ID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTransportador_ID.ParameterName}, {parmFrotaViagem_ID.ParameterName}, {parmNavio_ID.ParameterName}";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
