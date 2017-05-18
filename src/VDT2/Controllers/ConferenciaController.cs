@@ -442,21 +442,23 @@ namespace VDT2.Controllers
             catch { }
             #endregion
 
+            DateTime dataEnviada;
+            DateTime dataAntiga = new DateTime();
+
             try
             {
                 //realiza updates
-
-
-                //Na versão atual, em relação à inspeção, somente alteramos a DATA, nenhum outro.
+                //Na versão atual, em relação à Inspeção, somente alteramos a DATA, nenhum outro.
                 if (conferenciaEditarAvariasVM.Inspecao.Inspecao_ID != 0)
                 {
-                    var dataEnviada = conferenciaEditarAvariasVM.Inspecao.Data;
-                    conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID, configuracao);
+                    dataEnviada = conferenciaEditarAvariasVM.Inspecao.Data;
+                    var inspecaoInicial = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.Inspecao.Inspecao_ID, configuracao);
+                    dataAntiga = inspecaoInicial.Data;
 
-                    if (dataEnviada != conferenciaEditarAvariasVM.Inspecao.Data) {
-                        conferenciaEditarAvariasVM.Inspecao.Data = dataEnviada;
-                        conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.Update(conferenciaEditarAvariasVM.Inspecao, configuracao);
 
+                    if (dataEnviada != dataAntiga) {
+                        inspecaoInicial.Data = dataEnviada;//Modifico aqui a data da inspeção que será alterada
+                        conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.Update(inspecaoInicial, configuracao);
                         if (conferenciaEditarAvariasVM.Inspecao.Erro == true) { 
                         ViewData["MensagemErro"] = "Erro ao atualizar data da inspeção, tente novamente mais tarde ou entre em contato com o suporte";
                         return RedirectToAction("Home", "Index");
@@ -486,31 +488,34 @@ namespace VDT2.Controllers
                     ViewData["MensagemSucesso"] = "Dados atualizados com sucesso.";
                 }
 
-                //lista ocorrencias
+                //lista ocorrencias ! 
                 //faço essa requisição pois no update do inspVeiculo não retorna o Inspecao_ID
                 conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.InspVeiculo_ID, configuracao);
-                conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
+//              conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
 
                 List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
 
                 ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
-                listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
-                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+                listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
+                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
 
 
+                //Estes dados serão passados para view
+                listarConferenciaAvariaVM.InspAvaria_Conf.Data = dataAntiga;
                 if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                 {
-                    listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
+                    
                     listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
                     var dadosCheckPoint = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault();
-                    listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.LocalNome;
+                    listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.CheckPointNome;
                     listarConferenciaAvariaVM.InspAvaria_Conf.Operacao = dadosCheckPoint.Operacao;
+                    listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = dadosCheckPoint.TransportadorTipo;
                 }
                 else
                 {
-                    ViewData["MensagemErro"] = "Erro ao listar dados do veículo, tente novamente mais tarde ou entre em contato com o suporte técnico";
+                    ViewData["MensagemErro"] = "Não há registros nesta data.";
                 }
 
                 return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
