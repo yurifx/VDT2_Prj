@@ -121,7 +121,7 @@ namespace VDT2.Controllers
         [HttpPost]
         public IActionResult InserirDadosCabecalhoInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, string botaoEnviar)
         {
-            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: InserirDadosCabecalhoInspecao | Parametros: Cliente_ID: {inspecaoDadosGeraisVM.Cliente_ID}, Local Inspeção: {inspecaoDadosGeraisVM.LocalInspecao_ID}, LocalCheckPoint: {inspecaoDadosGeraisVM.LocalCheckPoint_ID}, Transportador[Id_Tipo] {inspecaoDadosGeraisVM.IdTipo}, NomeNavio: {inspecaoDadosGeraisVM.NomeNavio}, FrotaViagemNome {inspecaoDadosGeraisVM.FrotaViagemNome}, Em Edição: {inspecaoDadosGeraisVM.Edicao}", });
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: InserirDadosCabecalhoInspecao | Parametros: Cliente_ID: {inspecaoDadosGeraisVM.Cliente_ID}, Local Inspeção: {inspecaoDadosGeraisVM.LocalInspecao_ID}, LocalCheckPoint: {inspecaoDadosGeraisVM.LocalCheckPoint_ID}, Transportador[Id_Tipo] {inspecaoDadosGeraisVM.IdTipo}, NomeNavio: {inspecaoDadosGeraisVM.NomeNavio}, FrotaViagemNome {inspecaoDadosGeraisVM.FrotaViagemNome}, Em Edição: {inspecaoDadosGeraisVM.Edicao}", });
 
             string _mensagemLogin = "Erro ao validar usuário, por favor realize o login novamente";
 
@@ -286,6 +286,7 @@ namespace VDT2.Controllers
             };
 
             VeiculoViewModel.Inspecao = BLL.Inspecao.ListarPorId(VeiculoViewModel.Inspecao_ID, Configuracao);
+
             if (VeiculoViewModel.Inspecao.Erro == true)
             {
                 ViewData["MensagemErro"] = VeiculoViewModel.Inspecao.MensagemErro;
@@ -1401,6 +1402,7 @@ namespace VDT2.Controllers
                 BLL.UploadImagens.DeletarImagem(int_inspAvaria_ID, imagem, Configuracao);
                 return 0;
             }
+
             catch (Exception ex)
             {
                 Diag.Log.Grava(new Diag.LogItem { Mensagem = "Erro ao deletar foto", Nivel = Diag.Nivel.Erro, Excecao = ex });
