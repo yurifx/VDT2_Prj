@@ -15,7 +15,6 @@
         
     })
 
-
     $("#radioPacking").on('click', function () {
         $("#divLote").hide();
         $("#inputLote").val("");

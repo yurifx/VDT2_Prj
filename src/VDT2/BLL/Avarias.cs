@@ -57,11 +57,9 @@ namespace VDT2.BLL
         /// <returns>Retorna a avaria informada</returns>
         public static Models.InspAvaria Inserir(Models.InspAvaria inspAvaria, Configuracao configuracao)
         {
-
-            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"BLL.InspAvaria.Inserir: Parametros: inspAvaria: {inspAvaria}" });
-
             try
             {
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"BLL.InspAvaria.Inserir: Parametros: inspAvaria_ID: {inspAvaria.InspAvaria_ID}" });
                 inspAvaria = DAL.InspAvaria.Inserir(inspAvaria, configuracao);
                 return inspAvaria;
             }
@@ -69,7 +67,7 @@ namespace VDT2.BLL
             catch (Exception ex)
             {
 
-                Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao realizar operação: - BLL.InspAvaria.Inserir", Excecao = ex });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao realizar operação: - BLL.InspAvaria.Inserir", Excecao = ex });
 
                 inspAvaria.Erro = true;
                 inspAvaria.MensagemErro = "Erro ao inserir avaria, tente novamente mais tarde ou entre em contato com o service desk";
