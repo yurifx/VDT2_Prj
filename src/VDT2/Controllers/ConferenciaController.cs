@@ -111,18 +111,10 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
-            #region gravalogInformacao
             try
             {
-                Diag.Log.Grava(
-                new Diag.LogItem()
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Mensagem = $"Action acionada: ConferenciaListarVeiculos | Parametros: {conferenciaVM.TextoLog()}"
-                });
-            }
+                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ConferenciaListarVeiculos | Parametros: {conferenciaVM.TextoLog()}" }); }
             catch { }
-            #endregion
 
             try
             {
