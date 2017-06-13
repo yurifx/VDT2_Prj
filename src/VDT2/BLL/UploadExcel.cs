@@ -61,14 +61,8 @@ namespace VDT2.BLL
             }
             catch (Exception ex)
             {
-                #region gravalogErro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Erro ao realizar upload do arquivo Excel, erro: {ex}"
-                    });
-                #endregion
+                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao realizar upload do arquivo Excel", Excecao = ex });
+
                 return -1;
             }
         }

@@ -149,33 +149,20 @@ namespace VDT2.DAL
         /// <param name="nomeNavio">Nome do navio a ser procurado</param>
         /// <param name="configuracao">String de conexão com o banco de dados</param>
         /// <returns></returns>
-        public static int ConsultaIdNavio(string nomeNavio, VDT2.Models.Configuracao configuracao)
+        public static int InserirNavio(string nomeNavio, VDT2.Models.Configuracao configuracao)
         {
             int navioID = 0;
             try
             {
                 if (nomeNavio != null)
                 {
-                    //Primeiro, verifica se existe este navio no bdd
-                    var navio_db = Navio.ListarTodos(configuracao).Where(p => p.Nome == nomeNavio).FirstOrDefault();
 
-                    if (navio_db == null) //caso nao tenha achado, insere este como novo.
-                    {
-                        //insere e recebe o ID do novo registro
-                        navioID = Navio.Inserir(nomeNavio, configuracao);
-                    }
-                    else { navioID = navio_db.Navio_ID; } //caso exista, só pega o seu id
+                    navioID = Navio.Inserir(nomeNavio, configuracao);
                 }
             }
             catch (System.Exception ex)
             {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar a Consulta: ConsultaIdNavio | Parametros: Navio: {nomeNavio}",
-                        Excecao = ex
-                    });
+                Diag.Log.Grava(new Diag.LogItem{ Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a Consulta: ConsultaIdNavio | Parametros: Navio: {nomeNavio}", Excecao = ex });
                 throw;
             }
             return navioID;

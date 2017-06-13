@@ -19,23 +19,23 @@ namespace VDT2.BLL
         /// <returns></returns>
         public static List<InspAvaria_Cons> ConsultarVeiculos(ConsultaViewModel consultaVM, Configuracao configuracao)
         {
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"InspAvariaCons - Consultar Veiculos" });
+
             List<InspAvaria_Cons> listacons = new List<InspAvaria_Cons>();
+
             Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
 
             try
             {
                 inspAvaria_Cons = RecebeDadosUsuario(consultaVM);
+
                 listacons = DAL.InspAvaria.Consultar(inspAvaria_Cons, configuracao);
+
                 return listacons;
             }
-            catch
+            catch (Exception ex)
             {
-                Diag.Log.Grava(
-                   new Diag.LogItem()
-                   {
-                       Nivel = Diag.Nivel.Erro,
-                       Mensagem = $"Erro ao consultar Veículos"
-                   });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao consultar Veículos", Excecao = ex });
 
                 return listacons;
             }
@@ -50,23 +50,25 @@ namespace VDT2.BLL
         /// <returns></returns>
         public static List<InspAvaria_Summary> ConsultarSumario(ConsultaViewModel consultaVM, Configuracao configuracao)
         {
+
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"InspAvariaCons - Consultar Sumário" });
+
             List<Models.InspAvaria_Summary> ListaSummary = new List<Models.InspAvaria_Summary>();
+
             Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
 
             try
             {
                 inspAvaria_Cons = RecebeDadosUsuario(consultaVM);
+
                 ListaSummary = DAL.InspAvaria.ConsultarSummary(inspAvaria_Cons, configuracao);
+
                 return ListaSummary;
             }
-            catch
+            catch (Exception ex)
             {
-                Diag.Log.Grava(
-                new Diag.LogItem()
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Mensagem = $"Erro ao consultar Sumário"
-                });
+                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao consultar Sumário", Excecao = ex });
+
                 return ListaSummary;
             }
 
@@ -81,6 +83,7 @@ namespace VDT2.BLL
         {
 
             List<InspAvaria_Cons> listacons = new List<InspAvaria_Cons>();
+
             Models.InspAvaria_Cons inspAvaria_Cons = new Models.InspAvaria_Cons();
 
             try
@@ -90,7 +93,6 @@ namespace VDT2.BLL
 
                 //Chassi
                 inspAvaria_Cons.Chassi = consultaVM.VIN_6;
-
 
                 //Local Inspecao
                 if (consultaVM.LocalInspecao_ID != null)
@@ -395,20 +397,14 @@ namespace VDT2.BLL
                 //DATA FINAL
                 inspAvaria_Cons.DataFinal = consultaVM.DataFinal;
 
-
                 //NAVIO
                 inspAvaria_Cons.Navio = consultaVM.NavioNome;
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(
-                   new Diag.LogItem()
-                   {
-                       Nivel = Diag.Nivel.Erro,
-                       Mensagem = $"Erro ao receber filtros do usuário - InspAvaria_Cons - Exception: {ex}"
-                   });
-
+                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao receber filtros do usuário - InspAvaria_Cons - Exception", Excecao = ex });
             }
+
             return inspAvaria_Cons;
         }
 

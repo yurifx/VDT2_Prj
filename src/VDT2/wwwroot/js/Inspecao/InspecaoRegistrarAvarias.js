@@ -439,9 +439,6 @@ function ValidarFormularioInserirAvaria() {
         console.log("Erro ao selecionar tipo de avaria");
         return false;
     }
-
-
-
 }
 
 function ValidarFotos() {
@@ -450,53 +447,16 @@ function ValidarFotos() {
     //Caso o layout mude, necessário mudar esta lógica também;
     var qtdFotosSelecionadas = 0;
 
-    if ($("#spanFoto1").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto2").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto3").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto4").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto6").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto7").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto8").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto9").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto10").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
+    qtdFotosSelecionadas += $("#inputFileImgAvaria1").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria2").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria3").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria4").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria5").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria6").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria7").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria8").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria9").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria10").prop('files').length;
 
     if (qtdFotosSelecionadas > 0) {
         return true;

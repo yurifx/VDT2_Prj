@@ -50,17 +50,11 @@ namespace VDT2.Controllers
                 ViewData["Mensagem"] = TempData["Mensagem"];
             }
 
-            #region gravalogInformacao
-            Diag.Log.Grava(
-            new Diag.LogItem()
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: NovaConferencia | Sem Parametros",
-            });
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: NovaConferencia | Sem Parametros" });
 
 
             const string _mensagemLogin = "Usuário não identificado, faça login novamente";
+
             ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
 
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
@@ -71,10 +65,6 @@ namespace VDT2.Controllers
                 {
                     var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
                     dadosUsuario.Usuario = objUsuario;
-
-                    //Testes EM_ERRO
-                    //dadosUsuario.Usuario.Locais = null;
-                    //dadosUsuario = null;
 
                     conferenciaVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, configuracao);
 
@@ -199,11 +189,12 @@ namespace VDT2.Controllers
                             ViewData["MensagemErro"] = _mensagemErro;
                         }
 
-                        //preenche dados do cabecalho da proxima view
+                        //Preenche dados do cabecalho da proxima view
                         listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaVM.Data;
                         listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, listarConferenciaAvariaVM.Usuario.Locais).Where(p => p.LocalInspecao_ID == conferenciaVM.LocalInspecao_ID).FirstOrDefault().Nome;
 
                         var dadosCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao).Where(p => p.LocalCheckPoint_ID == conferenciaVM.LocalCheckPoint_ID).FirstOrDefault();
+
                         listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.Nome_Pt;
                         listarConferenciaAvariaVM.InspAvaria_Conf.Operacao = dadosCheckPoint.Operacao;
                         listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = dadosCheckPoint.Tipo;
@@ -224,14 +215,10 @@ namespace VDT2.Controllers
 
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao solicitar operacao, ConferenciaListarVeiculos : { ex }"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Excecao = ex, Mensagem = "Erro ao solicitar operacao, ConferenciaListarVeiculos" });
 
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
 
@@ -244,18 +231,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult EditarAvarias(int inspAvaria_ID, int inspVeiculo_ID)
         {
-            #region gravalogInformacao
-            try
-            {
-                Diag.Log.Grava(
-                new Diag.LogItem()
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Mensagem = $"Action acoinada: EditarAvarias | Parametros: InspAvaria_ID {inspAvaria_ID}"
-                });
-            }
-            catch { }
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acoinada: EditarAvarias | Parametros: InspAvaria_ID: {inspAvaria_ID}" });
 
             try
             {
@@ -376,19 +352,11 @@ namespace VDT2.Controllers
                 }
 
 
-                //Testes EM_ERRO
-                //conferenciaEditarAvariasVM = null; //teste1;
-                //conferenciaEditarAvariasVM.ListaAreas = null;
                 return View("EditarAvariasConferencia", conferenciaEditarAvariasVM);
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao solicitar operacao, EditarAvarias : { ex }"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Excecao = ex, Mensagem = $"Erro ao solicitar operacao, EditarAvarias" });
 
                 return RedirectToAction("NovaConferencia");
             }
@@ -429,18 +397,7 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            #region gravalogInformacao
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Action acionada: SalvarAvaria - Parametros: {conferenciaEditarAvariasVM.TextoLog()}"
-                    });
-            }
-            catch { }
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: SalvarAvaria - Parametros: {conferenciaEditarAvariasVM.TextoLog()}" });
 
             DateTime dataEnviada;
             DateTime dataAntiga = new DateTime();
@@ -448,20 +405,23 @@ namespace VDT2.Controllers
             try
             {
                 //realiza updates
-                //Na versão atual, em relação à Inspeção, somente alteramos a DATA, nenhum outro.
+                //Na versão atual somente alteramos a DATA, nenhum outro campo da inspeção
+                var inspecaoInicial = new Models.Inspecao();
+
                 if (conferenciaEditarAvariasVM.Inspecao.Inspecao_ID != 0)
                 {
                     dataEnviada = conferenciaEditarAvariasVM.Inspecao.Data;
-                    var inspecaoInicial = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.Inspecao.Inspecao_ID, configuracao);
+                    inspecaoInicial = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.Inspecao.Inspecao_ID, configuracao);
                     dataAntiga = inspecaoInicial.Data;
 
-
-                    if (dataEnviada != dataAntiga) {
+                    if (dataEnviada != dataAntiga)
+                    {
                         inspecaoInicial.Data = dataEnviada;//Modifico aqui a data da inspeção que será alterada
                         conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.Update(inspecaoInicial, configuracao);
-                        if (conferenciaEditarAvariasVM.Inspecao.Erro == true) { 
-                        ViewData["MensagemErro"] = "Erro ao atualizar data da inspeção, tente novamente mais tarde ou entre em contato com o suporte";
-                        return RedirectToAction("Home", "Index");
+                        if (conferenciaEditarAvariasVM.Inspecao.Erro == true)
+                        {
+                            ViewData["MensagemErro"] = "Erro ao atualizar data da inspeção, tente novamente mais tarde ou entre em contato com o suporte";
+                            return RedirectToAction("Home", "Index");
                         }
                     };
                 }
@@ -476,6 +436,7 @@ namespace VDT2.Controllers
                 {
                     //Atualiza Avaria
                     conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.Update(conferenciaEditarAvariasVM.InspAvaria, configuracao);
+
                     if (conferenciaEditarAvariasVM.InspAvaria.Erro == true || conferenciaEditarAvariasVM.InspVeiculo.Erro == true)
                     {
                         ViewData["MensagemErro"] = "Erro ao atualizar dados da avaria, tente novamente mais tarde ou entre em contato com o suporte";
@@ -488,29 +449,33 @@ namespace VDT2.Controllers
                     ViewData["MensagemSucesso"] = "Dados atualizados com sucesso.";
                 }
 
-                //lista ocorrencias ! 
+                //lista ocorrencias! 
                 //faço essa requisição pois no update do inspVeiculo não retorna o Inspecao_ID
                 conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.InspVeiculo_ID, configuracao);
-//              conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspVeiculo.Inspecao_ID, configuracao);
 
                 List<InspAvaria_Conf> listaInspAvaria_Conf = new List<InspAvaria_Conf>();
 
                 ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
                 listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
-                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
 
+                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(inspecaoInicial.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
 
                 //Estes dados serão passados para view
                 listarConferenciaAvariaVM.InspAvaria_Conf.Data = dataAntiga;
+
                 if (listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
                 {
-                    
                     listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
+
                     var dadosCheckPoint = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault();
+
                     listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = dadosCheckPoint.CheckPointNome;
+
                     listarConferenciaAvariaVM.InspAvaria_Conf.Operacao = dadosCheckPoint.Operacao;
+
                     listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = dadosCheckPoint.TransportadorTipo;
                 }
                 else
@@ -520,16 +485,13 @@ namespace VDT2.Controllers
 
                 return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
             }
+
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao processar informação tente novamente mais tarde, SalvarAvaria {ex}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Excecao = ex, Mensagem = $"Erro ao processar informação tente novamente mais tarde, SalvarAvaria {ex}" });
 
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
 
@@ -545,18 +507,7 @@ namespace VDT2.Controllers
             const string _mensagemLogin = "Erro ao processar solicitação, usuário não identificado, tente novamente mais tarde";
             ConferenciaVisualizarAvariasViewModel visualizarAvariasVM = new ConferenciaVisualizarAvariasViewModel();
 
-            #region gravalogInformacao
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Action acionada: VisualizarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}"
-                    });
-            }
-            catch { }
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: VisualizarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}" });
 
             #region recebeDadosUsuario
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
@@ -589,14 +540,10 @@ namespace VDT2.Controllers
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao processar informação tente novamente mais tarde, VisualizarFotos; {ex}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Excecao = ex, Mensagem = $"Erro ao processar informação tente novamente mais tarde, VisualizarFotos; {ex}" });
 
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
 
@@ -610,23 +557,20 @@ namespace VDT2.Controllers
         public IActionResult SalvarFotos(int inspAvaria_ID, ICollection<IFormFile> files)
         {
 
-            #region gravalogInformacao
-            Diag.Log.Grava(
-                new Diag.LogItem()
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Mensagem = $"Action acionada: SalvarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}"
-                });
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: SalvarFotos | Parametro InspAvaria_ID: {inspAvaria_ID}" });
 
             try
             {
                 bool uploadImagem = false;
+
                 ConferenciaEditarAvariasViewModel conferenciaEditarAvariasVM = new ConferenciaEditarAvariasViewModel();
+
                 ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf(); ;
 
                 uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
+
                 if (uploadImagem == false)
                 {
                     ViewData["MensagemErro"] = "Erro ao realizar upload de imagens da avaria";
@@ -638,8 +582,11 @@ namespace VDT2.Controllers
 
                 //Carrega dados proxima View
                 conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, configuracao);
+
                 conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
+
                 conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
+
                 if (conferenciaEditarAvariasVM.InspAvaria.Erro == true || conferenciaEditarAvariasVM.InspVeiculo.Erro == true || conferenciaEditarAvariasVM.Inspecao.Erro == true)
                 {
                     ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
@@ -648,21 +595,19 @@ namespace VDT2.Controllers
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
 
                 listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
+
                 listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
+
                 listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
 
                 return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao processar informação tente novamente mais tarde, SalvarFotos; {ex}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Excecao = ex, Mensagem = $"Erro ao processar informação tente novamente mais tarde, SalvarFotos; {ex}" });
 
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
         }
@@ -673,18 +618,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarListaInicio()
         {
-            #region gravalogInformacao
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Action acionada: SalvarListaInicio | Sem Parametros"
-                    });
-            }
-            catch { }
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: SalvarListaInicio | Sem Parametros" });
 
             try
             {
@@ -744,14 +678,10 @@ namespace VDT2.Controllers
 
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao processar informação tente novamente mais tarde, LoadingListInicio; {ex}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Excecao = ex, Mensagem = $"Erro ao processar informação tente novamente mais tarde, LoadingListInicio; {ex}" });
 
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
         }
@@ -764,19 +694,8 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult SalvarLista(ConferenciaListaViewModel conferenciaListaVM, ICollection<IFormFile> files)
         {
-            
-            #region gravalogInformacao
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Action acionada: SalvarLista, Controller - Conferência | Parametros {conferenciaListaVM.TextoLog()}"
-                    });
-            }
-            catch { }
-            #endregion
+
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: SalvarLista, Controller - Conferência | Parametros {conferenciaListaVM.TextoLog()}" });
 
             try
             {
@@ -786,6 +705,7 @@ namespace VDT2.Controllers
 
                 //Verifica dados do usuário
                 string _mensagemLogin = "Erro ao validar dados do usuário, por favor faça login novamente";
+
                 ViewModels.LoginViewModel dadosUsuario = new ViewModels.LoginViewModel();
 
                 #region recebeDadosUsuario
@@ -851,37 +771,37 @@ namespace VDT2.Controllers
                         }
 
                         if (!salvou || !integrou || !inseriuArquivo)
-                        {
                             ViewData["MensagemErro"] = "Erro ao realizar upload de arquivo.Tente novamente mais tarde ou entre em contato com service desk";
-                        }
+
                     }
+
                     else if (files.FirstOrDefault().ContentType != "text/plain")
                     {
                         ViewData["MensagemErro"] = "Arquivo inválido, por favor, faça upload de um arquivo .txt";
                     }
                 }
+
                 else if (files.Count() == 0)
                 {
                     ViewData["MensagemErro"] = "Nenhum arquivo selecionado, por favor tente novamente mais tarde";
                 }
+
                 return View("EnviarLista", conferenciaListaVM);
+
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Excecao = ex,
-                    Mensagem = $"Erro ao processar informação tente novamente mais tarde, PackingListSalvar; {ex}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Excecao = ex, Mensagem = $"Erro ao processar informação tente novamente mais tarde, PackingListSalvar; {ex}" });
+
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
 
         }
 
         /// <summary>
-        /// Action method utilizado para deletar avarias
+        /// Metodo utilizado para deletar avarias
         /// </summary>
         /// <param name="avaria_ID">id da avaria</param>
         /// <returns>Retorna a view anterior</returns>
@@ -903,21 +823,17 @@ namespace VDT2.Controllers
             //Preciso guardar os dados da avaria antes de deletar. Pois utilizarei esses dados para pegar informações do veículo e inspeção.
             conferenciaEditarAvariasVM.InspAvaria = BLL.Avarias.ListarPorId(avaria_ID, configuracao);
 
-            ///*Teste Erro */
-            //conferenciaEditarAvariasVM.InspAvaria.Erro = true;
-            //conferenciaEditarAvariasVM.InspAvaria.InspAvaria_ID = 0;
-            ///*Fim teste Erro*/
-
-
             //Verifica se está com erro;
             if (!conferenciaEditarAvariasVM.InspAvaria.Erro)
             {
                 conferenciaEditarAvariasVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.InspVeiculo_ID, configuracao);
+
                 conferenciaEditarAvariasVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarAvariasVM.InspAvaria.Inspecao_ID, configuracao);
             }
 
             //Deleta a avaria
             bool deletou = BLL.Avarias.Deletar(avaria_ID, configuracao);
+
             if (deletou)
             {
                 ViewData["MensagemSucesso"] = "Avaria deletada com sucesso";
@@ -925,7 +841,6 @@ namespace VDT2.Controllers
 
 
             //Carrega dados proxima View
-
             if (conferenciaEditarAvariasVM.InspAvaria.Erro == true || conferenciaEditarAvariasVM.InspVeiculo.Erro == true || conferenciaEditarAvariasVM.Inspecao.Erro == true)
             {
                 ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
@@ -936,25 +851,21 @@ namespace VDT2.Controllers
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             }
 
-            /*Teste Erro*/
-            //listarConferenciaAvariaVM.ListaInspAvaria_Conf = null; // teste
-            /*Fim Teste Erro*/
-
 
             if (listarConferenciaAvariaVM.ListaInspAvaria_Conf != null)
             {
                 listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
+
                 listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
+
                 listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
             }
             else
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Mensagem = "Erro ao processar informação tente novamente mais tarde, ConferenciaController | DeletarAvaria"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = "Erro ao processar informação tente novamente mais tarde, ConferenciaController | DeletarAvaria" });
+
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
 
@@ -968,34 +879,29 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult DeletarVeiculo(int id)
         {
-            Diag.Log.Grava(new Diag.LogItem
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: DeletarVeiculo - Veiculo-ID {id}"
-            });
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: DeletarVeiculo - Veiculo-ID {id}" });
 
             //Inicializações
             ConferenciaEditarAvariasViewModel conferenciaEditarVM = new ConferenciaEditarAvariasViewModel();
+
             ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+
             listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
-            
             //Preciso guardar os dados do veiculo antes de deletar. Pois utilizarei esses dados para pegar informações da inspeção.
             conferenciaEditarVM.InspVeiculo = BLL.InspecaoVeiculo.ListarPorId(id, configuracao);
 
-         
+
             //Verifica se está com erro;
             if (!conferenciaEditarVM.InspVeiculo.Erro)
             {
                 conferenciaEditarVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarVM.InspVeiculo.Inspecao_ID, configuracao);
             }
+
             else
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Mensagem = $"Não foi possível consultar dados do veículo informado: Veículo_ID {id}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não foi possível consultar dados do veículo informado: Veículo_ID {id}" });
+
                 TempData["Erro"] = "Erro ao consultar dado do veículo tente novamente mais tarde";
             }
 
@@ -1007,35 +913,24 @@ namespace VDT2.Controllers
             }
             else
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Mensagem = $"Action DeletarVeiculo - Não conseguiu deletar veículo: Veículo-ID {id}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Action DeletarVeiculo - Não conseguiu deletar veículo: Veículo-ID {id}" });
+
                 ViewData["MensagemSucesso"] = "Não conseguiu deletar veículo, verifique suas avarias";
             }
-                
-            
+
+
             //Verifica se retornou erro
             if (conferenciaEditarVM.InspVeiculo.Erro == true || conferenciaEditarVM.Inspecao.Erro == true)
             {
                 ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Erro,
-                    Mensagem = $"Erro ao listar dados: Erro - ConferenciaEditarVM.InspVeiculo.Erro == true : Veículo-ID {id}"
-                });
+
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao listar dados: Erro - ConferenciaEditarVM.InspVeiculo.Erro == true : Veículo-ID {id}" });
             }
-            
+
 
             listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarVM.Inspecao.Cliente_ID, conferenciaEditarVM.Inspecao.LocalInspecao_ID, conferenciaEditarVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarVM.Inspecao.Data, configuracao);
+
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarVM.Inspecao.Cliente_ID, conferenciaEditarVM.Inspecao.LocalInspecao_ID, conferenciaEditarVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarVM.Inspecao.Data, configuracao);
-
-
-            /*Teste Erro*/
-            //listarConferenciaAvariaVM.ListaInspAvaria_Conf = null; // teste
-            /*Fim Teste Erro*/
-
 
             if (listarConferenciaAvariaVM.ListaInspAvaria_Conf != null)
             {
@@ -1045,18 +940,16 @@ namespace VDT2.Controllers
             }
             else
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Mensagem = "Erro ao processar informação tente novamente mais tarde, ConferenciaController | DeletarAvaria"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = "Erro ao processar informação tente novamente mais tarde, ConferenciaController | DeletarAvaria" });
+
                 TempData["Erro"] = tempErro;
+
                 return RedirectToAction("NovaConferencia");
             }
 
             return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
         }
-        
+
         /// <summary>
         /// Action method para voltar a tela anterior
         /// </summary>
@@ -1064,18 +957,7 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult Voltar(string nomeView)
         {
-            #region gravalogInformacao
-            try
-            {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = "Action acionada: Voltar | Sem Parametros"
-                    });
-            }
-            catch { }
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = "Action acionada: Voltar | Sem Parametros" });
             return View("NovaConferencia");
         }
 
@@ -1086,12 +968,7 @@ namespace VDT2.Controllers
         public IActionResult NovaConsulta()
         {
 
-            Diag.Log.Grava(new Diag.LogItem
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = "",
-
-            });
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = "Action acionada: Nova Consulta | Sem parametros" });
 
             string _mensagemErroLogin = "Erro ao receber Dados do usuário";
 
@@ -1141,7 +1018,7 @@ namespace VDT2.Controllers
 
             }
         }
-        
+
         /// <summary>
         /// Verifica os dados do cliente e exibe a próxima view (Consulta) contendo informações pertinentes a este cliente
         /// </summary>
@@ -1151,12 +1028,7 @@ namespace VDT2.Controllers
         public IActionResult ConsultaCliente(int Cliente_ID)
         {
 
-            Diag.Log.Grava(new Diag.LogItem
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: ConsultaCliente | Parametros {Cliente_ID}"
-            });
-
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ConsultaCliente | Parametros {Cliente_ID}" });
 
             string _mensagemErroLogin = "Erro ao receber Dados do usuário";
 
@@ -1209,11 +1081,7 @@ namespace VDT2.Controllers
         public IActionResult ListarConsulta(ConsultaViewModel consultaVM)
         {
 
-            Diag.Log.Grava(new Diag.LogItem
-            {
-                Nivel = Diag.Nivel.Informacao,
-                Mensagem = $"Action acionada: ListarConsulta - Controller: ConferenciaController"
-            });
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ListarConsulta - Controller: ConferenciaController" });
 
             string _mensagemErroLogin = "Erro ao ListarConsulta";
 
@@ -1268,12 +1136,9 @@ namespace VDT2.Controllers
             catch (Exception ex)
             {
                 TempData["MensagemErro"] = "Erro ao realizar consulta. Tente novamente mais tarde ou entre em contato com o ServiceDesk";
-                Diag.Log.Grava(
-                   new Diag.LogItem()
-                   {
-                       Nivel = Diag.Nivel.Erro,
-                       Mensagem = $"Erro ao consultar IActionResult -  {ex}"
-                   });
+
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao consultar IActionResult -  {ex}" });
+
                 return RedirectToAction("Index", "Home");
             }
             return View("ConsultaVeiculos", consultaVeiculosVM);
@@ -1288,11 +1153,7 @@ namespace VDT2.Controllers
         {
             try
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Nivel = Diag.Nivel.Informacao,
-                    Mensagem = $"Action acionada: Publicar | Parametros: ConcatInspecoes: {concatInspecoes}"
-                });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: Publicar | Parametros: ConcatInspecoes: {concatInspecoes}" });
 
                 const string _mensagemErroLogin = "Erro ao identificar usuário tente novamente mais tarde.";
 
@@ -1326,17 +1187,14 @@ namespace VDT2.Controllers
                 {
                     TempData["Mensagem"] = "Não foi possível realizar publicação, tente novamente mais tarde";
                 }
+
                 return RedirectToAction("NovaConferencia");
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Mensagem = $"Erro ao Publicar Inspeção - Conferência Controller - Action Publicar  Erro: {ex}",
-                    Nivel = Diag.Nivel.Erro
-                });
-
+                Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Erro ao Publicar Inspeção - Conferência Controller - Action Publicar", Nivel = Diag.Nivel.Erro, Excecao = ex });
                 TempData["MensagemErro"] = "Erro ao Publicar Inspeção, tente novamente mais tarde ou entre em contato com o suporte técnico";
+
                 return RedirectToAction("NovaConferencia");
             }
         }
@@ -1399,13 +1257,36 @@ namespace VDT2.Controllers
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(
-                   new Diag.LogItem()
-                   {
-                       Nivel = Diag.Nivel.Erro,
-                       Mensagem = $"Erro ao gerar Exportar Excel - {ex}"
-                   });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao gerar Exportar Excel " });
+
                 throw new Exception("Não foi possível processar informação - Tente novamente mais tarde ou entre em contato com o suporte técnico ", ex);
+            }
+        }
+
+
+        public string VisualizarFotosConsulta(int inspAvaria_ID)
+        {
+            try
+            {
+                string retorno = "";
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = "Action acionada - Visualizar Fotos Consulta" });
+                var fotos = BLL.UploadImagens.Listar(inspAvaria_ID, configuracao);
+
+                foreach (var item in fotos)
+                {
+                    //retorno += $"<img src={item.Path}></img>";
+                    retorno += $@"<img class='img-thumbnail' style='max-width: 500px; width: 500px; margin-left:30px;margin-bottom:20px;' src='../Inspecao/Foto?imagem={item.Imagem}&inspAvaria_ID={inspAvaria_ID}' />";
+                }
+
+                return retorno;
+                //return "<p>oi do controller</p>";
+                
+            }
+            catch (Exception ex)
+            {
+                Diag.Log.Grava(new Diag.LogItem { Excecao = ex, Mensagem = "Erro ao visualizar fotos da consulta", Nivel = Diag.Nivel.Erro });
+                return "";
+
             }
         }
     }

@@ -168,7 +168,15 @@ body {
     margin-right: 18px;
 }
 
-.page #header #topBar a.headerLoginVSC {
+.headerLoginVSC {
+
+    font-size: 30px;
+
+}
+
+
+
+.page #header #topBar {
     cursor: pointer;
     font-size: 0.9em;
     font-weight: normal;
@@ -387,6 +395,7 @@ LayoutCSS:.. Ordenação
 
 .checkboxTelaConsulta {
     min-height: 36px;
+    width: 22px;
 }
 
 .lblRadioDanoOrigem {
@@ -493,10 +502,6 @@ LayoutCSS:.. Ordenação
 
 
 /* < View Home/Index > */
-.BotaoLogin {
-    padding-left: 60%;
-}
-
 
 #cardblockTelaInspecao-Index {
     border-radius: 3px 3px;
@@ -522,7 +527,6 @@ LayoutCSS:.. Ordenação
 
 
 /* < View Inspecao EditarAvaria > */
-
 #formPrincipal {
     padding-left: 20px;
 }
@@ -537,10 +541,6 @@ LayoutCSS:.. Ordenação
 
 
 /* <View Inspecao/EditarAvarias*/
-
-
-
-
 .botoesTelaEditarAvarias {
     width: 120px;
 }
@@ -621,14 +621,9 @@ LayoutCSS:.. Ordenação
     font-weight: bold;
 }
 
-
-
     .tabsTelaFiltroConsulta:hover {
         color: #bd183a;
     }
-
-
-
 
 
 .botaoTelaConsulta {
@@ -819,7 +814,6 @@ LayoutCSS:.. Ordenação
     #ListaClienteLabelID, #labelListaTransportador, #lblChassiTelaVeiculo, #ListaMarcaLabel, #ListaModeloLabel {
         margin-top: 6px;
     }
-
 
 
     label {

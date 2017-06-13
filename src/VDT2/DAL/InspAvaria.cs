@@ -479,7 +479,7 @@ namespace VDT2.DAL
                 using (var contexto = new GeralDbContext(configuracao))
 
                 {
-                    var a = contexto.InspAvaria_Conf.FromSql(chamada, parametros);
+                    //var a = contexto.InspAvaria_Conf.FromSql(chamada, parametros);
                     listaAvarias_conf = contexto.InspAvaria_Conf.FromSql(chamada, parametros).ToList();
 
                     #region gravalogInformacao
@@ -1005,30 +1005,18 @@ namespace VDT2.DAL
                 {
                     ListaSummary = contexto.InspAvaria_Summary.FromSql(chamada, parametros).ToList();
 
-                    #region gravalogInformacao
-                    Diag.Log.Grava(
-                        new Diag.LogItem()
-                        {
-                            Nivel = Diag.Nivel.Informacao,
-                            Mensagem = $"InspAvaria.ConsultarSummary realizado com sucesso - Registros encontrados {ListaSummary.Count()}"
-                        });
-                    #endregion
+                    Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"InspAvaria.ConsultarSummary realizado com sucesso - Registros encontrados {ListaSummary.Count()}" });
+
                     return ListaSummary;
                 }
 
             }
             catch (System.Exception ex)
             {
-                #region gravalogErro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure}",
-                        Excecao = ex
-                    });
+
+                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a procedure: {nomeStoredProcedure}", Excecao = ex });
+
                 throw;
-                #endregion
             }
 
 

@@ -45,7 +45,6 @@ namespace VDT2.BLL
                 //preenche dados para formar o path de upload
                 string _cliente_id = Convert.ToString(inspecao.Cliente_ID);
                 string _inspecao_id = Convert.ToString(inspecao.Inspecao_ID);
-                //string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao).Inspecao_ID);
                 string _inspVeiculo = Convert.ToString(inspAvaria.InspVeiculo_ID);
                 string _inspAvaria = Convert.ToString(inspAvaria.InspAvaria_ID);
                 string _ano = inspecao.Data.ToString("yyyy");
@@ -145,17 +144,14 @@ namespace VDT2.BLL
                         }
                     }
                 }
+
                 return true; //sem erros
             }
+
             catch (Exception ex)
             {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar a UploadArquivos | Avaria: {avaria_Id} ",
-                        Excecao = ex
-                    });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a UploadArquivos | Avaria: {avaria_Id} ", Excecao = ex });
+
                 return false;
             }
         }
@@ -170,6 +166,7 @@ namespace VDT2.BLL
         {
             List<ImagemAvaria> listaimagens = new List<ImagemAvaria>();
             string serverpath = configuracao.PastaFotos;
+
             try
             {
                 //Recebe todos os dados da Avaria e da Inspeção
@@ -220,14 +217,10 @@ namespace VDT2.BLL
 
             catch (Exception ex)
             {
-                Diag.Log.Grava(
-                            new Diag.LogItem()
-                            {
-                                Nivel = Diag.Nivel.Aviso,
-                                Mensagem = $"Não conseguiu receber lista de imagens da avaria - Exception {ex}",
-                                Excecao = ex
-                            });
+                Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Aviso, Mensagem = $"Não conseguiu receber lista de imagens da avaria - Exception {ex}", Excecao = ex });
+
                 listaimagens.Add(new ImagemAvaria { Erro = true, MensagemErro = "Não há imagem na pasta selecionada" });
+
                 return listaimagens;
             }
         }
@@ -264,29 +257,17 @@ namespace VDT2.BLL
                     {
                         System.IO.File.Delete(pathArquivo);
                     }
-                    catch (System.IO.IOException ex)
+                    catch (Exception ex)
                     {
-                        Diag.Log.Grava(
-                            new Diag.LogItem()
-                            {
-                                Nivel = Diag.Nivel.Aviso,
-                                Mensagem = $"Não conseguiu deletar imagem/foto: {inspAvaria_ID} | Imagem: {imagem}",
-                                Excecao = ex
-                            });
-                        Console.WriteLine(ex.Message);
+                        Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Aviso, Mensagem = $"Não conseguiu deletar imagem/foto: {inspAvaria_ID} | Imagem: {imagem}", Excecao = ex });
+
                         return;
                     }
                 }
             }
             catch (Exception ex)
             {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Aviso,
-                        Mensagem = $"Não conseguiu receber lista de imagens da avaria | Avaria: {inspAvaria_ID} | Imagem: {imagem}",
-                        Excecao = ex
-                    });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Aviso, Mensagem = $"Não conseguiu receber lista de imagens da avaria | Avaria: {inspAvaria_ID} | Imagem: {imagem}", Excecao = ex });
                 throw;
             }
         }

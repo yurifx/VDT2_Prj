@@ -20,10 +20,10 @@
 else
 {
     <div class="container">
-        @if (ViewData["MensagemErro"] != null)
+        @if (TempData["MensagemErro"] != null)
         {
             <div class="alert alert-danger">
-                <p>@ViewData["MensagemErro"]</p>
+                <p>@TempData["MensagemErro"]</p>
             </div>
         }
         <h4><strong>Dados da Inspeção</strong></h4><br />

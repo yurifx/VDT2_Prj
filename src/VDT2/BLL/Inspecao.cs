@@ -213,31 +213,7 @@ namespace VDT2.BLL
         /// 
         public static Models.Inspecao MontaDadosInspecao(InspecaoDadosGeraisViewModel inspecaoDadosGeraisVM, Configuracao configuracao)
         {
-            #region gravalogInicial
-            try
-            {
-                #region gravalogInformacao
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Informacao,
-                        Mensagem = $"Inicializando MontaDadosInspecao -> Cliente_ID:  {inspecaoDadosGeraisVM.Cliente_ID} | Transportador_ID: {Convert.ToInt32(inspecaoDadosGeraisVM.IdTipo.Split('_')[0])} | LocalCheckPoint_ID: {inspecaoDadosGeraisVM.LocalCheckPoint_ID} | Local {inspecaoDadosGeraisVM.LocalInspecao_ID} Edicao: {inspecaoDadosGeraisVM.Edicao} | FrotaViagem: {inspecaoDadosGeraisVM.FrotaViagemNome}"
-                    });
-                #endregion
-            }
-
-            catch (Exception ex)
-            {
-                #region gravalogErro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Erro:  {ex}"
-                    });
-                #endregion
-            }
-            #endregion
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Inicializando MontaDadosInspecao -> Cliente_ID:  {inspecaoDadosGeraisVM.Cliente_ID} | Transportador_ID: {Convert.ToInt32(inspecaoDadosGeraisVM.IdTipo.Split('_')[0])} | LocalCheckPoint_ID: {inspecaoDadosGeraisVM.LocalCheckPoint_ID} | Local {inspecaoDadosGeraisVM.LocalInspecao_ID} Edicao: {inspecaoDadosGeraisVM.Edicao} | FrotaViagem: {inspecaoDadosGeraisVM.FrotaViagemNome}" });
 
             inspecaoDadosGeraisVM.Inspecao = new Models.Inspecao
             {
@@ -259,7 +235,6 @@ namespace VDT2.BLL
             {
                 //Mapeando Frota/Viagem - Neste caso, para buscar frota/viagem, temos que passar o tipo de transportador e o Id do transportador
                 //recebe todos dados do transportador informado
-                #region transportador
                 Models.Transportador transportador = null;
                 try
                 {
@@ -268,117 +243,45 @@ namespace VDT2.BLL
 
                 catch (System.Exception ex)
                 {
-                    #region gravaLogErro
-                    Diag.Log.Grava(
-                        new Diag.LogItem()
-                        {
-                            Nivel = Diag.Nivel.Erro,
-                            Mensagem = $"Não conseguiu listar Transportador - MontaDadosInspecao -  TransportadorRepositorio.Listar()",
-                            Excecao = ex
-                        });
-                    #endregion
+                    Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu listar Transportador - MontaDadosInspecao -  TransportadorRepositorio.Listar", Excecao = ex });
                     throw;
                 }
-                #endregion
 
-                #region listafrotaviagem
                 //lista todas Frotas/Viagens  onde sejam do tipo do transportador informado e do ID do transportador informado
-
-                //TODO: Modificar aqui, para criar uma procedure de select via frotaviagem nome. 
                 //No caso atual, estamos pegando todos as frotas, e só estamos passando como filtro transportador ID e tipo;
-                List<Models.FrotaViagem> listaFrotaViagem = null;
                 try
                 {
-                    listaFrotaViagem = DAL.FrotaViagem.Listar(transportador.Tipo.ToString(), transportador.Transportador_ID, configuracao);
+                    inspecaoDadosGeraisVM.Inspecao.FrotaViagem_ID = DAL.FrotaViagem.Inserir(transportador.Transportador_ID, inspecaoDadosGeraisVM.FrotaViagemNome, configuracao);
                 }
                 catch (System.Exception ex)
                 {
-                    #region gravalogerro
-                    Diag.Log.Grava(
-                        new Diag.LogItem()
-                        {
-                            Nivel = Diag.Nivel.Erro,
-                            Mensagem = $"Não conseguiu executar MontaDadosInpsecao -> FrotaViagemRepositorio.Listar()",
-                            Excecao = ex
-                        });
-                    #endregion
+                    Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar MontaDadosInspecao ->  FrotaViagemRepositorio.Inserir", Excecao = ex });
                 }
 
 
-
-                var frotaViagemInformada = listaFrotaViagem.Where(p => p.Nome == inspecaoDadosGeraisVM.FrotaViagemNome).FirstOrDefault();
-
-                if (frotaViagemInformada == null)
-                {
-                    try
-                    {
-                        inspecaoDadosGeraisVM.Inspecao.FrotaViagem_ID = DAL.FrotaViagem.Inserir(transportador.Transportador_ID, inspecaoDadosGeraisVM.FrotaViagemNome, configuracao);
-                    }
-                    catch (System.Exception ex)
-                    {
-                        #region gravalogerro
-                        Diag.Log.Grava(
-                            new Diag.LogItem()
-                            {
-                                Nivel = Diag.Nivel.Erro,
-                                Mensagem = $"Não conseguiu executar MontaDadosInspecao ->  FrotaViagemRepositorio.Inserir()",
-                                Excecao = ex
-                            });
-                        #endregion
-                    }
-                }
-
-                //caso já exista esta frota, apenas pegar seu frotaviagem_id
-                else
-                {
-                    inspecaoDadosGeraisVM.Inspecao.FrotaViagem_ID = frotaViagemInformada.FrotaViagem_ID;
-                }
-
-                #endregion
-
-                //recebe dados do navio
-                #region navio
-                //Só entra caso seja maritimo
+                //Recebe navio caso seja transportador Marítimo
                 if (!string.IsNullOrEmpty(inspecaoDadosGeraisVM.NomeNavio))
                 {
                     //Primeiro, verifica se existe este navio no bdd
                     try
                     {
-                        inspecaoDadosGeraisVM.Inspecao.Navio_ID = DAL.Navio.ConsultaIdNavio(inspecaoDadosGeraisVM.NomeNavio, configuracao);
+                        inspecaoDadosGeraisVM.Inspecao.Navio_ID = DAL.Navio.InserirNavio(inspecaoDadosGeraisVM.NomeNavio, configuracao);
                     }
 
-                    #region gravaLogErro
                     catch (System.Exception ex)
                     {
-                        Diag.Log.Grava(
-                            new Diag.LogItem()
-                            {
-                                Nivel = Diag.Nivel.Erro,
-                                Mensagem = $"Não conseguiu Consultar Navio - MontaDadosInspecao -  NavioRepositorio.ConsultaIdNavio()",
-                                Excecao = ex
-                            });
+                        Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu Consultar Navio - MontaDadosInspecao -  NavioRepositorio.ConsultaIdNavio", Excecao = ex });
                         throw;
                     }
                 }
-                #endregion
-
-                #endregion
-
             }
 
-            #region gravalogerro
             catch (System.Exception ex)
             {
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | MontaDadosInspecao |  INSPECAO: CLIENTE {inspecaoDadosGeraisVM.Inspecao.Cliente_ID}, Transportador {inspecaoDadosGeraisVM.Inspecao}, LOCAL: {inspecaoDadosGeraisVM.Inspecao} LOCALCHECKPOINT: {inspecaoDadosGeraisVM.Inspecao}, FROTAVIAGEM {inspecaoDadosGeraisVM.Inspecao}",
-                        Excecao = ex
-                    });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | MontaDadosInspecao |  INSPECAO: CLIENTE {inspecaoDadosGeraisVM.Inspecao.Cliente_ID}, Transportador {inspecaoDadosGeraisVM.Inspecao}, LOCAL: {inspecaoDadosGeraisVM.Inspecao} LOCALCHECKPOINT: {inspecaoDadosGeraisVM.Inspecao}, FROTAVIAGEM {inspecaoDadosGeraisVM.Inspecao}", Excecao = ex });
                 throw;
             }
-            #endregion
+
             return inspecaoDadosGeraisVM.Inspecao;
         }
 
@@ -404,15 +307,7 @@ namespace VDT2.BLL
                 inspecao.Erro = true;
                 inspecao.MensagemErro = _mensagemErro;
 
-                #region gravalogerro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Update | Erro: {ex}",
-                        Excecao = ex
-                    });
-                #endregion  
+                Diag.Log.Grava( new Diag.LogItem{ Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho - Update", Excecao = ex });
 
                 return inspecao;
             }
@@ -447,7 +342,7 @@ namespace VDT2.BLL
                         Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Inserir | Erro: {ex}",
                         Excecao = ex
                     });
-                #endregion  
+                #endregion
 
                 return inspecao;
             }
@@ -487,7 +382,7 @@ namespace VDT2.BLL
                         Mensagem = $"Não conseguiu executar Inspecao | ListarCliente | Erro: {ex}",
                         Excecao = ex
                     });
-                #endregion  
+                #endregion
 
                 return listaClientes;
             }

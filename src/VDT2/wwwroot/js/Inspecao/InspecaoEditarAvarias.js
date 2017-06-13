@@ -205,7 +205,7 @@ function RemoverFoto(i) {
     $("#" + "inputFileImgAvaria" + i).val('');
     $('#imgpreview').hide(0);
     $('#visualizar' + i).hide(0);
-    $("#spanFoto" + i).css('background-color' ,'white');
+    $("#spanFoto" + i).css('background-color', 'white');
 }
 
 function EsconderBotoesSpan() {
@@ -434,137 +434,106 @@ function ValidarFotos() {
     //Caso o layout mude, necessário mudar esta lógica também;
     var qtdFotosSelecionadas = 0;
 
-    if ($("#spanFoto1").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
 
-    if ($("#spanFoto2").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
+    //Neste caso validamos via cor. 
+    //Caso o layout mude, necessário mudar esta lógica também;
+    var qtdFotosSelecionadas = 0;
 
-    if ($("#spanFoto3").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto4").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto5").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto6").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto7").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto8").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-
-    if ($("#spanFoto9").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
-
-    if ($("#spanFoto10").css('background-color') == 'rgb(255, 219, 65)') {
-        qtdFotosSelecionadas += 1;
-    }
+    qtdFotosSelecionadas += $("#inputFileImgAvaria1").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria2").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria3").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria4").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria5").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria6").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria7").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria8").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria9").prop('files').length;
+    qtdFotosSelecionadas += $("#inputFileImgAvaria10").prop('files').length;
 
     if (qtdFotosSelecionadas > 0) {
         return true;
-    } else {
-        return false;
     }
 
-}
-
-
-
-function VisualizarAvarias_BtnClick() {
-    $("#visualizarAvariasForm").submit();
-}
-
-
-
-function EditarVeiculo_BtnCLick() {
-    $("#editarVeiculoForm").submit();
-}
-
-
-function EditarInspecao_BtnCLick() {
-    $("#editarInspecaoForm").submit();
-}
-
-
-function NovoVeiculo_BtnCLick() {
-    $("#novoVeiculoForm").submit();
-}
-
-
-function Btn_Click_EditarAvaria(valor) {
-    inspAvaria_ID = valor;
-    $("#avariaIdFormSubmit").val(inspAvaria_ID);
-    console.log("Avaria a ser editada.:", inspAvaria_ID)
-    $("#editarAvariaForm").submit();
-}
-
-
-function removerImagemAvaria(valor) {
-    var arr = valor.split('_');
-    var imagem = arr[0];
-    var inspAvaria_ID = arr[1];
-
-    //1.png  - separa em 1 e png  -> adiciona o \\ para conseguir funcionar via ID => exemplo: id =  1\\.png 
-    var imagemArr = arr[0].split('.');
-    var imagemDiv = imagemArr[0] + '\\.' + imagemArr[1];
-    $("#" + imagemDiv).hide(0);
-
-    //ENVIANDO POST AJAX PARA O CONTROLLER:
-    request = $.ajax({
-        type: "POST",
-        url: "DeletarFoto",
-        data: {
-            'imagem': imagem,
-            'inspAvaria_ID': inspAvaria_ID
-        },
-    });
-}
-
-function EnviarFormularioDesabilitarBotao(e) {
-    //e - botão
-    $(e).prop("disabled", "true");
-    $("#formPrincipal").submit();
-}
-
-function ValidarFormularioInspecaoEditarAvarias() {
-
-    FotosValidadas = ValidarFotos();
-
-    var Fabrica = $("#inputFabrica").is(":checked");
-    var Transporte = $("#inputTransporte").is(":checked");
-
-    if (Fabrica == true || Transporte == true){
-        return true;
-    }
     else {
-        alert("Por favor selecionar tipo de avaria")
-        $("#inputFabrica").css("color", "red");
-        $("#inputTransporte").css("color", "red")
-        $("#btnGravar").prop("disabled", false);
         return false;
     }
-
 }
+
+
+
+    function VisualizarAvarias_BtnClick() {
+        $("#visualizarAvariasForm").submit();
+    }
+
+
+
+    function EditarVeiculo_BtnCLick() {
+        $("#editarVeiculoForm").submit();
+    }
+
+
+    function EditarInspecao_BtnCLick() {
+        $("#editarInspecaoForm").submit();
+    }
+
+
+    function NovoVeiculo_BtnCLick() {
+        $("#novoVeiculoForm").submit();
+    }
+
+
+    function Btn_Click_EditarAvaria(valor) {
+        inspAvaria_ID = valor;
+        $("#avariaIdFormSubmit").val(inspAvaria_ID);
+        console.log("Avaria a ser editada.:", inspAvaria_ID)
+        $("#editarAvariaForm").submit();
+    }
+
+
+    function removerImagemAvaria(valor) {
+        var arr = valor.split('_');
+        var imagem = arr[0];
+        var inspAvaria_ID = arr[1];
+
+        //1.png  - separa em 1 e png  -> adiciona o \\ para conseguir funcionar via ID => exemplo: id =  1\\.png 
+        var imagemArr = arr[0].split('.');
+        var imagemDiv = imagemArr[0] + '\\.' + imagemArr[1];
+        $("#" + imagemDiv).hide(0);
+
+        //ENVIANDO POST AJAX PARA O CONTROLLER:
+        request = $.ajax({
+            type: "POST",
+            url: "DeletarFoto",
+            data: {
+                'imagem': imagem,
+                'inspAvaria_ID': inspAvaria_ID
+            },
+        });
+    }
+
+    function EnviarFormularioDesabilitarBotao(e) {
+        //e - botão
+        $(e).prop("disabled", "true");
+        $("#formPrincipal").submit();
+    }
+
+    function ValidarFormularioInspecaoEditarAvarias() {
+
+        FotosValidadas = ValidarFotos();
+
+        var Fabrica = $("#inputFabrica").is(":checked");
+        var Transporte = $("#inputTransporte").is(":checked");
+
+        if (Fabrica == true || Transporte == true) {
+            return true;
+        }
+        else {
+            alert("Por favor selecionar tipo de avaria")
+            $("#inputFabrica").css("color", "red");
+            $("#inputTransporte").css("color", "red")
+            $("#btnGravar").prop("disabled", false);
+            return false;
+        }
+
+    }
 

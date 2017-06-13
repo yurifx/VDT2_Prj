@@ -71,6 +71,9 @@
                     <th class="">InspecaoID</th>
                     <th class="">VeiculoID</th>
                     <th class="">AvariaID</th>
+
+                    @*FOTOS*@
+                    <th class="">Fotos</th>
                 </tr>
             </thead>
             <tbody>
@@ -136,8 +139,17 @@
                         <td>@item.Inspecao_ID</td>
                         <td>@item.InspVeiculo_ID</td>
                         <td>@item.InspAvaria_ID</td>
-                    </tr>
 
+                        @*FOTOS*@
+                        @if(item.InspAvaria_ID != 0 && item.InspAvaria_ID != null) { 
+                        @*<td><button class="btn btn-sm btn-default"  id="btnEditarFotosID_telaConsulta" value="@item.InspAvaria_ID" onclick="location.href='../Conferencia/VisualizarFotosConsulta/?inspAvaria_id=@item.InspAvaria_ID'">Fotos</button></td>*@
+                        <td><button class="btn btn-sm btn-default" id="btnEditarFotosID_telaConsulta" value="@item.InspAvaria_ID" onclick="Btn_Click_VisualizarFotos(@item.InspAvaria_ID)">Fotos</button></td>
+                        }
+                        else
+                        {
+                            <td><button class="btn btn-sm btn-default" disabled id="btnEditarFotosID_telaConsulta" value="" onclick=''>Fotos</button></td>
+                        }
+                    </tr>
                 }
                 
             </tbody>
@@ -155,5 +167,28 @@
 <form hidden>
     <input type="text" id="inputFiltrosUtilizados" value="@Model.FiltroRealizado" />
 </form>
+
+<!-- Modal -->
+<div id="modalFotos" class="modal fade" role="dialog">
+    <div class="modal-dialog">
+
+        <!-- Modal content-->
+        <div class="modal-content">
+            <div class="modal-header">
+                <button type="button" class="close" data-dismiss="modal">&times;</button>
+                <h4 class="modal-title">Fotos</h4>
+            </div>
+            <div class="modal-body">
+                <div id="fotosConsulta">
+
+                </div>
+            </div>
+            <div class="modal-footer">
+                <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
+            </div>
+        </div>
+
+    </div>
+</div>
 
 <!--View ConsultaVeiculos.csHtml-->

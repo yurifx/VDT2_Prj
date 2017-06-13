@@ -40,12 +40,8 @@ namespace VDT2.BLL
             sb.Append($"DataInicio  - {DadosConsulta.FirstOrDefault().DataInicio}");
             sb.Append($"DataFinal  - {DadosConsulta.FirstOrDefault().DataInicio}");
             sb.Append($"Scheme -  {Scheme}");
-                        
-            Diag.Log.Grava(new Diag.LogItem
-            {
-                Mensagem = sb.ToString(),
-                Nivel = Diag.Nivel.Informacao
-            });
+
+            Diag.Log.Grava(new Diag.LogItem { Mensagem = sb.ToString(), Nivel = Diag.Nivel.Informacao });
 
             try
             {
@@ -56,26 +52,22 @@ namespace VDT2.BLL
                 string URL = $"{Scheme}/{Host}/{sFileName}";
 
                 FileInfo file = new FileInfo(Path.Combine(caminhoServidor, sFileName));
+
                 if (file.Exists)
                 {
                     try
                     {
                         file.Delete();
+
                         file = new FileInfo(Path.Combine(caminhoServidor, sFileName));
-                        Diag.Log.Grava(new Diag.LogItem
-                        {
-                            Mensagem = $"Arquivo temporário existente no servidor, realizou delete.",
-                            Nivel = Diag.Nivel.Informacao
-                        });
+
+                        Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Arquivo temporário existente no servidor, realizou delete. | Arquivo: {file.FullName}", Nivel = Diag.Nivel.Informacao });
 
                     }
                     catch (Exception ex)
                     {
-                        Diag.Log.Grava(new Diag.LogItem
-                        {
-                            Mensagem = $"Erro ao Gerar Arquivo Excel - {ex}",
-                            Nivel = Diag.Nivel.Erro
-                        });
+                        Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Erro ao deletar arquivo", Nivel = Diag.Nivel.Erro, Excecao = ex });
+
                         return false;
                     }
                 }
@@ -138,15 +130,15 @@ namespace VDT2.BLL
 
 
                     //Largura das colunas
-                    worksheet.Column(1).Width = 11; 
-                    worksheet.Column(2).Width = 20; 
-                    worksheet.Column(3).Width = 10; 
-                    worksheet.Column(4).Width = 22; 
-                    worksheet.Column(5).Width = 24; 
-                    worksheet.Column(6).Width = 16; 
-                    worksheet.Column(7).Width = 12; 
-                    worksheet.Column(8).Width = 20; 
-                    worksheet.Column(9).Width = 12; 
+                    worksheet.Column(1).Width = 11;
+                    worksheet.Column(2).Width = 20;
+                    worksheet.Column(3).Width = 10;
+                    worksheet.Column(4).Width = 22;
+                    worksheet.Column(5).Width = 24;
+                    worksheet.Column(6).Width = 16;
+                    worksheet.Column(7).Width = 12;
+                    worksheet.Column(8).Width = 20;
+                    worksheet.Column(9).Width = 12;
                     worksheet.Column(10).Width = 16;
                     worksheet.Column(11).Width = 28;
                     worksheet.Column(12).Width = 16;
@@ -203,7 +195,7 @@ namespace VDT2.BLL
                         worksheet.Cells[i + 2, 19].Value = DadosConsulta[i].Condicao_Pt;
 
 
-                        if (DadosConsulta[i].FabricaTransporte =="F")
+                        if (DadosConsulta[i].FabricaTransporte == "F")
                         {
                             worksheet.Cells[i + 2, 20].Value = "Fábrica";
                         }
@@ -213,6 +205,7 @@ namespace VDT2.BLL
                         }
 
                         worksheet.Cells[i + 2, 21].Value = DadosConsulta[i].HorasReparo;
+
                         worksheet.Cells[i + 2, 22].Value = DadosConsulta[i].CustoReparo;
 
                         if (DadosConsulta[i].SubstituicaoPeca == true)
@@ -225,7 +218,6 @@ namespace VDT2.BLL
 
                         }
 
-
                         worksheet.Cells[i + 2, 24].Value = DadosConsulta[i].ValorPeca;
                         worksheet.Cells[i + 2, 25].Value = DadosConsulta[i].CustoTotal;
                     }
@@ -234,28 +226,23 @@ namespace VDT2.BLL
                     try
                     {
                         arquivoExcel.Save();
+                        Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Arquivo excel gerado com sucesso", Nivel = Diag.Nivel.Informacao });
+
                     }
                     catch (Exception ex)
                     {
-                        Diag.Log.Grava(new Diag.LogItem
-                        {
-                            Mensagem = $"Erro ao Salvar Arquivo Excel - {ex}",
-                            Nivel = Diag.Nivel.Erro
-                        });
+                        Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Erro ao Salvar Arquivo Excel", Nivel = Diag.Nivel.Erro, Excecao = ex });
+
                         return false;
                     }
 
                     return true;
                 }
             }
+
             catch (Exception ex)
             {
-
-                Diag.Log.Grava(new Diag.LogItem
-                {
-                    Mensagem = $"Erro ao Gerar Arquivo Excel - {ex}",
-                    Nivel = Diag.Nivel.Erro
-                });
+                Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Erro ao Gerar Arquivo Excel ", Nivel = Diag.Nivel.Erro, Excecao = ex });
 
                 return false;
             }

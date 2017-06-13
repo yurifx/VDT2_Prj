@@ -40,15 +40,8 @@ namespace VDT2.BLL
 
             catch (Exception ex)
             {
-                #region gravalogErro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu Executar ListarAvarias_Conf. Erro: {ex}",
-                        Excecao = ex
-                    });
-                #endregion
+                Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu Executar ListarAvarias_Conf", Excecao = ex });
+
                 return listaInspAvaria_Conf;
             }
         }

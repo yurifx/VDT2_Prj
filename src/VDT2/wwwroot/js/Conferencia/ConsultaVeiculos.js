@@ -18,14 +18,11 @@
             }
         }
     });
-
     table
         .buttons()
         .container()
         .appendTo('#botoes');
-
 })
-
 
 function ExportarExcel() {
 
@@ -37,8 +34,10 @@ function ExportarExcel() {
         function (e) {
             alert(e);
         }
-
     )
+}
 
-
+function Btn_Click_VisualizarFotos(avaria_id) {
+    $("#fotosConsulta").load('../Conferencia/VisualizarFotosConsulta', { 'inspAvaria_ID': avaria_id });
+    $("#modalFotos").modal('show');
 }

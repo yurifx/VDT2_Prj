@@ -34,16 +34,10 @@ namespace VDT2.BLL
             }
             catch (Exception ex)
             {
-                #region gravalogErro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar a InserirListaVeiculos: Exception:  {ex}",
-                        Excecao = ex
-                    });
-                #endregion  
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a InserirListaVeiculos", Excecao = ex });
+
                 listaVeiculos.ListaVeiculo_ID = 0;
+
                 return listaVeiculos;
             }
         }
@@ -96,15 +90,7 @@ namespace VDT2.BLL
             }
             catch (Exception ex)
             {
-                #region gravalogErro
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar IntegrarArquivoLoadingList",
-                        Excecao = ex
-                    });
-                #endregion
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar IntegrarArquivoLoadingList", Excecao = ex });
                 return false;
             }
         }
