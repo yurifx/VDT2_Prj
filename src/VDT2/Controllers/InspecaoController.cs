@@ -69,6 +69,8 @@ namespace VDT2.Controllers
                     var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
                     dadosUsuario.Usuario = objUsuario;
 
+                    inspecaoDadosGeraisVM.Data = System.DateTime.Today;
+
                     inspecaoDadosGeraisVM.ListaCliente = BLL.Inspecao.ListarClientes(dadosUsuario.UsuarioId, Configuracao);
 
                     inspecaoDadosGeraisVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, Configuracao, dadosUsuario.Usuario.Locais);
@@ -165,7 +167,7 @@ namespace VDT2.Controllers
                 {
                     if (InspecaoVeiculoVM.Inspecao.Inspecao_ID != 0)
                     {
-                        InspecaoVeiculoVM.Inspecao.Data = System.DateTime.Today;
+                        InspecaoVeiculoVM.Inspecao.Data = InspecaoVeiculoVM.Inspecao.Data;
                         InspecaoVeiculoVM.Inspecao = BLL.Inspecao.Update(InspecaoVeiculoVM.Inspecao, Configuracao);
 
                         if (InspecaoVeiculoVM.Inspecao.Erro == true)
@@ -1133,6 +1135,8 @@ namespace VDT2.Controllers
                 return View("NovaInspecao", inspecaoDadosGeraisVM);
             }
 
+            //Modificar isso para fazer o model binding correto. [debug]
+            inspecaoDadosGeraisVM.Data = inspecaoDadosGeraisVM.Inspecao.Data;
             inspecaoDadosGeraisVM.Inspecao_ID = inspecaoDadosGeraisVM.Inspecao.Inspecao_ID;
             inspecaoDadosGeraisVM.Cliente_ID = inspecaoDadosGeraisVM.Inspecao.Cliente_ID;
             inspecaoDadosGeraisVM.LocalInspecao_ID = inspecaoDadosGeraisVM.Inspecao.LocalInspecao_ID;
@@ -1342,45 +1346,54 @@ namespace VDT2.Controllers
         /// <returns>FileContentResult</returns>
         public FileResult Foto(string imagem, int inspAvaria_ID)
         {
-            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Recebe dados binarios: Foto | Imagem: {imagem}, inspAvaria_ID: {inspAvaria_ID}" });
-
             FileContentResult retorno = null;
-            try
-
+            if (imagem != null)
             {
-                string serverpath = Configuracao.PastaFotos;
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Recebe dados binarios: Foto | Imagem: {imagem}, inspAvaria_ID: {inspAvaria_ID}" });
+                
+                try
 
-                Models.InspAvaria inspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, Configuracao);
-                //Models.InspVeiculo inspVeiculo = BLL.InspecaoVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao);
-                Models.Inspecao inspecao = BLL.Inspecao.ListarPorId(inspAvaria.Inspecao_ID, Configuracao);
-
-                string _cliente_id = Convert.ToString(inspecao.Cliente_ID);
-                string _inspecao_id = Convert.ToString(inspecao.Inspecao_ID);
-                string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, Configuracao).Inspecao_ID);
-                string _inspVeiculo = Convert.ToString(inspAvaria.InspVeiculo_ID);
-                string _inspAvaria = Convert.ToString(inspAvaria.InspAvaria_ID);
-                string _ano = inspecao.Data.ToString("yyyy");
-                string _mesdia = inspecao.Data.ToString("MMdd");
-
-                var path = Path.Combine(Configuracao.PastaFotos, "Imagens", "Avarias", _cliente_id, _ano, _mesdia, _inspecao, _inspVeiculo, _inspAvaria, imagem);
-
-                using (var j = new FileStream(path, FileMode.Open))
                 {
-                    //Conversão para Byte
-                    byte[] imgbyte = new byte[j.Length];
-                    j.Read(imgbyte, 0, imgbyte.Length);
-                    retorno = new FileContentResult(imgbyte, "image/jpeg");
+                    string serverpath = Configuracao.PastaFotos;
+
+                    Models.InspAvaria inspAvaria = BLL.Avarias.ListarPorId(inspAvaria_ID, Configuracao);
+                    //Models.InspVeiculo inspVeiculo = BLL.InspecaoVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, configuracao);
+                    Models.Inspecao inspecao = BLL.Inspecao.ListarPorId(inspAvaria.Inspecao_ID, Configuracao);
+
+                    string _cliente_id = Convert.ToString(inspecao.Cliente_ID);
+                    string _inspecao_id = Convert.ToString(inspecao.Inspecao_ID);
+                    string _inspecao = Convert.ToString((int)DAL.InspVeiculo.ListarPorId(inspAvaria.InspVeiculo_ID, Configuracao).Inspecao_ID);
+                    string _inspVeiculo = Convert.ToString(inspAvaria.InspVeiculo_ID);
+                    string _inspAvaria = Convert.ToString(inspAvaria.InspAvaria_ID);
+                    string _ano = inspecao.Data.ToString("yyyy");
+                    string _mesdia = inspecao.Data.ToString("MMdd");
+
+
+                    var path = Path.Combine(Configuracao.PastaFotos, "Imagens", "Avarias", _cliente_id, _ano, _mesdia, _inspecao, _inspVeiculo, _inspAvaria, imagem);
+
+                    using (var j = new FileStream(path, FileMode.Open))
+                    {
+                        //Conversão para Byte
+                        byte[] imgbyte = new byte[j.Length];
+                        j.Read(imgbyte, 0, imgbyte.Length);
+                        retorno = new FileContentResult(imgbyte, "image/jpeg");
+                    }
+                    return retorno;
+
+                }
+                catch (Exception ex)
+                {
+                    Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiui receber dados da foto informada", Excecao = ex });
+                    throw;
                 }
 
             }
-
-            catch (Exception ex)
+            else
             {
-                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiui receber dados da foto informada", Excecao = ex });
-                throw;
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"[SEM IMAGEM] - Recebe dados binarios:  inspAvaria_ID: {inspAvaria_ID}" });
+                return retorno;
             }
 
-            return retorno;
         }
 
 
@@ -1467,7 +1480,5 @@ namespace VDT2.Controllers
 
             return Json(listaTransportador);
         }
-
-
     }
 }

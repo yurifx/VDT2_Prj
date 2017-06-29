@@ -22,6 +22,7 @@ namespace VDT2.ViewModels
         public List<LocalInspecao> ListaLocalInspecao;
         public List<LocalCheckPoint> ListaLocalCheckPoint;
 
+        public DateTime Data { get; set; }
         public Inspecao Inspecao { get; set; }
         public InspVeiculo InspVeiculo { get; set; }
         public int Inspecao_ID { get; set; }

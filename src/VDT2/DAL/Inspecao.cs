@@ -86,7 +86,7 @@ namespace VDT2.DAL
 
                 SqlParameter parmData = new SqlParameter("@p_Data", SqlDbType.DateTime)
                 {
-                    Value = System.DateTime.Today
+                    Value = inspecao.Data
                 };
 
                 SqlParameter parmInspecao_ID = new SqlParameter("@p_Inspecao_ID", SqlDbType.Int)

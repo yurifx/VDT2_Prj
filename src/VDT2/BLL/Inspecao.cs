@@ -217,6 +217,7 @@ namespace VDT2.BLL
 
             inspecaoDadosGeraisVM.Inspecao = new Models.Inspecao
             {
+                Data = inspecaoDadosGeraisVM.Data,
                 Inspecao_ID = inspecaoDadosGeraisVM.Inspecao_ID,
                 Transportador_ID = Convert.ToInt32(inspecaoDadosGeraisVM.IdTipo.Split('_')[0]),
                 Cliente_ID = inspecaoDadosGeraisVM.Cliente_ID,

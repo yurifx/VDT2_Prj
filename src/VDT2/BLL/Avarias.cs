@@ -119,7 +119,7 @@ namespace VDT2.BLL
 
             try
             {
-                listaAreas = DAL.AvArea.Listar(cliente_ID, configuracao);
+                listaAreas = DAL.AvArea.Listar(cliente_ID, configuracao).OrderBy(x=>x.Nome_Pt).ToList();
                 if (listaAreas.Count() == 0)
                 {
                     listaAreas.Add(new AvArea { Erro = true, Nome_Pt = "ERRO", MensagemErro = "Erro ao listar Areas", AvArea_ID = 0 });
@@ -156,7 +156,7 @@ namespace VDT2.BLL
             List<Models.AvCondicao> listaCondicoes = new List<Models.AvCondicao>();
             try
             {
-                listaCondicoes = DAL.AvCondicao.Listar(cliente_ID, configuracao);
+                listaCondicoes = DAL.AvCondicao.Listar(cliente_ID, configuracao).OrderBy(x => x.Nome_Pt).ToList();
 
                 if (listaCondicoes.Count() == 0)
                 {
@@ -196,7 +196,7 @@ namespace VDT2.BLL
 
             try
             {
-                listaDanos = DAL.AvDano.Listar(cliente_ID, configuracao);
+                listaDanos = DAL.AvDano.Listar(cliente_ID, configuracao).OrderBy(x => x.Nome_Pt).ToList();
 
                 if (listaDanos.Count() == 0)
                 {
@@ -235,7 +235,7 @@ namespace VDT2.BLL
 
             try
             {
-                listaGravidades = DAL.AvGravidade.Listar(cliente_ID, configuracao);
+                listaGravidades = DAL.AvGravidade.Listar(cliente_ID, configuracao).OrderBy(x => x.Nome_Pt).ToList();
 
                 if (listaGravidades.Count() == 0)
                 {
@@ -273,7 +273,7 @@ namespace VDT2.BLL
             List<Models.AvQuadrante> listaQuadrantes = new List<Models.AvQuadrante>();
             try
             {
-                listaQuadrantes = DAL.AvQuadrante.Listar(cliente_ID, configuracao);
+                listaQuadrantes = DAL.AvQuadrante.Listar(cliente_ID, configuracao).OrderBy(x => x.Nome_Pt).ToList();
 
                 if (listaQuadrantes.Count() == 0)
                 {
@@ -310,7 +310,7 @@ namespace VDT2.BLL
             List<Models.AvSeveridade> listaSeveridades = new List<Models.AvSeveridade>();
             try
             {
-                listaSeveridades = DAL.AvSeveridade.Listar(cliente_ID, configuracao);
+                listaSeveridades = DAL.AvSeveridade.Listar(cliente_ID, configuracao).OrderBy(x => x.Nome_Pt).ToList();
 
                 if (listaSeveridades.Count() == 0)
                 {

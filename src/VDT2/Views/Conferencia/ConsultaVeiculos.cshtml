@@ -68,9 +68,9 @@
                     <th class="">Valor Total</th>
                     
                     @*IDS*@
-                    <th class="">InspecaoID</th>
-                    <th class="">VeiculoID</th>
-                    <th class="">AvariaID</th>
+                    <th class="hidden">InspecaoID</th>
+                    <th class="hidden">VeiculoID</th>
+                    <th class="hidden">AvariaID</th>
 
                     @*FOTOS*@
                     <th class="">Fotos</th>
@@ -136,9 +136,9 @@
                         <td>@item.CustoTotal</td>
 
                         @*IDs*@
-                        <td>@item.Inspecao_ID</td>
-                        <td>@item.InspVeiculo_ID</td>
-                        <td>@item.InspAvaria_ID</td>
+                        <td class="hidden">@item.Inspecao_ID</td>
+                        <td class="hidden">@item.InspVeiculo_ID</td>
+                        <td class="hidden">@item.InspAvaria_ID</td>
 
                         @*FOTOS*@
                         @if(item.InspAvaria_ID != 0 && item.InspAvaria_ID != null) { 

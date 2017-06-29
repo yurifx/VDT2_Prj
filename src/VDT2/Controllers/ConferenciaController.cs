@@ -113,7 +113,8 @@ namespace VDT2.Controllers
         {
             try
             {
-                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ConferenciaListarVeiculos | Parametros: {conferenciaVM.TextoLog()}" }); }
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ConferenciaListarVeiculos | Parametros: {conferenciaVM.TextoLog()}" });
+            }
             catch { }
 
             try
@@ -389,7 +390,7 @@ namespace VDT2.Controllers
             }
             #endregion
 
-            Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: SalvarAvaria - Parametros: {conferenciaEditarAvariasVM.TextoLog()}" });
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: SalvarAvaria" });
 
             DateTime dataEnviada;
             DateTime dataAntiga = new DateTime();
@@ -1272,7 +1273,7 @@ namespace VDT2.Controllers
 
                 return retorno;
                 //return "<p>oi do controller</p>";
-                
+
             }
             catch (Exception ex)
             {
