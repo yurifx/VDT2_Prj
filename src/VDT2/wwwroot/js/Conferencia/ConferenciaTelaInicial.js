@@ -1,9 +1,21 @@
 ﻿$(function () {  // $(document).ready()
-    console.log("Inicializou jquery ok");
+    console.log("Inicializou jquery ok - ConferenciaTelaInicial.js");
+
     var ListaLocalCheckPoint = $("#ListaLocalCheckPoint");
     var ListaLocalInspecao = $("#ListaLocalInspecao");
-    var LocalInspecao = $("#localInspecaoIdini").val();
-    var LocalCheckPoint = $("#localCheckPointIdini").val();
+
+    //Recebe o valor atual do ListaLocalInspecao
+    var LocalInspecao = $("#ListaLocalInspecao").prop('value');
+    
+    //Caso o local inspeção seja != 'Selecione o Local', carrega os dados do checkpoint daquele local.
+    //Fizemos isto pois quando o usuário clicava em voltar, a combo do localcheckpoint estava completamente prenchida, sendo que só precisava estar os dados 
+    // do localcheckpoint daquele referido local.
+    if (typeof (LocalInspecao != 'undefined')) {
+
+        if (LocalInspecao != 'Selecione Local') {
+            PreencheListaCheckPoint();
+        }
+    }
 });
 
 

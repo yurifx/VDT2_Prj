@@ -250,10 +250,10 @@
                                     <div class="form-group">
                                         <div class="row">
                                             <div class="col col-lg-offset-3 col-md-offset-2 col-xs-offset-1 col-lg-2 col-md-2  col-sm-4  col-xs-6 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> Fábrica
+                                                <input asp-for="@Model.InspAvaria.FabricaTransporte" value="F" type="radio" required /> <label for="">Fábrica </label>
                                             </div>
                                             <div class="col col-lg-6 col-md-6  col-sm-8  col-xs-5 ladoesquerdo">
-                                                <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required /> Transporte
+                                                <input asp-for="@Model.InspAvaria.FabricaTransporte" value="T" type="radio" required /> <label for="">Transporte </label>
                                             </div>
                                         </div>
                                     </div>
@@ -406,14 +406,14 @@ else
                 <h4 class="modal-title">Confirmação</h4>
             </div>
             <div class="modal-body">
-                <p>Realmente deseja excluir a avaria?</p>
+                <p>Deseja realmente excluir a avaria?</p>
             </div>
             <div class="modal-footer">
-                <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
+                <button type="button" class="btn btn-default" data-dismiss="modal"><span class="glyphicon glyphicon-chevron-left-trash"> </span> Cancelar</button>
 
                 @if (Model.InspAvaria != null)
                 {
-                    <button type="button" class="btn btn-danger" onclick="DeletarAvaria(@Model.InspAvaria.InspAvaria_ID)"> Excluir</button>
+                    <button type="button" class="btn btn-danger" onclick="DeletarAvaria(@Model.InspAvaria.InspAvaria_ID)">Excluir  <span class="glyphicon glyphicon-trash"> </span></button>
                 }
             </div>
         </div>
@@ -437,7 +437,7 @@ else
             </div>
             <div class="modal-footer">
                 <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
-                <a asp-action="DeletarVeiculo" asp-route-id="@Model.InspVeiculo.InspVeiculo_ID">Deletar Veículo</a>
+                <button type="button" class="btn btn-danger" onclick="DeletarVeiculo(@Model.InspVeiculo.InspVeiculo_ID)">Deletar Veículo</button>
             </div>
         </div>
 
@@ -445,9 +445,25 @@ else
 </div>
 
 
+<form hidden id='formDeletarVeiculo' asp-controller="Conferencia" asp-action="DeletarVeiculo" method="post">
+    <input type="text" id="veiculo_ID_formhidden" name="id" value="" />
+</form>
+
+<script>
+    function DeletarVeiculo(id) {
+
+        $("#veiculo_ID_formhidden").prop('value', id)
+        $("#formDeletarVeiculo").submit();
+        
+
+
+    }
+
+</script>
 
 <script>
     function Voltar() {
+        
         $("#frmVoltar").submit();
     }
 </script>

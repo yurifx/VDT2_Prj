@@ -1,0 +1,44 @@
+﻿#relatorioPizzaDiv {
+    margin-top: 3px;
+    margin-bottom: 200px;
+
+}
+
+
+#relatorioPizza {
+    margin-bottom: 200px;
+}
+
+
+
+#gridTab {
+    width: 20%;
+}
+
+    #gridTab > a {
+        color: #d32a2a;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+#relatorioTab {
+    width: 20%;
+}
+
+    #relatorioTab > a {
+        color: #2596c1;
+        font-size: 16px;
+        font-weight: bold;
+    }
+
+
+.btnVoltarTelaConferenciaAvarais {
+    min-width: 200px;
+    max-width: 200px;
+
+}
+
+.botoesConferencia {
+    margin-top: 50px;
+    margin-bottom: 100px;
+}

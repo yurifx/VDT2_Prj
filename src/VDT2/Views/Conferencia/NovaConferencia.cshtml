@@ -7,6 +7,7 @@
     Layout = "~/Views/Shared/_LayoutConferencia.cshtml";
 }
 
+<link href="~/css/NovaConferencia.css" rel="stylesheet" />
 <script src="~/js/Conferencia/ConferenciaTelaInicial.js" asp-append-version="true"></script>
 <div class="container">
     <div class="container" id="EM_ERRO">
@@ -26,84 +27,81 @@
         }
     </div>
 
-
-
-
-
     <div class="row">
-        <h3><strong>Conferência de Inspeção</strong></h3><br />
-        <div class="form-group">
-
-            <form asp-controller="Conferencia" asp-action="ConferenciaListarVeiculos" method="post" onSubmit="return ValidarFormularioIndex()">
-                <div class="col col-lg-12 col-md-12">
-                    <br />
-
-                    @*Cliente*@
-                    <div class="row form-group">
-                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                            <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                            <select id="ListaCliente" name="Cliente_ID" class="form-control"
-                                    asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
-                                <option disabled selected>Selecione Cliente</option>
-                            </select>
-                        </div>
-                    </div>
-
-
-                    @*Local Inspeção*@
-                    <div class="row form-group">
-                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                            <label for="ListaLocalInspecao">Local Inspeção</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                            <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
-                                    asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
-                                <option disabled selected>Selecione Local</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    @*Local CheckPoint*@
-                    <div class="row form-group">
-                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                            <label for="ListaLocalCheckPoint">Local CheckPoint</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                            <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
-                                    asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
-                                <option disabled selected>Selecione CheckPoint</option>
-                            </select>
-                        </div>
-                    </div>
-
-                    @*Data*@
-                    <div class="row form-group">
-                        <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
-                            <label>Data</label>
-                        </div>
-                        <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                            <input type="date" id="data" name="Data" class="form-control" />
-                        </div>
-                    </div>
-                    <br />
-
-                    @*Botões*@
-                    <br /><br />
-                    <div class="row">
-                        <div class="btnNovaConferencia col col-lg-12 col-md-12 col-sm-12 col-xs-12">
-                            <button type="submit" class="btnTelaNovaConferencia btn btn-sm btn-success">Listar</button>
-                            <input type="button" class="btnTelaNovaConferencia btn btn-sm btn-primary" value="Voltar" onClick="Voltar()"><br /><br />
-                        </div>
-                    </div>
-
-                </div>
-            </form>
+        <div class="col-col-lg-12 col-md-12 col-sm-12 col-xs-12">
+            <h3><strong>Conferência de Inspeção</strong></h3><br />
         </div>
 
+        <form asp-controller="Conferencia" asp-action="ConferenciaListarVeiculos" method="post" onSubmit="return ValidarFormularioIndex()">
+            <div class="col col-lg-12 col-md-12">
+                <br />
+
+                @*Cliente*@
+                <div class="row form-group">
+                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label for="ListaCliente" id="ListaClienteLabelID">Cliente</label>
+                    </div>
+                    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                        <select id="ListaCliente" name="Cliente_ID" class="form-control"
+                                asp-items="@(new SelectList(Model.ListaCliente,"Cliente_ID","Nome"))">
+                            <option disabled selected>Selecione Cliente</option>
+                        </select>
+                    </div>
+                </div>
+
+
+                @*Local Inspeção*@
+                <div class="row form-group">
+                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label for="ListaLocalInspecao">Local Inspeção</label>
+                    </div>
+                    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                        <select id="ListaLocalInspecao" name="LocalInspecao_ID" class="form-control" onchange="PreencheListaCheckPoint()"
+                                asp-items="@(new SelectList(Model.ListaLocalInspecao,"LocalInspecao_ID","Nome"))">
+                            <option disabled selected>Selecione Local</option>
+                        </select>
+                    </div>
+                </div>
+
+                @*Local CheckPoint*@
+                <div class="row form-group">
+                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label for="ListaLocalCheckPoint">Local CheckPoint</label>
+                    </div>
+                    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                        <select id="ListaLocalCheckPoint" name="LocalCheckPoint_ID" class="form-control"
+                                asp-items="@(new SelectList(Model.ListaLocalCheckPoint,"LocalCheckPoint_ID", "Nome_Pt"))">
+                            <option disabled selected>Selecione CheckPoint</option>
+                        </select>
+                    </div>
+                </div>
+
+                @*Data*@
+                <div class="row form-group">
+                    <div class="col col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <label>Data</label>
+                    </div>
+                    <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
+                        <input type="date" id="data" name="Data" class="form-control" />
+                    </div>
+                </div>
+                <br />
+
+                @*Botões*@
+                <br /><br />
+                <div class="row">
+                    <div class="btnNovaConferencia col col-lg-12 col-md-12 col-sm-12 col-xs-12">
+                        <button type="submit" class="btnTelaNovaConferencia btn btn-success"><span class="glyphicon glyphicon-search"> </span> Consultar </button>
+                        <button type="button" class="btnTelaNovaConferencia btn btn-primary" value="Voltar" onClick="Voltar()"><span class="glyphicon glyphicon-menu-left"></span> Voltar </button>
+                    </div>
+                </div>
+
+            </div>
+        </form>
     </div>
+
 </div>
+
 
 <script>
     function Voltar() {

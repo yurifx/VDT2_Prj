@@ -10,6 +10,7 @@
 <script src="~/lib/multiple-select/multiple-select.js"></script>
 <script src="~/js/Conferencia/ConferenciaConsulta.js" asp-append-version="true"></script>
 <link href="~/lib/multiple-select/multiple-select.css" rel="stylesheet" asp-append-version="true" />
+<link href="~/css/Consulta.css" rel="stylesheet" asp-append-version="true"/>
 
 <form asp-controller="Conferencia" asp-action="ListarConsulta" method="post" id="ListarConsultaForm">
 
@@ -18,11 +19,10 @@
         @*@Html.TextBoxFor(model => model.Cliente.Cliente_ID)*@
     </div>
 
-
     <div class="container">
-        <h3><strong>Consulta</strong></h3><br /><br />
+        <h3 class="h3telaConsulta"><strong>Consulta</strong></h3>
         <ul class="nav nav-tabs">
-            <li class="active"><a data-toggle="tab" href="#home" class="tabsTelaFiltroConsulta">Filtros de Inspeção</a></li>
+            <li class="active"><a data-toggle="tab" href="#home" class="tabsTelaFiltroConsulta">Filtros de Inspeção <span class="glyphicon glyphicon-pushpin">  </span></a></li>
             <li><a data-toggle="tab" href="#menu1" class="tabsTelaFiltroConsulta">Veículo</a></li>
             <li><a data-toggle="tab" href="#menu2" class="tabsTelaFiltroConsulta">Avarias</a></li>
 
@@ -30,9 +30,7 @@
 
         <div class="tab-content">
             <div id="home" class="painelTelaConsulta tab-pane fade in active">
-                <div class="">
-                    <br />
-
+                <div class="corpopannel">
                     <!--Primeira coluna de Datas-->
                     <div class="row">
                         @*DATA INICIO*@
@@ -243,7 +241,6 @@
                                 asp-items="@(new SelectList(Model.ListaGravidade, "AvGravidade_ID", "Nome_Pt"))"></select>
                     </div>
 
-
                 </div>
 
                 <br />
@@ -303,14 +300,17 @@
         </div>
 
 
-
-        <div class="botaoTelaConsulta">
-            <br /><br />
-            <button type="submit" class="btnTelaConsulta btn btn-success">Consultar</button>
-            <button type="button" class="btnTelaConsulta btn btn-primary" onclick="Voltar()">Voltar</button>
-            @*Poderia fazer via Actionlink*@
-            @*@Html.ActionLink("Voltar", "Index", "Home") no entanto isso gera um Anchor*@
-            <br /><br />
+        <div class="row">
+            <div class="col-col-lg-12 col-md-12 col-sm-12 col-sm-12">
+                <div class="botaoTelaConsulta">
+                    <br /><br />
+                    <button type="submit" class="btnTelaConsulta btn btn-success"><span class="glyphicon glyphicon-search">  </span> Consultar </button>
+                    <button type="button" class="btnTelaConsulta btn btn-primary" onclick="Voltar()"><span class="glyphicon glyphicon-chevron-left"> </span>Voltar </button>
+                    @*Poderia fazer via Actionlink*@
+                    @*@Html.ActionLink("Voltar", "Index", "Home") no entanto isso gera um Anchor*@
+                    <br /><br />
+                </div>
+            </div>
         </div>
     </div>
 </form>

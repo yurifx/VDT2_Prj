@@ -332,7 +332,7 @@ namespace VDT2.Controllers
                         new Microsoft.AspNetCore.Http.Authentication.AuthenticationProperties
                         {
                             ExpiresUtc = DateTime.UtcNow.AddMinutes(VDT2.BLL.Globais.ExpiracaoCookieAutenticacao),
-                            IsPersistent = false,
+                            IsPersistent = true,
                             AllowRefresh = false
                         });
 

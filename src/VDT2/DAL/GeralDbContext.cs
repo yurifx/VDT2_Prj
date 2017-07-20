@@ -47,6 +47,7 @@ namespace VDT2.DAL
         public DbSet<Models.InspAvaria_Cons> InspAvaria_Cons { get; set; }
         public DbSet<Models.Pendencia> Pendencia { get; set; }
         public DbSet<Models.InspAvaria_Summary> InspAvaria_Summary { get; set; }
+        public DbSet<Models.Conferencia_Summary> Conferencia_Summary { get; set; }
 
         /// <summary>
         /// Construtor da classe

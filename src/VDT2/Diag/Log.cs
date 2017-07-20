@@ -138,7 +138,7 @@ namespace VDT2.Diag
 
             if ((int)item.Nivel >= Instance.MenorNivel) {
 
-                // Monta o nome do arquivo-fonte (sem todo o caminho "C:\Clientes\BVeritas\VDT2\VDT2\src\VDT2\ ... .cs")
+                // Monta o nome do arquivo-fonte (sem todo o caminho "C:\Clientes\BVeritas\VDT2\VDT2\src\VDT2\.cs")
                 const string nomeProjeto = @"\VDT2\";
 
                 int p = sourceFilePath.LastIndexOf(nomeProjeto);

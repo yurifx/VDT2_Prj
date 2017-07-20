@@ -1350,7 +1350,7 @@ namespace VDT2.Controllers
             if (imagem != null)
             {
                 Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Recebe dados binarios: Foto | Imagem: {imagem}, inspAvaria_ID: {inspAvaria_ID}" });
-                
+
                 try
 
                 {
@@ -1457,25 +1457,29 @@ namespace VDT2.Controllers
         /// <returns>JSON contendo os dados </returns>
         public JsonResult RecebeDadosTransportador(int localCheckPoint_ID)
         {
+
             var listaTransportador = new List<Models.Transportador>();
 
-            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Executou RecebeDadosTransportador via Ajax - Assíncrono - LocalCheckPointId {localCheckPoint_ID}" });
-
-            try
+            if (localCheckPoint_ID != 0)
             {
-                ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
 
-                Models.LocalCheckPoint LocalCheckPoint = DAL.LocalCheckPoint.Listar(dadosUsuario.UsuarioId, Configuracao)
-                    .Where(p => p.LocalCheckPoint_ID == localCheckPoint_ID).FirstOrDefault();
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Executou RecebeDadosTransportador via Ajax - Assíncrono - LocalCheckPointId {localCheckPoint_ID}" });
 
-                listaTransportador = DAL.Transportador.Listar(dadosUsuario.UsuarioId, Configuracao)
-                    .Where(p => p.Tipo == LocalCheckPoint.Tipo).OrderBy(p => p.IdTipo).ToList();
+                try
+                {
+                    ViewModels.LoginViewModel dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
 
-            }
-            catch (Exception ex)
-            {
-                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao receber dados do Transportador conforme o LocalCheckPoint informado", Excecao = ex });
-                throw;
+                    Models.LocalCheckPoint LocalCheckPoint = DAL.LocalCheckPoint.Listar(dadosUsuario.UsuarioId, Configuracao)
+                        .Where(p => p.LocalCheckPoint_ID == localCheckPoint_ID).FirstOrDefault();
+
+                    listaTransportador = DAL.Transportador.Listar(dadosUsuario.UsuarioId, Configuracao)
+                        .Where(p => p.Tipo == LocalCheckPoint.Tipo).OrderBy(p => p.IdTipo).ToList();
+
+                }
+                catch (Exception ex)
+                {
+                    Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Erro ao receber dados do Transportador conforme o LocalCheckPoint informado", Excecao = ex });
+                }
             }
 
             return Json(listaTransportador);

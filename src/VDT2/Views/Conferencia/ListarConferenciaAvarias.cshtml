@@ -7,7 +7,9 @@
 
 <!--ListarConferênciasAvarias.html-->
 
+<link href="~/css/ListarConferenciaAvarias.css" rel="stylesheet" />
 <script src="~/js/Conferencia/ConferenciaAvarias.js" asp-append-version="true"></script>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.4.0/Chart.min.js"></script>
 
 <div class="hidden">
     @if (Model.Usuario != null)
@@ -34,277 +36,395 @@
         }
     </div>
 
-    <h3><strong>Conferência de avarias</strong></h3><br />
-    <h5>
-        <strong>Data da Inspeção: </strong> @Model.InspAvaria_Conf.Data.ToString("dd/MM/yyyy")  -
-        <strong>Local Inspecao:</strong> @Model.InspAvaria_Conf.LocalNome  -
-        <strong>Local CheckPoint:</strong>  @Model.InspAvaria_Conf.CheckPointNome  -
-        <strong>Operação:</strong> @Model.InspAvaria_Conf.Operacao
-        @*<strong>Tipo Transportador:</strong> @Model.InspAvaria_Conf.TransportadorTipo*@
-    </h5>
-
     <br />
-    <div class="row">
-        @if (Model.Pendencias != null)
-        {
-            @if (Model.Pendencias.Count() > 0)
-            {
-                <button id='btnPendencias' data-toggle="modal" data-target="#pendenciasModal" class="btn btn-sm btn-danger"> Pendências <span class="badge">@Model.Pendencias.Count()</span></button><br />
-                <input type="text" id="inputQtdPendencias" value="@Model.Pendencias.Count()" hidden />
-            }
-        }
+
+    <div class="panel panel-default">
+        <div class="panel-body">
+
+            <h5>
+                <strong>Data da Inspeção: </strong> @Model.InspAvaria_Conf.Data.ToString("dd/MM/yyyy")  -
+                <strong>Local Inspecao:</strong> @Model.InspAvaria_Conf.LocalNome  -
+                <strong>Local CheckPoint:</strong>  @Model.InspAvaria_Conf.CheckPointNome  -
+                <strong>Operação:</strong> @Model.InspAvaria_Conf.Operacao
+                @*<strong>Tipo Transportador:</strong> @Model.InspAvaria_Conf.TransportadorTipo*@
+            </h5>
+        </div>
     </div>
-    <div class="container">
-        <div class="row">
-            <div id="divTabelaListarConferenciaAvarias">
-                <table class="table table-striped table-bordered table-hover">
-                    <thead class="thead">
-                        <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
-                            <th class="tabConferenciaListaVeiculoHeader">Editar</th>
-                            <th class="tabConferenciaListaVeiculoHeader">VIN</th>
-                            <th class="tabConferenciaListaVeiculoHeader">VIN_6</th><!--Tirar para produção-->
-                            <th class="tabConferenciaListaVeiculoHeader">Marca</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Modelo</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Transportador</th>
 
-                            @{ if (Model.InspAvaria_Conf.TransportadorTipo == "T")
-                                {
-                                    <th class="tabConferenciaListaVeiculoHeader">Frota</th>
-                                }
-                                else if(Model.InspAvaria_Conf.TransportadorTipo == "M")
-                                {
-                                    <th class="tabConferenciaListaVeiculoHeader">Navio</th>
-                                    <th class="tabConferenciaListaVeiculoHeader">Viagem</th>
-                                }
-                            }
 
-                            <th class="tabConferenciaListaVeiculoHeader">Lote</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Área</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Dano</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Severidade</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Quadrante</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Gravidade</th>
-                            <th class="tabConferenciaListaVeiculoHeader">Condição</th>
 
-                            <th class="tabConferenciaListaVeiculoHeader">Tipo</th>
-                            @*Só apresenta o custo caso seja Emportação*@
+    <ul class="nav nav-tabs" id="tabListarConferencia">
+        <li class="active" id="gridTab"><a data-toggle="tab" href="#grid">Conferência <span class="glyphicon glyphicon-list-alt"></span></a></li>
+        <li id="relatorioTab"><a data-toggle="tab" href="#relatorio"> Relatório  <span class="glyphicon glyphicon-stats"> </span></a></li>
+    </ul>
 
-                            @if (Model.InspAvaria_Conf.Operacao == "E")
-                            {
-                                <th class="tabConferenciaListaVeiculoHeader">Horas Reparo</th>
-                                <th class="tabConferenciaListaVeiculoHeader">Custo Reparo</th>
-                                <th class="tabConferenciaListaVeiculoHeader">Substituição de Peça</th>
-                                <th class="tabConferenciaListaVeiculoHeader">Valor da Peça</th>
-                                <th class="tabConferenciaListaVeiculoHeader">Valor Total</th>
-                            }
-                            <th class="tabConferenciaListaVeiculoHeader">Inspecao_ID</th><!--Tirar para produção-->
-                            <th class="tabConferenciaListaVeiculoHeader">Veículo_ID</th><!--Tirar para produção-->
-                            <th class="tabConferenciaListaVeiculoHeader">Fotos</th>
-                        </tr>
-                    </thead>
+    <div class="tab-content">
+        <div id="grid" class="tab-pane fade in active">
 
-                    @if (Model.ListaInspAvaria_Conf != null)
-                    {
-                        @foreach (var item in Model.ListaInspAvaria_Conf)
-                        {
-                            <tr class="tabConferenciaListaVeiculo">
-                                <td><button type="button" class="btnEditarEditarListarConferenciaAvarias btn btn-sm btn-default" value="@item.InspVeiculo_ID;@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
 
-                                <td>@item.VIN</td>
-                                <td>@item.VIN_6</td> <!--Tirar para produção-->
-                                <td>@item.MarcaNome</td>
-                                <td>@item.ModeloNome</td>
-                                <td>@item.TransportadorNome</td>
-
-                                @if (Model.InspAvaria_Conf.TransportadorTipo == "M")
-                                {
-                                    <td>@item.NavioNome</td>
-                                }
-
-                                <td>@item.FrotaViagemNome</td>                                
-                                
-                                <td>@item.LoteNome</td>
-                                <td>@item.Area_Pt</td>
-                                <td>@item.Dano_Pt</td>
-                                <td>@item.Severidade_Pt</td>
-                                <td>@item.Quadrante_Pt</td>
-                                <td>@item.Gravidade_Pt</td>
-                                <td>@item.Condicao_Pt</td>
-
-                                @if (@item.FabricaTransporte == "F")
-                                {
-                                    <td>Fábrica</td>}
-                                else if (@item.FabricaTransporte == "T")
-                                {
-                                    <td>Transporte</td>
-                                }
-                                else
-                                {
-                                    <td></td>
-
-                                }
-                                @*Só apresenta o custo caso seja exportação*@
-                                @if (Model.InspAvaria_Conf.Operacao == "E")
-                                {
-                                    <td>@item.HorasReparo</td>
-
-                                        @if (@item.CustoReparo == null)
-                                        {
-                                            <td class="custoConferencia">0</td>}
-                                        else
-                                        {
-                                            <td class="custoConferencia">@item.CustoReparo</td>
-                                        }
-                                        @if (item.SubstituicaoPeca == true)
-                                        {
-                                            <td>Sim</td>
-                                        }
-                                        else
-                                        {
-                                            <td> Não </td>
-                                        }
-
-                                        <td>@item.ValorPeca</td>
-                                        <td>@item.CustoTotal</td>
-
-                                }
-                                <td>@item.Inspecao_ID</td>
-                                <td>@item.InspVeiculo_ID</td>
-
-                                @if (@item.InspAvaria_ID != null)
-                                {
-                                    <td><button type="button" class="btn btn-sm btn-default" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
-                                }
-                                else
-                                {
-                                    <td></td>
-
-                                }
-
-                            </tr>
-                        }
+            <br />
+            <div class="row">
+                @if (Model.Pendencias != null)
+            {
+                    @if (Model.Pendencias.Count() > 0)
+                {
+                        <button id='btnPendencias' data-toggle="modal" data-target="#pendenciasModal" class="btn btn-sm btn-danger"> Pendências <span class="badge">@Model.Pendencias.Count()</span></button><br />
+                        <input type="text" id="inputQtdPendencias" value="@Model.Pendencias.Count()" hidden />
                     }
-
-                </table>
-                <br />
+                }
             </div>
-            @if (Model.Pendencias != null)
+
+            <div class="container">
+                <div class="row">
+                    <div id="divTabelaListarConferenciaAvarias">
+                        <table class="table table-striped table-bordered table-hover">
+                            <thead class="thead">
+                                <tr class="bg-info" id="tabConferenciaListaVeiculoHeader">
+                                    <th class="tabConferenciaListaVeiculoHeader">Editar</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">VIN</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">VIN_6</th><!--Tirar para produção-->
+                                    <th class="tabConferenciaListaVeiculoHeader">Marca</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Modelo</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Transportador</th>
+
+                                    @{ if (Model.InspAvaria_Conf.TransportadorTipo == "T")
+                                        {
+                                            <th class="tabConferenciaListaVeiculoHeader">Frota</th>
+                                        }
+                                        else if (Model.InspAvaria_Conf.TransportadorTipo == "M")
+                                        {
+                                            <th class="tabConferenciaListaVeiculoHeader">Navio</th>
+                                            <th class="tabConferenciaListaVeiculoHeader">Viagem</th>
+                                        }
+                                    }
+
+                                    <th class="tabConferenciaListaVeiculoHeader">Lote</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Área</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Dano</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Severidade</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Quadrante</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Gravidade</th>
+                                    <th class="tabConferenciaListaVeiculoHeader">Condição</th>
+
+                                    <th class="tabConferenciaListaVeiculoHeader">Tipo</th>
+                                    @*Só apresenta o custo caso seja Emportação*@
+
+                                    @if (Model.InspAvaria_Conf.Operacao == "E")
+                                    {
+                                        <th class="tabConferenciaListaVeiculoHeader">Horas Reparo</th>
+                                        <th class="tabConferenciaListaVeiculoHeader">Custo Reparo</th>
+                                        <th class="tabConferenciaListaVeiculoHeader">Substituição de Peça</th>
+                                        <th class="tabConferenciaListaVeiculoHeader">Valor da Peça</th>
+                                        <th class="tabConferenciaListaVeiculoHeader">Valor Total</th>
+                                    }
+                                    <th class="tabConferenciaListaVeiculoHeader">Inspecao_ID</th><!--Tirar para produção-->
+                                    <th class="tabConferenciaListaVeiculoHeader">Veículo_ID</th><!--Tirar para produção-->
+                                    <th class="tabConferenciaListaVeiculoHeader">Fotos</th>
+                                </tr>
+                            </thead>
+
+                            @if (Model.ListaInspAvaria_Conf != null)
+                            {
+                                @foreach (var item in Model.ListaInspAvaria_Conf)
+                                {
+                                    <tr class="tabConferenciaListaVeiculo">
+                                        <td><button type="button" class="btnEditarEditarListarConferenciaAvarias btn btn-sm btn-default" value="@item.InspVeiculo_ID;@item.InspAvaria_ID" onclick="Btn_Click_EditarAvaria(this.value)">Editar</button></td>
+
+                                        <td>@item.VIN</td>
+                                        <td>@item.VIN_6</td> <!--Tirar para produção-->
+                                        <td>@item.MarcaNome</td>
+                                        <td>@item.ModeloNome</td>
+                                        <td>@item.TransportadorNome</td>
+
+                                        @if (Model.InspAvaria_Conf.TransportadorTipo == "M")
+                                        {
+                                            <td>@item.NavioNome</td>
+                                            <td>@item.FrotaViagemNome</td>
+
+                                        }
+                                        else
+                                        {
+                                            <td>@item.FrotaViagemNome</td>
+                                        }
+
+                                        <td>@item.LoteNome</td>
+                                        <td>@item.Area_Pt</td>
+                                        <td>@item.Dano_Pt</td>
+                                        <td>@item.Severidade_Pt</td>
+                                        <td>@item.Quadrante_Pt</td>
+                                        <td>@item.Gravidade_Pt</td>
+                                        <td>@item.Condicao_Pt</td>
+
+                                        @if (@item.FabricaTransporte == "F")
+                                        {
+                                            <td>Fábrica</td>}
+                                        else if (@item.FabricaTransporte == "T")
+                                        {
+                                            <td>Transporte</td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+
+                                        }
+                                        @*Só apresenta o custo caso seja exportação*@
+                                        @if (Model.InspAvaria_Conf.Operacao == "E")
+                                        {
+                                            <td>@item.HorasReparo</td>
+
+                                            @if (@item.CustoReparo == null)
+                                            {
+                                                <td class="custoConferencia">0</td>}
+                                            else
+                                            {
+                                                <td class="custoConferencia">@item.CustoReparo</td>
+                                            }
+                                            @if (item.SubstituicaoPeca == true)
+                                            {
+                                                <td>Sim</td>
+                                            }
+                                            else
+                                            {
+                                                <td> Não </td>
+                                            }
+
+                                            <td>@item.ValorPeca</td>
+                                            <td>@item.CustoTotal</td>
+
+                                        }
+                                        <td>@item.Inspecao_ID</td>
+                                        <td>@item.InspVeiculo_ID</td>
+
+                                        @if (@item.InspAvaria_ID != null)
+                                        {
+                                            <td><button type="button" class="btn btn-sm btn-default" id="btnEditarFotosID" value="@item.InspAvaria_ID" onclick='Btn_Click_VisualizarFotos(this.value)'>Fotos</button></td>
+                                        }
+                                        else
+                                        {
+                                            <td></td>
+
+                                        }
+
+                                    </tr>
+                                }
+                            }
+
+                        </table>
+                        <br />
+                    </div>
+                    @if (Model.Pendencias != null)
             {
 
             <!-- Modal -->
-                <div id="pendenciasModal" class="modal fade" role="dialog">
-                    <div class="modal-dialog">
+                        <div id="pendenciasModal" class="modal fade" role="dialog">
+                            <div class="modal-dialog">
 
-                        <!-- Modal content-->
-                        <div class="modal-content">
-                            <div class="modal-header">
-                                <button type="button" class="close" data-dismiss="modal">&times;</button>
-                                <h4 class="modal-title">Pendências</h4>
-                            </div>
+                                <!-- Modal content-->
+                                <div class="modal-content">
+                                    <div class="modal-header">
+                                        <button type="button" class="close" data-dismiss="modal">&times;</button>
+                                        <h4 class="modal-title">Pendências</h4>
+                                    </div>
 
-                            <div class="modal-body">
-                                <div class="divListarConferenciaAvariasPendencias">
-                                    @if (Model.Pendencias.Count() > 0)
-                                    {
-                                        <h4><strong>Veículos inspecionados não encontrados nas listas </strong></h4>
-                                                    <ul>
-                                                        @foreach (var item in Model.Pendencias)
-                                                        {
-                                                            if (item.Tipo == "V")
-                                                            {
-                                                                <li>@item.VIN_6</li>
-                                                            }
-                                                        }
-                                                    </ul>
-                                    }
-                                </div>
-                            </div>
-
-                            <div class="modal-body">
-                                <div class="divListarConferenciaAvariasPendencias">
-                                    <h4><strong>Veículos sem registro de inspeção</strong></h4>
-                                    <ul>
-                                        @foreach (var item in Model.Pendencias)
-                                        {
-                                            if (item.Tipo == "L")
+                                    <div class="modal-body">
+                                        <div class="divListarConferenciaAvariasPendencias">
+                                            @if (Model.Pendencias.Count() > 0)
                                             {
-                                                <li>@item.VIN_6</li>
+                                                <h4><strong>Veículos inspecionados não encontrados nas listas </strong></h4>
+                                                <ul>
+                                                    @foreach (var item in Model.Pendencias)
+                                                    {
+                                                        if (item.Tipo == "V")
+                                                        {
+                                                            <li>@item.VIN_6</li>
+                                                        }
+                                                    }
+                                                </ul>
                                             }
-                                        }
-                                    </ul>
-                                </div>
-                            </div>
+                                        </div>
+                                    </div>
 
-                            <div class="modal-footer">
-                                <button type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#publicarModalConfirmacao"> Liberar Publicação Com Pendências</button>
-                                <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
+                                    <div class="modal-body">
+                                        <div class="divListarConferenciaAvariasPendencias">
+                                            <h4><strong>Veículos sem registro de inspeção</strong></h4>
+                                            <ul>
+                                                @foreach (var item in Model.Pendencias)
+                                                {
+                                                    if (item.Tipo == "L")
+                                                    {
+                                                        <li>@item.VIN_6</li>
+                                                    }
+                                                }
+                                            </ul>
+                                        </div>
+                                    </div>
+
+                                    <div class="modal-footer">
+                                        <button type="button" class="btn btn-warning" data-dismiss="modal" data-toggle="modal" data-target="#publicarModalConfirmacao"> Liberar Publicação Com Pendências</button>
+                                        <button type="button" class="btn btn-default" data-dismiss="modal"> Voltar</button>
+                                    </div>
+                                </div>
+
                             </div>
                         </div>
+                    }
 
+                    <form asp-controller="Conferencia" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
+                        <div hidden>
+                            <input type="text" name="inspVeiculo_ID" id="inputVeiculoIdFormSubmit" value="" />
+                            <input type="text" name="inspAvaria_ID" id="inputAvariaIdFormSubmit" value="" />
+                        </div>
+                    </form>
+
+                    <form asp-controller="Conferencia" asp-action="VisualizarFotos" method="post" id="VisualizarFotosForm">
+                        <div hidden>
+                            <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
+                        </div>
+                    </form>
+                    
+
+                    <div class="botoesConferencia">
+                        <button type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" onclick="Voltar()"><span class="glyphicon glyphicon-chevron-left"></span> Voltar</button>
+                        <button type="button" id="btnPublicar" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()"><span class="glyphicon glyphicon-thumbs-up"> </span>  Publicar</button>
                     </div>
-                </div>
-            }
-
-            <form asp-controller="Conferencia" asp-action="EditarAvarias" method="post" id="editarAvariaForm">
-                <div hidden>
-                    <input type="text" name="inspVeiculo_ID" id="inputVeiculoIdFormSubmit" value="" />
-                    <input type="text" name="inspAvaria_ID" id="inputAvariaIdFormSubmit" value="" />
-                </div>
-            </form>
-
-            <form asp-controller="Conferencia" asp-action="VisualizarFotos" method="post" id="VisualizarFotosForm">
-                <div hidden>
-                    <input type="text" name="inspAvaria_ID" id="inspAvaria_ID_FormVisualizarFotos_input" value="" />
-                </div>
-            </form>
-            <br /><br /><br />
-            <button type="button" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-primary" onclick="Voltar()">Voltar</button>
-            <input type="button" id="btnPublicar" class="btnVoltarTelaConferenciaAvarais btn btn-sm btn-success" value="Publicar" onClick="Publicar()">
-            <br /><br /><br />
 
 
 
-            @if (Model.ConcatInspecoes != null && Model.ConcatInspecoes != "")
+                    @if (Model.ConcatInspecoes != null && Model.ConcatInspecoes != "")
             {
-                <form id="frmPublicar" asp-controller="Conferencia" asp-action="Publicar" method="post" hidden>
-                    <input type="text" name="concatInspecoes" value="@Model.ConcatInspecoes" />
-                </form>
-            }
+                        <form id="frmPublicar" asp-controller="Conferencia" asp-action="Publicar" method="post" hidden>
+                            <input type="text" name="concatInspecoes" value="@Model.ConcatInspecoes" />
+                        </form>
+                    }
 
-        </div>
-    </div>
-
-
-
-    <!-- Modal -->
-    <div id="publicarModalConfirmacao" class="modal fade" role="dialog">
-        <div class="modal-dialog">
-
-            <!-- Modal content-->
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal">&times;</button>
-                    <h4 class="modal-title">Confirmação</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Confirmar liberação?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal"> Não</button>
-                    <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="LiberarPublicacao()"> Sim</button>
                 </div>
             </div>
 
+
+
+            <!-- Modal -->
+            <div id="publicarModalConfirmacao" class="modal fade" role="dialog">
+                <div class="modal-dialog">
+
+                    <!-- Modal content-->
+                    <div class="modal-content">
+                        <div class="modal-header">
+                            <button type="button" class="close" data-dismiss="modal">&times;</button>
+                            <h4 class="modal-title">Confirmação</h4>
+                        </div>
+                        <div class="modal-body">
+                            <p>Confirmar liberação?</p>
+                        </div>
+                        <div class="modal-footer">
+                            <button type="button" class="btn btn-default" data-dismiss="modal">Não</button>
+                            <button type="button" class="btn btn-danger" data-dismiss="modal" onclick="LiberarPublicacao()"> Sim</button>
+                        </div>
+                    </div>
+
+                </div>
+            </div>
+        </div>
+
+        <div id="relatorio" class="tab-pane fade">
+
+            <br />
+            @* SUMMARY *@
+            @if (Model.ConferenciaSummary != null)
+            {
+                @if (Model.ConferenciaSummary.Count > 0)
+                {
+                    <div class="panel panel-default">
+                        <div class="panel-body">
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                    <strong>Quantidade de veículos: </strong>@Model.ConferenciaSummary.Where(x => x.Tipo == "TodosVeiculos").First().Total
+                                </div>
+                                <div class="col-lg-9 col-md-6 col-xs-12">
+                                    <strong>Quantidade de veículos com avaria:</strong> @Model.ConferenciaSummary.Where(x => x.Tipo == "VeiculosComAvarias").First().Total
+                                </div>
+                            </div>
+
+                            <div class="row">
+                                <div class="col-lg-3 col-md-6 col-sm-6 col-xs-12">
+                                    <strong>Quantida de avarias: </strong>@Model.ConferenciaSummary.Where(x => x.Tipo == "QuantidadeAvarias").First().Total
+
+                                </div>
+                                <div class="col-lg-9 col-md-6 col-xs-12">
+                                    <strong> Quantidade de veículos sem avaria: </strong>@Model.ConferenciaSummary.Where(x => x.Tipo == "VeiculosSemAvaria").First().Total
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                }
+            }
+
+
+
+            <div class="row">
+                <div class="col-lg-offset-1 col-md-offset-1 col-sm-offset-2">
+                    <div id="relatorioPizzaDiv" style="max-width:800px">
+                        <canvas id="relatorioPizza"></canvas>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
-</div>
+
+    <script>
+                var ctx = document.getElementById('relatorioPizza').getContext('2d');
+
+
+                var objeto = [@Model.ConferenciaSummary.Where(x => x.Tipo == "TodosVeiculos").First().Total,  @Model.ConferenciaSummary.Where(x => x.Tipo == "VeiculosSemAvaria").First().Total, @Model.ConferenciaSummary.Where(x => x.Tipo == "VeiculosComAvarias").First().Total,@Model.ConferenciaSummary.Where(x => x.Tipo == "QuantidadeAvarias").First().Total];
+
+                console.log(objeto);
+
+                var chart = new Chart(ctx, {
+                    // The type of chart we want to create
+                    type: 'bar',
+
+                    // The data for our dataset
+                    data: {
+                        labels: ["Total de Veículos", "Veiculos sem Avarias", "Veiculos com Avarias", "Total de Avarias",],
+                        datasets: [{
+                            label: "VDT",
+                            backgroundColor: [
+                                'rgb(174, 0, 0)',
+                                'rgb(174, 162, 0)',
+                                'rgb(156, 27, 149)',
+                                'rgb(3, 27, 149)'
+                                ],
+                            borderColor: 'rgb(0, 6, 5)',
+                            borderWidth: 1,
+                            data: objeto,
+                        }]
+                    },
+
+                    // Configuration options go here
+                    options: {
+                        layout: {
+                            padding: {
+                                left: 50,
+                                right: 0,
+                                top: 50,
+                                bottom: 0
+                            }
+
+
+                        }
 
 
 
-<script>
-    function Voltar() {
-        $("#frmVoltar").submit();
-    }
-</script>
+                    }
+                });
+    </script>
 
-<form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>
+
+
+    <script>
+                function Voltar() {
+                    $("#frmVoltar").submit();
+                }
+    </script>
+
+    <form id="frmVoltar" asp-action="Index" asp-controller="Home"></form>

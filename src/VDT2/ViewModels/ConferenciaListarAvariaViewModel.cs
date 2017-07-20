@@ -25,5 +25,8 @@ namespace VDT2.ViewModels
         public Models.Usuario Usuario { get; set; }
         public List<Pendencia> Pendencias { get; set; }
         public string ConcatInspecoes { get; set; }
+
+        //summary (Quantidade de avarias, quantidade de veículos com avarias)
+        public List<Models.Conferencia_Summary> ConferenciaSummary { get; set; }
     }
 }

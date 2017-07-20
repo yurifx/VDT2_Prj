@@ -13,12 +13,17 @@
     <PackageId>VDT2</PackageId>
     <RuntimeFrameworkVersion>1.1.1</RuntimeFrameworkVersion>
     <PackageTargetFallback>$(PackageTargetFallback);dotnet5.6;portable-net45+win8</PackageTargetFallback>
-    <Version>1.0.0.4</Version>
-    <AssemblyVersion>1.0.0.4</AssemblyVersion>
-    <FileVersion>1.0.0.4</FileVersion>
+    <Version>1.0.0.5</Version>
+    <AssemblyVersion>1.0.0.5</AssemblyVersion>
+    <FileVersion>1.0.0.5</FileVersion>
   </PropertyGroup>
 
   <ItemGroup>
+    <Content Include="wwwroot\css\Consulta.css" />
+    <Content Include="wwwroot\css\ConsultaVeiculos.cs" />
+    <Content Include="wwwroot\css\ConsultaVeiculos.css" />
+    <Content Include="wwwroot\css\ListarConferenciaAvarias.css" />
+    <Content Include="wwwroot\css\NovaConferencia.css" />
     <Content Include="wwwroot\js\Conferencia\ConferenciaConsulta.js" />
     <Content Include="wwwroot\js\Conferencia\ConferenciaEditarFotos.js" />
     <Content Include="wwwroot\js\Conferencia\ConferenciaLoadingList.js" />

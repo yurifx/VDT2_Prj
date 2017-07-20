@@ -340,7 +340,7 @@ namespace VDT2.BLL
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar InpsecaoDadosCabecalho | Inserir | Erro: {ex}",
+                        Mensagem = $"Não conseguiu executar Inspecao.Inserir",
                         Excecao = ex
                     });
                 #endregion

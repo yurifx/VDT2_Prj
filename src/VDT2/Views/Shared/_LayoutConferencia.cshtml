@@ -45,7 +45,27 @@
             </div>
         </div>
 
+
+        <div class="panel panel-default" style="width:37px">
+
+            <span style="font-size:30px;cursor:pointer" onclick="openNav()" class="glyphicon glyphicon-home"></span>
+            <div id="mySidenav" class="sidenav">
+                <a href="javascript:void(0)" class="closebtn" onclick="closeNav()">&times;</a>
+                <a href="../../">Home</a>
+                <a href="/Home/Logout">Logout</a>
+            </div>
+        </div>
     </div>
+
+    <script>
+        function openNav() {
+            document.getElementById("mySidenav").style.width = "250px";
+        }
+
+        function closeNav() {
+            document.getElementById("mySidenav").style.width = "0";
+        }
+    </script>
 
 
     <div class="container body-content bv-content">

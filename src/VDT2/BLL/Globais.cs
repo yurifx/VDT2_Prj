@@ -26,7 +26,7 @@ namespace VDT2.BLL
 
         public const string NomeCookieAutenticacao = "VDT_AuthCookie";
 
-        public const int ExpiracaoCookieAutenticacao = 40;  // Minutos
+        public const int ExpiracaoCookieAutenticacao = 1000;  // Minutos
 
         /// <summary>
         /// Formato padrão para datas (pt-BR)

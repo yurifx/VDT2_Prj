@@ -58,6 +58,7 @@ namespace VDT2.Controllers
             ConferenciaIndexViewModel conferenciaVM = new ConferenciaIndexViewModel();
 
             var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
+
             if (dadosUsuario != null)
             {
                 var identificacao = this.Request.Cookies["Usr"];
@@ -111,19 +112,17 @@ namespace VDT2.Controllers
         /// <returns></returns>
         public IActionResult ConferenciaListarVeiculos(ConferenciaIndexViewModel conferenciaVM)
         {
-            try
-            {
-                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ConferenciaListarVeiculos | Parametros: {conferenciaVM.TextoLog()}" });
-            }
-            catch { }
+
+            Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Action acionada: ConferenciaListarVeiculos" });
+
+            const string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
+            const string _mensagemErro = "Não foi possível listar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
+            ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
+            listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
             try
             {
-                const string _mensagemLogin = "Erro ao identificar usuário, tente novamente mais tarde ou faça um novo login";
-                const string _mensagemErro = "Não foi possível listar, por favor tente novamente mais tarde ou entre em contato com o suporte técnico";
-                ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
-                listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
-                #region recebeDadosUsuario
+
                 var dadosUsuario = BLL.Login.ExtraiDadosUsuario(this.HttpContext.User.Claims);
                 if (dadosUsuario == null)
                 {
@@ -139,24 +138,19 @@ namespace VDT2.Controllers
                     return RedirectToAction("Index", "Home");
                 }
 
-
                 var objUsuario = JsonConvert.DeserializeObject<Models.Usuario>(identificacao);
                 listarConferenciaAvariaVM.Usuario = objUsuario;
                 dadosUsuario.Usuario = objUsuario;
 
                 ViewData["UsuarioNome"] = dadosUsuario.Nome;
                 ViewData["UsuarioIdentificacao"] = dadosUsuario.Identificacao;
-                #endregion
+
 
                 if (conferenciaVM != null)
                 {
                     if (!(conferenciaVM.Cliente_ID == 0 || conferenciaVM.LocalInspecao_ID == 0 || conferenciaVM.LocalCheckPoint_ID == 0 || conferenciaVM.Data == null))
                     {
-                        listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
-
-                        //Lista todas as avarias dos referentes ao cliente/localInspecao e LocalCheckPoint informados
-                        listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
-
+                        listarConferenciaAvariaVM = RecebeDadosConferenciaTelaConferencia(listarConferenciaAvariaVM, conferenciaVM.Cliente_ID, conferenciaVM.LocalInspecao_ID, conferenciaVM.LocalCheckPoint_ID, conferenciaVM.Data, configuracao);
 
                         //Realiza a concatenação de inspeções para mandar p/ View
                         StringBuilder sbInspecao = new StringBuilder();
@@ -452,9 +446,8 @@ namespace VDT2.Controllers
 
                 listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
-                listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
-
-                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(inspecaoInicial.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, dataAntiga, configuracao);
+                //Recebe pendências, integra vin, recebe os veículos
+                listarConferenciaAvariaVM = RecebeDadosConferenciaTelaConferencia(listarConferenciaAvariaVM, inspecaoInicial.Cliente_ID, inspecaoInicial.LocalInspecao_ID, inspecaoInicial.LocalCheckPoint_ID, dataAntiga, configuracao);
 
                 //Estes dados serão passados para view
                 listarConferenciaAvariaVM.InspAvaria_Conf.Data = dataAntiga;
@@ -560,7 +553,7 @@ namespace VDT2.Controllers
 
                 ListarConferenciaAvariaViewModel listarConferenciaAvariaVM = new ListarConferenciaAvariaViewModel();
 
-                listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf(); ;
+                listarConferenciaAvariaVM.InspAvaria_Conf = new Models.InspAvaria_Conf();
 
                 uploadImagem = BLL.UploadImagens.UploadImagensAvaria(inspAvaria_ID, files, configuracao);
 
@@ -585,13 +578,16 @@ namespace VDT2.Controllers
                     ViewData["MensagemErro"] = "Erro ao listar dados, tente novamente mais tarde ou entre em contato com o suporte";
                 }
 
-                listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+
+                listarConferenciaAvariaVM = RecebeDadosConferenciaTelaConferencia(listarConferenciaAvariaVM, conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
 
                 listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarAvariasVM.Inspecao.Data;
 
                 listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
 
                 listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
+
+                listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().TransportadorTipo;
 
                 return View("ListarConferenciaAvarias", listarConferenciaAvariaVM);
             }
@@ -602,6 +598,40 @@ namespace VDT2.Controllers
                 TempData["Erro"] = tempErro;
 
                 return RedirectToAction("NovaConferencia");
+            }
+        }
+
+
+        /// <summary>
+        /// 1- Busca Pendências e Integra Vin
+        /// 2- Lista todas as avarias
+        /// 3- Lista o report (Summary)
+        /// </summary>
+        /// <param name="obj"></param>
+        /// <param name="cliente_ID"></param>
+        /// <param name="localInspecao_ID"></param>
+        /// <param name="localCheckPoint_ID"></param>
+        /// <param name="data"></param>
+        /// <param name="configuracao"></param>
+        /// <returns></returns>
+        private ListarConferenciaAvariaViewModel RecebeDadosConferenciaTelaConferencia(ListarConferenciaAvariaViewModel obj, int cliente_ID, int localInspecao_ID, int localCheckPoint_ID, DateTime data, Configuracao configuracao)
+        {
+            try
+            {
+
+                obj.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(cliente_ID, localInspecao_ID, localCheckPoint_ID, data, configuracao);
+
+                obj.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(cliente_ID, localInspecao_ID, localCheckPoint_ID, data, configuracao);
+
+                obj.ConferenciaSummary = BLL.InspAvariaConf.ListarConferenciaSummary(cliente_ID, localInspecao_ID, localCheckPoint_ID, data, configuracao);
+
+                return obj;
+            }
+            catch (Exception ex)
+
+            {
+                Diag.Log.Grava(new Diag.LogItem { Excecao = ex, Mensagem = "Erro ao receber dados conferencia - Tela inspeção", Nivel = Diag.Nivel.Erro });
+                return obj;
             }
         }
 
@@ -841,7 +871,11 @@ namespace VDT2.Controllers
 
             if (!conferenciaEditarAvariasVM.InspAvaria.Erro)
             {
+                listarConferenciaAvariaVM.Pendencias = BLL.InspecaoVeiculo.IntegrarVIN(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+
                 listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
+
+                listarConferenciaAvariaVM.ConferenciaSummary = BLL.InspAvariaConf.ListarConferenciaSummary(conferenciaEditarAvariasVM.Inspecao.Cliente_ID, conferenciaEditarAvariasVM.Inspecao.LocalInspecao_ID, conferenciaEditarAvariasVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarAvariasVM.Inspecao.Data, configuracao);
             }
 
 
@@ -852,6 +886,8 @@ namespace VDT2.Controllers
                 listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
 
                 listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
+
+                listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().TransportadorTipo;
             }
             else
             {
@@ -886,16 +922,20 @@ namespace VDT2.Controllers
 
 
             //Verifica se está com erro;
-            if (!conferenciaEditarVM.InspVeiculo.Erro)
+            if (conferenciaEditarVM.InspVeiculo != null)
             {
-                conferenciaEditarVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarVM.InspVeiculo.Inspecao_ID, configuracao);
-            }
 
-            else
-            {
-                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não foi possível consultar dados do veículo informado: Veículo_ID {id}" });
+                if (!conferenciaEditarVM.InspVeiculo.Erro)
+                {
+                    conferenciaEditarVM.Inspecao = BLL.Inspecao.ListarPorId(conferenciaEditarVM.InspVeiculo.Inspecao_ID, configuracao);
+                }
 
-                TempData["Erro"] = "Erro ao consultar dado do veículo tente novamente mais tarde";
+                else
+                {
+                    Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não foi possível consultar dados do veículo informado: Veículo_ID {id}" });
+
+                    TempData["Erro"] = "Erro ao consultar dado do veículo tente novamente mais tarde";
+                }
             }
 
             //Deleta veículo
@@ -925,11 +965,14 @@ namespace VDT2.Controllers
 
             listarConferenciaAvariaVM.ListaInspAvaria_Conf = BLL.InspAvariaConf.ListarAvarias_Conf(conferenciaEditarVM.Inspecao.Cliente_ID, conferenciaEditarVM.Inspecao.LocalInspecao_ID, conferenciaEditarVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarVM.Inspecao.Data, configuracao);
 
-            if (listarConferenciaAvariaVM.ListaInspAvaria_Conf != null)
+            listarConferenciaAvariaVM.ConferenciaSummary = BLL.InspAvariaConf.ListarConferenciaSummary(conferenciaEditarVM.Inspecao.Cliente_ID, conferenciaEditarVM.Inspecao.LocalInspecao_ID, conferenciaEditarVM.Inspecao.LocalCheckPoint_ID, conferenciaEditarVM.Inspecao.Data, configuracao);
+
+            if (listarConferenciaAvariaVM.ListaInspAvaria_Conf != null && listarConferenciaAvariaVM.ListaInspAvaria_Conf.Count() > 0)
             {
                 listarConferenciaAvariaVM.InspAvaria_Conf.Data = conferenciaEditarVM.Inspecao.Data;
                 listarConferenciaAvariaVM.InspAvaria_Conf.LocalNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().LocalNome;
                 listarConferenciaAvariaVM.InspAvaria_Conf.CheckPointNome = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().CheckPointNome;
+                listarConferenciaAvariaVM.InspAvaria_Conf.TransportadorTipo = listarConferenciaAvariaVM.ListaInspAvaria_Conf.FirstOrDefault().TransportadorTipo;
             }
             else
             {
@@ -1100,12 +1143,10 @@ namespace VDT2.Controllers
 
             ConferenciaConsultaVeiculosViewModel consultaVeiculosVM = new ConferenciaConsultaVeiculosViewModel();
 
-
             try
             {
                 consultaVeiculosVM.ListaInspAvaria_Cons = BLL.InspAvariaCons.ConsultarVeiculos(consultaVM, configuracao);
                 consultaVeiculosVM.ListaInspAvaria_Summary = BLL.InspAvariaCons.ConsultarSumario(consultaVM, configuracao);
-
 
                 var dados = BLL.InspAvariaCons.RecebeDadosUsuario(consultaVM);
 

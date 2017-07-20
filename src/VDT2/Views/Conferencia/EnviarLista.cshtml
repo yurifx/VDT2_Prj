@@ -31,7 +31,7 @@
     </div>
 
     <div class="container">
-        <h3>Envio de Listas</h3><br /><br />
+        <h2><strong>Envio de Listas<br /><br /></strong></h2>
 
         @*Cliente*@
         <div class="row form-group">
@@ -77,9 +77,9 @@
                 <label>Tipo de Lista</label>
             </div>
             <div class="col col-lg-10 col-md-10 col-sm-10 col-xs-9">
-                <input type="radio" id="radioLoading" name="TipoLista" value="L" checked /> Loading <br />
-                <input type="radio" id="radioPacking" name="TipoLista" value="P" /> Packing<br />
-                <input type="radio" id="radioDischarging" name="TipoLista" value="D" /> Discharging<br />
+                <input type="radio" id="radioLoading" name="TipoLista" value="L" checked /> <label for="radioLoading"> Loading</label> <br />
+                <input type="radio" id="radioPacking" name="TipoLista" value="P" /> <label for="radioPacking"> Packing</label> <br />
+                <input type="radio" id="radioDischarging" name="TipoLista" value="D" /> <label for="radioDischarging"> Discharging</label> <br />
             </div>
 
 
@@ -111,9 +111,9 @@
 
 
         <div class="row form-group">
-            <div class="col col-lg-offset-2 col-md-12 col-sm-12 col-xs-12">
-                <button type="button" class="btn btnTelaEnviarLista btn btn-success" id="btnUpload" data-toggle="modal" data-target="#enviarListaModal">Upload</button>
-                <button type="button" class="btn btnTelaEnviarLista btn btn-primary" onclick="location.href='../Home/Index'">Voltar</button>
+            <div class="col col-lg-offset-0 col-md-12 col-sm-12 col-xs-12">
+                <button type="button" class="btn btnTelaEnviarLista btn btn-success" id="btnUpload" data-toggle="modal" data-target="#enviarListaModal"><span class="glyphicon glyphicon-ok"> </span> Enviar</button>
+                <button type="button" class="btn btnTelaEnviarLista btn btn-danger" onclick="location.href='../Home/Index'"><span class="glyphicon glyphicon-remove"> </span> Cancelar</button>
             </div>
         </div>
     </div>

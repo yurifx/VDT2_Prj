@@ -26,8 +26,7 @@ namespace VDT2.DAL
         /// <returns></returns>
         public static Models.Usuario EfetuaLogin(string usuarioLogin, VDT2.Models.Configuracao configuracao)
         {
-            Diag.Log.Grava(
-               new Diag.LogItem()
+            Diag.Log.Grava(new Diag.LogItem()
                {
                    Nivel = Diag.Nivel.Informacao,
                    Mensagem = $"DAL acionada. Efetua login, parametros informados: usuarioLogin {usuarioLogin}, ConnString {configuracao.ConnectionStringVDT}",
@@ -53,34 +52,20 @@ namespace VDT2.DAL
             {
                 using (var contexto = new GeralDbContext(configuracao))
                 {
-                    Diag.Log.Grava(new Diag.LogItem
-                    {
-                        Mensagem = $"Conseguiu conectar com o bd - {chamada}",
-                        Nivel = Diag.Nivel.Informacao
-                    });
+
+                    contexto.Database.OpenConnection();
+
+                    Diag.Log.Grava(new Diag.LogItem { Mensagem = $"Conseguiu conectar com o bd - {chamada}", Nivel = Diag.Nivel.Informacao });
 
                     dadosUsuario = contexto.Usuario.FromSql(chamada, parametros).FirstOrDefault();
 
                     if (dadosUsuario != null)
                     {
-                        #region gravalogResultado
-                        Diag.Log.Grava(
-                            new Diag.LogItem()
-                            {
-                                Nivel = Diag.Nivel.Informacao,
-                                Mensagem = $"Login.EfetuaLogin realizado com sucesso:  Login: {dadosUsuario.Login}"
-                            });
-
-                        #endregion
+                        Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"Login.EfetuaLogin realizado com sucesso:  Login: {dadosUsuario.Login}" });
                     }
                     else
                     {
-                        Diag.Log.Grava(
-                          new Diag.LogItem()
-                          {
-                              Nivel = Diag.Nivel.Informacao,
-                              Mensagem = $"Não encontrou registros com o usuário informado {usuarioLogin}"
-                          });
+                        Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Aviso, Mensagem = $"Não encontrou registros com o usuário informado {usuarioLogin}" });
                     }
 
                 }
@@ -88,13 +73,7 @@ namespace VDT2.DAL
             catch (System.Exception ex)
             {
 
-                Diag.Log.Grava(
-                    new Diag.LogItem()
-                    {
-                        Nivel = Diag.Nivel.Erro,
-                        Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure} - Usuário:{usuarioLogin}",
-                        Excecao = ex
-                    });
+                Diag.Log.Grava(new Diag.LogItem() { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a procedure {nomeStoredProcedure} - Usuário:{usuarioLogin}", Excecao = ex });
                 throw;
             }
             return dadosUsuario;
