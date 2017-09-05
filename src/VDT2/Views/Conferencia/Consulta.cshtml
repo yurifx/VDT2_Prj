@@ -35,7 +35,7 @@
                     <div class="row">
 
                         @*DATA INICIO*@
-                        <div class="col col-lg-1 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label>Data Inicial</label>
                         </div>
                         <div class="col col-lg-2 col-md-2 col-sm-12 col-xs-12">
@@ -46,7 +46,7 @@
                         <div class="col col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label>Data Final</label>
                         </div>
-                        <div class="col col-lg-6 col-md-4 col-sm-12 col-xs-12">
+                        <div class="col col-lg-2 col-md-4 col-sm-12 col-xs-12">
                             <input type="date" name="DataFinal" class="inputsTelaConferenciaConsulta form-control" />
                         </div>
                     </div>
@@ -56,7 +56,7 @@
                     <div class="row">
 
                         @*Local Inspeção*@
-                        <div class="col-lg-1 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label for="ListaLocalInspecao">Local</label>
                         </div>
 
@@ -79,7 +79,7 @@
                     <br />
                     <div class="row">
                         @*Transportador*@
-                        <div class="col-lg-1 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label for="ListaTransportador" id="labelListaTransportador">Transportador</label>
                         </div>
                         <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
@@ -91,7 +91,7 @@
                         <div class="col-lg-offset-1 col-md-offset-1 col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label>Navio</label>
                         </div>
-                        <div class="col-lg-6 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <input name="NavioNome" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
                     </div>
@@ -102,7 +102,7 @@
                     <div class="row">
 
                         @*FROTA OU VIAGEM*@
-                        <div class="col col-lg-1 col-md-2 col-sm-12 col-xs-12">
+                        <div class="col col-lg-2 col-md-2 col-sm-12 col-xs-12">
                             <label>Frota ou Viagem</label>
                         </div>
 
@@ -116,7 +116,7 @@
                             <label>Lote</label>
                         </div>
 
-                        <div class="col col-lg-6 col-md-5 col-sm-12 col-xs-12">
+                        <div class="col col-lg-2 col-md-5 col-sm-12 col-xs-12">
                             <input name="Lote" type="text" class="inputsTelaConferenciaConsulta form-control" placeholder="Todos" />
                         </div>
 
@@ -127,10 +127,10 @@
                     <!--Quinta Coluna Tipos Transportador-->
                     <div class="row">
                         @*TRANSPORTE MARITIMO*@
-                        <div class="col-lg-2 col-md-3 col-sm-2 col-xs-3">
+                        <div class="col-lg-2 col-md-3 col-sm-2 col-xs-4">
                             <label>Transportadores Marítimos</label>
                         </div>
-                        <div class="col-lg-2 col-md-2 col-sm-10 col-xs-9">
+                        <div class="col-lg-3 col-md-2 col-sm-10 col-xs-8">
                             <div class="checkboxTelaConsulta">
                                 <input name="TransportadorMaritimo" type="checkbox" class="checkboxTelaConsulta" />
                             </div>
@@ -138,10 +138,10 @@
 
 
                         @*TRANSPORTE TERRESTRE*@
-                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-3">
+                        <div class="col-lg-2 col-md-2 col-sm-2 col-xs-4">
                             <label>Transportadores Terrestres</label>
                         </div>
-                        <div class="col-lg-6 col-md-2 col-sm-10 col-xs-9">
+                        <div class="col-lg-2 col-md-2 col-sm-10 col-xs-8">
                             <input name="TransportadorTerrestre" type="checkbox" class="checkboxTelaConsulta" />
                         </div>
 
@@ -156,12 +156,11 @@
                 <!--Primeiro row, menu1 [Veículo] Chassi-->
                 <div class="row">
                     <div class="col col-lg-1 col-md-1 col-sm-2 col-xs-2">
-                        <label asp-for="VIN_6" id="">Chassi</label>
+                        <label asp-for="VIN" id="">Chassi</label>
                     </div>
                     <div class="col col-lg-11 col-md-11 col-sm-10 col-xs-10">
-                        <input asp-for="VIN_6" id="" data-toggle="tooltip"
-                               title="Insira o Chassi do Veículo!" placeholder="Todos"
-                               value="@Model.VIN_6" maxlength="6" pattern=".{6,6}"
+                        <input asp-for="VIN" id="" data-toggle="tooltip"
+                               title="Insira o Chassi do Veículo!" placeholder="Todos" value="@Model.VIN"
                                class="inputsTelaConferenciaConsulta form-control" autocomplete="off" />
                     </div>
                 </div>

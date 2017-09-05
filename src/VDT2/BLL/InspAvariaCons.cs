@@ -92,7 +92,7 @@ namespace VDT2.BLL
                 inspAvaria_Cons.Cliente_ID = consultaVM.Cliente.Cliente_ID;
 
                 //Chassi
-                inspAvaria_Cons.Chassi = consultaVM.VIN_6;
+                inspAvaria_Cons.Chassi = consultaVM.VIN;
 
                 //Local Inspecao
                 if (consultaVM.LocalInspecao_ID != null)
@@ -399,6 +399,7 @@ namespace VDT2.BLL
 
                 //NAVIO
                 inspAvaria_Cons.Navio = consultaVM.NavioNome;
+
             }
             catch (Exception ex)
             {

@@ -25,6 +25,8 @@ namespace VDT2.ViewModels
         public List<Models.Transportador> ListaTransportador { get; set; }
 
         public string VIN_6 { get; set; }
+        public string VIN { get; set; }
+
         public List<int> Marca_ID { get; set; }
         public List<int> Modelo_ID { get; set; }
         public List<int> LocalInspecao_ID { get; set; }
