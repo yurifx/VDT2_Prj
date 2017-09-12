@@ -107,6 +107,8 @@ namespace VDT2.Controllers
             return View("NovaConferencia", conferenciaVM);
         }
 
+
+
         /// <summary>
         /// Listagem de veículos e suas respectivas avarias 2a tela.
         /// </summary>
