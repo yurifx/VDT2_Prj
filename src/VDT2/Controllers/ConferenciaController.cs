@@ -96,6 +96,8 @@ namespace VDT2.Controllers
                     return RedirectToAction("Index", "Home");
                 }
             }
+
+
             else
             {
                 ViewData["MensagemErro"] = _mensagemLogin;
