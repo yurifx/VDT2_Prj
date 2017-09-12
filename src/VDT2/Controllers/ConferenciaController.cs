@@ -27,7 +27,9 @@ namespace VDT2.Controllers
 
         private VDT2.Models.Configuracao configuracao { get; set; }
         private string tempErro = "Erro ao processar informação, tente novamente mais tarde";
-
+   
+   
+   
         /// <summary>
         /// Construtor da classe
         /// <para>Recebe a configuração do aplicativo, usando Dependency Injection</para>
