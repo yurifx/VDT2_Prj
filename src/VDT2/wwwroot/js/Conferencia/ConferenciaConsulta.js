@@ -6,7 +6,7 @@
         //$(e).attr('checked', 'checked');
         $(e).prop('checked', true);
     })
-
-
 })
+
+
 

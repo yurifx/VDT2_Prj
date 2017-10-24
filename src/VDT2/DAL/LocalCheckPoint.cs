@@ -58,7 +58,7 @@ namespace VDT2.DAL
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
-                    listaLocaisCheckPoint = contexto.LocalCheckPoint.FromSql(chamada, parametros).ToList();
+                    listaLocaisCheckPoint = contexto.LocalCheckPoint.FromSql(chamada, parametros).OrderBy(x => x.LocalCheckPoint_ID).ToList();
 
                     var contador = listaLocaisCheckPoint.Count();
 
