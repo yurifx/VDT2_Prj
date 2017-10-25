@@ -482,14 +482,12 @@ namespace VDT2.DAL
                     //var a = contexto.InspAvaria_Conf.FromSql(chamada, parametros);
                     listaAvarias_conf = contexto.InspAvaria_Conf.FromSql(chamada, parametros).ToList();
 
-                    #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
                             Mensagem = $"InspAvaria.InspAvariaConf realizado com sucesso - Registros encontrados {listaAvarias_conf.Count()}"
                         });
-                    #endregion
 
                     return listaAvarias_conf;
                 }
@@ -497,7 +495,6 @@ namespace VDT2.DAL
             }
             catch (System.Exception ex)
             {
-                #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
@@ -506,7 +503,6 @@ namespace VDT2.DAL
                         Excecao = ex
                     });
                 throw;
-                #endregion
             }
         }
 
@@ -765,22 +761,18 @@ namespace VDT2.DAL
                 {
                     listaAvarias_cons = contexto.InspAvaria_Cons.FromSql(chamada, parametros).ToList();
 
-                    #region gravalogInformacao
                     Diag.Log.Grava(
                         new Diag.LogItem()
                         {
                             Nivel = Diag.Nivel.Informacao,
                             Mensagem = $"InspAvaria.InspAvariaCons realizado com sucesso - Registros encontrados {listaAvarias_cons.Count()}"
                         });
-                    #endregion
-
                     return listaAvarias_cons;
                 }
 
             }
             catch (System.Exception ex)
             {
-                #region gravalogErro
                 Diag.Log.Grava(
                     new Diag.LogItem()
                     {
@@ -789,7 +781,6 @@ namespace VDT2.DAL
                         Excecao = ex
                     });
                 throw;
-                #endregion
             }
         }
 
@@ -1005,7 +996,7 @@ namespace VDT2.DAL
                 {
                     ListaSummary = contexto.InspAvaria_Summary.FromSql(chamada, parametros).ToList();
 
-                    Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"InspAvaria.ConsultarSummary realizado com sucesso - Registros encontrados {ListaSummary.Count()}" });
+                    Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Informacao, Mensagem = $"InspAvaria.ConsultarSummary realizado com sucesso - Registros encontrados {ListaSummary.Count()}" });
 
                     return ListaSummary;
                 }
@@ -1014,7 +1005,7 @@ namespace VDT2.DAL
             catch (System.Exception ex)
             {
 
-                Diag.Log.Grava( new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a procedure: {nomeStoredProcedure}", Excecao = ex });
+                Diag.Log.Grava(new Diag.LogItem { Nivel = Diag.Nivel.Erro, Mensagem = $"Não conseguiu executar a procedure: {nomeStoredProcedure}", Excecao = ex });
 
                 throw;
             }
