@@ -24,6 +24,7 @@ namespace VDT2.ViewModels
         public int LocalCheckPoint_ID { get; set; }
         public string TipoLista { get; set; }
         public string Lote { get; set; }
+        public DateTime DataLista { get; set; }
 
         public string TextoLog()
         {

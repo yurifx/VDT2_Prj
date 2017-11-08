@@ -25,11 +25,11 @@ namespace VDT2.BLL
         /// <param name="listaVeiculos"></param>
         /// <param name="configuracao"></param>
         /// <returns></returns>
-        public static Models.ListaVeiculos InserirListaVeiculos(Models.ListaVeiculos listaVeiculos, Configuracao configuracao)
+        public static Models.ListaVeiculos InserirListaVeiculos(Models.ListaVeiculos listaVeiculos, DateTime dataLista, Configuracao configuracao)
         {
             try
             {
-                listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, configuracao);
+                listaVeiculos = DAL.ListaVeiculos.Inserir(listaVeiculos, dataLista, configuracao);
                 return listaVeiculos;
             }
             catch (Exception ex)

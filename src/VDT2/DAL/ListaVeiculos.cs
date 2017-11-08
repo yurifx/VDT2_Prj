@@ -31,7 +31,7 @@ namespace VDT2.DAL
         /// <param name="listaVeiculos">Dados referentes a Lista</param>
         /// <param name="configuracao">Dados da configuração informada</param>
         /// <returns></returns>
-        public static Models.ListaVeiculos Inserir(Models.ListaVeiculos listaVeiculos, Configuracao configuracao)
+        public static Models.ListaVeiculos Inserir(Models.ListaVeiculos listaVeiculos, DateTime dataLista, Configuracao configuracao)
         {
             string nomeStoredProcedure = "ListaVeiculos_Ins";
 
@@ -91,6 +91,12 @@ namespace VDT2.DAL
                 };
 
 
+                SqlParameter parmDataLista = new SqlParameter("@p_DataLista", SqlDbType.DateTime)
+                {
+                    Value = dataLista
+                };
+
+
                 SqlParameter[] parametros = new SqlParameter[]
                 {
                     parmClienteID,
@@ -101,10 +107,11 @@ namespace VDT2.DAL
                     parmTipo,
                     parmLote,
                     parmListaVeiculo_ID,
-                    parmLoteID
+                    parmLoteID,
+                    parmDataLista
                 };
 
-                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmLote.ParameterName}, {parmListaVeiculo_ID.ParameterName} out, {parmLoteID.ParameterName} out";
+                string chamada = $"{nomeStoredProcedure} {parmClienteID.ParameterName}, {parmUsuarioID.ParameterName}, {parmNomeArquivo.ParameterName}, {parmLocalInspecaoID.ParameterName}, {parmLocalCheckPointID.ParameterName}, {parmTipo.ParameterName}, {parmLote.ParameterName}, {parmDataLista.ParameterName}, {parmListaVeiculo_ID.ParameterName} out, {parmLoteID.ParameterName} out";
 
                 using (var contexto = new GeralDbContext(configuracao))
                 {
@@ -116,14 +123,13 @@ namespace VDT2.DAL
                     {
                         listaVeiculos.Lote_ID = (int)parmLoteID.Value;
                     }
-                    #region gravalogInformacao
+
                     Diag.Log.Grava(
                     new Diag.LogItem()
                     {
                         Nivel = Diag.Nivel.Informacao,
                         Mensagem = $"ListaVeiculos.Inserir registrado com sucesso - ListaVeiculo_ID = {listaVeiculos.ListaVeiculo_ID}"
                     });
-                    #endregion
 
                     return listaVeiculos;
                 }

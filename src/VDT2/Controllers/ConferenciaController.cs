@@ -27,9 +27,9 @@ namespace VDT2.Controllers
 
         private VDT2.Models.Configuracao configuracao { get; set; }
         private string tempErro = "Erro ao processar informação, tente novamente mais tarde";
-   
-   
-   
+
+
+
         /// <summary>
         /// Construtor da classe
         /// <para>Recebe a configuração do aplicativo, usando Dependency Injection</para>
@@ -764,6 +764,14 @@ namespace VDT2.Controllers
                 conferenciaListaVM.ListaLocalInspecao = BLL.Inspecao.ListarLocaisInspecao(dadosUsuario.UsuarioId, configuracao, dadosUsuario.Usuario.Locais);
                 conferenciaListaVM.ListaLocalCheckPoint = BLL.Inspecao.ListarLocalCheckPoint(dadosUsuario.UsuarioId, configuracao);
 
+                //08-11-2017 - Alteração Data ao salvar lista
+                if (conferenciaListaVM.DataLista.Date == new DateTime(0001, 01, 01))
+                {
+                    ViewData["MensagemErro"] = "Nenhuma data foi selecionada, por favor escolha uma data";
+                    return View("EnviarLista", conferenciaListaVM);
+                }
+
+
                 if (files.Count() > 0)
                 {
                     if (files.FirstOrDefault().ContentType == "text/plain")
@@ -780,7 +788,7 @@ namespace VDT2.Controllers
                             Lote = conferenciaListaVM.Lote
                         };
 
-                        listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, configuracao);
+                        listaVeiculos = BLL.Conferencia.InserirListaVeiculos(listaVeiculos, conferenciaListaVM.DataLista, configuracao);
 
                         if (listaVeiculos.ListaVeiculo_ID != 0)
                         {
